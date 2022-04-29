@@ -1,0 +1,3 @@
+[submodule "ionpot"]
+	path = ionpot
+	url = https://github.com/ionpot/ionpot.git
