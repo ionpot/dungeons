@@ -13,6 +13,8 @@ namespace dungeons::ui {
 	using Text = Texture;
 	using PaddedText = widget::Padded<Text>;
 
+	Text normal_text(const Context&, int);
 	Text normal_text(const Context&, std::string);
+	Text bold_text(const Context&, int);
 	Text bold_text(const Context&, std::string);
 }

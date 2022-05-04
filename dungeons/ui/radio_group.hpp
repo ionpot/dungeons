@@ -4,7 +4,6 @@
 
 #include <ionpot/widget/box.hpp>
 #include <ionpot/widget/click.hpp>
-#include <ionpot/widget/sum_sizes.hpp>
 
 #include <ionpot/util/point.hpp>
 

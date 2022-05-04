@@ -21,17 +21,20 @@ namespace dungeons {
 
 	NewCharScreen::NewCharScreen(
 			std::shared_ptr<util::Log> log,
-			const ui::Context& ctx
+			std::shared_ptr<const ui::Context> ctx
 	):
 		m_log {log},
-		m_mouse {ctx.mouse},
-		m_left_click {ctx.left_click},
-		m_select {ui::class_select(ctx)},
-		m_done {ui::unique_button(ctx, "Done")},
-		m_class_chosen {}
+		m_ui {ctx},
+		m_mouse {m_ui->mouse},
+		m_left_click {m_ui->left_click},
+		m_select {ui::class_select(*m_ui)},
+		m_attributes {m_ui},
+		m_done {ui::unique_button(*m_ui, "Done")},
+		m_class_chosen {},
+		m_rolled_attr {}
 	{
 		m_select.position({50});
-		m_done.place_below(m_select, ctx.button.spacing);
+		m_attributes.place_below(m_select, m_ui->button.spacing);
 	}
 
 	std::optional<screen::Output>
@@ -43,9 +46,22 @@ namespace dungeons {
 		if (auto clicked = m_left_click->check(event)) {
 			if (auto chosen = m_select.on_click(*clicked)) {
 				m_class_chosen = chosen;
+				return {};
 			}
-			else if (m_class_chosen && clicked->on(m_done)) {
+			if (!m_class_chosen) {
+				return {};
+			}
+			if (auto rolled = m_attributes.on_click(*clicked)) {
+				m_rolled_attr = rolled;
+				m_done.place_below(m_attributes, m_ui->button.spacing);
+				return {};
+			}
+			if (!m_rolled_attr) {
+				return {};
+			}
+			if (clicked->on(m_done)) {
 				m_log->pair("Chosen class:", ui::to_string(*m_class_chosen));
+				m_log->pair("Attributes:", *m_rolled_attr);
 				return screen::ToCombat {*m_class_chosen};
 			}
 		}
@@ -57,6 +73,8 @@ namespace dungeons {
 	{
 		m_select.render();
 		if (m_class_chosen)
+			m_attributes.render();
+		if (m_rolled_attr)
 			m_done.render();
 	}
 
@@ -66,6 +84,8 @@ namespace dungeons {
 		m_mouse->update();
 		m_select.update();
 		if (m_class_chosen)
+			m_attributes.update();
+		if (m_rolled_attr)
 			m_done.update();
 	}
 }
