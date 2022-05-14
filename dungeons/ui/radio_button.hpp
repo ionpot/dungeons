@@ -74,15 +74,9 @@ namespace dungeons::ui {
 			return nullptr;
 		}
 
-		std::optional<T>
-		on_click(const widget::Element& clicked)
-		{
-			if (m_button == clicked) {
-				set();
-				return m_value;
-			}
-			return {};
-		}
+		bool
+		is_click(const widget::Element& clicked) const
+		{ return m_button == clicked; }
 
 		void
 		render(util::Point offset = {}) const
@@ -104,6 +98,10 @@ namespace dungeons::ui {
 			m_chosen.hide();
 			m_button.show();
 		}
+
+		T
+		value() const
+		{ return m_value; }
 
 		static std::vector<RadioButton>
 		from(

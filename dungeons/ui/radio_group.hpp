@@ -39,11 +39,12 @@ namespace dungeons::ui {
 		on_click(const widget::Element& clicked)
 		{
 			for (auto& button : m_buttons) {
-				if (auto value = button.on_click(clicked)) {
+				if (button.is_click(clicked)) {
+					button.set();
 					if (m_chosen)
 						m_chosen->reset();
 					m_chosen = &button;
-					return value;
+					return button.value();
 				}
 			}
 			return {};
