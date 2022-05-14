@@ -37,6 +37,7 @@ namespace dungeons {
 		ui::ClassSelect m_select;
 		ui::NewAttributes m_attributes;
 		ui::UniqueButton m_roll_attr;
+		ui::UniqueButton m_reroll_attr;
 		ui::UniqueButton m_done;
 		std::optional<game::Class> m_class_chosen;
 		std::optional<ui::NewAttributes::Value> m_rolled_attr;

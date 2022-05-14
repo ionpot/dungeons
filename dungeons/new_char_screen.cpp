@@ -28,6 +28,7 @@ namespace dungeons {
 		m_select {ui::class_select(*m_ui)},
 		m_attributes {m_ui},
 		m_roll_attr {ui::unique_button(*m_ui, "Roll Attributes")},
+		m_reroll_attr {ui::unique_button(*m_ui, "Roll Again")},
 		m_done {ui::unique_button(*m_ui, "Done")},
 		m_class_chosen {},
 		m_rolled_attr {}
@@ -37,9 +38,11 @@ namespace dungeons {
 		auto spacing = m_ui->button.spacing;
 		m_roll_attr.place_below(m_select, spacing);
 		m_attributes.place_below(m_select, spacing);
-		m_done.place_below(m_attributes, spacing);
+		m_reroll_attr.place_below(m_attributes, spacing);
+		m_done.place_below(m_reroll_attr, spacing);
 
 		m_roll_attr.hide();
+		m_reroll_attr.hide();
 		m_attributes.hide();
 		m_done.hide();
 	}
@@ -49,10 +52,10 @@ namespace dungeons {
 	{
 		if (auto* found = widget::find(m_select, point))
 			return found;
-		if (auto* found = widget::find(m_attributes, point))
-			return found;
 		if (widget::contains(m_roll_attr, point))
 			return &m_roll_attr;
+		if (widget::contains(m_reroll_attr, point))
+			return &m_reroll_attr;
 		if (widget::contains(m_done, point))
 			return &m_done;
 		return nullptr;
@@ -68,13 +71,15 @@ namespace dungeons {
 			return {};
 		}
 		if (m_roll_attr == clicked) {
+			m_rolled_attr = m_attributes.roll();
 			m_roll_attr.hide();
 			m_attributes.show();
+			m_reroll_attr.show();
+			m_done.show();
 			return {};
 		}
-		if (auto rolled = m_attributes.on_click(clicked)) {
-			m_rolled_attr = rolled;
-			m_done.show();
+		if (m_reroll_attr == clicked) {
+			m_rolled_attr = m_attributes.roll();
 			return {};
 		}
 		if (m_done == clicked) {
@@ -90,6 +95,7 @@ namespace dungeons {
 	{
 		widget::render(m_select);
 		widget::render(m_roll_attr);
+		widget::render(m_reroll_attr);
 		widget::render(m_attributes);
 		widget::render(m_done);
 	}
