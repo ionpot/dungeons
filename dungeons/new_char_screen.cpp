@@ -7,17 +7,17 @@
 #include <ui/context.hpp>
 #include <ui/to_string.hpp>
 
-#include <ionpot/sdl/event.hpp>
-#include <ionpot/sdl/mouse.hpp>
+#include <ionpot/widget/element.hpp>
 
 #include <ionpot/util/log.hpp>
+#include <ionpot/util/point.hpp>
 
 #include <memory> // std::shared_ptr
 #include <optional>
 
 namespace dungeons {
-	namespace sdl = ionpot::sdl;
 	namespace util = ionpot::util;
+	namespace widget = ionpot::widget;
 
 	NewCharScreen::NewCharScreen(
 			std::shared_ptr<util::Log> log,
@@ -25,45 +25,62 @@ namespace dungeons {
 	):
 		m_log {log},
 		m_ui {ctx},
-		m_mouse {m_ui->mouse},
-		m_left_click {m_ui->left_click},
 		m_select {ui::class_select(*m_ui)},
 		m_attributes {m_ui},
+		m_roll_attr {ui::unique_button(*m_ui, "Roll Attributes")},
 		m_done {ui::unique_button(*m_ui, "Done")},
 		m_class_chosen {},
 		m_rolled_attr {}
 	{
 		m_select.position({50});
-		m_attributes.place_below(m_select, m_ui->button.spacing);
+
+		auto spacing = m_ui->button.spacing;
+		m_roll_attr.place_below(m_select, spacing);
+		m_attributes.place_below(m_select, spacing);
+		m_done.place_below(m_attributes, spacing);
+
+		m_roll_attr.hide();
+		m_attributes.hide();
+		m_done.hide();
+	}
+
+	widget::Element*
+	NewCharScreen::find(util::Point point)
+	{
+		if (auto* found = widget::find(m_select, point))
+			return found;
+		if (auto* found = widget::find(m_attributes, point))
+			return found;
+		if (widget::contains(m_roll_attr, point))
+			return &m_roll_attr;
+		if (widget::contains(m_done, point))
+			return &m_done;
+		return nullptr;
 	}
 
 	std::optional<screen::Output>
-	NewCharScreen::handle(const sdl::Event& event)
+	NewCharScreen::on_click(const widget::Element& clicked)
 	{
-		if (auto key = event.key_up()) {
-			return screen::Quit {};
+		if (auto chosen = m_select.on_click(clicked)) {
+			m_class_chosen = chosen;
+			if (m_attributes.hidden())
+				m_roll_attr.show();
+			return {};
 		}
-		if (auto clicked = m_left_click->check(event)) {
-			if (auto chosen = m_select.on_click(*clicked)) {
-				m_class_chosen = chosen;
-				return {};
-			}
-			if (!m_class_chosen) {
-				return {};
-			}
-			if (auto rolled = m_attributes.on_click(*clicked)) {
-				m_rolled_attr = rolled;
-				m_done.place_below(m_attributes, m_ui->button.spacing);
-				return {};
-			}
-			if (!m_rolled_attr) {
-				return {};
-			}
-			if (clicked->on(m_done)) {
-				m_log->pair("Chosen class:", ui::to_string(*m_class_chosen));
-				m_log->pair("Attributes:", *m_rolled_attr);
-				return screen::ToCombat {*m_class_chosen};
-			}
+		if (m_roll_attr == clicked) {
+			m_roll_attr.hide();
+			m_attributes.show();
+			return {};
+		}
+		if (auto rolled = m_attributes.on_click(clicked)) {
+			m_rolled_attr = rolled;
+			m_done.show();
+			return {};
+		}
+		if (m_done == clicked) {
+			m_log->pair("Chosen class:", ui::to_string(*m_class_chosen));
+			m_log->pair("Attributes:", *m_rolled_attr);
+			return screen::ToCombat {*m_class_chosen};
 		}
 		return {};
 	}
@@ -71,21 +88,9 @@ namespace dungeons {
 	void
 	NewCharScreen::render() const
 	{
-		m_select.render();
-		if (m_class_chosen)
-			m_attributes.render();
-		if (m_rolled_attr)
-			m_done.render();
-	}
-
-	void
-	NewCharScreen::update()
-	{
-		m_mouse->update();
-		m_select.update();
-		if (m_class_chosen)
-			m_attributes.update();
-		if (m_rolled_attr)
-			m_done.update();
+		widget::render(m_select);
+		widget::render(m_roll_attr);
+		widget::render(m_attributes);
+		widget::render(m_done);
 	}
 }

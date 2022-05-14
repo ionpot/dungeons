@@ -3,9 +3,7 @@
 #include "context.hpp"
 #include "texture.hpp"
 
-#include <ionpot/widget/box.hpp>
-#include <ionpot/widget/click.hpp>
-#include <ionpot/widget/hover.hpp>
+#include <ionpot/widget/element.hpp>
 #include <ionpot/widget/text_box.hpp>
 
 #include <ionpot/sdl/cursor.hpp>
@@ -22,54 +20,27 @@ namespace dungeons::ui {
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
-	template<class T> // T = Box
-	class Button : public widget::Box {
+	template<class T> // T = widget::Element
+	class Button : public widget::Element {
 	public:
 		Button(const Context& ctx, T&& box):
-			widget::Box {box.size()},
+			widget::Element {box.size()},
 			m_box {std::move(box)},
-			m_hover {ctx.mouse},
-			m_left_click {ctx.left_click},
-			m_cursor_enter {ctx.cursor_hand},
-			m_cursor_leave {ctx.cursor_arrow},
-			m_dent {ctx.button.click_dent}
-		{}
-
-		void
-		update(util::Point offset = {})
-		{
-			m_hover.update(m_box, position() + offset);
-			if (m_hover.has_entered()) {
-				m_cursor_enter->set();
-			}
-			if (m_hover.has_left()) {
-				m_cursor_leave->set();
-			}
-		}
+			m_click_dent {ctx.button.click_dent}
+		{ clickable(true); }
 
 		void
 		render(util::Point offset = {}) const
 		{
-			offset += position();
-			if (m_hover.is_hovered()) {
-				if (m_left_click->pressed_on(m_box, offset)) {
-					offset += m_dent;
-				}
+			if (held_down()) {
+				offset += m_click_dent;
 			}
-			m_box.render(offset);
+			widget::Element::render(m_box, offset);
 		}
-
-		void
-		reset_cursor() const
-		{ m_cursor_leave->set(); }
 
 	private:
 		T m_box;
-		widget::Hover m_hover;
-		std::shared_ptr<const widget::LeftClick> m_left_click;
-		std::shared_ptr<const sdl::Cursor> m_cursor_enter;
-		std::shared_ptr<const sdl::Cursor> m_cursor_leave;
-		util::Point m_dent;
+		util::Point m_click_dent;
 	};
 
 	using UniqueButton = Button<widget::TextBox>;

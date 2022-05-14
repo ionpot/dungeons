@@ -5,7 +5,7 @@
 #include "label_value.hpp"
 #include "text.hpp"
 
-#include <ionpot/widget/box.hpp>
+#include <ionpot/widget/element.hpp>
 #include <ionpot/widget/label_value.hpp>
 
 #include <ionpot/util/point.hpp>
@@ -20,11 +20,10 @@ namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
 	NewAttributes::NewAttributes(std::shared_ptr<const Context> ctx):
-		widget::Box {},
+		widget::Element {},
 		m_ui {ctx},
-		m_roll {unique_button(*m_ui, "Roll attributes")},
-		m_reroll {unique_button(*m_ui, "Reroll")},
 		m_value {},
+		m_reroll {unique_button(*m_ui, "Reroll")},
 		m_str {normal_text(*m_ui, "Strength")},
 		m_agi {normal_text(*m_ui, "Agility")},
 		m_int {normal_text(*m_ui, "Intelligence")}
@@ -37,26 +36,23 @@ namespace dungeons::ui {
 		m_agi.place_below(m_str, spacing);
 		m_int.place_below(m_agi, spacing);
 		m_reroll.place_below(m_int, spacing);
-		update_size();
+		update_value();
+	}
+
+	widget::Element*
+	NewAttributes::find(util::Point point, util::Point offset)
+	{
+		if (contains(m_reroll, point, offset))
+			return &m_reroll;
+		return nullptr;
 	}
 
 	std::optional<NewAttributes::Value>
-	NewAttributes::on_click(
-			const widget::Click& clicked,
-			util::Point offset)
+	NewAttributes::on_click(const widget::Element& clicked)
 	{
-		auto pos = position() + offset;
-		if (m_value) {
-			if (clicked.on(m_reroll, pos)) {
-				update_value();
-				return m_value;
-			}
-		}
-		else {
-			if (clicked.on(m_roll, pos)) {
-				update_value();
-				return m_value;
-			}
+		if (m_reroll == clicked) {
+			update_value();
+			return m_value;
 		}
 		return {};
 	}
@@ -64,41 +60,18 @@ namespace dungeons::ui {
 	void
 	NewAttributes::render(util::Point offset) const
 	{
-		auto pos = position() + offset;
-		if (m_value) {
-			m_str.render(pos);
-			m_agi.render(pos);
-			m_int.render(pos);
-			m_reroll.render(pos);
-		}
-		else {
-			m_roll.render(pos);
-		}
-	}
-
-	void
-	NewAttributes::update(util::Point offset)
-	{
-		auto pos = position() + offset;
-		if (m_value)
-			m_reroll.update(pos);
-		else
-			m_roll.update(pos);
+		widget::Element::render(m_str, offset);
+		widget::Element::render(m_agi, offset);
+		widget::Element::render(m_int, offset);
+		widget::Element::render(m_reroll, offset);
 	}
 
 	void
 	NewAttributes::update_size()
 	{
-		std::vector<widget::Box> ls;
-		if (m_value) {
-			ls.push_back(m_str);
-			ls.push_back(m_agi);
-			ls.push_back(m_int);
-			ls.push_back(m_reroll);
-		}
-		else {
-			ls.push_back(m_roll);
-		}
+		std::vector<widget::Element> ls {
+			m_str, m_agi, m_int, m_reroll
+		};
 		size(widget::sum_sizes(ls));
 	}
 

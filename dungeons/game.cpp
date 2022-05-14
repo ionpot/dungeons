@@ -1,6 +1,7 @@
 #include "game.hpp"
 
 #include "combat_screen.hpp"
+#include "mouse.hpp"
 #include "new_char_screen.hpp"
 #include "screen.hpp"
 
@@ -12,6 +13,7 @@
 #include <ionpot/util/log.hpp>
 
 #include <memory> // std::shared_ptr
+#include <utility> // std::move
 #include <variant> // std::get_if
 
 namespace dungeons {
@@ -22,25 +24,26 @@ namespace dungeons {
 			std::shared_ptr<util::Log> log,
 			std::shared_ptr<const sdl::Base> base,
 			std::shared_ptr<const sdl::Events> events,
-			std::shared_ptr<const ui::Context> ui
+			std::shared_ptr<const ui::Context> ui,
+			Mouse&& mouse
 	):
 		m_log {log},
 		m_base {base},
 		m_events {events},
-		m_ui {ui}
+		m_ui {ui},
+		m_mouse {std::move(mouse)}
 	{}
 
 	void
-	Game::next(const screen::Output& output) const
+	Game::next(const screen::Output& output)
 	{
-		m_ui->reset_cursor();
 		if (auto* input = std::get_if<screen::ToCombat>(&output)) {
 			return loop(CombatScreen {m_log, *m_ui, *input});
 		}
 	}
 
 	void
-	Game::loop() const
+	Game::loop()
 	{
 		loop(NewCharScreen {m_log, m_ui});
 	}

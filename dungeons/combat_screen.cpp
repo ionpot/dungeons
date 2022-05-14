@@ -7,17 +7,17 @@
 #include <ui/text.hpp>
 #include <ui/to_string.hpp>
 
-#include <ionpot/sdl/event.hpp>
-#include <ionpot/sdl/mouse.hpp>
+#include <ionpot/widget/element.hpp>
 
 #include <ionpot/util/log.hpp>
+#include <ionpot/util/point.hpp>
 
 #include <memory> // std::shared_ptr
 #include <optional>
 
 namespace dungeons {
-	namespace sdl = ionpot::sdl;
 	namespace util = ionpot::util;
+	namespace widget = ionpot::widget;
 
 	CombatScreen::CombatScreen(
 			std::shared_ptr<util::Log> log,
@@ -25,8 +25,6 @@ namespace dungeons {
 			const screen::ToCombat& input
 	):
 		m_log {log},
-		m_mouse {ctx.mouse},
-		m_left_click {ctx.left_click},
 		m_text {
 			ui::normal_text(ctx,
 				ui::to_string(input.player) + " fights an enemy here.")
@@ -38,17 +36,20 @@ namespace dungeons {
 		m_log->pair(ui::to_string(input.player), "enters combat.");
 	}
 
-	std::optional<screen::Output>
-	CombatScreen::handle(const sdl::Event& event)
+	widget::Element*
+	CombatScreen::find(util::Point point)
 	{
-		if (auto key = event.key_up()) {
+		if (widget::contains(m_button, point))
+			return &m_button;
+		return nullptr;
+	}
+
+	std::optional<screen::Output>
+	CombatScreen::on_click(const widget::Element& clicked)
+	{
+		if (m_button == clicked) {
+			m_log->put("Combat ends.");
 			return screen::Quit {};
-		}
-		if (auto clicked = m_left_click->check(event)) {
-			if (clicked->on(m_button)) {
-				m_log->put("Combat ends.");
-				return screen::Quit {};
-			}
 		}
 		return {};
 	}
@@ -56,14 +57,7 @@ namespace dungeons {
 	void
 	CombatScreen::render() const
 	{
-		m_text.render();
-		m_button.render();
-	}
-
-	void
-	CombatScreen::update()
-	{
-		m_mouse->update();
-		m_button.update();
+		widget::render(m_text);
+		widget::render(m_button);
 	}
 }

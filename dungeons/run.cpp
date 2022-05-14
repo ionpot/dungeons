@@ -6,8 +6,6 @@
 #include <ui/config.hpp>
 #include <ui/context.hpp>
 
-#include <ionpot/widget/click.hpp>
-
 #include <ionpot/sdl/base.hpp>
 #include <ionpot/sdl/events.hpp>
 #include <ionpot/sdl/mouse.hpp>
@@ -26,7 +24,6 @@
 namespace dungeons {
 	namespace sdl = ionpot::sdl;
 	namespace util = ionpot::util;
-	namespace widget = ionpot::widget;
 
 	void
 	run(
@@ -53,15 +50,10 @@ namespace dungeons {
 		auto renderer = std::make_shared<const sdl::Renderer>(window);
 
 		log->put("Creating UI context...");
-		auto ui = std::make_shared<const ui::Context>(
-			ttf,
-			renderer,
-			std::make_shared<sdl::Mouse>(video),
-			std::make_shared<widget::LeftClick>(),
-			config);
+		auto ui = std::make_shared<const ui::Context>(ttf, renderer, config);
 
 		log->put("Starting game...");
-		Game game {log, base, events, ui};
+		Game game {log, base, events, ui, sdl::Mouse {video}};
 		game.loop();
 	}
 }

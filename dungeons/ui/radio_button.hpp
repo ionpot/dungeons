@@ -5,21 +5,23 @@
 #include "text.hpp"
 #include "texture.hpp"
 
-#include <ionpot/widget/box.hpp>
+#include <ionpot/widget/element.hpp>
 
 #include <ionpot/util/point.hpp>
 #include <ionpot/util/size.hpp>
 
 #include <memory> // std::shared_ptr, std::make_shared
+#include <optional>
 #include <string>
 #include <utility> // std::move
 #include <vector>
 
 namespace dungeons::ui {
+	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
 	template<class T> // T = enum value
-	class RadioButton : public widget::Box {
+	class RadioButton : public widget::Element {
 	public:
 		struct Input {
 			std::string text;
@@ -41,11 +43,13 @@ namespace dungeons::ui {
 				PaddedText&& chosen,
 				T value
 		):
-			widget::Box {button.size()},
+			widget::Element {button.size()},
 			m_button {std::move(button)},
 			m_chosen {std::move(chosen)},
 			m_value {value}
-		{}
+		{
+			m_chosen.hide();
+		}
 
 		RadioButton(
 				const Context& ctx,
@@ -62,25 +66,44 @@ namespace dungeons::ui {
 			}
 		{}
 
-		void
-		render_button(util::Point offset = {}) const
-		{ m_button.render(position() + offset); }
+		widget::Element*
+		find(util::Point point, util::Point offset = {})
+		{
+			if (contains(m_button, point, offset))
+				return &m_button;
+			return nullptr;
+		}
+
+		std::optional<T>
+		on_click(const widget::Element& clicked)
+		{
+			if (m_button == clicked) {
+				set();
+				return m_value;
+			}
+			return {};
+		}
 
 		void
-		render_chosen(util::Point offset = {}) const
-		{ m_chosen.render(position() + offset); }
+		render(util::Point offset = {}) const
+		{
+			widget::Element::render(m_button, offset);
+			widget::Element::render(m_chosen, offset);
+		}
 
 		void
-		reset_cursor() const
-		{ m_button.reset_cursor(); }
+		set()
+		{
+			m_chosen.show();
+			m_button.hide();
+		}
 
 		void
-		update(util::Point offset = {})
-		{ m_button.update(position() + offset); }
-
-		T
-		value() const
-		{ return m_value; }
+		reset()
+		{
+			m_chosen.hide();
+			m_button.show();
+		}
 
 		static std::vector<RadioButton>
 		from(
