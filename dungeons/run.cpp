@@ -6,6 +6,8 @@
 #include <ui/config.hpp>
 #include <ui/context.hpp>
 
+#include <game/context.hpp>
+
 #include <ionpot/sdl/base.hpp>
 #include <ionpot/sdl/events.hpp>
 #include <ionpot/sdl/mouse.hpp>
@@ -19,6 +21,7 @@
 #include <ionpot/util/rgb.hpp>
 
 #include <memory> // std::make_shared, std::shared_ptr
+#include <random> // std::random_device
 #include <string>
 
 namespace dungeons {
@@ -52,8 +55,12 @@ namespace dungeons {
 		log->put("Creating UI context...");
 		auto ui = std::make_shared<const ui::Context>(ttf, renderer, config);
 
+		log->put("Creating game context...");
+		std::random_device seed;
+		auto game_ctx = std::make_shared<game::Context>(seed());
+
 		log->put("Starting game...");
-		Game game {log, base, events, ui, sdl::Mouse {video}};
+		Game game {log, base, events, ui, game_ctx, sdl::Mouse {video}};
 		game.loop();
 	}
 }

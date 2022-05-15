@@ -4,6 +4,8 @@
 #include "label_value.hpp"
 #include "text.hpp"
 
+#include <game/context.hpp>
+
 #include <ionpot/widget/element.hpp>
 #include <ionpot/widget/label_value.hpp>
 
@@ -17,10 +19,13 @@ namespace dungeons::ui {
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
-	NewAttributes::NewAttributes(std::shared_ptr<const Context> ctx):
+	NewAttributes::NewAttributes(
+			std::shared_ptr<const Context> ui,
+			std::shared_ptr<game::Context> game):
 		widget::Element {},
-		m_ui {ctx},
-		m_value {0},
+		m_ui {ui},
+		m_game {game},
+		m_value {},
 		m_str {normal_text(*m_ui, "Strength")},
 		m_agi {normal_text(*m_ui, "Agility")},
 		m_int {normal_text(*m_ui, "Intelligence")}
@@ -46,7 +51,7 @@ namespace dungeons::ui {
 	NewAttributes::Value
 	NewAttributes::roll()
 	{
-		m_value += 1;
+		m_value = m_game->roll_attributes();
 		update_text();
 		return m_value;
 	}
@@ -63,9 +68,9 @@ namespace dungeons::ui {
 	void
 	NewAttributes::update_text()
 	{
-		m_str.value(bold_text(*m_ui, m_value));
-		m_agi.value(bold_text(*m_ui, m_value));
-		m_int.value(bold_text(*m_ui, m_value));
+		m_str.value(bold_text(*m_ui, m_value.strength()));
+		m_agi.value(bold_text(*m_ui, m_value.agility()));
+		m_int.value(bold_text(*m_ui, m_value.intelligence()));
 		update_size();
 	}
 }

@@ -7,6 +7,8 @@
 
 #include <ui/context.hpp>
 
+#include <game/context.hpp>
+
 #include <ionpot/sdl/base.hpp>
 #include <ionpot/sdl/events.hpp>
 
@@ -25,12 +27,14 @@ namespace dungeons {
 			std::shared_ptr<const sdl::Base> base,
 			std::shared_ptr<const sdl::Events> events,
 			std::shared_ptr<const ui::Context> ui,
+			std::shared_ptr<game::Context> game,
 			Mouse&& mouse
 	):
 		m_log {log},
 		m_base {base},
 		m_events {events},
 		m_ui {ui},
+		m_game {game},
 		m_mouse {std::move(mouse)}
 	{}
 
@@ -45,6 +49,6 @@ namespace dungeons {
 	void
 	Game::loop()
 	{
-		loop(NewCharScreen {m_log, m_ui});
+		loop(NewCharScreen {m_log, m_ui, m_game});
 	}
 }

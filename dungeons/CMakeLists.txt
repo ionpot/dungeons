@@ -13,6 +13,7 @@ else()
 endif()
 
 # subdirectories
+add_subdirectory(game)
 add_subdirectory(ui)
 
 # WIN32 flag removes the console window on Windows
@@ -28,7 +29,7 @@ target_include_directories(dungeons PRIVATE "${PROJECT_BINARY_DIR}")
 target_include_directories(dungeons PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
 
 # dependencies
-target_link_libraries(dungeons PRIVATE ionpot dungeons_ui)
+target_link_libraries(dungeons PRIVATE ionpot dungeons_game dungeons_ui)
 
 # place the executable and the files/dirs it needs
 # "TYPE BIN" puts them next to the executable

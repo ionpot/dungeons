@@ -7,6 +7,8 @@
 #include <ui/context.hpp>
 #include <ui/to_string.hpp>
 
+#include <game/context.hpp>
+
 #include <ionpot/widget/element.hpp>
 
 #include <ionpot/util/log.hpp>
@@ -21,12 +23,13 @@ namespace dungeons {
 
 	NewCharScreen::NewCharScreen(
 			std::shared_ptr<util::Log> log,
-			std::shared_ptr<const ui::Context> ctx
+			std::shared_ptr<const ui::Context> ui,
+			std::shared_ptr<game::Context> game
 	):
 		m_log {log},
-		m_ui {ctx},
+		m_ui {ui},
 		m_select {ui::class_select(*m_ui)},
-		m_attributes {m_ui},
+		m_attributes {m_ui, game},
 		m_roll_attr {ui::unique_button(*m_ui, "Roll Attributes")},
 		m_reroll_attr {ui::unique_button(*m_ui, "Roll Again")},
 		m_done {ui::unique_button(*m_ui, "Done")},
@@ -84,7 +87,9 @@ namespace dungeons {
 		}
 		if (m_done == clicked) {
 			m_log->pair("Chosen class:", ui::to_string(*m_class_chosen));
-			m_log->pair("Attributes:", *m_rolled_attr);
+			m_log->pair("Strength:", m_rolled_attr->strength());
+			m_log->pair("Agility:", m_rolled_attr->agility());
+			m_log->pair("Intelligence:", m_rolled_attr->intelligence());
 			return screen::ToCombat {*m_class_chosen};
 		}
 		return {};

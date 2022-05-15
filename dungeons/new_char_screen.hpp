@@ -8,6 +8,7 @@
 #include <ui/new_attributes.hpp>
 
 #include <game/class.hpp>
+#include <game/context.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -25,7 +26,8 @@ namespace dungeons {
 	public:
 		NewCharScreen(
 			std::shared_ptr<util::Log>,
-			std::shared_ptr<const ui::Context>);
+			std::shared_ptr<const ui::Context>,
+			std::shared_ptr<game::Context>);
 
 		widget::Element* find(util::Point);
 		std::optional<screen::Output> on_click(const widget::Element&);

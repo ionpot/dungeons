@@ -3,6 +3,9 @@
 #include "context.hpp"
 #include "label_value.hpp"
 
+#include <game/attributes.hpp>
+#include <game/context.hpp>
+
 #include <ionpot/widget/element.hpp>
 
 #include <ionpot/util/point.hpp>
@@ -15,9 +18,11 @@ namespace dungeons::ui {
 
 	class NewAttributes : public widget::Element {
 	public:
-		using Value = int;
+		using Value = game::Attributes;
 
-		NewAttributes(std::shared_ptr<const Context>);
+		NewAttributes(
+			std::shared_ptr<const Context>,
+			std::shared_ptr<game::Context>);
 
 		void render(util::Point offset = {}) const;
 
@@ -25,6 +30,7 @@ namespace dungeons::ui {
 
 	private:
 		std::shared_ptr<const Context> m_ui;
+		std::shared_ptr<game::Context> m_game;
 		Value m_value;
 		LabelValue m_str;
 		LabelValue m_agi;

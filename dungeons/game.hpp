@@ -5,6 +5,8 @@
 
 #include <ui/context.hpp>
 
+#include <game/context.hpp>
+
 #include <ionpot/sdl/base.hpp>
 #include <ionpot/sdl/events.hpp>
 
@@ -25,6 +27,7 @@ namespace dungeons {
 			std::shared_ptr<const sdl::Base>,
 			std::shared_ptr<const sdl::Events>,
 			std::shared_ptr<const ui::Context>,
+			std::shared_ptr<game::Context>,
 			Mouse&&);
 
 		void next(const screen::Output&);
@@ -74,6 +77,7 @@ namespace dungeons {
 		std::shared_ptr<const sdl::Base> m_base;
 		std::shared_ptr<const sdl::Events> m_events;
 		std::shared_ptr<const ui::Context> m_ui;
+		std::shared_ptr<game::Context> m_game;
 		Mouse m_mouse;
 
 		template<class T> // T requires:
