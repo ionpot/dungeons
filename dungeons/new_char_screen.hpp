@@ -35,11 +35,9 @@ namespace dungeons {
 
 	private:
 		std::shared_ptr<util::Log> m_log;
-		std::shared_ptr<const ui::Context> m_ui;
+		int m_spacing;
 		ui::ClassSelect m_select;
 		ui::NewAttributes m_attributes;
-		ui::UniqueButton m_roll_attr;
-		ui::UniqueButton m_reroll_attr;
 		ui::UniqueButton m_done;
 		std::optional<game::Class> m_class_chosen;
 		std::optional<ui::NewAttributes::Value> m_rolled_attr;

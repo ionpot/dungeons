@@ -1,5 +1,6 @@
 #pragma once
 
+#include "button.hpp"
 #include "context.hpp"
 #include "label_value.hpp"
 
@@ -11,6 +12,7 @@
 #include <ionpot/util/point.hpp>
 
 #include <memory> // std::shared_ptr
+#include <optional>
 
 namespace dungeons::ui {
 	namespace util = ionpot::util;
@@ -24,19 +26,21 @@ namespace dungeons::ui {
 			std::shared_ptr<const Context>,
 			std::shared_ptr<game::Context>);
 
+		widget::Element* find(util::Point, util::Point offset = {});
+		std::optional<Value> on_click(const widget::Element&);
 		void render(util::Point offset = {}) const;
-
-		Value roll();
 
 	private:
 		std::shared_ptr<const Context> m_ui;
 		std::shared_ptr<game::Context> m_game;
-		Value m_value;
+		UniqueButton m_roll;
+		UniqueButton m_reroll;
 		LabelValue m_str;
 		LabelValue m_agi;
 		LabelValue m_int;
 
+		Value roll();
 		void update_size();
-		void update_text();
+		void update_text(const Value&);
 	};
 }
