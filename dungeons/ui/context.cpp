@@ -19,6 +19,7 @@ namespace dungeons::ui {
 	):
 		renderer {renderer},
 		font {ttf, config->font()},
+		section_spacing {config->section_spacing()},
 		text_color {config->text_color()},
 		text_spacing {config->text_spacing()},
 		button {config->button()}

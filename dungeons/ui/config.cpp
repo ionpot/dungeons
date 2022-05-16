@@ -47,6 +47,12 @@ namespace dungeons::ui {
 		};
 	}
 
+	util::Size
+	Config::section_spacing() const
+	{
+		return m_file.find_pair("section spacing").to_size();
+	}
+
 	util::RGB
 	Config::text_color() const
 	{

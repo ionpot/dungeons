@@ -27,7 +27,7 @@ namespace dungeons {
 			std::shared_ptr<game::Context> game
 	):
 		m_log {log},
-		m_spacing {ui->button.spacing},
+		m_spacing {ui->section_spacing.height},
 		m_select {ui::class_select(*ui)},
 		m_attributes {ui, game},
 		m_done {ui::unique_button(*ui, "Done")},
