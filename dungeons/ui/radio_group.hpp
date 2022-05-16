@@ -2,8 +2,8 @@
 
 #include "radio_button.hpp"
 
-#include <ionpot/widget/box.hpp> // sum_sizes
 #include <ionpot/widget/element.hpp>
+#include <ionpot/widget/sum_sizes.hpp>
 
 #include <ionpot/util/point.hpp>
 

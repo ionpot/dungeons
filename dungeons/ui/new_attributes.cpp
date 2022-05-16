@@ -9,6 +9,7 @@
 
 #include <ionpot/widget/element.hpp>
 #include <ionpot/widget/label_value.hpp>
+#include <ionpot/widget/sum_sizes.hpp>
 
 #include <ionpot/util/point.hpp>
 #include <ionpot/util/vector.hpp>
