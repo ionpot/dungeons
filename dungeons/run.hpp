@@ -2,6 +2,8 @@
 
 #include <ui/config.hpp>
 
+#include <game/config.hpp>
+
 #include <ionpot/util/log.hpp>
 
 #include <memory> // std::shared_ptr
@@ -13,5 +15,6 @@ namespace dungeons {
 	void run(
 		std::shared_ptr<util::Log>,
 		std::shared_ptr<ui::Config>,
+		std::shared_ptr<const game::Config>,
 		std::string window_title);
 }

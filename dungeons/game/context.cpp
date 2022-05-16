@@ -1,11 +1,17 @@
 #include "context.hpp"
 
 #include "attributes.hpp"
+#include "config.hpp"
+
+#include <memory> // std::shared_ptr
 
 namespace dungeons::game {
-	Context::Context(unsigned int seed):
+	Context::Context(
+			std::shared_ptr<const Config> config,
+			unsigned int seed
+	):
 		m_dice_engine {seed},
-		m_attribute_dice {3, 6}
+		m_attribute_dice {config->attribute_dice()}
 	{}
 
 	Attributes::Roll

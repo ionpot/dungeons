@@ -34,5 +34,5 @@ target_link_libraries(dungeons PRIVATE ionpot dungeons_game dungeons_ui)
 # place the executable and the files/dirs it needs
 # "TYPE BIN" puts them next to the executable
 install(TARGETS dungeons)
-install(FILES ui.cfg TYPE BIN)
+install(FILES game.cfg ui.cfg TYPE BIN)
 install(DIRECTORY assets TYPE BIN)

@@ -4,6 +4,8 @@
 
 #include <ui/config.hpp>
 
+#include <game/config.hpp>
+
 #include <ionpot/sdl/show_error.hpp>
 
 #include <ionpot/util/cfg_file.hpp>
@@ -29,6 +31,9 @@ namespace {
 			log,
 			std::make_shared<dungeons::ui::Config>(
 				util::CfgFile {"ui.cfg"}
+			),
+			std::make_shared<dungeons::game::Config>(
+				util::CfgFile {"game.cfg"}
 			),
 			title
 		);

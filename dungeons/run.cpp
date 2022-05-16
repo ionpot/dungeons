@@ -6,6 +6,7 @@
 #include <ui/config.hpp>
 #include <ui/context.hpp>
 
+#include <game/config.hpp>
 #include <game/context.hpp>
 
 #include <ionpot/sdl/base.hpp>
@@ -32,6 +33,7 @@ namespace dungeons {
 	run(
 			std::shared_ptr<util::Log> log,
 			std::shared_ptr<ui::Config> config,
+			std::shared_ptr<const game::Config> game_config,
 			std::string title)
 	{
 		log->pair("Initialising SDL", sdl::version::as_string());
@@ -57,7 +59,7 @@ namespace dungeons {
 
 		log->put("Creating game context...");
 		std::random_device seed;
-		auto game_ctx = std::make_shared<game::Context>(seed());
+		auto game_ctx = std::make_shared<game::Context>(game_config, seed());
 
 		log->put("Starting game...");
 		Game game {log, base, events, ui, game_ctx, sdl::Mouse {video}};
