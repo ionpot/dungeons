@@ -37,11 +37,11 @@ namespace dungeons::ui {
 		std::vector<LabelValue*> labels {
 			&m_str, &m_agi, &m_int
 		};
-		auto spacing = m_ui->button.spacing;
-		widget::align_labels(labels, spacing);
-		m_agi.place_below(m_str, spacing);
-		m_int.place_below(m_agi, spacing);
-		m_reroll.place_below(m_int, spacing);
+		auto spacing = m_ui->text_spacing;
+		widget::align_labels(labels, spacing.width);
+		m_agi.place_below(m_str, spacing.height);
+		m_int.place_below(m_agi, spacing.height);
+		m_reroll.place_below(m_int, spacing.height);
 
 		m_str.hide();
 		m_agi.hide();

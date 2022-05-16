@@ -30,6 +30,7 @@ namespace dungeons::ui {
 		Button button() const;
 		sdl::Font::Config font() const;
 		util::RGB text_color() const;
+		util::Size text_spacing() const;
 		util::Size window_size() const;
 
 	private:

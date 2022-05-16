@@ -20,6 +20,7 @@ namespace dungeons::ui {
 		std::shared_ptr<const sdl::Renderer> renderer;
 		sdl::Font font;
 		util::RGB text_color;
+		util::Size text_spacing;
 		Config::Button button;
 
 		Context(

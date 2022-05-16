@@ -54,6 +54,12 @@ namespace dungeons::ui {
 	}
 
 	util::Size
+	Config::text_spacing() const
+	{
+		return m_file.find_section("text").find_pair("spacing").to_size();
+	}
+
+	util::Size
 	Config::window_size() const
 	{
 		return m_file.find_pair("window size").to_size();
