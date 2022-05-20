@@ -7,8 +7,8 @@
 #include <ui/context.hpp>
 #include <ui/new_attributes.hpp>
 
-#include <game/class.hpp>
 #include <game/context.hpp>
+#include <game/entity.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -39,7 +39,6 @@ namespace dungeons {
 		ui::ClassSelect m_select;
 		ui::NewAttributes m_attributes;
 		ui::UniqueButton m_done;
-		std::optional<game::Class> m_class_chosen;
-		std::optional<ui::NewAttributes::Value> m_rolled_attr;
+		game::Entity m_new;
 	};
 }
