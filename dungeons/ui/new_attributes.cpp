@@ -33,9 +33,9 @@ namespace dungeons::ui {
 			&m_str, &m_agi, &m_int
 		};
 		auto spacing = m_ui->text_spacing;
-		widget::align_labels(labels, spacing.width);
-		m_agi.place_below(m_str, spacing.height);
-		m_int.place_below(m_agi, spacing.height);
+		widget::align_labels(labels, spacing);
+		m_agi.place_below(m_str, spacing);
+		m_int.place_below(m_agi, spacing);
 		update_size();
 	}
 
@@ -74,7 +74,7 @@ namespace dungeons::ui {
 		m_reroll {unique_button(*ui, "Roll Again")},
 		m_labels {ui}
 	{
-		m_reroll.place_below(m_labels, ui->text_spacing.height);
+		m_reroll.place_below(m_labels, ui->text_spacing);
 		m_reroll.hide();
 		m_labels.hide();
 		update_size();

@@ -14,6 +14,7 @@
 
 #include <ionpot/util/log.hpp>
 #include <ionpot/util/point.hpp>
+#include <ionpot/util/size.hpp>
 
 #include <memory> // std::shared_ptr
 #include <optional>
@@ -35,7 +36,7 @@ namespace dungeons {
 
 	private:
 		std::shared_ptr<util::Log> m_log;
-		int m_spacing;
+		util::Size m_spacing;
 		ui::ClassSelect m_select;
 		ui::NewAttributes m_attributes;
 		ui::UniqueButton m_done;
