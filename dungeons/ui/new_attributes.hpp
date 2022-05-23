@@ -31,16 +31,28 @@ namespace dungeons::ui {
 		void render(util::Point offset = {}) const;
 
 	private:
-		std::shared_ptr<const Context> m_ui;
+		class Labels : public widget::Element {
+		public:
+			Labels(std::shared_ptr<const Context>);
+
+			void render(util::Point offset = {}) const;
+			void update(const Value&);
+
+		private:
+			std::shared_ptr<const Context> m_ui;
+			LabelValue m_str;
+			LabelValue m_agi;
+			LabelValue m_int;
+
+			void update_size();
+		};
+
 		std::shared_ptr<game::Context> m_game;
 		UniqueButton m_roll;
 		UniqueButton m_reroll;
-		LabelValue m_str;
-		LabelValue m_agi;
-		LabelValue m_int;
+		Labels m_labels;
 
 		Value roll();
 		void update_size();
-		void update_text(const Value&);
 	};
 }

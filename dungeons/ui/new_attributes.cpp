@@ -22,14 +22,9 @@ namespace dungeons::ui {
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
-	NewAttributes::NewAttributes(
-			std::shared_ptr<const Context> ui,
-			std::shared_ptr<game::Context> game):
-		widget::Element {},
+	// Labels
+	NewAttributes::Labels::Labels(std::shared_ptr<const Context> ui):
 		m_ui {ui},
-		m_game {game},
-		m_roll {unique_button(*m_ui, "Roll Attributes")},
-		m_reroll {unique_button(*m_ui, "Roll Again")},
 		m_str {normal_text(*m_ui, "Strength")},
 		m_agi {normal_text(*m_ui, "Agility")},
 		m_int {normal_text(*m_ui, "Intelligence")}
@@ -41,13 +36,47 @@ namespace dungeons::ui {
 		widget::align_labels(labels, spacing.width);
 		m_agi.place_below(m_str, spacing.height);
 		m_int.place_below(m_agi, spacing.height);
-		m_reroll.place_below(m_int, spacing.height);
+		update_size();
+	}
 
-		m_str.hide();
-		m_agi.hide();
-		m_int.hide();
+	void
+	NewAttributes::Labels::render(util::Point offset) const
+	{
+		widget::Element::render(m_str, offset);
+		widget::Element::render(m_agi, offset);
+		widget::Element::render(m_int, offset);
+	}
+
+	void
+	NewAttributes::Labels::update(const Value& value)
+	{
+		m_str.value(bold_text(*m_ui, value.strength()));
+		m_agi.value(bold_text(*m_ui, value.agility()));
+		m_int.value(bold_text(*m_ui, value.intelligence()));
+		update_size();
+	}
+
+	void
+	NewAttributes::Labels::update_size()
+	{
+		std::vector<widget::Element> ls {
+			m_str, m_agi, m_int
+		};
+		size(widget::sum_sizes(ls));
+	}
+
+	// NewAttributes
+	NewAttributes::NewAttributes(
+			std::shared_ptr<const Context> ui,
+			std::shared_ptr<game::Context> game):
+		m_game {game},
+		m_roll {unique_button(*ui, "Roll Attributes")},
+		m_reroll {unique_button(*ui, "Roll Again")},
+		m_labels {ui}
+	{
+		m_reroll.place_below(m_labels, ui->text_spacing.height);
 		m_reroll.hide();
-
+		m_labels.hide();
 		update_size();
 	}
 
@@ -67,9 +96,7 @@ namespace dungeons::ui {
 		if (m_roll == clicked) {
 			m_roll.hide();
 			m_reroll.show();
-			m_str.show();
-			m_agi.show();
-			m_int.show();
+			m_labels.show();
 			return roll();
 		}
 		if (m_reroll == clicked)
@@ -82,16 +109,15 @@ namespace dungeons::ui {
 	{
 		widget::Element::render(m_roll, offset);
 		widget::Element::render(m_reroll, offset);
-		widget::Element::render(m_str, offset);
-		widget::Element::render(m_agi, offset);
-		widget::Element::render(m_int, offset);
+		widget::Element::render(m_labels, offset);
 	}
 
 	NewAttributes::Value
 	NewAttributes::roll()
 	{
 		Value attr {m_game->roll_attributes()};
-		update_text(attr);
+		m_labels.update(attr);
+		update_size();
 		return attr;
 	}
 
@@ -99,17 +125,8 @@ namespace dungeons::ui {
 	NewAttributes::update_size()
 	{
 		std::vector<widget::Element> ls {
-			m_roll, m_reroll, m_str, m_agi, m_int
+			m_roll, m_reroll, m_labels
 		};
 		size(widget::sum_sizes(ls));
-	}
-
-	void
-	NewAttributes::update_text(const Value& value)
-	{
-		m_str.value(bold_text(*m_ui, value.strength()));
-		m_agi.value(bold_text(*m_ui, value.agility()));
-		m_int.value(bold_text(*m_ui, value.intelligence()));
-		update_size();
 	}
 }
