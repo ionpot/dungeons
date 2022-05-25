@@ -6,17 +6,14 @@
 #include <ionpot/widget/element.hpp>
 #include <ionpot/widget/text_box.hpp>
 
-#include <ionpot/sdl/cursor.hpp>
-#include <ionpot/sdl/mouse.hpp>
-
 #include <ionpot/util/point.hpp>
 #include <ionpot/util/size.hpp>
 
 #include <memory> // std::shared_ptr
 #include <string>
+#include <utility> // std::move
 
 namespace dungeons::ui {
-	namespace sdl = ionpot::sdl;
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 

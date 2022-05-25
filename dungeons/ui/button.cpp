@@ -9,11 +9,12 @@
 
 #include <ionpot/util/size.hpp>
 
-#include <memory> // std::make_unique, std::shared_ptr
+#include <memory> // std::shared_ptr
 #include <string>
 #include <utility> // std::move
 
 namespace dungeons::ui {
+	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
 	Texture
