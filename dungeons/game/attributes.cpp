@@ -11,20 +11,20 @@ namespace dungeons::game {
 	):
 		strength {dice.roll(input)},
 		agility {dice.roll(input)},
-		intelligence {dice.roll(input)}
+		intellect {dice.roll(input)}
 	{}
 
 	Attributes::Attributes(int str, int agi, int intel):
 		m_strength {str},
 		m_agility {agi},
-		m_intelligence {intel}
+		m_intellect {intel}
 	{}
 
 	Attributes::Attributes(const Roll& rolled):
 		Attributes {
 			rolled.strength.total(),
 			rolled.agility.total(),
-			rolled.intelligence.total()
+			rolled.intellect.total()
 		}
 	{}
 
@@ -37,6 +37,6 @@ namespace dungeons::game {
 	{ return m_agility; }
 
 	int
-	Attributes::intelligence() const
-	{ return m_intelligence; }
+	Attributes::intellect() const
+	{ return m_intellect; }
 }

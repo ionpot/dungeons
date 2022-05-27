@@ -10,7 +10,7 @@ namespace dungeons::game {
 		struct Roll {
 			dice::Output strength;
 			dice::Output agility;
-			dice::Output intelligence;
+			dice::Output intellect;
 			Roll(dice::Engine&, const dice::Input&);
 		};
 
@@ -20,11 +20,11 @@ namespace dungeons::game {
 
 		int strength() const;
 		int agility() const;
-		int intelligence() const;
+		int intellect() const;
 
 	private:
 		int m_strength {0};
 		int m_agility {0};
-		int m_intelligence {0};
+		int m_intellect {0};
 	};
 }

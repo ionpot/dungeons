@@ -76,7 +76,7 @@ namespace dungeons {
 			const auto& attr = m_new.attributes();
 			m_log->pair("Strength:", attr.strength());
 			m_log->pair("Agility:", attr.agility());
-			m_log->pair("Intelligence:", attr.intelligence());
+			m_log->pair("Intellect:", attr.intellect());
 			return screen::ToCombat {klass};
 		}
 		return {};

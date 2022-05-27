@@ -27,7 +27,7 @@ namespace dungeons::ui {
 		m_ui {ui},
 		m_str {normal_text(*m_ui, "Strength")},
 		m_agi {normal_text(*m_ui, "Agility")},
-		m_int {normal_text(*m_ui, "Intelligence")}
+		m_int {normal_text(*m_ui, "Intellect")}
 	{
 		std::vector<LabelValue*> labels {
 			&m_str, &m_agi, &m_int
@@ -50,7 +50,7 @@ namespace dungeons::ui {
 	{
 		m_str.value(bold_text(*m_ui, value.strength()));
 		m_agi.value(bold_text(*m_ui, value.agility()));
-		m_int.value(bold_text(*m_ui, value.intelligence()));
+		m_int.value(bold_text(*m_ui, value.intellect()));
 		update_size();
 	}
 
