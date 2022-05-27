@@ -30,5 +30,14 @@ namespace dungeons::ui {
 			std::shared_ptr<const Config>);
 
 		util::Size bold_text_size(std::string) const;
+
+		template<class T, class U, class... V> // T,U,V = widget::Box
+		void
+		stack_text(T& a, U& b, V&... rest) const
+		{
+			b.place_below(a, text_spacing);
+			if constexpr (sizeof...(rest))
+				stack_text(b, rest...);
+		}
 	};
 }

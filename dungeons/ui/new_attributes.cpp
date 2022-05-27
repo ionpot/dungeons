@@ -32,10 +32,8 @@ namespace dungeons::ui {
 		std::vector<LabelValue*> labels {
 			&m_str, &m_agi, &m_int
 		};
-		auto spacing = m_ui->text_spacing;
-		widget::align_labels(labels, spacing);
-		m_agi.place_below(m_str, spacing);
-		m_int.place_below(m_agi, spacing);
+		widget::align_labels(labels, m_ui->text_spacing);
+		m_ui->stack_text(m_str, m_agi, m_int);
 		update_size();
 	}
 
