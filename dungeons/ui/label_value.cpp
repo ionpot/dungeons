@@ -1,4 +1,4 @@
-#pragma once
+#include "label_value.hpp"
 
 #include "context.hpp"
 #include "text.hpp"
@@ -10,7 +10,9 @@
 namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
-	using LabelValue = widget::LabelValue<Text, Text>;
-
-	void align_labels(const Context&, std::vector<LabelValue*>&);
+	void
+	align_labels(
+			const Context& ui,
+			std::vector<LabelValue*>& labels)
+	{ widget::align_labels(labels, ui.text_spacing); }
 }

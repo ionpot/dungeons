@@ -2,17 +2,31 @@
 
 #include "attributes.hpp"
 #include "class.hpp"
+#include "class_id.hpp"
+#include "context.hpp"
+
+#include <ionpot/util/percent.hpp>
+
+#include <memory> // std::shared_ptr
 
 namespace dungeons::game {
+	namespace util = ionpot::util;
+
 	class Entity {
 	public:
-		Entity() = default;
+		Entity(std::shared_ptr<const Context>);
 
 		const Attributes& attributes() const;
 		void attributes(Attributes);
 
-		Class get_class() const;
-		void set_class(Class);
+		ClassId class_id() const;
+		void class_id(ClassId);
+
+		int total_hp() const;
+		int initiative() const;
+
+		util::Percent dodge_chance() const;
+		util::Percent resist_chance() const;
 
 	private:
 		Attributes m_attr;

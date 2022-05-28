@@ -11,6 +11,7 @@
 
 namespace dungeons::ui {
 	namespace sdl = ionpot::sdl;
+	namespace util = ionpot::util;
 
 	Context::Context(
 			std::shared_ptr<const sdl::Ttf> ttf,

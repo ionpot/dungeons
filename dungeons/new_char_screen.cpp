@@ -30,14 +30,16 @@ namespace dungeons {
 		m_spacing {ui->section_spacing},
 		m_select {ui::class_select(*ui)},
 		m_attributes {ui, game},
+		m_stats {ui},
 		m_done {ui::unique_button(*ui, "Done")},
-		m_new {}
+		m_new {game}
 	{
 		m_select.position({50});
 
 		m_attributes.place_below(m_select, m_spacing);
 
 		m_attributes.hide();
+		m_stats.hide();
 		m_done.hide();
 	}
 
@@ -57,27 +59,33 @@ namespace dungeons {
 	NewCharScreen::on_click(const widget::Element& clicked)
 	{
 		if (auto chosen = m_select.on_click(clicked)) {
-			m_new.set_class(*chosen);
+			m_new.class_id(*chosen);
+			m_stats.update(m_new);
 			if (m_attributes.hidden())
 				m_attributes.show();
 			return {};
 		}
 		if (auto rolled = m_attributes.on_click(clicked)) {
+			m_new.attributes(*rolled);
+			m_stats.update(m_new);
+			if (m_stats.hidden()) {
+				m_stats.place_after(m_attributes, m_spacing);
+				m_stats.show();
+			}
 			if (m_done.hidden()) {
 				m_done.place_below(m_attributes, m_spacing);
 				m_done.show();
 			}
-			m_new.attributes(*rolled);
 			return {};
 		}
 		if (m_done == clicked) {
-			auto klass = m_new.get_class();
-			m_log->pair("Chosen class:", ui::to_string(klass));
+			auto class_id = m_new.class_id();
+			m_log->pair("Chosen class:", ui::to_string(class_id));
 			const auto& attr = m_new.attributes();
 			m_log->pair("Strength:", attr.strength());
 			m_log->pair("Agility:", attr.agility());
 			m_log->pair("Intellect:", attr.intellect());
-			return screen::ToCombat {klass};
+			return screen::ToCombat {class_id};
 		}
 		return {};
 	}
@@ -87,6 +95,7 @@ namespace dungeons {
 	{
 		widget::render(m_select);
 		widget::render(m_attributes);
+		widget::render(m_stats);
 		widget::render(m_done);
 	}
 }

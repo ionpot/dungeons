@@ -29,11 +29,9 @@ namespace dungeons::ui {
 		m_agi {normal_text(*m_ui, "Agility")},
 		m_int {normal_text(*m_ui, "Intellect")}
 	{
-		std::vector<LabelValue*> labels {
-			&m_str, &m_agi, &m_int
-		};
-		widget::align_labels(labels, m_ui->text_spacing);
-		m_ui->stack_text(m_str, m_agi, m_int);
+		std::vector<LabelValue*> labels {&m_str, &m_agi, &m_int};
+		align_labels(*m_ui, labels);
+		stack_text(*m_ui, labels);
 		update_size();
 	}
 
@@ -113,7 +111,7 @@ namespace dungeons::ui {
 	NewAttributes::Value
 	NewAttributes::roll()
 	{
-		Value attr {m_game->roll_attributes()};
+		Value attr {*m_game};
 		m_labels.update(attr);
 		update_size();
 		return attr;

@@ -17,4 +17,15 @@ namespace dungeons::game {
 	{
 		return m_file.find_pair("attribute roll").to_dice();
 	}
+
+	Config::HpMultipliers
+	Config::hp_multipliers() const
+	{
+		auto section = m_file.find_section("hp multipliers");
+		return {
+			section.find_pair("warrior").to_int(),
+			section.find_pair("hybrid").to_int(),
+			section.find_pair("mage").to_int()
+		};
+	}
 }

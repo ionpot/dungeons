@@ -8,9 +8,16 @@ namespace dungeons::game {
 
 	class Config {
 	public:
+		struct HpMultipliers {
+			int warrior;
+			int hybrid;
+			int mage;
+		};
+
 		Config(util::CfgFile&&);
 
 		util::dice::Input attribute_dice() const;
+		HpMultipliers hp_multipliers() const;
 
 	private:
 		util::CfgFile m_file;

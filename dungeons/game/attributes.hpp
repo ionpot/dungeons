@@ -1,22 +1,13 @@
 #pragma once
 
-#include <ionpot/util/dice.hpp>
+#include "context.hpp"
 
 namespace dungeons::game {
-	namespace dice = ionpot::util::dice;
-
 	class Attributes {
 	public:
-		struct Roll {
-			dice::Output strength;
-			dice::Output agility;
-			dice::Output intellect;
-			Roll(dice::Engine&, const dice::Input&);
-		};
-
 		Attributes() = default;
 		Attributes(int str, int agi, int intel);
-		Attributes(const Roll&);
+		Attributes(Context&);
 
 		int strength() const;
 		int agility() const;

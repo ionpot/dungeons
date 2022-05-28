@@ -1,6 +1,6 @@
 #pragma once
 
-#include "attributes.hpp"
+#include "class_id.hpp"
 #include "config.hpp"
 
 #include <ionpot/util/dice.hpp>
@@ -16,10 +16,12 @@ namespace dungeons::game {
 				std::shared_ptr<const Config>,
 				unsigned int seed);
 
-		Attributes::Roll roll_attributes();
+		int hp_multiplier(ClassId) const;
+		int roll_attribute();
 
 	private:
 		util::dice::Engine m_dice_engine;
 		util::dice::Input m_attribute_dice;
+		Config::HpMultipliers m_hp_multiplier;
 	};
 }

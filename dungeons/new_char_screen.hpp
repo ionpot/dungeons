@@ -6,6 +6,7 @@
 #include <ui/class_select.hpp>
 #include <ui/context.hpp>
 #include <ui/new_attributes.hpp>
+#include <ui/new_stats.hpp>
 
 #include <game/context.hpp>
 #include <game/entity.hpp>
@@ -39,6 +40,7 @@ namespace dungeons {
 		util::Size m_spacing;
 		ui::ClassSelect m_select;
 		ui::NewAttributes m_attributes;
+		ui::NewStats m_stats;
 		ui::UniqueButton m_done;
 		game::Entity m_new;
 	};

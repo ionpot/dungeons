@@ -2,7 +2,7 @@
 
 #include "context.hpp"
 
-#include <game/class.hpp>
+#include <game/class_id.hpp>
 
 #include <ionpot/widget/side_by_side.hpp>
 
@@ -16,7 +16,7 @@ namespace dungeons::ui {
 	class_select(const Context& ctx)
 	{
 		using Button = ClassSelect::Button;
-		using Value = game::Class;
+		using Value = game::ClassId;
 		auto buttons = Button::from(ctx, std::vector<Button::Input> {
 			{"Warrior", Value::warrior},
 			{"Hybrid", Value::hybrid},

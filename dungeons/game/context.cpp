@@ -1,6 +1,6 @@
 #include "context.hpp"
 
-#include "attributes.hpp"
+#include "class_id.hpp"
 #include "config.hpp"
 
 #include <memory> // std::shared_ptr
@@ -11,10 +11,24 @@ namespace dungeons::game {
 			unsigned int seed
 	):
 		m_dice_engine {seed},
-		m_attribute_dice {config->attribute_dice()}
+		m_attribute_dice {config->attribute_dice()},
+		m_hp_multiplier {config->hp_multipliers()}
 	{}
 
-	Attributes::Roll
-	Context::roll_attributes()
-	{ return {m_dice_engine, m_attribute_dice}; }
+	int
+	Context::roll_attribute()
+	{ return m_dice_engine.roll(m_attribute_dice).total(); }
+
+	int
+	Context::hp_multiplier(ClassId id) const
+	{
+		switch (id) {
+		case ClassId::warrior:
+			return m_hp_multiplier.warrior;
+		case ClassId::hybrid:
+			return m_hp_multiplier.hybrid;
+		case ClassId::mage:
+			return m_hp_multiplier.mage;
+		}
+	}
 }
