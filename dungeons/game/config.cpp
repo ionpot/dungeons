@@ -18,6 +18,12 @@ namespace dungeons::game {
 		return m_file.find_pair("attribute roll").to_dice();
 	}
 
+	int
+	Config::base_armor() const
+	{
+		return m_file.find_pair("base armor").to_int();
+	}
+
 	Config::HpMultipliers
 	Config::hp_multipliers() const
 	{

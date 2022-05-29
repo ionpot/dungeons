@@ -12,8 +12,13 @@ namespace dungeons::game {
 	):
 		m_dice_engine {seed},
 		m_attribute_dice {config->attribute_dice()},
+		m_base_armor {config->base_armor()},
 		m_hp_multiplier {config->hp_multipliers()}
 	{}
+
+	int
+	Context::base_armor() const
+	{ return m_base_armor; }
 
 	int
 	Context::roll_attribute()

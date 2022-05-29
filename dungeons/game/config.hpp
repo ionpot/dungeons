@@ -17,6 +17,7 @@ namespace dungeons::game {
 		Config(util::CfgFile&&);
 
 		util::dice::Input attribute_dice() const;
+		int base_armor() const;
 		HpMultipliers hp_multipliers() const;
 
 	private:

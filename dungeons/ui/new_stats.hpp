@@ -25,6 +25,7 @@ namespace dungeons::ui {
 	private:
 		std::shared_ptr<const Context> m_ui;
 		LabelValue m_hp;
+		LabelValue m_armor;
 		LabelValue m_dodge;
 		LabelValue m_initiative;
 		LabelValue m_will;

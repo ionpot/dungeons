@@ -22,12 +22,13 @@ namespace dungeons::ui {
 		widget::Element {},
 		m_ui {ui},
 		m_hp {normal_text(*m_ui, "Total Hp")},
+		m_armor {normal_text(*m_ui, "Armor")},
 		m_dodge {normal_text(*m_ui, "Dodge")},
 		m_initiative {normal_text(*m_ui, "Initiative")},
 		m_will {normal_text(*m_ui, "Spell Resist")}
 	{
 		std::vector<LabelValue*> labels {
-			&m_hp, &m_dodge, &m_initiative, &m_will
+			&m_hp, &m_armor, &m_dodge, &m_initiative, &m_will
 		};
 		align_labels(*m_ui, labels);
 		stack_text(*m_ui, labels);
@@ -38,6 +39,7 @@ namespace dungeons::ui {
 	NewStats::render(util::Point offset) const
 	{
 		widget::Element::render(m_hp, offset);
+		widget::Element::render(m_armor, offset);
 		widget::Element::render(m_dodge, offset);
 		widget::Element::render(m_initiative, offset);
 		widget::Element::render(m_will, offset);
@@ -47,6 +49,7 @@ namespace dungeons::ui {
 	NewStats::update(const game::Entity& entity)
 	{
 		m_hp.value(bold_text(*m_ui, entity.total_hp()));
+		m_armor.value(bold_text(*m_ui, entity.armor()));
 		m_dodge.value(bold_text(*m_ui, entity.dodge_chance().to_str()));
 		m_initiative.value(bold_text(*m_ui, entity.initiative()));
 		m_will.value(bold_text(*m_ui, entity.resist_chance().to_str()));
@@ -57,7 +60,7 @@ namespace dungeons::ui {
 	NewStats::update_size()
 	{
 		std::vector<widget::Element> ls {
-			m_hp, m_dodge, m_initiative, m_will
+			m_hp, m_armor, m_dodge, m_initiative, m_will
 		};
 		size(widget::sum_sizes(ls));
 	}

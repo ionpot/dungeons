@@ -13,8 +13,13 @@ namespace dungeons::game {
 
 	Entity::Entity(std::shared_ptr<const Context> game):
 		m_attr {},
-		m_class {game}
+		m_class {game},
+		m_armor {game->base_armor()}
 	{}
+
+	int
+	Entity::armor() const
+	{ return m_armor; }
 
 	const Attributes&
 	Entity::attributes() const
