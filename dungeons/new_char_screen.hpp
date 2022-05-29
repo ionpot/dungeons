@@ -43,5 +43,7 @@ namespace dungeons {
 		ui::NewStats m_stats;
 		ui::UniqueButton m_done;
 		game::Entity m_new;
+
+		void log_new_char();
 	};
 }

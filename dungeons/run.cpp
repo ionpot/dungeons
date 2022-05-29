@@ -62,6 +62,8 @@ namespace dungeons {
 		auto game_ctx = std::make_shared<game::Context>(game_config, seed());
 
 		log->put("Starting game...");
+		log->endl();
+
 		Game game {log, base, events, ui, game_ctx, sdl::Mouse {video}};
 		game.loop();
 	}

@@ -5,7 +5,7 @@
 #include <ui/button.hpp>
 #include <ui/class_select.hpp>
 #include <ui/context.hpp>
-#include <ui/to_string.hpp>
+#include <ui/string.hpp>
 
 #include <game/context.hpp>
 
@@ -55,6 +55,18 @@ namespace dungeons {
 		return nullptr;
 	}
 
+	void
+	NewCharScreen::log_new_char()
+	{
+		m_log->put("New character");
+		namespace str = ui::string;
+		m_log->pair(
+			str::class_id(m_new) + ":",
+			str::primary_attr(m_new));
+		m_log->put(str::secondary_attr(m_new));
+		m_log->endl();
+	}
+
 	std::optional<screen::Output>
 	NewCharScreen::on_click(const widget::Element& clicked)
 	{
@@ -79,13 +91,8 @@ namespace dungeons {
 			return {};
 		}
 		if (m_done == clicked) {
-			auto class_id = m_new.class_id();
-			m_log->pair("Chosen class:", ui::to_string(class_id));
-			const auto& attr = m_new.attributes();
-			m_log->pair("Strength:", attr.strength());
-			m_log->pair("Agility:", attr.agility());
-			m_log->pair("Intellect:", attr.intellect());
-			return screen::ToCombat {class_id};
+			log_new_char();
+			return screen::ToCombat {m_new.class_id()};
 		}
 		return {};
 	}

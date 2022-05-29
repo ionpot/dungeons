@@ -4,8 +4,8 @@
 
 #include <ui/button.hpp>
 #include <ui/context.hpp>
+#include <ui/string.hpp>
 #include <ui/text.hpp>
-#include <ui/to_string.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -27,13 +27,13 @@ namespace dungeons {
 		m_log {log},
 		m_text {
 			ui::normal_text(ctx,
-				ui::to_string(input.player) + " fights an enemy here.")
+				ui::string::class_id(input.player) + " fights an enemy here.")
 		},
 		m_button {ui::unique_button(ctx, "Done")}
 	{
 		m_text.position({50});
 		m_button.place_below(m_text, ctx.button.spacing);
-		m_log->pair(ui::to_string(input.player), "enters combat.");
+		m_log->pair(ui::string::class_id(input.player), "enters combat.");
 	}
 
 	widget::Element*
