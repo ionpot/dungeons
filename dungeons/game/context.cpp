@@ -22,7 +22,7 @@ namespace dungeons::game {
 
 	int
 	Context::roll_attribute()
-	{ return m_dice_engine.roll(m_attribute_dice).total(); }
+	{ return m_dice_engine.roll(m_attribute_dice); }
 
 	int
 	Context::hp_multiplier(ClassId id) const
