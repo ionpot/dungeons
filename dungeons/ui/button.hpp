@@ -3,7 +3,9 @@
 #include "context.hpp"
 #include "texture.hpp"
 
+#include <ionpot/widget/box.hpp>
 #include <ionpot/widget/element.hpp>
+#include <ionpot/widget/side_by_side.hpp>
 #include <ionpot/widget/text_box.hpp>
 
 #include <ionpot/util/point.hpp>
@@ -24,15 +26,35 @@ namespace dungeons::ui {
 			widget::Element {box.size()},
 			m_box {std::move(box)},
 			m_click_dent {ctx.button.click_dent}
+		{ enable(); }
+
+		widget::Element*
+		find(util::Point point, util::Point offset = {})
+		{
+			if (clickable() && widget::Box::contains(point, offset))
+				return this;
+			return nullptr;
+		}
+
+		void
+		disable()
+		{ clickable(false); }
+
+		void
+		enable()
 		{ clickable(true); }
 
 		void
 		render(util::Point offset = {}) const
 		{
-			if (held_down()) {
-				offset += m_click_dent;
+			if (clickable()) {
+				if (held_down())
+					offset += m_click_dent;
+				widget::Element::render(m_box, offset);
 			}
-			widget::Element::render(m_box, offset);
+			else {
+				widget::Element::render(m_box.text(), offset);
+			}
 		}
 
 	private:
@@ -52,5 +74,13 @@ namespace dungeons::ui {
 		std::string text,
 		std::shared_ptr<const Texture> box);
 
-	Texture button_box(const Context&, util::Size box_size);
+	Texture button_box(const Context&, util::Size content_size);
+
+	util::Size button_size(const Context&, util::Size content_size);
+	util::Size button_text_size(const Context& ctx, std::string content);
+
+	template<class T> // T = Box[]
+	void
+	lay_buttons(const Context& ui, T& buttons)
+	{ widget::side_by_side(buttons, ui.button.spacing); }
 }

@@ -18,15 +18,23 @@ namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
 	Texture
-	button_box(const Context& ctx, util::Size box_size)
+	button_box(const Context& ctx, util::Size content_size)
 	{
 		return widget::solid_box(
 			ctx.renderer,
-			box_size,
+			button_size(ctx, content_size),
 			ctx.button.bg_color,
 			ctx.button.border
 		);
 	}
+
+	util::Size
+	button_size(const Context& ctx, util::Size content_size)
+	{ return content_size + ctx.button.padding.size(); }
+
+	util::Size
+	button_text_size(const Context& ctx, std::string content)
+	{ return ctx.bold_text_size(content); }
 
 	SharedButton
 	shared_button(
@@ -49,12 +57,11 @@ namespace dungeons::ui {
 			std::string btn_text)
 	{
 		auto text = bold_text(ctx, btn_text);
-		auto box_size = text.size() + ctx.button.padding.size();
 		return {
 			ctx,
 			widget::TextBox {
 				std::move(text),
-				button_box(ctx, box_size)
+				button_box(ctx, text.size())
 			}
 		};
 	}
