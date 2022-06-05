@@ -48,8 +48,8 @@ namespace dungeons::ui {
 		};
 
 		std::shared_ptr<game::Context> m_game;
-		UniqueButton m_roll;
-		UniqueButton m_reroll;
+		Button m_roll;
+		Button m_reroll;
 		Labels m_labels;
 
 		Value roll();

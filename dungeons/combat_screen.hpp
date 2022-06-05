@@ -31,6 +31,6 @@ namespace dungeons {
 	private:
 		std::shared_ptr<util::Log> m_log;
 		ui::Text m_text;
-		ui::UniqueButton m_button;
+		ui::Button m_button;
 	};
 }

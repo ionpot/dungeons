@@ -2,7 +2,6 @@
 
 #include "screen.hpp"
 
-#include <ui/button.hpp>
 #include <ui/context.hpp>
 #include <ui/string.hpp>
 #include <ui/text.hpp>
@@ -29,7 +28,7 @@ namespace dungeons {
 			ui::normal_text(ctx,
 				ui::string::class_id(input.player) + " fights an enemy here.")
 		},
-		m_button {ui::unique_button(ctx, "Done")}
+		m_button {ctx, "Done"}
 	{
 		m_text.position({50});
 		m_button.place_below(m_text, ctx.button.spacing);

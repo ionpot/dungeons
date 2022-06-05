@@ -41,7 +41,7 @@ namespace dungeons {
 		ui::ClassSelect m_select;
 		ui::NewAttributes m_attributes;
 		ui::NewStats m_stats;
-		ui::UniqueButton m_done;
+		ui::Button m_done;
 		game::Entity m_new;
 
 		void log_new_char();

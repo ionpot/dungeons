@@ -1,11 +1,13 @@
 #pragma once
 
 #include "button.hpp"
+#include "texture.hpp"
 
 #include <ionpot/widget/element.hpp>
 #include <ionpot/widget/sum_sizes.hpp>
 
 #include <ionpot/util/point.hpp>
+#include <ionpot/util/size.hpp>
 
 #include <optional>
 #include <string>
@@ -21,41 +23,48 @@ namespace dungeons::ui {
 	public:
 		using ToString = std::string (*)(T);
 
-		struct Button : public SharedButton {
-			T value;
-			Button(SharedButton&& button, T value):
-				SharedButton {std::move(button)},
-				value {value}
-			{}
-		};
-
 		struct Input {
-			std::string text;
+			Texture text;
 			T value;
-			Input(ToString f, T value):
-				text {f(value)},
+			Input(Texture&& tx, T value):
+				text {std::move(tx)},
 				value {value}
+			{}
+			Input(const Context& ui, ToString f, T value):
+				Input {button_text(ui, f(value)), value}
 			{}
 		};
 
-		static std::vector<Button>
+		struct RadioButton : public Button {
+			T value;
+			RadioButton(
+					const Context& ui,
+					Input&& input,
+					std::shared_ptr<const Texture> box
+			):
+				Button {ui, std::move(input.text), box},
+				value {input.value}
+			{}
+		};
+
+		static std::vector<RadioButton>
 		make_buttons(
 				const Context& ui,
-				const std::vector<Input>& inputs)
+				std::vector<Input>&& inputs)
 		{
 			util::Size text_size;
 			for (const auto& input : inputs)
-				text_size.pick_max(button_text_size(ui, input.text));
+				text_size.pick_max(input.text.size());
 			auto box = std::make_shared<const Texture>(
 				button_box(ui, text_size)
 			);
-			std::vector<Button> buttons;
-			for (auto [text, value] : inputs)
-				buttons.emplace_back(shared_button(ui, text, box), value);
+			std::vector<RadioButton> buttons;
+			for (auto&& input : inputs)
+				buttons.emplace_back(ui, std::move(input), box);
 			return buttons;
 		}
 
-		static std::vector<Button>
+		static std::vector<RadioButton>
 		make_buttons(
 				const Context& ui,
 				ToString to_string,
@@ -63,11 +72,11 @@ namespace dungeons::ui {
 		{
 			std::vector<Input> input;
 			for (auto value : values)
-				input.emplace_back(to_string, value);
-			return make_buttons(ui, input);
+				input.emplace_back(ui, to_string, value);
+			return make_buttons(ui, std::move(input));
 		}
 
-		RadioGroup(std::vector<Button>&& buttons):
+		RadioGroup(std::vector<RadioButton>&& buttons):
 			widget::Element {widget::sum_sizes(buttons)},
 			m_buttons {std::move(buttons)},
 			m_chosen {nullptr}
@@ -105,7 +114,7 @@ namespace dungeons::ui {
 		}
 
 	private:
-		std::vector<Button> m_buttons;
-		Button* m_chosen;
+		std::vector<RadioButton> m_buttons;
+		RadioButton* m_chosen;
 	};
 }

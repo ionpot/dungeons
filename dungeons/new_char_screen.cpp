@@ -2,7 +2,6 @@
 
 #include "screen.hpp"
 
-#include <ui/button.hpp>
 #include <ui/class_select.hpp>
 #include <ui/context.hpp>
 #include <ui/string.hpp>
@@ -31,7 +30,7 @@ namespace dungeons {
 		m_select {ui::class_select(*ui)},
 		m_attributes {ui, game},
 		m_stats {ui},
-		m_done {ui::unique_button(*ui, "Done")},
+		m_done {*ui, "Done"},
 		m_new {game}
 	{
 		m_select.position({50});

@@ -4,9 +4,10 @@
 #include "text.hpp"
 #include "texture.hpp"
 
+#include <ionpot/widget/element.hpp>
 #include <ionpot/widget/solid_box.hpp>
-#include <ionpot/widget/text_box.hpp>
 
+#include <ionpot/util/point.hpp>
 #include <ionpot/util/size.hpp>
 
 #include <memory> // std::shared_ptr
@@ -17,52 +18,79 @@ namespace dungeons::ui {
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
+	Button::Button(
+			const Context& ui,
+			Texture&& text,
+			std::shared_ptr<const Texture> box
+	):
+		widget::Element {box->size()},
+		m_text {std::move(text)},
+		m_box {box},
+		m_click_dent {ui.button.click_dent}
+	{
+		m_text.center_to(*m_box);
+		enable();
+	}
+
+	Button::Button(
+			const Context& ui,
+			Texture&& text,
+			Texture&& box
+	):
+		Button {ui, std::move(text),
+			std::make_shared<const Texture>(std::move(box))}
+	{}
+
+	Button::Button(
+			const Context& ui,
+			Texture&& text
+	):
+		Button {ui, std::move(text), button_box(ui, text.size())}
+	{}
+
+	Button::Button(
+			const Context& ui,
+			std::string text
+	):
+		Button {ui, bold_text(ui, text)}
+	{}
+
+	void
+	Button::disable()
+	{ clickable(false); }
+
+	void
+	Button::enable()
+	{ clickable(true); }
+
+	void
+	Button::render(util::Point offset) const
+	{
+		if (clickable()) {
+			if (held_down())
+				offset += m_click_dent;
+			widget::Element::render(*m_box, offset);
+		}
+		widget::Element::render(m_text, offset);
+	}
+
+	// helpers
 	Texture
-	button_box(const Context& ctx, util::Size content_size)
+	button_box(const Context& ui, util::Size content_size)
 	{
 		return widget::solid_box(
-			ctx.renderer,
-			button_size(ctx, content_size),
-			ctx.button.bg_color,
-			ctx.button.border
+			ui.renderer,
+			button_size(ui, content_size),
+			ui.button.bg_color,
+			ui.button.border
 		);
 	}
 
 	util::Size
-	button_size(const Context& ctx, util::Size content_size)
-	{ return content_size + ctx.button.padding.size(); }
+	button_size(const Context& ui, util::Size content_size)
+	{ return content_size + ui.button.padding.size(); }
 
-	util::Size
-	button_text_size(const Context& ctx, std::string content)
-	{ return ctx.bold_text_size(content); }
-
-	SharedButton
-	shared_button(
-			const Context& ctx,
-			std::string text,
-			std::shared_ptr<const Texture> box)
-	{
-		return {
-			ctx,
-			widget::SharedTextBox {
-				bold_text(ctx, text),
-				box
-			}
-		};
-	}
-
-	UniqueButton
-	unique_button(
-			const Context& ctx,
-			std::string btn_text)
-	{
-		auto text = bold_text(ctx, btn_text);
-		return {
-			ctx,
-			widget::TextBox {
-				std::move(text),
-				button_box(ctx, text.size())
-			}
-		};
-	}
+	Texture
+	button_text(const Context& ui, std::string content)
+	{ return bold_text(ui, content); }
 }

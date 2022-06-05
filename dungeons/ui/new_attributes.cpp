@@ -1,6 +1,5 @@
 #include "new_attributes.hpp"
 
-#include "button.hpp"
 #include "context.hpp"
 #include "label_value.hpp"
 #include "text.hpp"
@@ -66,8 +65,8 @@ namespace dungeons::ui {
 			std::shared_ptr<const Context> ui,
 			std::shared_ptr<game::Context> game):
 		m_game {game},
-		m_roll {unique_button(*ui, "Roll Attributes")},
-		m_reroll {unique_button(*ui, "Roll Again")},
+		m_roll {*ui, "Roll Attributes"},
+		m_reroll {*ui, "Roll Again"},
 		m_labels {ui}
 	{
 		m_reroll.place_below(m_labels, ui->text_spacing);
