@@ -10,33 +10,33 @@ namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
 	Text
-	normal_text(const Context& ctx, int i)
-	{ return normal_text(ctx, std::to_string(i)); }
+	normal_text(const Context& ui, int i)
+	{ return normal_text(ui, std::to_string(i)); }
 
 	Text
-	normal_text(const Context& ctx, std::string text)
+	normal_text(const Context& ui, std::string text)
 	{
-		ctx.font.set_normal();
+		ui.font.set_normal();
 		return widget::text(
-			ctx.renderer,
-			ctx.font,
-			ctx.text_color,
+			ui.renderer,
+			ui.font,
+			ui.text_color,
 			text
 		);
 	}
 
 	Text
-	bold_text(const Context& ctx, int i)
-	{ return bold_text(ctx, std::to_string(i)); }
+	bold_text(const Context& ui, int i)
+	{ return bold_text(ui, std::to_string(i)); }
 
 	Text
-	bold_text(const Context& ctx, std::string text)
+	bold_text(const Context& ui, std::string text)
 	{
-		ctx.font.set_bold();
+		ui.font.set_bold();
 		return widget::text(
-			ctx.renderer,
-			ctx.font,
-			ctx.text_color,
+			ui.renderer,
+			ui.font,
+			ui.text_color,
 			text
 		);
 	}

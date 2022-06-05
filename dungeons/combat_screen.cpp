@@ -21,18 +21,18 @@ namespace dungeons {
 
 	CombatScreen::CombatScreen(
 			std::shared_ptr<util::Log> log,
-			const ui::Context& ctx,
+			const ui::Context& ui,
 			const screen::ToCombat& input
 	):
 		m_log {log},
 		m_text {
-			ui::normal_text(ctx,
+			ui::normal_text(ui,
 				ui::string::class_id(input.player) + " fights an enemy here.")
 		},
-		m_button {std::make_shared<ui::Button>(ctx, "Done")}
+		m_button {std::make_shared<ui::Button>(ui, "Done")}
 	{
 		m_text.position({50});
-		m_button->place_below(m_text, ctx.button.spacing);
+		m_button->place_below(m_text, ui.button.spacing);
 		m_log->pair(ui::string::class_id(input.player), "enters combat.");
 	}
 
