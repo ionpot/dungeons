@@ -11,6 +11,7 @@
 
 #include <memory> // std::shared_ptr
 #include <string>
+#include <vector>
 
 namespace dungeons::ui {
 	namespace util = ionpot::util;
@@ -52,8 +53,8 @@ namespace dungeons::ui {
 
 	util::Size button_size(const Context&, util::Size content_size);
 
-	template<class T> // T = Box[]
+	template<class T> // T = widget::Box*
 	void
-	lay_buttons(const Context& ui, T& buttons)
+	lay_buttons(const Context& ui, std::vector<T>& buttons)
 	{ widget::side_by_side(buttons, ui.button.spacing); }
 }
