@@ -34,7 +34,7 @@ namespace dungeons {
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
 		m_new {game}
 	{
-		m_select.position({50});
+		m_select.position(ui->screen_margin);
 
 		m_attributes.place_below(m_select, m_spacing);
 

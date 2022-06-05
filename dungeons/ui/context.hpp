@@ -6,6 +6,7 @@
 #include <ionpot/sdl/renderer.hpp>
 #include <ionpot/sdl/ttf.hpp>
 
+#include <ionpot/util/point.hpp>
 #include <ionpot/util/rgb.hpp>
 #include <ionpot/util/size.hpp>
 
@@ -18,6 +19,7 @@ namespace dungeons::ui {
 	struct Context {
 		std::shared_ptr<const sdl::Renderer> renderer;
 		sdl::Font font;
+		util::Point screen_margin;
 		util::Size section_spacing;
 		util::RGB text_color;
 		util::Size text_spacing;

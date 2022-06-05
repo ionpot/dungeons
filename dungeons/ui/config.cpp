@@ -6,6 +6,7 @@
 #include <ionpot/sdl/font.hpp>
 
 #include <ionpot/util/cfg_file.hpp>
+#include <ionpot/util/point.hpp>
 #include <ionpot/util/rgb.hpp>
 #include <ionpot/util/size.hpp>
 
@@ -45,6 +46,12 @@ namespace dungeons::ui {
 			m_file.find_pair("font file").value,
 			m_file.find_section("text").find_pair("size").to_int()
 		};
+	}
+
+	util::Point
+	Config::screen_margin() const
+	{
+		return m_file.find_pair("screen margin").to_point();
 	}
 
 	util::Size

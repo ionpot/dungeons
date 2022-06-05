@@ -29,6 +29,7 @@ namespace dungeons::ui {
 
 		Button button() const;
 		sdl::Font::Config font() const;
+		util::Point screen_margin() const;
 		util::Size section_spacing() const;
 		util::RGB text_color() const;
 		util::Size text_spacing() const;

@@ -31,7 +31,7 @@ namespace dungeons {
 		},
 		m_button {std::make_shared<ui::Button>(ui, "Done")}
 	{
-		m_text.position({50});
+		m_text.position(ui.screen_margin);
 		m_button->place_below(m_text, ui.button.spacing);
 		m_log->pair(ui::string::class_id(input.player), "enters combat.");
 	}
