@@ -3,7 +3,6 @@
 #include "context.hpp"
 #include "texture.hpp"
 
-#include <ionpot/widget/box.hpp>
 #include <ionpot/widget/element.hpp>
 #include <ionpot/widget/side_by_side.hpp>
 #include <ionpot/widget/text_box.hpp>
@@ -27,14 +26,6 @@ namespace dungeons::ui {
 			m_box {std::move(box)},
 			m_click_dent {ctx.button.click_dent}
 		{ enable(); }
-
-		widget::Element*
-		find(util::Point point, util::Point offset = {})
-		{
-			if (clickable() && widget::Box::contains(point, offset))
-				return this;
-			return nullptr;
-		}
 
 		void
 		disable()

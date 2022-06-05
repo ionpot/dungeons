@@ -77,8 +77,8 @@ namespace dungeons::ui {
 		find(util::Point point, util::Point offset = {})
 		{
 			for (auto& button : m_buttons)
-				if (auto found = widget::Element::find(button, point, offset))
-					return found;
+				if (widget::Element::contains(button, point, offset))
+					return &button;
 			return nullptr;
 		}
 
