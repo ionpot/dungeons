@@ -31,7 +31,7 @@ namespace dungeons {
 			std::shared_ptr<const ui::Context>,
 			std::shared_ptr<game::Context>);
 
-		widget::Element* find(util::Point);
+		std::shared_ptr<widget::Element> find(util::Point);
 		std::optional<screen::Output> on_click(const widget::Element&);
 		void render() const;
 
@@ -41,7 +41,7 @@ namespace dungeons {
 		ui::ClassSelect m_select;
 		ui::NewAttributes m_attributes;
 		ui::NewStats m_stats;
-		ui::Button m_done;
+		std::shared_ptr<ui::Button> m_done;
 		game::Entity m_new;
 
 		void log_new_char();

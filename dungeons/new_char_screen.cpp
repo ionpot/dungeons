@@ -2,6 +2,7 @@
 
 #include "screen.hpp"
 
+#include <ui/button.hpp>
 #include <ui/class_select.hpp>
 #include <ui/context.hpp>
 #include <ui/string.hpp>
@@ -13,7 +14,7 @@
 #include <ionpot/util/log.hpp>
 #include <ionpot/util/point.hpp>
 
-#include <memory> // std::shared_ptr
+#include <memory> // std::make_shared, std::shared_ptr
 #include <optional>
 
 namespace dungeons {
@@ -30,7 +31,7 @@ namespace dungeons {
 		m_select {ui::class_select(*ui)},
 		m_attributes {ui, game},
 		m_stats {ui},
-		m_done {*ui, "Done"},
+		m_done {std::make_shared<ui::Button>(*ui, "Done")},
 		m_new {game}
 	{
 		m_select.position({50});
@@ -39,19 +40,20 @@ namespace dungeons {
 
 		m_attributes.hide();
 		m_stats.hide();
-		m_done.hide();
+
+		m_done->hide();
 	}
 
-	widget::Element*
+	std::shared_ptr<widget::Element>
 	NewCharScreen::find(util::Point point)
 	{
-		if (auto* found = widget::find(m_select, point))
+		if (auto found = widget::find(m_select, point))
 			return found;
-		if (auto* found = widget::find(m_attributes, point))
+		if (auto found = widget::find(m_attributes, point))
 			return found;
-		if (widget::contains(m_done, point))
-			return &m_done;
-		return nullptr;
+		if (widget::contains(*m_done, point))
+			return m_done;
+		return {};
 	}
 
 	void
@@ -83,13 +85,13 @@ namespace dungeons {
 				m_stats.place_after(m_attributes, m_spacing);
 				m_stats.show();
 			}
-			if (m_done.hidden()) {
-				m_done.place_below(m_attributes, m_spacing);
-				m_done.show();
+			if (m_done->hidden()) {
+				m_done->place_below(m_attributes, m_spacing);
+				m_done->show();
 			}
 			return {};
 		}
-		if (m_done == clicked) {
+		if (*m_done == clicked) {
 			log_new_char();
 			return screen::ToCombat {m_new.class_id()};
 		}
@@ -102,6 +104,6 @@ namespace dungeons {
 		widget::render(m_select);
 		widget::render(m_attributes);
 		widget::render(m_stats);
-		widget::render(m_done);
+		widget::render(*m_done);
 	}
 }

@@ -5,6 +5,7 @@
 
 #include <ionpot/sdl/mouse.hpp>
 
+#include <memory> // std::shared_ptr
 #include <utility> // std::move
 
 namespace dungeons {
@@ -19,7 +20,7 @@ namespace dungeons {
 	{}
 
 	void
-	Mouse::hovered(widget::Element* elmt)
+	Mouse::hovered(std::shared_ptr<widget::Element> elmt)
 	{
 		widget::Mouse::hovered(elmt);
 		auto current = elmt && elmt->clickable();

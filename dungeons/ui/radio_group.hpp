@@ -9,6 +9,7 @@
 #include <ionpot/util/point.hpp>
 #include <ionpot/util/size.hpp>
 
+#include <memory> // std::make_shared, std::shared_ptr
 #include <optional>
 #include <string>
 #include <utility> // std::move
@@ -47,7 +48,9 @@ namespace dungeons::ui {
 			{}
 		};
 
-		static std::vector<RadioButton>
+		using ButtonPtr = std::shared_ptr<RadioButton>;
+
+		static std::vector<ButtonPtr>
 		make_buttons(
 				const Context& ui,
 				std::vector<Input>&& inputs)
@@ -58,13 +61,15 @@ namespace dungeons::ui {
 			auto box = std::make_shared<const Texture>(
 				button_box(ui, text_size)
 			);
-			std::vector<RadioButton> buttons;
+			std::vector<ButtonPtr> buttons;
 			for (auto&& input : inputs)
-				buttons.emplace_back(ui, std::move(input), box);
+				buttons.push_back(
+					std::make_shared<RadioButton>(
+						ui, std::move(input), box));
 			return buttons;
 		}
 
-		static std::vector<RadioButton>
+		static std::vector<ButtonPtr>
 		make_buttons(
 				const Context& ui,
 				ToString to_string,
@@ -76,31 +81,40 @@ namespace dungeons::ui {
 			return make_buttons(ui, std::move(input));
 		}
 
-		RadioGroup(std::vector<RadioButton>&& buttons):
-			widget::Element {widget::sum_sizes(buttons)},
+		static util::Size
+		sum_sizes(const std::vector<ButtonPtr>& buttons)
+		{
+			std::vector<widget::Element> ls;
+			for (auto button : buttons)
+				ls.push_back(*button);
+			return widget::sum_sizes(ls);
+		}
+
+		RadioGroup(std::vector<ButtonPtr>&& buttons):
+			widget::Element {sum_sizes(buttons)},
 			m_buttons {std::move(buttons)},
-			m_chosen {nullptr}
+			m_chosen {}
 		{}
 
-		widget::Element*
+		std::shared_ptr<widget::Element>
 		find(util::Point point, util::Point offset = {})
 		{
-			for (auto& button : m_buttons)
-				if (widget::Element::contains(button, point, offset))
-					return &button;
-			return nullptr;
+			for (auto button : m_buttons)
+				if (widget::Element::contains(*button, point, offset))
+					return button;
+			return {};
 		}
 
 		std::optional<T>
 		on_click(const widget::Element& clicked)
 		{
-			for (auto& button : m_buttons) {
-				if (button == clicked) {
-					button.disable();
+			for (auto button : m_buttons) {
+				if (*button == clicked) {
+					button->disable();
 					if (m_chosen)
 						m_chosen->enable();
-					m_chosen = &button;
-					return button.value;
+					m_chosen = button;
+					return button->value;
 				}
 			}
 			return {};
@@ -109,12 +123,12 @@ namespace dungeons::ui {
 		void
 		render(util::Point offset = {}) const
 		{
-			for (const auto& button : m_buttons)
-				widget::Element::render(button, offset);
+			for (auto button : m_buttons)
+				widget::Element::render(*button, offset);
 		}
 
 	private:
-		std::vector<RadioButton> m_buttons;
-		RadioButton* m_chosen;
+		std::vector<ButtonPtr> m_buttons;
+		ButtonPtr m_chosen;
 	};
 }

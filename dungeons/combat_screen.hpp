@@ -24,13 +24,13 @@ namespace dungeons {
 			const ui::Context&,
 			const screen::ToCombat&);
 
-		widget::Element* find(util::Point);
+		std::shared_ptr<widget::Element> find(util::Point);
 		std::optional<screen::Output> on_click(const widget::Element&);
 		void render() const;
 
 	private:
 		std::shared_ptr<util::Log> m_log;
 		ui::Text m_text;
-		ui::Button m_button;
+		std::shared_ptr<ui::Button> m_button;
 	};
 }

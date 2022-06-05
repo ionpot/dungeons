@@ -26,7 +26,9 @@ namespace dungeons::ui {
 			std::shared_ptr<const Context>,
 			std::shared_ptr<game::Context>);
 
-		widget::Element* find(util::Point, util::Point offset = {});
+		std::shared_ptr<widget::Element>
+		find(util::Point, util::Point offset = {});
+
 		std::optional<Value> on_click(const widget::Element&);
 		void render(util::Point offset = {}) const;
 
@@ -48,8 +50,8 @@ namespace dungeons::ui {
 		};
 
 		std::shared_ptr<game::Context> m_game;
-		Button m_roll;
-		Button m_reroll;
+		std::shared_ptr<Button> m_roll;
+		std::shared_ptr<Button> m_reroll;
 		Labels m_labels;
 
 		Value roll();

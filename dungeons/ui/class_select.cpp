@@ -6,13 +6,9 @@
 
 #include <game/class_id.hpp>
 
-#include <ionpot/util/vector.hpp>
-
 #include <utility> // std::move
 
 namespace dungeons::ui {
-	namespace util = ionpot::util;
-
 	ClassSelect
 	class_select(const Context& ui)
 	{
@@ -21,8 +17,7 @@ namespace dungeons::ui {
 			game::ClassId::hybrid,
 			game::ClassId::mage
 		});
-		auto refs = util::ptr_vector<widget::Box>(buttons);
-		lay_buttons(ui, refs);
+		lay_buttons(ui, buttons);
 		return {std::move(buttons)};
 	}
 }

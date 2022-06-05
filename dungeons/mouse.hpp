@@ -6,6 +6,8 @@
 #include <ionpot/sdl/mouse.hpp>
 #include <ionpot/sdl/system_cursor.hpp>
 
+#include <memory> // std::shared_ptr
+
 namespace dungeons {
 	namespace sdl = ionpot::sdl;
 	namespace widget = ionpot::widget;
@@ -15,7 +17,7 @@ namespace dungeons {
 		Mouse(sdl::Mouse&&);
 
 		using widget::Mouse::hovered;
-		void hovered(widget::Element*);
+		void hovered(std::shared_ptr<widget::Element>);
 
 	private:
 		bool m_previous_clickable;

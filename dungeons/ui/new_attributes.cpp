@@ -1,5 +1,6 @@
 #include "new_attributes.hpp"
 
+#include "button.hpp"
 #include "context.hpp"
 #include "label_value.hpp"
 #include "text.hpp"
@@ -13,7 +14,7 @@
 #include <ionpot/util/point.hpp>
 #include <ionpot/util/vector.hpp>
 
-#include <memory> // std::shared_ptr
+#include <memory> // std::make_shared, std::shared_ptr
 #include <optional>
 #include <vector>
 
@@ -65,36 +66,36 @@ namespace dungeons::ui {
 			std::shared_ptr<const Context> ui,
 			std::shared_ptr<game::Context> game):
 		m_game {game},
-		m_roll {*ui, "Roll Attributes"},
-		m_reroll {*ui, "Roll Again"},
+		m_roll {std::make_shared<Button>(*ui, "Roll Attributes")},
+		m_reroll {std::make_shared<Button>(*ui, "Roll Again")},
 		m_labels {ui}
 	{
-		m_reroll.place_below(m_labels, ui->text_spacing);
-		m_reroll.hide();
+		m_reroll->place_below(m_labels, ui->text_spacing);
+		m_reroll->hide();
 		m_labels.hide();
 		update_size();
 	}
 
-	widget::Element*
+	std::shared_ptr<widget::Element>
 	NewAttributes::find(util::Point point, util::Point offset)
 	{
-		if (contains(m_roll, point, offset))
-			return &m_roll;
-		if (contains(m_reroll, point, offset))
-			return &m_reroll;
+		if (contains(*m_roll, point, offset))
+			return m_roll;
+		if (contains(*m_reroll, point, offset))
+			return m_reroll;
 		return nullptr;
 	}
 
 	std::optional<NewAttributes::Value>
 	NewAttributes::on_click(const widget::Element& clicked)
 	{
-		if (m_roll == clicked) {
-			m_roll.hide();
-			m_reroll.show();
+		if (*m_roll == clicked) {
+			m_roll->hide();
+			m_reroll->show();
 			m_labels.show();
 			return roll();
 		}
-		if (m_reroll == clicked)
+		if (*m_reroll == clicked)
 			return roll();
 		return {};
 	}
@@ -102,8 +103,8 @@ namespace dungeons::ui {
 	void
 	NewAttributes::render(util::Point offset) const
 	{
-		widget::Element::render(m_roll, offset);
-		widget::Element::render(m_reroll, offset);
+		widget::Element::render(*m_roll, offset);
+		widget::Element::render(*m_reroll, offset);
 		widget::Element::render(m_labels, offset);
 	}
 
@@ -120,7 +121,7 @@ namespace dungeons::ui {
 	NewAttributes::update_size()
 	{
 		std::vector<widget::Element> ls {
-			m_roll, m_reroll, m_labels
+			*m_roll, *m_reroll, m_labels
 		};
 		size(widget::sum_sizes(ls));
 	}
