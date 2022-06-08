@@ -59,9 +59,8 @@ namespace dungeons::ui {
 	void
 	NewStats::update_size()
 	{
-		std::vector<widget::Element> ls {
+		size(widget::sum_sizes({
 			m_hp, m_armor, m_dodge, m_initiative, m_will
-		};
-		size(widget::sum_sizes(ls));
+		}));
 	}
 }

@@ -12,7 +12,6 @@
 #include <ionpot/widget/sum_sizes.hpp>
 
 #include <ionpot/util/point.hpp>
-#include <ionpot/util/vector.hpp>
 
 #include <memory> // std::make_shared, std::shared_ptr
 #include <optional>
@@ -54,12 +53,7 @@ namespace dungeons::ui {
 
 	void
 	NewAttributes::Labels::update_size()
-	{
-		std::vector<widget::Element> ls {
-			m_str, m_agi, m_int
-		};
-		size(widget::sum_sizes(ls));
-	}
+	{ size(widget::sum_sizes({m_str, m_agi, m_int})); }
 
 	// NewAttributes
 	NewAttributes::NewAttributes(
@@ -119,10 +113,5 @@ namespace dungeons::ui {
 
 	void
 	NewAttributes::update_size()
-	{
-		std::vector<widget::Element> ls {
-			*m_roll, *m_reroll, m_labels
-		};
-		size(widget::sum_sizes(ls));
-	}
+	{ size(widget::sum_sizes({*m_roll, *m_reroll, m_labels})); }
 }
