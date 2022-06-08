@@ -83,7 +83,7 @@ namespace dungeons::ui {
 			return m_roll;
 		if (contains(*m_reroll, point, offset))
 			return m_reroll;
-		return nullptr;
+		return {};
 	}
 
 	std::optional<NewAttributes::Value>
