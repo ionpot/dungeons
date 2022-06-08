@@ -81,6 +81,17 @@ namespace dungeons::ui {
 			return make_buttons(ui, std::move(input));
 		}
 
+		static RadioGroup
+		horizontal(
+				const Context& ui,
+				ToString to_string,
+				const std::vector<T>& values)
+		{
+			auto buttons = make_buttons(ui, to_string, values);
+			lay_buttons(ui, buttons);
+			return {std::move(buttons)};
+		}
+
 		static util::Size
 		sum_sizes(const std::vector<ButtonPtr>& buttons)
 		{
