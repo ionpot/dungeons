@@ -15,7 +15,6 @@
 
 #include <memory> // std::make_shared, std::shared_ptr
 #include <optional>
-#include <vector>
 
 namespace dungeons::ui {
 	namespace util = ionpot::util;
@@ -28,9 +27,7 @@ namespace dungeons::ui {
 		m_agi {normal_text(*m_ui, "Agility")},
 		m_int {normal_text(*m_ui, "Intellect")}
 	{
-		std::vector<LabelValue*> labels {&m_str, &m_agi, &m_int};
-		align_labels(*m_ui, labels);
-		stack_text(*m_ui, labels);
+		stack_labels(*m_ui, {&m_str, &m_agi, &m_int});
 		update_size();
 	}
 

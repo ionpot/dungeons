@@ -12,7 +12,6 @@
 #include <ionpot/util/point.hpp>
 
 #include <memory> // std::shared_ptr
-#include <vector>
 
 namespace dungeons::ui {
 	namespace util = ionpot::util;
@@ -27,11 +26,9 @@ namespace dungeons::ui {
 		m_initiative {normal_text(*m_ui, "Initiative")},
 		m_will {normal_text(*m_ui, "Spell Resist")}
 	{
-		std::vector<LabelValue*> labels {
+		stack_labels(*m_ui, {
 			&m_hp, &m_armor, &m_dodge, &m_initiative, &m_will
-		};
-		align_labels(*m_ui, labels);
-		stack_text(*m_ui, labels);
+		});
 		update_size();
 	}
 

@@ -13,4 +13,5 @@ namespace dungeons::ui {
 	using LabelValue = widget::LabelValue<Text, Text>;
 
 	void align_labels(const Context&, std::vector<LabelValue*>&);
+	void stack_labels(const Context&, std::vector<LabelValue*>&);
 }
