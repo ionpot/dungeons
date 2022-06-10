@@ -14,4 +14,5 @@ namespace dungeons::ui {
 
 	void align_labels(const Context&, std::vector<LabelValue*>&);
 	void stack_labels(const Context&, std::vector<LabelValue*>&);
+	void stack_labels(const Context&, std::vector<LabelValue*>&&);
 }
