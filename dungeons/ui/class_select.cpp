@@ -3,16 +3,17 @@
 #include "context.hpp"
 #include "string.hpp"
 
-#include <game/class_id.hpp>
+#include <game/context.hpp>
 
 namespace dungeons::ui {
 	ClassSelect
-	class_select(const Context& ui)
+	class_select(const Context& ui, const game::Context& game)
 	{
+		const auto& templates = game.class_templates();
 		return ClassSelect::horizontal(ui, string::class_id, {
-			game::ClassId::warrior,
-			game::ClassId::hybrid,
-			game::ClassId::mage
+			templates.warrior,
+			templates.hybrid,
+			templates.mage
 		});
 	}
 }

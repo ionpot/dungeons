@@ -1,23 +1,23 @@
 #pragma once
 
 #include "class_id.hpp"
-#include "context.hpp"
-
-#include <memory> // std::shared_ptr
+#include "config.hpp"
 
 namespace dungeons::game {
 	class Class {
 	public:
-		Class(std::shared_ptr<const Context>);
+		using TemplatePtr = Config::ClassTemplate::Ptr;
+
+		Class(TemplatePtr, int level = 1);
 
 		ClassId id() const;
-		void id(ClassId);
 
 		int hp_bonus() const;
 
+		void set_template(TemplatePtr);
+
 	private:
-		std::shared_ptr<const Context> m_game;
-		ClassId m_id;
+		TemplatePtr m_template;
 		int m_level;
 	};
 }

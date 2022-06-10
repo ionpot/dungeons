@@ -1,6 +1,5 @@
 #include "context.hpp"
 
-#include "class_id.hpp"
 #include "config.hpp"
 
 #include <memory> // std::shared_ptr
@@ -13,27 +12,18 @@ namespace dungeons::game {
 		m_dice_engine {seed},
 		m_attribute_dice {config->attribute_dice()},
 		m_base_armor {config->base_armor()},
-		m_hp_multiplier {config->hp_multipliers()}
+		m_class_templates {config->class_templates()}
 	{}
 
 	int
 	Context::base_armor() const
 	{ return m_base_armor; }
 
+	const Config::ClassTemplates&
+	Context::class_templates() const
+	{ return m_class_templates; }
+
 	int
 	Context::roll_attribute()
 	{ return m_dice_engine.roll(m_attribute_dice); }
-
-	int
-	Context::hp_multiplier(ClassId id) const
-	{
-		switch (id) {
-		case ClassId::warrior:
-			return m_hp_multiplier.warrior;
-		case ClassId::hybrid:
-			return m_hp_multiplier.hybrid;
-		case ClassId::mage:
-			return m_hp_multiplier.mage;
-		}
-	}
 }

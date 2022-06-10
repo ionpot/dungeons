@@ -1,8 +1,11 @@
 #include "config.hpp"
 
+#include "class_id.hpp"
+
 #include <ionpot/util/cfg_file.hpp>
 #include <ionpot/util/dice.hpp>
 
+#include <memory> // std::make_shared
 #include <utility> // std::move
 
 namespace dungeons::game {
@@ -22,6 +25,23 @@ namespace dungeons::game {
 	Config::base_armor() const
 	{
 		return m_file.find_pair("base armor").to_int();
+	}
+
+	Config::ClassTemplates
+	Config::class_templates() const
+	{
+		auto hp = hp_multipliers();
+		return {
+			std::make_shared<const ClassTemplate>(ClassTemplate {
+				ClassId::warrior, hp.warrior
+			}),
+			std::make_shared<const ClassTemplate>(ClassTemplate {
+				ClassId::hybrid, hp.hybrid
+			}),
+			std::make_shared<const ClassTemplate>(ClassTemplate {
+				ClassId::mage, hp.mage
+			})
+		};
 	}
 
 	Config::HpMultipliers

@@ -42,7 +42,8 @@ namespace dungeons {
 		ui::NewAttributes m_attributes;
 		ui::NewStats m_stats;
 		std::shared_ptr<ui::Button> m_done;
-		game::Entity m_new;
+		std::optional<game::Entity> m_new;
+		int m_base_armor;
 
 		void log_new_char();
 	};

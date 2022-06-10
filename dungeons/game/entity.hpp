@@ -2,25 +2,21 @@
 
 #include "attributes.hpp"
 #include "class.hpp"
-#include "class_id.hpp"
-#include "context.hpp"
 
 #include <ionpot/util/percent.hpp>
-
-#include <memory> // std::shared_ptr
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
 
 	class Entity {
 	public:
-		Entity(std::shared_ptr<const Context>);
+		Entity(Class::TemplatePtr, int base_armor);
 
 		const Attributes& attributes() const;
 		void attributes(Attributes);
 
-		ClassId class_id() const;
-		void class_id(ClassId);
+		const Class& get_class() const;
+		void class_template(Class::TemplatePtr);
 
 		int armor() const;
 		int initiative() const;

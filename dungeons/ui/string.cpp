@@ -1,5 +1,6 @@
 #include "string.hpp"
 
+#include <game/class.hpp>
 #include <game/class_id.hpp>
 #include <game/entity.hpp>
 
@@ -20,8 +21,12 @@ namespace dungeons::ui::string {
 	}
 
 	std::string
+	class_id(game::Class::TemplatePtr t)
+	{ return class_id(t->id); }
+
+	std::string
 	class_id(const game::Entity& e)
-	{ return class_id(e.class_id()); }
+	{ return class_id(e.get_class().id()); }
 
 	std::string
 	primary_attr(const game::Entity& e)
