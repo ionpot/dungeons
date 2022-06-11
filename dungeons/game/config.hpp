@@ -6,6 +6,7 @@
 #include <ionpot/util/dice.hpp>
 
 #include <memory> // std::shared_ptr
+#include <string>
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
@@ -24,20 +25,21 @@ namespace dungeons::game {
 			ClassTemplate::Ptr mage;
 		};
 
-		struct HpMultipliers {
-			int warrior;
-			int hybrid;
-			int mage;
-		};
-
 		Config(util::CfgFile&&);
 
 		util::dice::Input attribute_dice() const;
+
 		int base_armor() const;
+
 		ClassTemplates class_templates() const;
-		HpMultipliers hp_multipliers() const;
+
+		ClassTemplate warrior_template() const;
+		ClassTemplate hybrid_template() const;
+		ClassTemplate mage_template() const;
 
 	private:
 		util::CfgFile m_file;
+
+		ClassTemplate class_template(ClassId, std::string) const;
 	};
 }
