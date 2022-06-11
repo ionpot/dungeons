@@ -1,7 +1,7 @@
 #pragma once
 
-#include "attributes.hpp"
 #include "class.hpp"
+#include "context.hpp"
 
 #include <ionpot/util/percent.hpp>
 
@@ -10,13 +10,31 @@ namespace dungeons::game {
 
 	class Entity {
 	public:
+		struct BaseAttributes {
+			int strength {0};
+			int agility {0};
+			int intellect {0};
+
+			BaseAttributes() = default;
+			BaseAttributes(int str, int agi, int intel);
+			BaseAttributes(Context&);
+
+			int hp() const;
+			int initiative() const;
+			util::Percent dodge_chance() const;
+			util::Percent resist_chance() const;
+		};
+
 		Entity(Class::TemplatePtr, int base_armor);
 
-		const Attributes& attributes() const;
-		void attributes(Attributes);
+		void base_attr(BaseAttributes);
 
 		const Class& get_class() const;
 		void class_template(Class::TemplatePtr);
+
+		int strength() const;
+		int agility() const;
+		int intellect() const;
 
 		int armor() const;
 		int initiative() const;
@@ -26,7 +44,7 @@ namespace dungeons::game {
 		util::Percent resist_chance() const;
 
 	private:
-		Attributes m_attr;
+		BaseAttributes m_base;
 		Class m_class;
 		int m_armor;
 	};

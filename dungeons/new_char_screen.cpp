@@ -84,7 +84,7 @@ namespace dungeons {
 			return {};
 		}
 		if (auto rolled = m_attributes.on_click(clicked)) {
-			m_new->attributes(*rolled);
+			m_new->base_attr(*rolled);
 			m_stats.update(*m_new);
 			if (m_stats.hidden()) {
 				m_stats.place_after(m_attributes, m_spacing);

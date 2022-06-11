@@ -31,10 +31,9 @@ namespace dungeons::ui::string {
 	std::string
 	primary_attr(const game::Entity& e)
 	{
-		const auto& attr = e.attributes();
-		return "Str " + std::to_string(attr.strength())
-			+ ", Agi " + std::to_string(attr.agility())
-			+ ", Int " + std::to_string(attr.intellect());
+		return "Str " + std::to_string(e.strength())
+			+ ", Agi " + std::to_string(e.agility())
+			+ ", Int " + std::to_string(e.intellect());
 	}
 
 	std::string

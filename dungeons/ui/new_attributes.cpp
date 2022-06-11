@@ -42,9 +42,9 @@ namespace dungeons::ui {
 	void
 	NewAttributes::Labels::update(const Value& value)
 	{
-		m_str.value(bold_text(*m_ui, value.strength()));
-		m_agi.value(bold_text(*m_ui, value.agility()));
-		m_int.value(bold_text(*m_ui, value.intellect()));
+		m_str.value(bold_text(*m_ui, value.strength));
+		m_agi.value(bold_text(*m_ui, value.agility));
+		m_int.value(bold_text(*m_ui, value.intellect));
 		update_size();
 	}
 
