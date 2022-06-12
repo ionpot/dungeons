@@ -1,6 +1,7 @@
 #pragma once
 
 #include "config.hpp"
+#include "entity.hpp"
 
 #include <ionpot/util/dice.hpp>
 
@@ -18,6 +19,7 @@ namespace dungeons::game {
 		int base_armor() const;
 		const Config::ClassTemplates& class_templates() const;
 		int roll_attribute();
+		Entity::BaseAttributes roll_base_attr();
 
 	private:
 		util::dice::Engine m_dice_engine;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "class.hpp"
-#include "context.hpp"
 
 #include <ionpot/util/percent.hpp>
 
@@ -17,7 +16,6 @@ namespace dungeons::game {
 
 			BaseAttributes() = default;
 			BaseAttributes(int str, int agi, int intel);
-			BaseAttributes(Context&);
 
 			int hp() const;
 			int initiative() const;

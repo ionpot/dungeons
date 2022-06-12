@@ -1,7 +1,6 @@
 #include "entity.hpp"
 
 #include "class.hpp"
-#include "context.hpp"
 
 #include <ionpot/util/percent.hpp>
 
@@ -15,14 +14,6 @@ namespace dungeons::game {
 		strength {str},
 		agility {agi},
 		intellect {intel}
-	{}
-
-	BaseAttributes::BaseAttributes(Context& game):
-		BaseAttributes {
-			game.roll_attribute(),
-			game.roll_attribute(),
-			game.roll_attribute()
-		}
 	{}
 
 	int

@@ -102,7 +102,7 @@ namespace dungeons::ui {
 	NewAttributes::Value
 	NewAttributes::roll()
 	{
-		Value attr {*m_game};
+		auto attr = m_game->roll_base_attr();
 		m_labels.update(attr);
 		update_size();
 		return attr;

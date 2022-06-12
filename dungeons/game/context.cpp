@@ -1,6 +1,7 @@
 #include "context.hpp"
 
 #include "config.hpp"
+#include "entity.hpp"
 
 #include <memory> // std::shared_ptr
 
@@ -26,4 +27,14 @@ namespace dungeons::game {
 	int
 	Context::roll_attribute()
 	{ return m_dice_engine.roll(m_attribute_dice); }
+
+	Entity::BaseAttributes
+	Context::roll_base_attr()
+	{
+		return {
+			roll_attribute(),
+			roll_attribute(),
+			roll_attribute()
+		};
+	}
 }
