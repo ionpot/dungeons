@@ -1,5 +1,6 @@
 #pragma once
 
+#include "class.hpp"
 #include "config.hpp"
 #include "entity.hpp"
 
@@ -17,7 +18,7 @@ namespace dungeons::game {
 				unsigned int seed);
 
 		int base_armor() const;
-		const Config::ClassTemplates& class_templates() const;
+		const Class::Templates& class_templates() const;
 		int roll_attribute();
 		Entity::BaseAttributes roll_base_attr();
 
@@ -25,6 +26,6 @@ namespace dungeons::game {
 		util::dice::Engine m_dice_engine;
 		util::dice::Input m_attribute_dice;
 		int m_base_armor;
-		Config::ClassTemplates m_class_templates;
+		Class::Templates m_class_templates;
 	};
 }

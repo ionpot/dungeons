@@ -1,6 +1,6 @@
 #include "config.hpp"
 
-#include "class_id.hpp"
+#include "class.hpp"
 
 #include <ionpot/util/cfg_file.hpp>
 #include <ionpot/util/dice.hpp>
@@ -28,32 +28,32 @@ namespace dungeons::game {
 		return m_file.find_pair("base armor").to_int();
 	}
 
-	Config::ClassTemplate
-	Config::class_template(ClassId id, std::string section_name) const
+	Class::Template
+	Config::class_template(Class::Id id, std::string section_name) const
 	{
 		auto section = m_file.find_section(section_name);
 		return {id, section.find_pair("hp per level").to_int()};
 	}
 
-	Config::ClassTemplates
+	Class::Templates
 	Config::class_templates() const
 	{
 		return {
-			std::make_shared<const ClassTemplate>(warrior_template()),
-			std::make_shared<const ClassTemplate>(hybrid_template()),
-			std::make_shared<const ClassTemplate>(mage_template())
+			std::make_shared<const Class::Template>(warrior_template()),
+			std::make_shared<const Class::Template>(hybrid_template()),
+			std::make_shared<const Class::Template>(mage_template())
 		};
 	}
 
-	Config::ClassTemplate
+	Class::Template
 	Config::warrior_template() const
-	{ return class_template(ClassId::warrior, "warrior template"); }
+	{ return class_template(Class::Id::warrior, "warrior template"); }
 
-	Config::ClassTemplate
+	Class::Template
 	Config::hybrid_template() const
-	{ return class_template(ClassId::hybrid, "hybrid template"); }
+	{ return class_template(Class::Id::hybrid, "hybrid template"); }
 
-	Config::ClassTemplate
+	Class::Template
 	Config::mage_template() const
-	{ return class_template(ClassId::mage, "mage template"); }
+	{ return class_template(Class::Id::mage, "mage template"); }
 }

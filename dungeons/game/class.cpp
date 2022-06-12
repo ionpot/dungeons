@@ -1,14 +1,12 @@
 #include "class.hpp"
 
-#include "class_id.hpp"
-
 namespace dungeons::game {
-	Class::Class(TemplatePtr t, int level):
+	Class::Class(Template::Ptr t, int level):
 		m_template {t},
 		m_level {level}
 	{}
 
-	ClassId
+	Class::Id
 	Class::id() const
 	{ return m_template->id; }
 
@@ -17,6 +15,6 @@ namespace dungeons::game {
 	{ return m_level * m_template->hp_bonus_per_level; }
 
 	void
-	Class::set_template(TemplatePtr t)
+	Class::set_template(Template::Ptr t)
 	{ m_template = t; }
 }

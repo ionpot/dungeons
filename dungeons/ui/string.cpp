@@ -1,27 +1,26 @@
 #include "string.hpp"
 
 #include <game/class.hpp>
-#include <game/class_id.hpp>
 #include <game/entity.hpp>
 
 #include <string>
 
 namespace dungeons::ui::string {
 	std::string
-	class_id(game::ClassId id)
+	class_id(game::Class::Id id)
 	{
 		switch (id) {
-		case game::ClassId::warrior:
+		case game::Class::Id::warrior:
 			return "Warrior";
-		case game::ClassId::hybrid:
+		case game::Class::Id::hybrid:
 			return "Hybrid";
-		case game::ClassId::mage:
+		case game::Class::Id::mage:
 			return "Mage";
 		}
 	}
 
 	std::string
-	class_id(game::Class::TemplatePtr t)
+	class_id(game::Class::Template::Ptr t)
 	{ return class_id(t->id); }
 
 	std::string

@@ -7,7 +7,7 @@
 #include <game/context.hpp>
 
 namespace dungeons::ui {
-	using ClassSelect = RadioGroup<game::Class::TemplatePtr>;
+	using ClassSelect = RadioGroup<game::Class::Template::Ptr>;
 
 	ClassSelect class_select(const Context&, const game::Context&);
 }

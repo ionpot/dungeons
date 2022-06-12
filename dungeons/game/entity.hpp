@@ -23,12 +23,12 @@ namespace dungeons::game {
 			util::Percent resist_chance() const;
 		};
 
-		Entity(Class::TemplatePtr, int base_armor);
+		Entity(Class::Template::Ptr, int base_armor);
 
 		void base_attr(BaseAttributes);
 
 		const Class& get_class() const;
-		void class_template(Class::TemplatePtr);
+		void class_template(Class::Template::Ptr);
 
 		int strength() const;
 		int agility() const;

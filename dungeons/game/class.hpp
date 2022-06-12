@@ -1,23 +1,34 @@
 #pragma once
 
-#include "class_id.hpp"
-#include "config.hpp"
+#include <memory> // std::shared_ptr
 
 namespace dungeons::game {
 	class Class {
 	public:
-		using TemplatePtr = Config::ClassTemplate::Ptr;
+		enum class Id { warrior, hybrid, mage };
 
-		Class(TemplatePtr, int level = 1);
+		struct Template {
+			using Ptr = std::shared_ptr<const Template>;
+			Id id;
+			int hp_bonus_per_level;
+		};
 
-		ClassId id() const;
+		struct Templates {
+			Template::Ptr warrior;
+			Template::Ptr hybrid;
+			Template::Ptr mage;
+		};
+
+		Class(Template::Ptr, int level = 1);
+
+		Id id() const;
 
 		int hp_bonus() const;
 
-		void set_template(TemplatePtr);
+		void set_template(Template::Ptr);
 
 	private:
-		TemplatePtr m_template;
+		Template::Ptr m_template;
 		int m_level;
 	};
 }

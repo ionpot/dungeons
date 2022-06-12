@@ -33,7 +33,7 @@ namespace dungeons::game {
 	{ return {intellect}; }
 
 	// Entity
-	Entity::Entity(Class::TemplatePtr class_template, int armor):
+	Entity::Entity(Class::Template::Ptr class_template, int armor):
 		m_base {},
 		m_class {class_template},
 		m_armor {armor}
@@ -52,7 +52,7 @@ namespace dungeons::game {
 	{ m_base = attr; }
 
 	void
-	Entity::class_template(Class::TemplatePtr t)
+	Entity::class_template(Class::Template::Ptr t)
 	{ m_class.set_template(t); }
 
 	util::Percent
