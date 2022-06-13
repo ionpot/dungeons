@@ -7,6 +7,7 @@
 #include <ui/text.hpp>
 
 #include <ionpot/widget/element.hpp>
+#include <ionpot/widget/group.hpp>
 
 #include <ionpot/util/log.hpp>
 
@@ -17,20 +18,18 @@ namespace dungeons {
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
-	class CombatScreen {
+	class CombatScreen : public widget::Group {
 	public:
 		CombatScreen(
 			std::shared_ptr<util::Log>,
 			const ui::Context&,
 			const screen::ToCombat&);
 
-		std::shared_ptr<widget::Element> find(util::Point);
 		std::optional<screen::Output> on_click(const widget::Element&);
-		void render() const;
 
 	private:
 		std::shared_ptr<util::Log> m_log;
-		ui::Text m_text;
+		std::shared_ptr<ui::Text> m_text;
 		std::shared_ptr<ui::Button> m_button;
 	};
 }

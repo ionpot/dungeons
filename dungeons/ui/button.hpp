@@ -40,7 +40,7 @@ namespace dungeons::ui {
 		void disable();
 		void enable();
 
-		void render(util::Point offset = {}) const;
+		void render(util::Point offset = {}) const final;
 
 	private:
 		Texture m_text;

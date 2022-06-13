@@ -12,6 +12,7 @@
 #include <game/entity.hpp>
 
 #include <ionpot/widget/element.hpp>
+#include <ionpot/widget/group.hpp>
 
 #include <ionpot/util/log.hpp>
 #include <ionpot/util/point.hpp>
@@ -24,23 +25,21 @@ namespace dungeons {
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
-	class NewCharScreen {
+	class NewCharScreen : public widget::Group {
 	public:
 		NewCharScreen(
 			std::shared_ptr<util::Log>,
 			std::shared_ptr<const ui::Context>,
 			std::shared_ptr<game::Context>);
 
-		std::shared_ptr<widget::Element> find(util::Point);
 		std::optional<screen::Output> on_click(const widget::Element&);
-		void render() const;
 
 	private:
 		std::shared_ptr<util::Log> m_log;
 		util::Size m_spacing;
-		ui::ClassSelect m_select;
-		ui::NewAttributes m_attributes;
-		ui::NewStats m_stats;
+		std::shared_ptr<ui::ClassSelect> m_select;
+		std::shared_ptr<ui::NewAttributes> m_attributes;
+		std::shared_ptr<ui::NewStats> m_stats;
 		std::shared_ptr<ui::Button> m_done;
 		std::optional<game::Entity> m_new;
 		int m_base_armor;

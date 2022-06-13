@@ -2,62 +2,34 @@
 
 #include "context.hpp"
 #include "label_value.hpp"
-#include "text.hpp"
 
 #include <game/entity.hpp>
 
-#include <ionpot/widget/element.hpp>
-#include <ionpot/widget/sum_sizes.hpp>
+#include <memory> // std::make_shared, std::shared_ptr
 
-#include <ionpot/util/point.hpp>
-
-#include <memory> // std::shared_ptr
+#define LABELS m_hp, m_armor, m_dodge, m_initiative, m_will
 
 namespace dungeons::ui {
-	namespace util = ionpot::util;
-	namespace widget = ionpot::widget;
-
 	NewStats::NewStats(std::shared_ptr<const Context> ui):
-		widget::Element {},
-		m_ui {ui},
-		m_hp {normal_text(*m_ui, "Total Hp")},
-		m_armor {normal_text(*m_ui, "Armor")},
-		m_dodge {normal_text(*m_ui, "Dodge")},
-		m_initiative {normal_text(*m_ui, "Initiative")},
-		m_will {normal_text(*m_ui, "Spell Resist")}
+		m_hp {std::make_shared<LabelValue>(ui, "Total Hp")},
+		m_armor {std::make_shared<LabelValue>(ui, "Armor")},
+		m_dodge {std::make_shared<LabelValue>(ui, "Dodge")},
+		m_initiative {std::make_shared<LabelValue>(ui, "Initiative")},
+		m_will {std::make_shared<LabelValue>(ui, "Spell Resist")}
 	{
-		stack_labels(*m_ui, {
-			&m_hp, &m_armor, &m_dodge, &m_initiative, &m_will
-		});
+		elements({LABELS});
+		stack_labels(*ui, {LABELS});
 		update_size();
-	}
-
-	void
-	NewStats::render(util::Point offset) const
-	{
-		widget::Element::render(m_hp, offset);
-		widget::Element::render(m_armor, offset);
-		widget::Element::render(m_dodge, offset);
-		widget::Element::render(m_initiative, offset);
-		widget::Element::render(m_will, offset);
 	}
 
 	void
 	NewStats::update(const game::Entity& entity)
 	{
-		m_hp.value(bold_text(*m_ui, entity.total_hp()));
-		m_armor.value(bold_text(*m_ui, entity.armor()));
-		m_dodge.value(bold_text(*m_ui, entity.dodge_chance().to_str()));
-		m_initiative.value(bold_text(*m_ui, entity.initiative()));
-		m_will.value(bold_text(*m_ui, entity.resist_chance().to_str()));
+		m_hp->value(entity.total_hp());
+		m_armor->value(entity.armor());
+		m_dodge->value(entity.dodge_chance());
+		m_initiative->value(entity.initiative());
+		m_will->value(entity.resist_chance());
 		update_size();
-	}
-
-	void
-	NewStats::update_size()
-	{
-		size(widget::sum_sizes({
-			m_hp, m_armor, m_dodge, m_initiative, m_will
-		}));
 	}
 }

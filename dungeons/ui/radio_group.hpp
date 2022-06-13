@@ -4,10 +4,10 @@
 #include "texture.hpp"
 
 #include <ionpot/widget/element.hpp>
-#include <ionpot/widget/sum_sizes.hpp>
+#include <ionpot/widget/group.hpp>
 
-#include <ionpot/util/point.hpp>
 #include <ionpot/util/size.hpp>
+#include <ionpot/util/vector.hpp>
 
 #include <memory> // std::make_shared, std::shared_ptr
 #include <optional>
@@ -19,8 +19,8 @@ namespace dungeons::ui {
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
-	template<class T> // T = enum value
-	class RadioGroup : public widget::Element {
+	template<class T> // T = copyable value
+	class RadioGroup : public widget::Group {
 	public:
 		using ToString = std::string (*)(T);
 
@@ -92,28 +92,13 @@ namespace dungeons::ui {
 			return {std::move(buttons)};
 		}
 
-		static util::Size
-		sum_sizes(const std::vector<ButtonPtr>& buttons)
-		{
-			std::vector<widget::Element> ls;
-			for (auto button : buttons)
-				ls.push_back(*button);
-			return widget::sum_sizes(ls);
-		}
-
 		RadioGroup(std::vector<ButtonPtr>&& buttons):
-			widget::Element {sum_sizes(buttons)},
 			m_buttons {std::move(buttons)},
 			m_chosen {}
-		{}
-
-		std::shared_ptr<widget::Element>
-		find(util::Point point, util::Point offset = {})
 		{
-			for (auto button : m_buttons)
-				if (widget::Element::contains(*button, point, offset))
-					return button;
-			return {};
+			using Ptr = std::shared_ptr<widget::Element>;
+			elements(util::vector_cast<Ptr>(m_buttons));
+			update_size();
 		}
 
 		std::optional<T>
@@ -129,13 +114,6 @@ namespace dungeons::ui {
 				}
 			}
 			return {};
-		}
-
-		void
-		render(util::Point offset = {}) const
-		{
-			for (auto button : m_buttons)
-				widget::Element::render(*button, offset);
 		}
 
 	private:

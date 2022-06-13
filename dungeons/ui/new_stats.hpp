@@ -5,31 +5,24 @@
 
 #include <game/entity.hpp>
 
-#include <ionpot/widget/element.hpp>
-
-#include <ionpot/util/point.hpp>
+#include <ionpot/widget/group.hpp>
 
 #include <memory> // std::shared_ptr
 
 namespace dungeons::ui {
-	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
-	class NewStats : public widget::Element {
+	class NewStats : public widget::Group {
 	public:
 		NewStats(std::shared_ptr<const Context>);
 
-		void render(util::Point offset = {}) const;
 		void update(const game::Entity&);
 
 	private:
-		std::shared_ptr<const Context> m_ui;
-		LabelValue m_hp;
-		LabelValue m_armor;
-		LabelValue m_dodge;
-		LabelValue m_initiative;
-		LabelValue m_will;
-
-		void update_size();
+		std::shared_ptr<LabelValue> m_hp;
+		std::shared_ptr<LabelValue> m_armor;
+		std::shared_ptr<LabelValue> m_dodge;
+		std::shared_ptr<LabelValue> m_initiative;
+		std::shared_ptr<LabelValue> m_will;
 	};
 }

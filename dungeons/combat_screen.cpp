@@ -25,23 +25,16 @@ namespace dungeons {
 			const screen::ToCombat& input
 	):
 		m_log {log},
-		m_text {
+		m_text {std::make_shared<ui::Text>(
 			ui::normal_text(ui,
 				ui::string::class_id(input.player) + " fights an enemy here.")
-		},
+		)},
 		m_button {std::make_shared<ui::Button>(ui, "Done")}
 	{
-		m_text.position(ui.screen_margin);
-		m_button->place_below(m_text, ui.button.spacing);
+		elements({m_text, m_button});
+		m_text->position(ui.screen_margin);
+		m_button->place_below(*m_text, ui.button.spacing);
 		m_log->pair(ui::string::class_id(input.player), "enters combat.");
-	}
-
-	std::shared_ptr<widget::Element>
-	CombatScreen::find(util::Point point)
-	{
-		if (widget::contains(*m_button, point))
-			return m_button;
-		return {};
 	}
 
 	std::optional<screen::Output>
@@ -52,12 +45,5 @@ namespace dungeons {
 			return screen::Quit {};
 		}
 		return {};
-	}
-
-	void
-	CombatScreen::render() const
-	{
-		widget::render(m_text);
-		widget::render(*m_button);
 	}
 }

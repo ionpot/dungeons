@@ -8,49 +8,34 @@
 #include <game/context.hpp>
 
 #include <ionpot/widget/element.hpp>
-#include <ionpot/widget/label_value.hpp>
-#include <ionpot/widget/sum_sizes.hpp>
-
-#include <ionpot/util/point.hpp>
 
 #include <memory> // std::make_shared, std::shared_ptr
 #include <optional>
 
+#define LABELS m_str, m_agi, m_int
+
 namespace dungeons::ui {
-	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
 	// Labels
 	NewAttributes::Labels::Labels(std::shared_ptr<const Context> ui):
-		m_ui {ui},
-		m_str {normal_text(*m_ui, "Strength")},
-		m_agi {normal_text(*m_ui, "Agility")},
-		m_int {normal_text(*m_ui, "Intellect")}
+		m_str {std::make_shared<LabelValue>(ui, "Strength")},
+		m_agi {std::make_shared<LabelValue>(ui, "Agility")},
+		m_int {std::make_shared<LabelValue>(ui, "Intellect")}
 	{
-		stack_labels(*m_ui, {&m_str, &m_agi, &m_int});
+		elements({LABELS});
+		stack_labels(*ui, {LABELS});
 		update_size();
-	}
-
-	void
-	NewAttributes::Labels::render(util::Point offset) const
-	{
-		widget::Element::render(m_str, offset);
-		widget::Element::render(m_agi, offset);
-		widget::Element::render(m_int, offset);
 	}
 
 	void
 	NewAttributes::Labels::update(const Value& value)
 	{
-		m_str.value(bold_text(*m_ui, value.strength));
-		m_agi.value(bold_text(*m_ui, value.agility));
-		m_int.value(bold_text(*m_ui, value.intellect));
+		m_str->value(value.strength);
+		m_agi->value(value.agility);
+		m_int->value(value.intellect);
 		update_size();
 	}
-
-	void
-	NewAttributes::Labels::update_size()
-	{ size(widget::sum_sizes({m_str, m_agi, m_int})); }
 
 	// NewAttributes
 	NewAttributes::NewAttributes(
@@ -59,22 +44,13 @@ namespace dungeons::ui {
 		m_game {game},
 		m_roll {std::make_shared<Button>(*ui, "Roll Attributes")},
 		m_reroll {std::make_shared<Button>(*ui, "Roll Again")},
-		m_labels {ui}
+		m_labels {std::make_shared<Labels>(ui)}
 	{
-		m_reroll->place_below(m_labels, ui->text_spacing);
+		elements({m_roll, m_reroll, m_labels});
+		m_reroll->place_below(*m_labels, ui->text_spacing);
 		m_reroll->hide();
-		m_labels.hide();
+		m_labels->hide();
 		update_size();
-	}
-
-	std::shared_ptr<widget::Element>
-	NewAttributes::find(util::Point point, util::Point offset)
-	{
-		if (contains(*m_roll, point, offset))
-			return m_roll;
-		if (contains(*m_reroll, point, offset))
-			return m_reroll;
-		return {};
 	}
 
 	std::optional<NewAttributes::Value>
@@ -83,7 +59,7 @@ namespace dungeons::ui {
 		if (*m_roll == clicked) {
 			m_roll->hide();
 			m_reroll->show();
-			m_labels.show();
+			m_labels->show();
 			return roll();
 		}
 		if (*m_reroll == clicked)
@@ -91,24 +67,12 @@ namespace dungeons::ui {
 		return {};
 	}
 
-	void
-	NewAttributes::render(util::Point offset) const
-	{
-		widget::Element::render(*m_roll, offset);
-		widget::Element::render(*m_reroll, offset);
-		widget::Element::render(m_labels, offset);
-	}
-
 	NewAttributes::Value
 	NewAttributes::roll()
 	{
 		auto attr = m_game->roll_base_attr();
-		m_labels.update(attr);
+		m_labels->update(attr);
 		update_size();
 		return attr;
 	}
-
-	void
-	NewAttributes::update_size()
-	{ size(widget::sum_sizes({*m_roll, *m_reroll, m_labels})); }
 }

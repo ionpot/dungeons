@@ -66,12 +66,13 @@ namespace dungeons::ui {
 	void
 	Button::render(util::Point offset) const
 	{
+		offset += position();
 		if (clickable()) {
 			if (held_down())
 				offset += m_click_dent;
-			widget::Element::render(*m_box, offset);
+			m_box->render(offset);
 		}
-		widget::Element::render(m_text, offset);
+		m_text.render(offset);
 	}
 
 	// helpers

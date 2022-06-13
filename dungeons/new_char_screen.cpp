@@ -12,7 +12,6 @@
 #include <ionpot/widget/element.hpp>
 
 #include <ionpot/util/log.hpp>
-#include <ionpot/util/point.hpp>
 
 #include <memory> // std::make_shared, std::shared_ptr
 #include <optional>
@@ -29,32 +28,23 @@ namespace dungeons {
 		m_log {log},
 		m_spacing {ui->section_spacing},
 		m_select {ui::class_select(*ui, *game)},
-		m_attributes {ui, game},
-		m_stats {ui},
+		m_attributes {std::make_shared<ui::NewAttributes>(ui, game)},
+		m_stats {std::make_shared<ui::NewStats>(ui)},
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
 		m_new {},
 		m_base_armor {game->base_armor()}
 	{
-		m_select.position(ui->screen_margin);
+		elements({m_done});
+		groups({m_select, m_attributes, m_stats});
 
-		m_attributes.place_below(m_select, m_spacing);
+		m_select->position(ui->screen_margin);
 
-		m_attributes.hide();
-		m_stats.hide();
+		m_attributes->place_below(*m_select, m_spacing);
+
+		m_attributes->hide();
+		m_stats->hide();
 
 		m_done->hide();
-	}
-
-	std::shared_ptr<widget::Element>
-	NewCharScreen::find(util::Point point)
-	{
-		if (auto found = widget::find(m_select, point))
-			return found;
-		if (auto found = widget::find(m_attributes, point))
-			return found;
-		if (widget::contains(*m_done, point))
-			return m_done;
-		return {};
 	}
 
 	void
@@ -73,25 +63,25 @@ namespace dungeons {
 	std::optional<screen::Output>
 	NewCharScreen::on_click(const widget::Element& clicked)
 	{
-		if (auto chosen = m_select.on_click(clicked)) {
+		if (auto chosen = m_select->on_click(clicked)) {
 			if (m_new)
 				m_new->class_template(*chosen);
 			else
 				m_new.emplace(*chosen, m_base_armor);
-			m_stats.update(*m_new);
-			if (m_attributes.hidden())
-				m_attributes.show();
+			m_stats->update(*m_new);
+			if (m_attributes->hidden())
+				m_attributes->show();
 			return {};
 		}
-		if (auto rolled = m_attributes.on_click(clicked)) {
+		if (auto rolled = m_attributes->on_click(clicked)) {
 			m_new->base_attr(*rolled);
-			m_stats.update(*m_new);
-			if (m_stats.hidden()) {
-				m_stats.place_after(m_attributes, m_spacing);
-				m_stats.show();
+			m_stats->update(*m_new);
+			if (m_stats->hidden()) {
+				m_stats->place_after(*m_attributes, m_spacing);
+				m_stats->show();
 			}
 			if (m_done->hidden()) {
-				m_done->place_below(m_attributes, m_spacing);
+				m_done->place_below(*m_attributes, m_spacing);
 				m_done->show();
 			}
 			return {};
@@ -101,14 +91,5 @@ namespace dungeons {
 			return screen::ToCombat {m_new->get_class().id()};
 		}
 		return {};
-	}
-
-	void
-	NewCharScreen::render() const
-	{
-		widget::render(m_select);
-		widget::render(m_attributes);
-		widget::render(m_stats);
-		widget::render(*m_done);
 	}
 }
