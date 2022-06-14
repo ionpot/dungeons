@@ -5,7 +5,7 @@
 
 #include <ionpot/widget/label_value.hpp>
 
-#include <ionpot/util/percent.hpp>
+#include <ionpot/util/stringify.hpp>
 #include <ionpot/util/vector.hpp>
 
 #include <memory> // std::shared_ptr
@@ -23,16 +23,10 @@ namespace dungeons::ui {
 
 		template<class T>
 		void value(T val)
-		{ value(std::to_string(val)); }
-
-		template<>
-		void value(const char*);
+		{ value(util::stringify(val)); }
 
 		template<>
 		void value(std::string);
-
-		template<>
-		void value(util::Percent);
 
 	private:
 		std::shared_ptr<const Context> m_ui;

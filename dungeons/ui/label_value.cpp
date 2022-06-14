@@ -5,13 +5,10 @@
 
 #include <ionpot/widget/label_value.hpp>
 
-#include <ionpot/util/percent.hpp>
-
 #include <memory> // std::shared_ptr
 #include <string>
 
 namespace dungeons::ui {
-	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
 	LabelValue::LabelValue(
@@ -24,18 +21,8 @@ namespace dungeons::ui {
 
 	template<>
 	void
-	LabelValue::value(const char* str)
-	{ value(std::string {str}); }
-
-	template<>
-	void
 	LabelValue::value(std::string str)
 	{ LabelValueDef::value(bold_text(*m_ui, str)); }
-
-	template<>
-	void
-	LabelValue::value(util::Percent p)
-	{ value(p.to_str()); }
 
 	// helpers
 	void
