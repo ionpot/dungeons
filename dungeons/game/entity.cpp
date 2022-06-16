@@ -33,10 +33,11 @@ namespace dungeons::game {
 	{ return {intellect}; }
 
 	// Entity
-	Entity::Entity(Class::Template::Ptr class_template, int armor):
+	Entity::Entity(Class::Template::Ptr class_template, int base_armor):
 		m_base {},
 		m_class {class_template},
-		m_armor {armor}
+		m_armor {},
+		m_base_armor {base_armor}
 	{}
 
 	int
@@ -45,7 +46,14 @@ namespace dungeons::game {
 
 	int
 	Entity::armor() const
-	{ return m_armor; }
+	{
+		return m_base_armor
+			+ (m_armor ? m_armor->value : 0);
+	}
+
+	void
+	Entity::armor(Armor::Ptr armor)
+	{ m_armor = armor; }
 
 	void
 	Entity::base_attr(BaseAttributes attr)
@@ -57,7 +65,12 @@ namespace dungeons::game {
 
 	util::Percent
 	Entity::dodge_chance() const
-	{ return m_base.dodge_chance(); }
+	{
+		auto base = m_base.dodge_chance();
+		return m_armor
+			? m_armor->dodge_scale.apply_to(base)
+			: base;
+	}
 
 	const Class&
 	Entity::get_class() const
@@ -65,7 +78,10 @@ namespace dungeons::game {
 
 	int
 	Entity::initiative() const
-	{ return m_base.initiative(); }
+	{
+		auto armor = m_armor ? m_armor->initiative : 0;
+		return m_base.initiative() + armor;
+	}
 
 	int
 	Entity::intellect() const

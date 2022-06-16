@@ -16,6 +16,29 @@ namespace dungeons::game {
 		m_file {std::move(file)}
 	{}
 
+	Entity::Armor
+	Config::armor(Entity::Armor::Id id, std::string section_name) const
+	{
+		auto section = m_file.find_section(section_name);
+		return {
+			id,
+			section.find_pair("armor value").to_int(),
+			section.find_pair("initiative bonus").to_int(),
+			section.find_pair("dodge scale").to_scale()
+		};
+	}
+
+	Config::Armors
+	Config::armors() const
+	{
+		using Armor = Entity::Armor;
+		auto make = std::make_shared<const Armor, Armor&&>;
+		return {
+			make(armor(Armor::Id::leather, "leather armor")),
+			make(armor(Armor::Id::scale_mail, "scale mail armor"))
+		};
+	}
+
 	util::dice::Input
 	Config::attribute_dice() const
 	{

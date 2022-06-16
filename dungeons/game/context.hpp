@@ -17,6 +17,7 @@ namespace dungeons::game {
 				std::shared_ptr<const Config>,
 				unsigned int seed);
 
+		const Config::Armors& armors() const;
 		int base_armor() const;
 		const Class::Templates& class_templates() const;
 		int roll_attribute();
@@ -25,6 +26,7 @@ namespace dungeons::game {
 	private:
 		util::dice::Engine m_dice_engine;
 		util::dice::Input m_attribute_dice;
+		Config::Armors m_armors;
 		int m_base_armor;
 		Class::Templates m_class_templates;
 	};

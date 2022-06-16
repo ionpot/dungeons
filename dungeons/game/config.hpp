@@ -1,6 +1,7 @@
 #pragma once
 
 #include "class.hpp"
+#include "entity.hpp"
 
 #include <ionpot/util/cfg_file.hpp>
 #include <ionpot/util/dice.hpp>
@@ -12,11 +13,17 @@ namespace dungeons::game {
 
 	class Config {
 	public:
+		struct Armors {
+			Entity::Armor::Ptr leather;
+			Entity::Armor::Ptr scale_mail;
+		};
+
 		Config(util::CfgFile&&);
 
 		util::dice::Input attribute_dice() const;
 
 		int base_armor() const;
+		Armors armors() const;
 
 		Class::Templates class_templates() const;
 
@@ -27,6 +34,7 @@ namespace dungeons::game {
 	private:
 		util::CfgFile m_file;
 
+		Entity::Armor armor(Entity::Armor::Id, std::string) const;
 		Class::Template class_template(Class::Id, std::string) const;
 	};
 }

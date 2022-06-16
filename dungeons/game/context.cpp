@@ -13,9 +13,14 @@ namespace dungeons::game {
 	):
 		m_dice_engine {seed},
 		m_attribute_dice {config->attribute_dice()},
+		m_armors {config->armors()},
 		m_base_armor {config->base_armor()},
 		m_class_templates {config->class_templates()}
 	{}
+
+	const Config::Armors&
+	Context::armors() const
+	{ return m_armors; }
 
 	int
 	Context::base_armor() const

@@ -27,22 +27,24 @@ namespace dungeons {
 	):
 		m_log {log},
 		m_spacing {ui->section_spacing},
-		m_select {ui::class_select(*ui, *game)},
+		m_class {ui::class_select(*ui, *game)},
 		m_attributes {std::make_shared<ui::NewAttributes>(ui, game)},
 		m_stats {std::make_shared<ui::NewStats>(ui)},
+		m_armor {std::make_shared<ui::ArmorSelect>(*ui, *game)},
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
 		m_new {},
 		m_base_armor {game->base_armor()}
 	{
 		elements({m_done});
-		groups({m_select, m_attributes, m_stats});
+		groups({m_class, m_attributes, m_stats, m_armor});
 
-		m_select->position(ui->screen_margin);
+		m_class->position(ui->screen_margin);
 
-		m_attributes->place_below(*m_select, m_spacing);
+		m_attributes->place_below(*m_class, m_spacing);
 
 		m_attributes->hide();
 		m_stats->hide();
+		m_armor->hide();
 
 		m_done->hide();
 	}
@@ -63,7 +65,7 @@ namespace dungeons {
 	std::optional<screen::Output>
 	NewCharScreen::on_click(const widget::Element& clicked)
 	{
-		if (auto chosen = m_select->on_click(clicked)) {
+		if (auto chosen = m_class->on_click(clicked)) {
 			if (m_new)
 				m_new->class_template(*chosen);
 			else
@@ -80,8 +82,17 @@ namespace dungeons {
 				m_stats->place_after(*m_attributes, m_spacing);
 				m_stats->show();
 			}
+			if (m_armor->hidden()) {
+				m_armor->place_below(*m_attributes, m_spacing);
+				m_armor->show();
+			}
+			return {};
+		}
+		if (auto armor = m_armor->on_click(clicked)) {
+			m_new->armor(*armor);
+			m_stats->update(*m_new);
 			if (m_done->hidden()) {
-				m_done->place_below(*m_attributes, m_spacing);
+				m_done->place_below(*m_armor, m_spacing);
 				m_done->show();
 			}
 			return {};

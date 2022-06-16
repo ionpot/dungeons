@@ -3,9 +3,29 @@
 #include <game/class.hpp>
 #include <game/entity.hpp>
 
+#include <memory> // std::shared_ptr
 #include <string>
 
 namespace dungeons::ui::string {
+	std::string
+	armor(game::Entity::Armor::Id id)
+	{
+		switch (id) {
+		case game::Entity::Armor::Id::leather:
+			return "Leather";
+		case game::Entity::Armor::Id::scale_mail:
+			return "Scale Mail";
+		}
+	}
+
+	std::string
+	armor(std::shared_ptr<const game::Entity::Armor> a)
+	{
+		if (a)
+			return armor(a->id);
+		return "No Armor";
+	}
+
 	std::string
 	class_id(game::Class::Id id)
 	{
