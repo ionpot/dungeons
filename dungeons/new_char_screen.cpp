@@ -5,6 +5,7 @@
 #include <ui/button.hpp>
 #include <ui/class_select.hpp>
 #include <ui/context.hpp>
+#include <ui/exception.hpp>
 #include <ui/string.hpp>
 
 #include <game/context.hpp>
@@ -51,9 +52,15 @@ namespace dungeons {
 		m_done->hide();
 	}
 
+	bool
+	NewCharScreen::entity_ready() const
+	{ return m_chosen_class && m_rolled_attr; }
+
 	game::Entity
 	NewCharScreen::get_entity() const
 	{
+		if (!entity_ready())
+			throw ui::Exception {"Entity not ready yet."};
 		game::Entity entity {m_chosen_class, m_base_armor};
 		entity.base_attr(*m_rolled_attr);
 		entity.armor(m_chosen_armor);
@@ -114,5 +121,8 @@ namespace dungeons {
 
 	void
 	NewCharScreen::refresh_stats()
-	{ m_stats->update(get_entity()); }
+	{
+		if (entity_ready())
+			m_stats->update(get_entity());
+	}
 }

@@ -48,6 +48,7 @@ namespace dungeons {
 		std::optional<game::Entity::BaseAttributes> m_rolled_attr;
 		game::Entity::Armor::Ptr m_chosen_armor;
 
+		bool entity_ready() const;
 		game::Entity get_entity() const;
 		void log_new_char();
 		void refresh_stats();
