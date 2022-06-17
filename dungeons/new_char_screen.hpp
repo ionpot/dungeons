@@ -36,6 +36,18 @@ namespace dungeons {
 		std::optional<screen::Output> on_click(const widget::Element&);
 
 	private:
+		struct Chosen {
+			game::Class::Template::Ptr class_template;
+			game::Entity::BaseAttributes base_attr;
+			game::Entity::Armor::Ptr armor;
+			int base_armor;
+
+			Chosen(int base_armor);
+
+			bool is_ready() const;
+			game::Entity to_entity() const;
+		};
+
 		std::shared_ptr<util::Log> m_log;
 		util::Size m_spacing;
 		std::shared_ptr<ui::ClassSelect> m_class;
@@ -43,13 +55,8 @@ namespace dungeons {
 		std::shared_ptr<ui::NewStats> m_stats;
 		std::shared_ptr<ui::ArmorSelect> m_armor;
 		std::shared_ptr<ui::Button> m_done;
-		int m_base_armor;
-		game::Class::Template::Ptr m_chosen_class;
-		std::optional<game::Entity::BaseAttributes> m_rolled_attr;
-		game::Entity::Armor::Ptr m_chosen_armor;
+		Chosen m_chosen;
 
-		bool entity_ready() const;
-		game::Entity get_entity() const;
 		void log_new_char();
 		void refresh_stats();
 	};
