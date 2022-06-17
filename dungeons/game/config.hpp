@@ -18,6 +18,12 @@ namespace dungeons::game {
 			Entity::Armor::Ptr scale_mail;
 		};
 
+		struct ClassTemplates {
+			Class::Template::Ptr warrior;
+			Class::Template::Ptr hybrid;
+			Class::Template::Ptr mage;
+		};
+
 		Config(util::CfgFile&&);
 
 		util::dice::Input attribute_dice() const;
@@ -25,7 +31,7 @@ namespace dungeons::game {
 		int base_armor() const;
 		Armors armors() const;
 
-		Class::Templates class_templates() const;
+		ClassTemplates class_templates() const;
 
 		Class::Template warrior_template() const;
 		Class::Template hybrid_template() const;

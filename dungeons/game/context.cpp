@@ -1,6 +1,5 @@
 #include "context.hpp"
 
-#include "class.hpp"
 #include "config.hpp"
 #include "entity.hpp"
 
@@ -26,7 +25,7 @@ namespace dungeons::game {
 	Context::base_armor() const
 	{ return m_base_armor; }
 
-	const Class::Templates&
+	const Config::ClassTemplates&
 	Context::class_templates() const
 	{ return m_class_templates; }
 

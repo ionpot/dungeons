@@ -58,7 +58,7 @@ namespace dungeons::game {
 		return {id, section.find_pair("hp per level").to_int()};
 	}
 
-	Class::Templates
+	Config::ClassTemplates
 	Config::class_templates() const
 	{
 		return {

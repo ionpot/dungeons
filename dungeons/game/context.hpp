@@ -1,6 +1,5 @@
 #pragma once
 
-#include "class.hpp"
 #include "config.hpp"
 #include "entity.hpp"
 
@@ -19,7 +18,7 @@ namespace dungeons::game {
 
 		const Config::Armors& armors() const;
 		int base_armor() const;
-		const Class::Templates& class_templates() const;
+		const Config::ClassTemplates& class_templates() const;
 		int roll_attribute();
 		Entity::BaseAttributes roll_base_attr();
 
@@ -28,6 +27,6 @@ namespace dungeons::game {
 		util::dice::Input m_attribute_dice;
 		Config::Armors m_armors;
 		int m_base_armor;
-		Class::Templates m_class_templates;
+		Config::ClassTemplates m_class_templates;
 	};
 }

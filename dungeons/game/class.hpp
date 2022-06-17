@@ -13,12 +13,6 @@ namespace dungeons::game {
 			int hp_bonus_per_level;
 		};
 
-		struct Templates {
-			Template::Ptr warrior;
-			Template::Ptr hybrid;
-			Template::Ptr mage;
-		};
-
 		Class(Template::Ptr, int level = 1);
 
 		Id id() const;
