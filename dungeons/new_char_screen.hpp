@@ -9,6 +9,7 @@
 #include <ui/new_attributes.hpp>
 #include <ui/new_stats.hpp>
 
+#include <game/class.hpp>
 #include <game/context.hpp>
 #include <game/entity.hpp>
 
@@ -16,7 +17,6 @@
 #include <ionpot/widget/group.hpp>
 
 #include <ionpot/util/log.hpp>
-#include <ionpot/util/point.hpp>
 #include <ionpot/util/size.hpp>
 
 #include <memory> // std::shared_ptr
@@ -43,9 +43,13 @@ namespace dungeons {
 		std::shared_ptr<ui::NewStats> m_stats;
 		std::shared_ptr<ui::ArmorSelect> m_armor;
 		std::shared_ptr<ui::Button> m_done;
-		std::optional<game::Entity> m_new;
 		int m_base_armor;
+		game::Class::Template::Ptr m_chosen_class;
+		std::optional<game::Entity::BaseAttributes> m_rolled_attr;
+		game::Entity::Armor::Ptr m_chosen_armor;
 
+		game::Entity get_entity() const;
 		void log_new_char();
+		void refresh_stats();
 	};
 }

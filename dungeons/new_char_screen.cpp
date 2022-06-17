@@ -32,8 +32,10 @@ namespace dungeons {
 		m_stats {std::make_shared<ui::NewStats>(ui)},
 		m_armor {std::make_shared<ui::ArmorSelect>(*ui, *game)},
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
-		m_new {},
-		m_base_armor {game->base_armor()}
+		m_base_armor {game->base_armor()},
+		m_chosen_class {},
+		m_rolled_attr {},
+		m_chosen_armor {}
 	{
 		elements({m_done});
 		groups({m_class, m_attributes, m_stats, m_armor});
@@ -49,12 +51,21 @@ namespace dungeons {
 		m_done->hide();
 	}
 
+	game::Entity
+	NewCharScreen::get_entity() const
+	{
+		game::Entity entity {m_chosen_class, m_base_armor};
+		entity.base_attr(*m_rolled_attr);
+		entity.armor(m_chosen_armor);
+		return entity;
+	}
+
 	void
 	NewCharScreen::log_new_char()
 	{
 		m_log->put("New character");
 		namespace str = ui::string;
-		const auto& entity = *m_new;
+		const auto& entity = get_entity();
 		m_log->pair(
 			str::class_id(entity) + ":",
 			str::primary_attr(entity));
@@ -66,18 +77,15 @@ namespace dungeons {
 	NewCharScreen::on_click(const widget::Element& clicked)
 	{
 		if (auto chosen = m_class->on_click(clicked)) {
-			if (m_new)
-				m_new->class_template(*chosen);
-			else
-				m_new.emplace(*chosen, m_base_armor);
-			m_stats->update(*m_new);
+			m_chosen_class = *chosen;
+			refresh_stats();
 			if (m_attributes->hidden())
 				m_attributes->show();
 			return {};
 		}
 		if (auto rolled = m_attributes->on_click(clicked)) {
-			m_new->base_attr(*rolled);
-			m_stats->update(*m_new);
+			m_rolled_attr = rolled;
+			refresh_stats();
 			if (m_stats->hidden()) {
 				m_stats->place_after(*m_attributes, m_spacing);
 				m_stats->show();
@@ -89,8 +97,8 @@ namespace dungeons {
 			return {};
 		}
 		if (auto armor = m_armor->on_click(clicked)) {
-			m_new->armor(*armor);
-			m_stats->update(*m_new);
+			m_chosen_armor = *armor;
+			refresh_stats();
 			if (m_done->hidden()) {
 				m_done->place_below(*m_armor, m_spacing);
 				m_done->show();
@@ -99,8 +107,12 @@ namespace dungeons {
 		}
 		if (*m_done == clicked) {
 			log_new_char();
-			return screen::ToCombat {m_new->get_class().get_template()->id};
+			return screen::ToCombat {m_chosen_class->id};
 		}
 		return {};
 	}
+
+	void
+	NewCharScreen::refresh_stats()
+	{ m_stats->update(get_entity()); }
 }
