@@ -6,9 +6,9 @@ namespace dungeons::game {
 		m_level {level}
 	{}
 
-	Class::Id
-	Class::id() const
-	{ return m_template->id; }
+	Class::Template::Ptr
+	Class::get_template() const
+	{ return m_template; }
 
 	int
 	Class::hp_bonus() const

@@ -52,7 +52,9 @@ namespace dungeons::game {
 	}
 
 	Class::Template
-	Config::class_template(Class::Id id, std::string section_name) const
+	Config::class_template(
+			Class::Template::Id id,
+			std::string section_name) const
 	{
 		auto section = m_file.find_section(section_name);
 		return {id, section.find_pair("hp per level").to_int()};
@@ -61,22 +63,12 @@ namespace dungeons::game {
 	Config::ClassTemplates
 	Config::class_templates() const
 	{
+		using Template = Class::Template;
+		auto make = std::make_shared<const Template, Template&&>;
 		return {
-			std::make_shared<const Class::Template>(warrior_template()),
-			std::make_shared<const Class::Template>(hybrid_template()),
-			std::make_shared<const Class::Template>(mage_template())
+			make(class_template(Template::Id::warrior, "warrior template")),
+			make(class_template(Template::Id::hybrid, "hybrid template")),
+			make(class_template(Template::Id::mage, "mage template"))
 		};
 	}
-
-	Class::Template
-	Config::warrior_template() const
-	{ return class_template(Class::Id::warrior, "warrior template"); }
-
-	Class::Template
-	Config::hybrid_template() const
-	{ return class_template(Class::Id::hybrid, "hybrid template"); }
-
-	Class::Template
-	Config::mage_template() const
-	{ return class_template(Class::Id::mage, "mage template"); }
 }

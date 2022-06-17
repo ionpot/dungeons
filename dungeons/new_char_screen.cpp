@@ -99,7 +99,7 @@ namespace dungeons {
 		}
 		if (*m_done == clicked) {
 			log_new_char();
-			return screen::ToCombat {m_new->get_class().id()};
+			return screen::ToCombat {m_new->get_class().get_template()->id};
 		}
 		return {};
 	}

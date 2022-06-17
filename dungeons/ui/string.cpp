@@ -27,14 +27,14 @@ namespace dungeons::ui::string {
 	}
 
 	std::string
-	class_id(game::Class::Id id)
+	class_id(game::Class::Template::Id id)
 	{
 		switch (id) {
-		case game::Class::Id::warrior:
+		case game::Class::Template::Id::warrior:
 			return "Warrior";
-		case game::Class::Id::hybrid:
+		case game::Class::Template::Id::hybrid:
 			return "Hybrid";
-		case game::Class::Id::mage:
+		case game::Class::Template::Id::mage:
 			return "Mage";
 		}
 	}
@@ -45,7 +45,7 @@ namespace dungeons::ui::string {
 
 	std::string
 	class_id(const game::Entity& e)
-	{ return class_id(e.get_class().id()); }
+	{ return class_id(e.get_class().get_template()); }
 
 	std::string
 	primary_attr(const game::Entity& e)

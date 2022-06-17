@@ -33,14 +33,10 @@ namespace dungeons::game {
 
 		ClassTemplates class_templates() const;
 
-		Class::Template warrior_template() const;
-		Class::Template hybrid_template() const;
-		Class::Template mage_template() const;
-
 	private:
 		util::CfgFile m_file;
 
 		Entity::Armor armor(Entity::Armor::Id, std::string) const;
-		Class::Template class_template(Class::Id, std::string) const;
+		Class::Template class_template(Class::Template::Id, std::string) const;
 	};
 }
