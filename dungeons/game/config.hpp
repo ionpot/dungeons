@@ -24,6 +24,13 @@ namespace dungeons::game {
 			Class::Template::Ptr mage;
 		};
 
+		struct Weapons {
+			Entity::Weapon::Ptr dagger;
+			Entity::Weapon::Ptr mace;
+			Entity::Weapon::Ptr longsword;
+			Entity::Weapon::Ptr halberd;
+		};
+
 		Config(util::CfgFile&&);
 
 		util::dice::Input attribute_dice() const;
@@ -32,11 +39,13 @@ namespace dungeons::game {
 		Armors armors() const;
 
 		ClassTemplates class_templates() const;
+		Weapons weapons() const;
 
 	private:
 		util::CfgFile m_file;
 
 		Entity::Armor armor(Entity::Armor::Id, std::string) const;
 		Class::Template class_template(Class::Template::Id, std::string) const;
+		Entity::Weapon weapon(Entity::Weapon::Id, std::string) const;
 	};
 }

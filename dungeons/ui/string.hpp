@@ -13,4 +13,6 @@ namespace dungeons::ui::string {
 	std::string class_id(const game::Entity&);
 	std::string primary_attr(const game::Entity&);
 	std::string secondary_attr(const game::Entity&);
+	std::string weapon(game::Entity::Weapon::Id);
+	std::string weapon(game::Entity::Weapon::Ptr);
 }

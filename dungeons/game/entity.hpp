@@ -2,6 +2,7 @@
 
 #include "class.hpp"
 
+#include <ionpot/util/dice.hpp>
 #include <ionpot/util/percent.hpp>
 #include <ionpot/util/scale.hpp>
 
@@ -34,6 +35,18 @@ namespace dungeons::game {
 			util::Percent resist_chance() const;
 		};
 
+		struct Weapon {
+			using Ptr = std::shared_ptr<const Weapon>;
+			enum class Id {
+				dagger,
+				halberd,
+				longsword,
+				mace
+			} id;
+			util::dice::Input dice;
+			int initiative {0};
+		};
+
 		Entity(Class::Template::Ptr, int base_armor = 0);
 
 		void base_attr(BaseAttributes);
@@ -54,10 +67,13 @@ namespace dungeons::game {
 		util::Percent dodge_chance() const;
 		util::Percent resist_chance() const;
 
+		void weapon(Weapon::Ptr);
+
 	private:
 		BaseAttributes m_base;
 		Class m_class;
 		Armor::Ptr m_armor;
 		int m_base_armor;
+		Weapon::Ptr m_weapon;
 	};
 }

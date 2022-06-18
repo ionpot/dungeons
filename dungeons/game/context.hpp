@@ -21,6 +21,7 @@ namespace dungeons::game {
 		const Config::ClassTemplates& class_templates() const;
 		int roll_attribute();
 		Entity::BaseAttributes roll_base_attr();
+		const Config::Weapons& weapons() const;
 
 	private:
 		util::dice::Engine m_dice_engine;
@@ -28,5 +29,6 @@ namespace dungeons::game {
 		Config::Armors m_armors;
 		int m_base_armor;
 		Config::ClassTemplates m_class_templates;
+		Config::Weapons m_weapons;
 	};
 }

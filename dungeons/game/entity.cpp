@@ -80,7 +80,8 @@ namespace dungeons::game {
 	Entity::initiative() const
 	{
 		auto armor = m_armor ? m_armor->initiative : 0;
-		return m_base.initiative() + armor;
+		auto weapon = m_weapon ? m_weapon->initiative : 0;
+		return m_base.initiative() + armor + weapon;
 	}
 
 	int
@@ -98,4 +99,8 @@ namespace dungeons::game {
 	int
 	Entity::total_hp() const
 	{ return m_base.hp() + m_class.hp_bonus(); }
+
+	void
+	Entity::weapon(Weapon::Ptr w)
+	{ m_weapon = w; }
 }

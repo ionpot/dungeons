@@ -14,7 +14,8 @@ namespace dungeons::game {
 		m_attribute_dice {config->attribute_dice()},
 		m_armors {config->armors()},
 		m_base_armor {config->base_armor()},
-		m_class_templates {config->class_templates()}
+		m_class_templates {config->class_templates()},
+		m_weapons {config->weapons()}
 	{}
 
 	const Config::Armors&
@@ -42,4 +43,8 @@ namespace dungeons::game {
 			roll_attribute()
 		};
 	}
+
+	const Config::Weapons&
+	Context::weapons() const
+	{ return m_weapons; }
 }

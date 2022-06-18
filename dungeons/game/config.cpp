@@ -71,4 +71,28 @@ namespace dungeons::game {
 			make(class_template(Template::Id::mage, "mage template"))
 		};
 	}
+
+	Entity::Weapon
+	Config::weapon(Entity::Weapon::Id id, std::string section_name) const
+	{
+		auto section = m_file.find_section(section_name);
+		return {
+			id,
+			section.find_pair("damage dice").to_dice(),
+			section.find_pair("initiative bonus").to_int()
+		};
+	}
+
+	Config::Weapons
+	Config::weapons() const
+	{
+		using Weapon = Entity::Weapon;
+		auto make = std::make_shared<const Weapon, Weapon&&>;
+		return {
+			make(weapon(Weapon::Id::dagger, "dagger")),
+			make(weapon(Weapon::Id::mace, "mace")),
+			make(weapon(Weapon::Id::longsword, "longsword")),
+			make(weapon(Weapon::Id::halberd, "halberd"))
+		};
+	}
 }

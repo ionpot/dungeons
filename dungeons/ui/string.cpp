@@ -3,9 +3,13 @@
 #include <game/class.hpp>
 #include <game/entity.hpp>
 
+#include <ionpot/util/string.hpp>
+
 #include <string>
 
 namespace dungeons::ui::string {
+	namespace util = ionpot::util;
+
 	std::string
 	armor(game::Entity::Armor::Id id)
 	{
@@ -62,5 +66,30 @@ namespace dungeons::ui::string {
 			+ ", Dodge " + e.dodge_chance().to_str()
 			+ ", Init " + std::to_string(e.initiative())
 			+ ", Resist " + e.resist_chance().to_str();
+	}
+
+	std::string
+	weapon(game::Entity::Weapon::Id id)
+	{
+		using Id = game::Entity::Weapon::Id;
+		switch (id) {
+		case Id::dagger:
+			return "Dagger";
+		case Id::halberd:
+			return "Halberd";
+		case Id::longsword:
+			return "Longsword";
+		case Id::mace:
+			return "Mace";
+		}
+	}
+
+	std::string
+	weapon(game::Entity::Weapon::Ptr w)
+	{
+		auto p = util::string::parens;
+		return w
+			? weapon(w->id) + " " + p(w->dice.to_str())
+			: "No Weapon";
 	}
 }

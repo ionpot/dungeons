@@ -8,6 +8,7 @@
 #include <ui/context.hpp>
 #include <ui/new_attributes.hpp>
 #include <ui/new_stats.hpp>
+#include <ui/weapon_select.hpp>
 
 #include <game/class.hpp>
 #include <game/context.hpp>
@@ -41,6 +42,7 @@ namespace dungeons {
 			game::Entity::BaseAttributes base_attr;
 			game::Entity::Armor::Ptr armor;
 			int base_armor;
+			game::Entity::Weapon::Ptr weapon;
 
 			Chosen(int base_armor);
 
@@ -54,6 +56,7 @@ namespace dungeons {
 		std::shared_ptr<ui::NewAttributes> m_attributes;
 		std::shared_ptr<ui::NewStats> m_stats;
 		std::shared_ptr<ui::ArmorSelect> m_armor;
+		std::shared_ptr<ui::WeaponSelect> m_weapon;
 		std::shared_ptr<ui::Button> m_done;
 		Chosen m_chosen;
 

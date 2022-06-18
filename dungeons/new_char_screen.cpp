@@ -7,6 +7,7 @@
 #include <ui/context.hpp>
 #include <ui/exception.hpp>
 #include <ui/string.hpp>
+#include <ui/weapon_select.hpp>
 
 #include <game/context.hpp>
 
@@ -32,11 +33,12 @@ namespace dungeons {
 		m_attributes {std::make_shared<ui::NewAttributes>(ui, game)},
 		m_stats {std::make_shared<ui::NewStats>(ui)},
 		m_armor {std::make_shared<ui::ArmorSelect>(*ui, *game)},
+		m_weapon {std::make_shared<ui::WeaponSelect>(*ui, *game)},
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
 		m_chosen {game->base_armor()}
 	{
 		elements({m_done});
-		groups({m_class, m_attributes, m_stats, m_armor});
+		groups({m_class, m_attributes, m_stats, m_armor, m_weapon});
 
 		m_class->position(ui->screen_margin);
 
@@ -45,6 +47,7 @@ namespace dungeons {
 		m_attributes->hide();
 		m_stats->hide();
 		m_armor->hide();
+		m_weapon->hide();
 
 		m_done->hide();
 	}
@@ -88,8 +91,17 @@ namespace dungeons {
 		if (auto armor = m_armor->on_click(clicked)) {
 			m_chosen.armor = *armor;
 			refresh_stats();
+			if (m_weapon->hidden()) {
+				m_weapon->place_below(*m_armor, m_spacing);
+				m_weapon->show();
+			}
+			return {};
+		}
+		if (auto weapon = m_weapon->on_click(clicked)) {
+			m_chosen.weapon = *weapon;
+			refresh_stats();
 			if (m_done->hidden()) {
-				m_done->place_below(*m_armor, m_spacing);
+				m_done->place_below(*m_weapon, m_spacing);
 				m_done->show();
 			}
 			return {};
@@ -113,7 +125,8 @@ namespace dungeons {
 		class_template {},
 		base_attr {},
 		armor {},
-		base_armor {base_armor}
+		base_armor {base_armor},
+		weapon {}
 	{}
 
 	bool
@@ -128,6 +141,7 @@ namespace dungeons {
 		game::Entity entity {class_template, base_armor};
 		entity.base_attr(base_attr);
 		entity.armor(armor);
+		entity.weapon(weapon);
 		return entity;
 	}
 }
