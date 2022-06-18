@@ -3,7 +3,6 @@
 #include <game/class.hpp>
 #include <game/entity.hpp>
 
-#include <memory> // std::shared_ptr
 #include <string>
 
 namespace dungeons::ui::string {
@@ -19,7 +18,7 @@ namespace dungeons::ui::string {
 	}
 
 	std::string
-	armor(std::shared_ptr<const game::Entity::Armor> a)
+	armor(game::Entity::Armor::Ptr a)
 	{
 		if (a)
 			return armor(a->id);
