@@ -103,4 +103,28 @@ namespace dungeons::game {
 	void
 	Entity::weapon(Weapon::Ptr w)
 	{ m_weapon = w; }
+
+	util::Range
+	Entity::weapon_damage() const
+	{ return {weapon_damage_min(), weapon_damage_max()}; }
+
+	int
+	Entity::weapon_damage_bonus() const
+	{ return strength() / 2; }
+
+	int
+	Entity::weapon_damage_min() const
+	{
+		return m_weapon
+			? m_weapon->dice.min() + weapon_damage_bonus()
+			: 0;
+	}
+
+	int
+	Entity::weapon_damage_max() const
+	{
+		return m_weapon
+			? m_weapon->dice.max() + weapon_damage_bonus()
+			: 0;
+	}
 }

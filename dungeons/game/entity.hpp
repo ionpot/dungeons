@@ -4,6 +4,7 @@
 
 #include <ionpot/util/dice.hpp>
 #include <ionpot/util/percent.hpp>
+#include <ionpot/util/range.hpp>
 #include <ionpot/util/scale.hpp>
 
 #include <memory> // std::shared_ptr
@@ -68,6 +69,10 @@ namespace dungeons::game {
 		util::Percent resist_chance() const;
 
 		void weapon(Weapon::Ptr);
+		util::Range weapon_damage() const;
+		int weapon_damage_bonus() const;
+		int weapon_damage_min() const;
+		int weapon_damage_max() const;
 
 	private:
 		BaseAttributes m_base;

@@ -20,7 +20,7 @@ namespace dungeons::ui {
 			normal_text(ui, "Armor")
 		)},
 		m_radio {std::make_shared<Radio>(
-			Radio::horizontal(ui, string::armor, {
+			Radio::vertical(ui, string::armor, {
 				game.armors().leather,
 				game.armors().scale_mail
 			})

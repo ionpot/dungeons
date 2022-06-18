@@ -24,5 +24,6 @@ namespace dungeons::ui {
 		std::shared_ptr<LabelValue> m_dodge;
 		std::shared_ptr<LabelValue> m_initiative;
 		std::shared_ptr<LabelValue> m_will;
+		std::shared_ptr<LabelValue> m_weapon;
 	};
 }
