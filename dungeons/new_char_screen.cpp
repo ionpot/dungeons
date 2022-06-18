@@ -101,7 +101,8 @@ namespace dungeons {
 			m_chosen.weapon = *weapon;
 			refresh_stats();
 			if (m_done->hidden()) {
-				m_done->place_below(*m_weapon, m_spacing);
+				m_done->place_after(*m_weapon, m_spacing);
+				m_done->center_y_to(*m_weapon);
 				m_done->show();
 			}
 			return {};

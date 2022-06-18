@@ -92,6 +92,17 @@ namespace dungeons::ui {
 			return {std::move(buttons)};
 		}
 
+		static RadioGroup
+		vertical(
+				const Context& ui,
+				ToString to_string,
+				const std::vector<T>& values)
+		{
+			auto buttons = make_buttons(ui, to_string, values);
+			stack_buttons(ui, buttons);
+			return {std::move(buttons)};
+		}
+
 		RadioGroup(std::vector<ButtonPtr>&& buttons):
 			m_buttons {std::move(buttons)},
 			m_chosen {}

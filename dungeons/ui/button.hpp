@@ -5,6 +5,7 @@
 
 #include <ionpot/widget/element.hpp>
 #include <ionpot/widget/side_by_side.hpp>
+#include <ionpot/widget/stack_down.hpp>
 
 #include <ionpot/util/point.hpp>
 #include <ionpot/util/size.hpp>
@@ -57,4 +58,9 @@ namespace dungeons::ui {
 	void
 	lay_buttons(const Context& ui, std::vector<T>& buttons)
 	{ widget::side_by_side(buttons, ui.button.spacing); }
+
+	template<class T> // T = widget::Box*
+	void
+	stack_buttons(const Context& ui, std::vector<T>& buttons)
+	{ widget::stack_down(buttons, ui.button.spacing); }
 }

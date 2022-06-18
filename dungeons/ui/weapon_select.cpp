@@ -20,7 +20,7 @@ namespace dungeons::ui {
 			normal_text(ui, "Weapon")
 		)},
 		m_radio {std::make_shared<Radio>(
-			Radio::horizontal(ui, string::weapon, {
+			Radio::vertical(ui, string::weapon, {
 				game.weapons().dagger,
 				game.weapons().mace,
 				game.weapons().longsword,
