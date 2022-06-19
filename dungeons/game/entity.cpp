@@ -44,12 +44,9 @@ namespace dungeons::game {
 	Entity::agility() const
 	{ return m_base.agility; }
 
-	int
+	Entity::Armor::Ptr
 	Entity::armor() const
-	{
-		return m_base_armor
-			+ (m_armor ? m_armor->value : 0);
-	}
+	{ return m_armor; }
 
 	void
 	Entity::armor(Armor::Ptr armor)
@@ -95,6 +92,13 @@ namespace dungeons::game {
 	int
 	Entity::strength() const
 	{ return m_base.strength; }
+
+	int
+	Entity::total_armor() const
+	{
+		return m_base_armor
+			+ (m_armor ? m_armor->value : 0);
+	}
 
 	int
 	Entity::total_hp() const

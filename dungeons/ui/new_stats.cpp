@@ -27,7 +27,7 @@ namespace dungeons::ui {
 	NewStats::update(const game::Entity& entity)
 	{
 		m_hp->value(entity.total_hp());
-		m_armor->value(entity.armor());
+		m_armor->value(entity.total_armor());
 		m_dodge->value(entity.dodge_chance());
 		m_initiative->value(entity.initiative());
 		m_will->value(entity.resist_chance());

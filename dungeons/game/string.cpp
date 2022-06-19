@@ -62,7 +62,7 @@ namespace dungeons::game::string {
 	secondary_attr(const Entity& e)
 	{
 		return "Hp " + std::to_string(e.total_hp())
-			+ ", Armor " + std::to_string(e.armor())
+			+ ", Armor " + std::to_string(e.total_armor())
 			+ ", Dodge " + e.dodge_chance().to_str()
 			+ ", Init " + std::to_string(e.initiative())
 			+ ", Resist " + e.resist_chance().to_str();

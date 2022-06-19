@@ -59,8 +59,9 @@ namespace dungeons::game {
 		int agility() const;
 		int intellect() const;
 
-		int armor() const;
+		Armor::Ptr armor() const;
 		void armor(Armor::Ptr);
+		int total_armor() const;
 
 		int initiative() const;
 		int total_hp() const;
