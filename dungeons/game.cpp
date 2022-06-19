@@ -49,6 +49,6 @@ namespace dungeons {
 	void
 	Game::loop()
 	{
-		loop(NewCharScreen {m_log, m_ui, m_game});
+		loop(NewCharScreen {m_log, m_ui, *m_game});
 	}
 }

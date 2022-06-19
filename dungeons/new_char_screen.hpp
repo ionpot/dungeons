@@ -32,7 +32,7 @@ namespace dungeons {
 		NewCharScreen(
 			std::shared_ptr<util::Log>,
 			std::shared_ptr<const ui::Context>,
-			std::shared_ptr<game::Context>);
+			const game::Context&);
 
 		std::optional<screen::Output> on_click(const widget::Element&);
 

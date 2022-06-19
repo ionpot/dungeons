@@ -28,7 +28,7 @@ namespace dungeons::game {
 	{ return m_class_templates; }
 
 	std::shared_ptr<Dice>
-	Context::dice()
+	Context::dice() const
 	{ return m_dice; }
 
 	const Config::Weapons&

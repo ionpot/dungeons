@@ -16,7 +16,7 @@ namespace dungeons::game {
 		const Config::Armors& armors() const;
 		int base_armor() const;
 		const Config::ClassTemplates& class_templates() const;
-		std::shared_ptr<Dice> dice();
+		std::shared_ptr<Dice> dice() const;
 		const Config::Weapons& weapons() const;
 
 	private:
