@@ -4,7 +4,7 @@
 #include "radio_group.hpp"
 #include "text.hpp"
 
-#include <game/context.hpp>
+#include <game/config.hpp>
 #include <game/entity.hpp>
 
 #include <ionpot/widget/element.hpp>
@@ -21,7 +21,7 @@ namespace dungeons::ui {
 		using Value = game::Entity::Armor::Ptr;
 		using Radio = RadioGroup<Value>;
 
-		ArmorSelect(const Context&, const game::Context&);
+		ArmorSelect(const Context&, const game::Config::Armors&);
 
 		std::optional<Value> on_click(const widget::Element&);
 

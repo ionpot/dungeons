@@ -5,7 +5,7 @@
 #include "string.hpp"
 #include "text.hpp"
 
-#include <game/context.hpp>
+#include <game/config.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -15,16 +15,19 @@
 namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
-	WeaponSelect::WeaponSelect(const Context& ui, const game::Context& game):
+	WeaponSelect::WeaponSelect(
+			const Context& ui,
+			const game::Config::Weapons& weapons
+	):
 		m_title {std::make_shared<Text>(
 			normal_text(ui, "Weapon")
 		)},
 		m_radio {std::make_shared<Radio>(
 			Radio::vertical(ui, string::weapon, {
-				game.weapons().dagger,
-				game.weapons().mace,
-				game.weapons().longsword,
-				game.weapons().halberd
+				weapons.dagger,
+				weapons.mace,
+				weapons.longsword,
+				weapons.halberd
 			})
 		)}
 	{

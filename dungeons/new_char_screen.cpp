@@ -29,13 +29,13 @@ namespace dungeons {
 	):
 		m_log {log},
 		m_spacing {ui->section_spacing},
-		m_class {ui::class_select(*ui, game)},
-		m_attributes {std::make_shared<ui::NewAttributes>(ui, game.dice())},
+		m_class {ui::class_select(*ui, game.class_templates)},
+		m_attributes {std::make_shared<ui::NewAttributes>(ui, game.dice)},
 		m_stats {std::make_shared<ui::NewStats>(ui)},
-		m_armor {std::make_shared<ui::ArmorSelect>(*ui, game)},
-		m_weapon {std::make_shared<ui::WeaponSelect>(*ui, game)},
+		m_armor {std::make_shared<ui::ArmorSelect>(*ui, game.armors)},
+		m_weapon {std::make_shared<ui::WeaponSelect>(*ui, game.weapons)},
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
-		m_chosen {game.base_armor()}
+		m_chosen {game.base_armor}
 	{
 		elements({m_done});
 		groups({m_class, m_attributes, m_stats, m_armor, m_weapon});
