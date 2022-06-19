@@ -5,7 +5,7 @@
 #include "label_value.hpp"
 #include "text.hpp"
 
-#include <game/context.hpp>
+#include <game/dice.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -40,8 +40,8 @@ namespace dungeons::ui {
 	// NewAttributes
 	NewAttributes::NewAttributes(
 			std::shared_ptr<const Context> ui,
-			std::shared_ptr<game::Context> game):
-		m_game {game},
+			std::shared_ptr<game::Dice> dice):
+		m_dice {dice},
 		m_roll {std::make_shared<Button>(*ui, "Roll Attributes")},
 		m_reroll {std::make_shared<Button>(*ui, "Roll Again")},
 		m_labels {std::make_shared<Labels>(ui)}
@@ -70,7 +70,7 @@ namespace dungeons::ui {
 	NewAttributes::Value
 	NewAttributes::roll()
 	{
-		auto attr = m_game->roll_base_attr();
+		auto attr = m_dice->roll_base_attr();
 		m_labels->update(attr);
 		update_size();
 		return attr;

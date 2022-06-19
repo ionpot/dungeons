@@ -30,7 +30,7 @@ namespace dungeons {
 		m_log {log},
 		m_spacing {ui->section_spacing},
 		m_class {ui::class_select(*ui, *game)},
-		m_attributes {std::make_shared<ui::NewAttributes>(ui, game)},
+		m_attributes {std::make_shared<ui::NewAttributes>(ui, game->dice())},
 		m_stats {std::make_shared<ui::NewStats>(ui)},
 		m_armor {std::make_shared<ui::ArmorSelect>(*ui, *game)},
 		m_weapon {std::make_shared<ui::WeaponSelect>(*ui, *game)},

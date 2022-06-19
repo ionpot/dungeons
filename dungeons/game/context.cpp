@@ -1,12 +1,14 @@
 #include "context.hpp"
 
 #include "config.hpp"
+#include "dice.hpp"
 #include "entity.hpp"
 
+#include <memory> // std::shared_ptr
+
 namespace dungeons::game {
-	Context::Context(const Config& config, unsigned int seed):
-		m_dice_engine {seed},
-		m_attribute_dice {config.attribute_dice()},
+	Context::Context(const Config& config, std::shared_ptr<Dice> dice):
+		m_dice {dice},
 		m_armors {config.armors()},
 		m_base_armor {config.base_armor()},
 		m_class_templates {config.class_templates()},
@@ -25,19 +27,9 @@ namespace dungeons::game {
 	Context::class_templates() const
 	{ return m_class_templates; }
 
-	int
-	Context::roll_attribute()
-	{ return m_dice_engine.roll(m_attribute_dice); }
-
-	Entity::BaseAttributes
-	Context::roll_base_attr()
-	{
-		return {
-			roll_attribute(),
-			roll_attribute(),
-			roll_attribute()
-		};
-	}
+	std::shared_ptr<Dice>
+	Context::dice()
+	{ return m_dice; }
 
 	const Config::Weapons&
 	Context::weapons() const
