@@ -104,8 +104,7 @@ namespace dungeons::ui {
 		}
 
 		RadioGroup(std::vector<ButtonPtr>&& buttons):
-			m_buttons {std::move(buttons)},
-			m_chosen {}
+			m_buttons {std::move(buttons)}
 		{
 			using Ptr = std::shared_ptr<widget::Element>;
 			elements(util::vector_cast<Ptr>(m_buttons));

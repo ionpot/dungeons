@@ -115,11 +115,7 @@ namespace dungeons {
 
 	// Chosen
 	NewCharScreen::Chosen::Chosen(int base_armor):
-		class_template {},
-		base_attr {},
-		armor {},
-		base_armor {base_armor},
-		weapon {}
+		base_armor {base_armor}
 	{}
 
 	bool

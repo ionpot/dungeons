@@ -14,9 +14,7 @@ namespace dungeons {
 
 	Mouse::Mouse(sdl::Mouse&& mouse):
 		widget::Mouse {std::move(mouse)},
-		m_previous_clickable {false},
-		m_arrow {},
-		m_hand {}
+		m_previous_clickable {false}
 	{}
 
 	void
