@@ -6,10 +6,10 @@
 #include <ui/class_select.hpp>
 #include <ui/context.hpp>
 #include <ui/exception.hpp>
-#include <ui/string.hpp>
 #include <ui/weapon_select.hpp>
 
 #include <game/context.hpp>
+#include <game/string.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -56,7 +56,7 @@ namespace dungeons {
 	NewCharScreen::log_new_char()
 	{
 		m_log->put("New character");
-		namespace str = ui::string;
+		namespace str = game::string;
 		const auto& entity = m_chosen.to_entity();
 		m_log->pair(
 			str::class_id(entity) + ":",

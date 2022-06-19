@@ -2,10 +2,10 @@
 
 #include "context.hpp"
 #include "radio_group.hpp"
-#include "string.hpp"
 #include "text.hpp"
 
 #include <game/config.hpp>
+#include <game/string.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -23,7 +23,7 @@ namespace dungeons::ui {
 			normal_text(ui, "Armor")
 		)},
 		m_radio {std::make_shared<Radio>(
-			Radio::vertical(ui, string::armor, {
+			Radio::vertical(ui, game::string::armor, {
 				armors.leather,
 				armors.scale_mail
 			})
