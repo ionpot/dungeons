@@ -70,6 +70,25 @@ namespace dungeons::game::string {
 	}
 
 	std::string
+	race(Entity::Race::Id id)
+	{
+		switch (id) {
+		case Entity::Race::Id::human:
+			return "Human";
+		case Entity::Race::Id::orc:
+			return "Orc";
+		}
+	}
+
+	std::string
+	race(Entity::Race::Ptr r)
+	{ return race(r->id); }
+
+	std::string
+	race(const Entity& e)
+	{ return race(e.race); }
+
+	std::string
 	secondary_attr(const Entity& e)
 	{
 		return "Hp " + std::to_string(e.total_hp())

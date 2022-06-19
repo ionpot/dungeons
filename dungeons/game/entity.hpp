@@ -35,6 +35,14 @@ namespace dungeons::game {
 			util::Percent resist_chance() const;
 		};
 
+		struct Race {
+			using Ptr = std::shared_ptr<const Race>;
+			enum class Id { human, orc } id;
+			int strength;
+			int agility;
+			int intellect;
+		};
+
 		struct Weapon {
 			using Ptr = std::shared_ptr<const Weapon>;
 			enum class Id {
@@ -48,12 +56,13 @@ namespace dungeons::game {
 		};
 
 		BaseAttributes base_attr;
+		Race::Ptr race;
 		Class klass;
 		Armor::Ptr armor;
 		int base_armor;
 		Weapon::Ptr weapon;
 
-		Entity(Class::Template::Ptr, int base_armor = 0);
+		Entity(Race::Ptr, Class::Template::Ptr, int base_armor = 0);
 
 		int strength() const;
 		int agility() const;

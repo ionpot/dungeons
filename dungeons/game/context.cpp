@@ -11,6 +11,7 @@ namespace dungeons::game {
 		armors {config.armors()},
 		base_armor {config.base_armor()},
 		class_templates {config.class_templates()},
+		races {config.races()},
 		weapons {config.weapons()}
 	{}
 }

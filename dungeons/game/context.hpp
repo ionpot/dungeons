@@ -11,6 +11,7 @@ namespace dungeons::game {
 		Config::Armors armors;
 		int base_armor;
 		Config::ClassTemplates class_templates;
+		Config::Races races;
 		Config::Weapons weapons;
 
 		Context(const Config&, std::shared_ptr<Dice>);

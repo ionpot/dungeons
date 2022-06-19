@@ -9,6 +9,7 @@
 #include <ui/weapon_select.hpp>
 
 #include <game/context.hpp>
+#include <game/entity.hpp>
 #include <game/log.hpp>
 
 #include <ionpot/widget/element.hpp>
@@ -32,7 +33,7 @@ namespace dungeons {
 		m_armor {std::make_shared<ui::ArmorSelect>(*ui, game.armors)},
 		m_weapon {std::make_shared<ui::WeaponSelect>(*ui, game.weapons)},
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
-		m_chosen {game.base_armor}
+		m_chosen {game.races.human, game.base_armor}
 	{
 		elements({m_done});
 		groups({m_class, m_attributes, m_stats, m_armor, m_weapon});
@@ -114,7 +115,11 @@ namespace dungeons {
 	}
 
 	// Chosen
-	NewCharScreen::Chosen::Chosen(int base_armor):
+	NewCharScreen::Chosen::Chosen(
+			game::Entity::Race::Ptr race,
+			int base_armor
+	):
+		race {race},
 		base_armor {base_armor}
 	{}
 
@@ -127,7 +132,7 @@ namespace dungeons {
 	{
 		if (!is_ready())
 			throw ui::Exception {"Entity not ready yet."};
-		game::Entity entity {class_template, base_armor};
+		game::Entity entity {race, class_template, base_armor};
 		entity.base_attr = base_attr;
 		entity.armor = armor;
 		entity.weapon = weapon;

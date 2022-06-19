@@ -33,14 +33,19 @@ namespace dungeons::game {
 	{ return {intellect}; }
 
 	// Entity
-	Entity::Entity(Class::Template::Ptr class_template, int base_armor):
+	Entity::Entity(
+			Race::Ptr race,
+			Class::Template::Ptr class_template,
+			int base_armor
+	):
+		race {race},
 		klass {class_template},
 		base_armor {base_armor}
 	{}
 
 	int
 	Entity::agility() const
-	{ return base_attr.agility; }
+	{ return base_attr.agility + race->agility; }
 
 	util::Percent
 	Entity::dodge_chance() const
@@ -61,7 +66,7 @@ namespace dungeons::game {
 
 	int
 	Entity::intellect() const
-	{ return base_attr.intellect; }
+	{ return base_attr.intellect + race->intellect; }
 
 	util::Percent
 	Entity::resist_chance() const
@@ -69,7 +74,7 @@ namespace dungeons::game {
 
 	int
 	Entity::strength() const
-	{ return base_attr.strength; }
+	{ return base_attr.strength + race->strength; }
 
 	int
 	Entity::total_armor() const

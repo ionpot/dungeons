@@ -41,10 +41,11 @@ namespace dungeons {
 			game::Class::Template::Ptr class_template;
 			game::Entity::BaseAttributes base_attr;
 			game::Entity::Armor::Ptr armor;
+			game::Entity::Race::Ptr race;
 			int base_armor;
 			game::Entity::Weapon::Ptr weapon;
 
-			Chosen(int base_armor);
+			Chosen(game::Entity::Race::Ptr, int base_armor);
 
 			bool is_ready() const;
 			game::Entity to_entity() const;

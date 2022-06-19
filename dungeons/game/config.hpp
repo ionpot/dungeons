@@ -24,6 +24,11 @@ namespace dungeons::game {
 			Class::Template::Ptr mage;
 		};
 
+		struct Races {
+			Entity::Race::Ptr human;
+			Entity::Race::Ptr orc;
+		};
+
 		struct Weapons {
 			Entity::Weapon::Ptr dagger;
 			Entity::Weapon::Ptr mace;
@@ -39,6 +44,7 @@ namespace dungeons::game {
 		Armors armors() const;
 
 		ClassTemplates class_templates() const;
+		Races races() const;
 		Weapons weapons() const;
 
 	private:
@@ -46,6 +52,7 @@ namespace dungeons::game {
 
 		Entity::Armor armor(Entity::Armor::Id, std::string) const;
 		Class::Template class_template(Class::Template::Id, std::string) const;
+		Entity::Race race(Entity::Race::Id, std::string) const;
 		Entity::Weapon weapon(Entity::Weapon::Id, std::string) const;
 	};
 }

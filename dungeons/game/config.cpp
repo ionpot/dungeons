@@ -72,6 +72,29 @@ namespace dungeons::game {
 		};
 	}
 
+	Entity::Race
+	Config::race(Entity::Race::Id id, std::string section_name) const
+	{
+		auto section = m_file.find_section(section_name);
+		return {
+			id,
+			section.find_pair("strength").to_int(),
+			section.find_pair("agility").to_int(),
+			section.find_pair("intellect").to_int()
+		};
+	}
+
+	Config::Races
+	Config::races() const
+	{
+		using Race = Entity::Race;
+		auto make = std::make_shared<const Race, Race&&>;
+		return {
+			make(race(Race::Id::human, "human bonus")),
+			make(race(Race::Id::orc, "orc bonus"))
+		};
+	}
+
 	Entity::Weapon
 	Config::weapon(Entity::Weapon::Id id, std::string section_name) const
 	{

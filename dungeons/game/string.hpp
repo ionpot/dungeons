@@ -14,6 +14,9 @@ namespace dungeons::game::string {
 	std::string class_id(const Entity&);
 	std::string primary_attr(const Entity&);
 	std::string secondary_attr(const Entity&);
+	std::string race(Entity::Race::Id);
+	std::string race(Entity::Race::Ptr);
+	std::string race(const Entity&);
 	std::string weapon(Entity::Weapon::Id);
 	std::string weapon(Entity::Weapon::Ptr);
 	std::string weapon(const Entity&);
