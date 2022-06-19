@@ -28,7 +28,7 @@ namespace dungeons::ui {
 		Context(
 			std::shared_ptr<const sdl::Ttf>,
 			std::shared_ptr<const sdl::Renderer>,
-			std::shared_ptr<const Config>);
+			const Config&);
 
 		util::Size bold_text_size(std::string) const;
 	};

@@ -5,16 +5,12 @@
 
 #include <ionpot/util/dice.hpp>
 
-#include <memory> // std::shared_ptr
-
 namespace dungeons::game {
 	namespace util = ionpot::util;
 
 	class Context {
 	public:
-		Context(
-				std::shared_ptr<const Config>,
-				unsigned int seed);
+		Context(const Config&, unsigned int seed);
 
 		const Config::Armors& armors() const;
 		int base_armor() const;

@@ -32,8 +32,8 @@ namespace dungeons {
 	void
 	run(
 			std::shared_ptr<util::Log> log,
-			std::shared_ptr<ui::Config> config,
-			std::shared_ptr<const game::Config> game_config,
+			const ui::Config& config,
+			const game::Config& game_config,
 			std::string title)
 	{
 		log->pair("Initialising SDL", sdl::version::as_string());
@@ -47,7 +47,7 @@ namespace dungeons {
 		log->write("Creating window...");
 		auto window = std::make_shared<const sdl::Window>(
 			video,
-			sdl::Window::Config {title, config->window_size()}
+			sdl::Window::Config {title, config.window_size()}
 		);
 		log->put(window->query_size().to_str());
 

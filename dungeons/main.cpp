@@ -29,12 +29,8 @@ namespace {
 		log->put("Begin");
 		dungeons::run(
 			log,
-			std::make_shared<dungeons::ui::Config>(
-				util::CfgFile {"ui.cfg"}
-			),
-			std::make_shared<dungeons::game::Config>(
-				util::CfgFile {"game.cfg"}
-			),
+			dungeons::ui::Config {util::CfgFile {"ui.cfg"}},
+			dungeons::game::Config {util::CfgFile {"game.cfg"}},
 			title
 		);
 		log->put("End");

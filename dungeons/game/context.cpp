@@ -3,19 +3,14 @@
 #include "config.hpp"
 #include "entity.hpp"
 
-#include <memory> // std::shared_ptr
-
 namespace dungeons::game {
-	Context::Context(
-			std::shared_ptr<const Config> config,
-			unsigned int seed
-	):
+	Context::Context(const Config& config, unsigned int seed):
 		m_dice_engine {seed},
-		m_attribute_dice {config->attribute_dice()},
-		m_armors {config->armors()},
-		m_base_armor {config->base_armor()},
-		m_class_templates {config->class_templates()},
-		m_weapons {config->weapons()}
+		m_attribute_dice {config.attribute_dice()},
+		m_armors {config.armors()},
+		m_base_armor {config.base_armor()},
+		m_class_templates {config.class_templates()},
+		m_weapons {config.weapons()}
 	{}
 
 	const Config::Armors&

@@ -14,7 +14,7 @@ namespace dungeons {
 
 	void run(
 		std::shared_ptr<util::Log>,
-		std::shared_ptr<ui::Config>,
-		std::shared_ptr<const game::Config>,
+		const ui::Config&,
+		const game::Config&,
 		std::string window_title);
 }
