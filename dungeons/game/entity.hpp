@@ -12,8 +12,7 @@
 namespace dungeons::game {
 	namespace util = ionpot::util;
 
-	class Entity {
-	public:
+	struct Entity {
 		struct Armor {
 			using Ptr = std::shared_ptr<const Armor>;
 			enum class Id { leather, scale_mail } id;
@@ -48,19 +47,18 @@ namespace dungeons::game {
 			int initiative {0};
 		};
 
+		BaseAttributes base_attr;
+		Class klass;
+		Armor::Ptr armor;
+		int base_armor;
+		Weapon::Ptr weapon;
+
 		Entity(Class::Template::Ptr, int base_armor = 0);
-
-		void base_attr(BaseAttributes);
-
-		const Class& get_class() const;
-		void class_template(Class::Template::Ptr);
 
 		int strength() const;
 		int agility() const;
 		int intellect() const;
 
-		Armor::Ptr armor() const;
-		void armor(Armor::Ptr);
 		int total_armor() const;
 
 		int initiative() const;
@@ -69,18 +67,9 @@ namespace dungeons::game {
 		util::Percent dodge_chance() const;
 		util::Percent resist_chance() const;
 
-		Weapon::Ptr weapon() const;
-		void weapon(Weapon::Ptr);
 		util::Range weapon_damage() const;
 		int weapon_damage_bonus() const;
 		int weapon_damage_min() const;
 		int weapon_damage_max() const;
-
-	private:
-		BaseAttributes m_base;
-		Class m_class;
-		Armor::Ptr m_armor;
-		int m_base_armor;
-		Weapon::Ptr m_weapon;
 	};
 }

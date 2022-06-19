@@ -37,7 +37,7 @@ namespace dungeons::game::string {
 	armor(const Entity& e)
 	{
 		return std::to_string(e.total_armor()) + " "
-			+ parens(armor(e.armor()));
+			+ parens(armor(e.armor));
 	}
 
 	std::string
@@ -59,7 +59,7 @@ namespace dungeons::game::string {
 
 	std::string
 	class_id(const Entity& e)
-	{ return class_id(e.get_class().get_template()); }
+	{ return class_id(e.klass.get_template()); }
 
 	std::string
 	primary_attr(const Entity& e)
@@ -105,6 +105,6 @@ namespace dungeons::game::string {
 	weapon(const Entity& e)
 	{
 		return e.weapon_damage().to_str() + " "
-			+ parens(weapon(e.weapon()));
+			+ parens(weapon(e.weapon));
 	}
 }
