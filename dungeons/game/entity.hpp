@@ -69,6 +69,7 @@ namespace dungeons::game {
 		util::Percent dodge_chance() const;
 		util::Percent resist_chance() const;
 
+		Weapon::Ptr weapon() const;
 		void weapon(Weapon::Ptr);
 		util::Range weapon_damage() const;
 		int weapon_damage_bonus() const;

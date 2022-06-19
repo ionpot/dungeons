@@ -6,11 +6,11 @@
 #include <ui/context.hpp>
 
 #include <game/context.hpp>
+#include <game/log.hpp>
 
 #include <ionpot/sdl/base.hpp>
 #include <ionpot/sdl/events.hpp>
 
-#include <ionpot/util/log.hpp>
 #include <ionpot/util/point.hpp>
 #include <ionpot/util/rgb.hpp>
 
@@ -23,7 +23,7 @@ namespace dungeons {
 	class Game {
 	public:
 		Game(
-			std::shared_ptr<util::Log>,
+			std::shared_ptr<game::Log>,
 			std::shared_ptr<const sdl::Base>,
 			std::shared_ptr<const sdl::Events>,
 			std::shared_ptr<const ui::Context>,
@@ -73,7 +73,7 @@ namespace dungeons {
 		}
 
 	private:
-		std::shared_ptr<util::Log> m_log;
+		std::shared_ptr<game::Log> m_log;
 		std::shared_ptr<const sdl::Base> m_base;
 		std::shared_ptr<const sdl::Events> m_events;
 		std::shared_ptr<const ui::Context> m_ui;

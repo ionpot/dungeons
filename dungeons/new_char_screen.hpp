@@ -13,11 +13,11 @@
 #include <game/class.hpp>
 #include <game/context.hpp>
 #include <game/entity.hpp>
+#include <game/log.hpp>
 
 #include <ionpot/widget/element.hpp>
 #include <ionpot/widget/group.hpp>
 
-#include <ionpot/util/log.hpp>
 #include <ionpot/util/size.hpp>
 
 #include <memory> // std::shared_ptr
@@ -30,7 +30,7 @@ namespace dungeons {
 	class NewCharScreen : public widget::Group {
 	public:
 		NewCharScreen(
-			std::shared_ptr<util::Log>,
+			std::shared_ptr<game::Log>,
 			std::shared_ptr<const ui::Context>,
 			const game::Context&);
 
@@ -50,7 +50,7 @@ namespace dungeons {
 			game::Entity to_entity() const;
 		};
 
-		std::shared_ptr<util::Log> m_log;
+		std::shared_ptr<game::Log> m_log;
 		util::Size m_spacing;
 		std::shared_ptr<ui::ClassSelect> m_class;
 		std::shared_ptr<ui::NewAttributes> m_attributes;

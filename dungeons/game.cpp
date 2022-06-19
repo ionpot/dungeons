@@ -8,11 +8,10 @@
 #include <ui/context.hpp>
 
 #include <game/context.hpp>
+#include <game/log.hpp>
 
 #include <ionpot/sdl/base.hpp>
 #include <ionpot/sdl/events.hpp>
-
-#include <ionpot/util/log.hpp>
 
 #include <memory> // std::shared_ptr
 #include <utility> // std::move
@@ -20,10 +19,9 @@
 
 namespace dungeons {
 	namespace sdl = ionpot::sdl;
-	namespace util = ionpot::util;
 
 	Game::Game(
-			std::shared_ptr<util::Log> log,
+			std::shared_ptr<game::Log> log,
 			std::shared_ptr<const sdl::Base> base,
 			std::shared_ptr<const sdl::Events> events,
 			std::shared_ptr<const ui::Context> ui,

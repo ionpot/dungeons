@@ -6,22 +6,19 @@
 #include <ui/context.hpp>
 #include <ui/text.hpp>
 
+#include <game/log.hpp>
 #include <game/string.hpp>
 
 #include <ionpot/widget/element.hpp>
-
-#include <ionpot/util/log.hpp>
-#include <ionpot/util/point.hpp>
 
 #include <memory> // std::make_shared, std::shared_ptr
 #include <optional>
 
 namespace dungeons {
-	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
 	CombatScreen::CombatScreen(
-			std::shared_ptr<util::Log> log,
+			std::shared_ptr<game::Log> log,
 			const ui::Context& ui,
 			const screen::ToCombat& input
 	):

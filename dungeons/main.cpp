@@ -5,12 +5,12 @@
 #include <ui/config.hpp>
 
 #include <game/config.hpp>
+#include <game/log.hpp>
 
 #include <ionpot/sdl/show_error.hpp>
 
 #include <ionpot/util/cfg_file.hpp>
 #include <ionpot/util/exception.hpp>
-#include <ionpot/util/log.hpp>
 
 #include <exception>
 #include <iostream>
@@ -21,8 +21,10 @@ namespace {
 	namespace util = ionpot::util;
 	namespace sdl = ionpot::sdl;
 
+	using Log = dungeons::game::Log;
+
 	void
-	run(std::shared_ptr<util::Log> log)
+	run(std::shared_ptr<Log> log)
 	try {
 		auto title = "Dungeons v" + dungeons::version.to_string();
 		log->put(title);
@@ -49,7 +51,7 @@ namespace {
 
 int main()
 try {
-	run(std::make_shared<util::Log>("dungeons.log"));
+	run(std::make_shared<Log>("dungeons.log"));
 	return EXIT_SUCCESS;
 }
 catch (const std::exception& err) {

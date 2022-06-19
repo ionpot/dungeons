@@ -10,6 +10,10 @@
 namespace dungeons::game::string {
 	namespace util = ionpot::util;
 
+	namespace {
+		auto parens = util::string::parens;
+	}
+
 	std::string
 	armor(Entity::Armor::Id id)
 	{
@@ -27,6 +31,13 @@ namespace dungeons::game::string {
 		return a
 			? armor(a->id)
 			: "No Armor";
+	}
+
+	std::string
+	armor(const Entity& e)
+	{
+		return std::to_string(e.total_armor()) + " "
+			+ parens(armor(e.armor()));
 	}
 
 	std::string
@@ -62,7 +73,6 @@ namespace dungeons::game::string {
 	secondary_attr(const Entity& e)
 	{
 		return "Hp " + std::to_string(e.total_hp())
-			+ ", Armor " + std::to_string(e.total_armor())
 			+ ", Dodge " + e.dodge_chance().to_str()
 			+ ", Init " + std::to_string(e.initiative())
 			+ ", Resist " + e.resist_chance().to_str();
@@ -86,9 +96,15 @@ namespace dungeons::game::string {
 	std::string
 	weapon(Entity::Weapon::Ptr w)
 	{
-		auto p = util::string::parens;
 		return w
-			? weapon(w->id) + " " + p(w->dice.to_str())
+			? weapon(w->id) + " " + parens(w->dice.to_str())
 			: "No Weapon";
+	}
+
+	std::string
+	weapon(const Entity& e)
+	{
+		return e.weapon_damage().to_str() + " "
+			+ parens(weapon(e.weapon()));
 	}
 }

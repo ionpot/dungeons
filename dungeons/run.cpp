@@ -9,6 +9,7 @@
 #include <game/config.hpp>
 #include <game/context.hpp>
 #include <game/dice.hpp>
+#include <game/log.hpp>
 
 #include <ionpot/sdl/base.hpp>
 #include <ionpot/sdl/events.hpp>
@@ -19,20 +20,16 @@
 #include <ionpot/sdl/video.hpp>
 #include <ionpot/sdl/window.hpp>
 
-#include <ionpot/util/log.hpp>
-#include <ionpot/util/rgb.hpp>
-
 #include <memory> // std::make_shared, std::shared_ptr
 #include <random> // std::random_device
 #include <string>
 
 namespace dungeons {
 	namespace sdl = ionpot::sdl;
-	namespace util = ionpot::util;
 
 	void
 	run(
-			std::shared_ptr<util::Log> log,
+			std::shared_ptr<game::Log> log,
 			const ui::Config& config,
 			const game::Config& game_config,
 			std::string title)

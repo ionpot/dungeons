@@ -9,21 +9,18 @@
 #include <ui/weapon_select.hpp>
 
 #include <game/context.hpp>
-#include <game/string.hpp>
+#include <game/log.hpp>
 
 #include <ionpot/widget/element.hpp>
-
-#include <ionpot/util/log.hpp>
 
 #include <memory> // std::make_shared, std::shared_ptr
 #include <optional>
 
 namespace dungeons {
-	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
 	NewCharScreen::NewCharScreen(
-			std::shared_ptr<util::Log> log,
+			std::shared_ptr<game::Log> log,
 			std::shared_ptr<const ui::Context> ui,
 			const game::Context& game
 	):
@@ -56,12 +53,7 @@ namespace dungeons {
 	NewCharScreen::log_new_char()
 	{
 		m_log->put("New character");
-		namespace str = game::string;
-		const auto& entity = m_chosen.to_entity();
-		m_log->pair(
-			str::class_id(entity) + ":",
-			str::primary_attr(entity));
-		m_log->put(str::secondary_attr(entity));
+		m_log->entity(m_chosen.to_entity());
 		m_log->endl();
 	}
 

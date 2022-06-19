@@ -104,6 +104,10 @@ namespace dungeons::game {
 	Entity::total_hp() const
 	{ return m_base.hp() + m_class.hp_bonus(); }
 
+	Entity::Weapon::Ptr
+	Entity::weapon() const
+	{ return m_weapon; }
+
 	void
 	Entity::weapon(Weapon::Ptr w)
 	{ m_weapon = w; }
