@@ -13,13 +13,7 @@ namespace dungeons::ui {
 			const game::Entity& entity
 	):
 		primary {std::make_shared<Text>(
-			normal_text(ui,
-				game::string::race(entity)
-				+ " "
-				+ game::string::class_id(entity)
-				+ " "
-				+ game::string::primary_attr(entity)
-			)
+			normal_text(ui, game::string::primary(entity))
 		)},
 		secondary {std::make_shared<Text>(
 			normal_text(ui, game::string::secondary_attr(entity))

@@ -62,6 +62,10 @@ namespace dungeons::game::string {
 	{ return class_id(e.klass.get_template()); }
 
 	std::string
+	primary(const Entity& e)
+	{ return race(e) + " " + class_id(e) + ": " + primary_attr(e); }
+
+	std::string
 	primary_attr(const Entity& e)
 	{
 		return "Str " + std::to_string(e.strength())

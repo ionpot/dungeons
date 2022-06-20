@@ -12,6 +12,7 @@ namespace dungeons::game::string {
 	std::string class_id(Class::Template::Id);
 	std::string class_id(Class::Template::Ptr);
 	std::string class_id(const Entity&);
+	std::string primary(const Entity& e);
 	std::string primary_attr(const Entity&);
 	std::string secondary_attr(const Entity&);
 	std::string race(Entity::Race::Id);
