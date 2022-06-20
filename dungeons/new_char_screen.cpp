@@ -102,7 +102,11 @@ namespace dungeons {
 		}
 		if (*m_done == clicked) {
 			log_new_char();
-			return screen::ToCombat {m_chosen.class_template->id};
+			return screen::ToCombat {
+				std::make_shared<game::Entity>(
+					m_chosen.to_entity()
+				)
+			};
 		}
 		return {};
 	}

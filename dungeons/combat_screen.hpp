@@ -4,7 +4,7 @@
 
 #include <ui/button.hpp>
 #include <ui/context.hpp>
-#include <ui/text.hpp>
+#include <ui/entity_info.hpp>
 
 #include <game/log.hpp>
 
@@ -28,7 +28,7 @@ namespace dungeons {
 
 	private:
 		std::shared_ptr<game::Log> m_log;
-		std::shared_ptr<ui::Text> m_text;
+		std::shared_ptr<ui::EntityInfo> m_player_info;
 		std::shared_ptr<ui::Button> m_button;
 	};
 }

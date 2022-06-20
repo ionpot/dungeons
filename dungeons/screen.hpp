@@ -1,14 +1,15 @@
 #pragma once
 
-#include <game/class.hpp>
+#include <game/entity.hpp>
 
+#include <memory> // std::shared_ptr
 #include <variant>
 
 namespace dungeons::screen {
 	struct Quit {};
 
 	struct ToCombat {
-		game::Class::Template::Id player;
+		std::shared_ptr<game::Entity> player;
 	};
 
 	using Output = std::variant<Quit, ToCombat>;

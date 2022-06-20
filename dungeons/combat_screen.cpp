@@ -4,7 +4,7 @@
 
 #include <ui/button.hpp>
 #include <ui/context.hpp>
-#include <ui/text.hpp>
+#include <ui/entity_info.hpp>
 
 #include <game/log.hpp>
 #include <game/string.hpp>
@@ -23,16 +23,14 @@ namespace dungeons {
 			const screen::ToCombat& input
 	):
 		m_log {log},
-		m_text {std::make_shared<ui::Text>(
-			ui::normal_text(ui,
-				game::string::class_id(input.player) + " fights an enemy here.")
-		)},
+		m_player_info {std::make_shared<ui::EntityInfo>(ui, *input.player)},
 		m_button {std::make_shared<ui::Button>(ui, "Done")}
 	{
-		elements({m_text, m_button});
-		m_text->position(ui.screen_margin);
-		m_button->place_below(*m_text, ui.button.spacing);
-		m_log->pair(game::string::class_id(input.player), "enters combat.");
+		elements({m_button});
+		groups({m_player_info});
+		m_player_info->position(ui.screen_margin);
+		m_button->place_below(*m_player_info, ui.section_spacing);
+		m_log->put("Combat begins.");
 	}
 
 	std::optional<screen::Output>
