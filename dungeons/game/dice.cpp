@@ -5,13 +5,13 @@
 
 namespace dungeons::game {
 	Dice::Dice(const Config& config, unsigned int seed):
-		m_engine {seed},
+		Engine {seed},
 		m_attribute {config.attribute_dice()}
 	{}
 
 	int
 	Dice::roll_attribute()
-	{ return m_engine.roll(m_attribute); }
+	{ return roll(m_attribute); }
 
 	Entity::BaseAttributes
 	Dice::roll_base_attr()

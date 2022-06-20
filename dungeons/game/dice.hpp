@@ -8,15 +8,17 @@
 namespace dungeons::game {
 	namespace util = ionpot::util;
 
-	class Dice {
+	class Dice : public util::dice::Engine {
 	public:
+		using Engine = util::dice::Engine;
+		using Input = util::dice::Input;
+
 		Dice(const Config&, unsigned int seed);
 
 		int roll_attribute();
 		Entity::BaseAttributes roll_base_attr();
 
 	private:
-		util::dice::Engine m_engine;
-		util::dice::Input m_attribute;
+		Input m_attribute;
 	};
 }
