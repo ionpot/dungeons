@@ -45,36 +45,41 @@ namespace dungeons::game {
 
 	int
 	Entity::agility() const
-	{ return base_attr.agility + race->agility; }
+	{ return base_attr.agility + race->attr.agility; }
 
 	util::Percent
 	Entity::dodge_chance() const
 	{
-		auto base = base_attr.dodge_chance();
+		auto total = base_attr.dodge_chance()
+			+ race->attr.dodge_chance();
 		return armor
-			? armor->dodge_scale.apply_to(base)
-			: base;
+			? armor->dodge_scale.apply_to(total)
+			: total;
 	}
 
 	int
 	Entity::initiative() const
 	{
 		return base_attr.initiative()
+			+ race->attr.initiative()
 			+ (armor ? armor->initiative : 0)
 			+ (weapon ? weapon->initiative : 0);
 	}
 
 	int
 	Entity::intellect() const
-	{ return base_attr.intellect + race->intellect; }
+	{ return base_attr.intellect + race->attr.intellect; }
 
 	util::Percent
 	Entity::resist_chance() const
-	{ return base_attr.resist_chance(); }
+	{
+		return base_attr.resist_chance()
+			+ race->attr.resist_chance();
+	}
 
 	int
 	Entity::strength() const
-	{ return base_attr.strength + race->strength; }
+	{ return base_attr.strength + race->attr.strength; }
 
 	int
 	Entity::total_armor() const
@@ -82,7 +87,11 @@ namespace dungeons::game {
 
 	int
 	Entity::total_hp() const
-	{ return base_attr.hp() + klass.hp_bonus(); }
+	{
+		return base_attr.hp()
+			+ race->attr.hp()
+			+ klass.hp_bonus();
+	}
 
 	util::Range
 	Entity::weapon_damage() const

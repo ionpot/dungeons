@@ -38,9 +38,7 @@ namespace dungeons::game {
 		struct Race {
 			using Ptr = std::shared_ptr<const Race>;
 			enum class Id { human, orc } id;
-			int strength;
-			int agility;
-			int intellect;
+			BaseAttributes attr;
 		};
 
 		struct Weapon {

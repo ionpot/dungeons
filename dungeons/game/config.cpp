@@ -1,6 +1,7 @@
 #include "config.hpp"
 
 #include "class.hpp"
+#include "entity.hpp"
 
 #include <ionpot/util/cfg_file.hpp>
 #include <ionpot/util/dice.hpp>
@@ -78,9 +79,11 @@ namespace dungeons::game {
 		auto section = m_file.find_section(section_name);
 		return {
 			id,
-			section.find_pair("strength").to_int(),
-			section.find_pair("agility").to_int(),
-			section.find_pair("intellect").to_int()
+			Entity::BaseAttributes {
+				section.find_pair("strength").to_int(),
+				section.find_pair("agility").to_int(),
+				section.find_pair("intellect").to_int()
+			}
 		};
 	}
 
