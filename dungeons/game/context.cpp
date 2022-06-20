@@ -1,9 +1,12 @@
 #include "context.hpp"
 
+#include "class.hpp"
 #include "config.hpp"
 #include "dice.hpp"
+#include "entity.hpp"
 
 #include <memory> // std::shared_ptr
+#include <vector>
 
 namespace dungeons::game {
 	Context::Context(const Config& config, std::shared_ptr<Dice> dice):
@@ -14,4 +17,44 @@ namespace dungeons::game {
 		races {config.races()},
 		weapons {config.weapons()}
 	{}
+
+	Entity::Armor::Ptr
+	Context::pick_armor()
+	{
+		return dice->pick(std::vector {
+			armors.leather,
+			armors.scale_mail
+		});
+	}
+
+	Class::Template::Ptr
+	Context::pick_class()
+	{
+		return dice->pick(std::vector {
+			class_templates.warrior,
+			class_templates.hybrid,
+			class_templates.mage
+		});
+	}
+
+	Entity::Weapon::Ptr
+	Context::pick_weapon()
+	{
+		return dice->pick(std::vector {
+			weapons.dagger,
+			weapons.mace,
+			weapons.longsword,
+			weapons.halberd
+		});
+	}
+
+	Entity
+	Context::roll_orc()
+	{
+		Entity e {races.orc, pick_class(), base_armor};
+		e.base_attr = dice->roll_base_attr();
+		e.armor = pick_armor();
+		e.weapon = pick_weapon();
+		return e;
+	}
 }
