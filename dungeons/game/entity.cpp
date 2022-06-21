@@ -7,29 +7,29 @@
 namespace dungeons::game {
 	namespace util = ionpot::util;
 
-	// BaseAttributes
-	using BaseAttributes = Entity::BaseAttributes;
+	// Attributes
+	using Attributes = Entity::Attributes;
 
-	BaseAttributes::BaseAttributes(int str, int agi, int intel):
+	Attributes::Attributes(int str, int agi, int intel):
 		strength {str},
 		agility {agi},
 		intellect {intel}
 	{}
 
 	int
-	BaseAttributes::hp() const
+	Attributes::hp() const
 	{ return strength; }
 
 	int
-	BaseAttributes::initiative() const
+	Attributes::initiative() const
 	{ return agility + intellect; }
 
 	util::Percent
-	BaseAttributes::dodge_chance() const
+	Attributes::dodge_chance() const
 	{ return {agility}; }
 
 	util::Percent
-	BaseAttributes::resist_chance() const
+	Attributes::resist_chance() const
 	{ return {intellect}; }
 
 	// Entity

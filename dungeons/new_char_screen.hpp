@@ -39,7 +39,7 @@ namespace dungeons {
 	private:
 		struct Chosen {
 			game::Class::Template::Ptr class_template;
-			game::Entity::BaseAttributes base_attr;
+			game::Entity::Attributes base_attr;
 			game::Entity::Armor::Ptr armor;
 			game::Entity::Race::Ptr race;
 			int base_armor;

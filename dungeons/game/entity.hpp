@@ -21,13 +21,13 @@ namespace dungeons::game {
 			util::Scale dodge_scale;
 		};
 
-		struct BaseAttributes {
+		struct Attributes {
 			int strength {0};
 			int agility {0};
 			int intellect {0};
 
-			BaseAttributes() = default;
-			BaseAttributes(int str, int agi, int intel);
+			Attributes() = default;
+			Attributes(int str, int agi, int intel);
 
 			int hp() const;
 			int initiative() const;
@@ -38,7 +38,7 @@ namespace dungeons::game {
 		struct Race {
 			using Ptr = std::shared_ptr<const Race>;
 			enum class Id { human, orc } id;
-			BaseAttributes attr;
+			Attributes attr;
 		};
 
 		struct Weapon {
@@ -53,7 +53,7 @@ namespace dungeons::game {
 			int initiative {0};
 		};
 
-		BaseAttributes base_attr;
+		Attributes base_attr;
 		Race::Ptr race;
 		Class klass;
 		Armor::Ptr armor;

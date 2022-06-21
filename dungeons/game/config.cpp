@@ -79,7 +79,7 @@ namespace dungeons::game {
 		auto section = m_file.find_section(section_name);
 		return {
 			id,
-			Entity::BaseAttributes {
+			Entity::Attributes {
 				section.find_pair("strength").to_int(),
 				section.find_pair("agility").to_int(),
 				section.find_pair("intellect").to_int()

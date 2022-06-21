@@ -13,7 +13,7 @@ namespace dungeons::game {
 	Dice::roll_attribute()
 	{ return roll(m_attribute); }
 
-	Entity::BaseAttributes
+	Entity::Attributes
 	Dice::roll_base_attr()
 	{
 		return {

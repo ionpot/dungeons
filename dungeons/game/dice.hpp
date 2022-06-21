@@ -16,7 +16,7 @@ namespace dungeons::game {
 		Dice(const Config&, unsigned int seed);
 
 		int roll_attribute();
-		Entity::BaseAttributes roll_base_attr();
+		Entity::Attributes roll_base_attr();
 
 	private:
 		Input m_attribute;

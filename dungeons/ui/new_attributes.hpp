@@ -19,7 +19,7 @@ namespace dungeons::ui {
 
 	class NewAttributes : public widget::Group {
 	public:
-		using Value = game::Entity::BaseAttributes;
+		using Value = game::Entity::Attributes;
 
 		NewAttributes(
 			std::shared_ptr<const Context>,
