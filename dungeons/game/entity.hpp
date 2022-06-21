@@ -56,11 +56,17 @@ namespace dungeons::game {
 		Attributes base_attr;
 		Race::Ptr race;
 		Class klass;
-		Armor::Ptr armor;
 		int base_armor;
+		Armor::Ptr armor;
 		Weapon::Ptr weapon;
 
-		Entity(Race::Ptr, Class::Template::Ptr, int base_armor = 0);
+		Entity(
+			Attributes,
+			Race::Ptr,
+			Class::Template::Ptr,
+			int base_armor,
+			Armor::Ptr,
+			Weapon::Ptr);
 
 		int strength() const;
 		int agility() const;

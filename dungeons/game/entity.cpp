@@ -34,13 +34,19 @@ namespace dungeons::game {
 
 	// Entity
 	Entity::Entity(
+			Attributes base_attr,
 			Race::Ptr race,
 			Class::Template::Ptr class_template,
-			int base_armor
+			int base_armor,
+			Armor::Ptr armor,
+			Weapon::Ptr weapon
 	):
+		base_attr {base_attr},
 		race {race},
 		klass {class_template},
-		base_armor {base_armor}
+		base_armor {base_armor},
+		armor {armor},
+		weapon {weapon}
 	{}
 
 	int

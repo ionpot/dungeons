@@ -51,10 +51,13 @@ namespace dungeons::game {
 	Entity
 	Context::roll_orc()
 	{
-		Entity e {races.orc, pick_class(), base_armor};
-		e.base_attr = dice->roll_base_attr();
-		e.armor = pick_armor();
-		e.weapon = pick_weapon();
-		return e;
+		return {
+			dice->roll_base_attr(),
+			races.orc,
+			pick_class(),
+			base_armor,
+			pick_armor(),
+			pick_weapon()
+		};
 	}
 }

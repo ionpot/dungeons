@@ -136,10 +136,6 @@ namespace dungeons {
 	{
 		if (!is_ready())
 			throw ui::Exception {"Entity not ready yet."};
-		game::Entity entity {race, class_template, base_armor};
-		entity.base_attr = base_attr;
-		entity.armor = armor;
-		entity.weapon = weapon;
-		return entity;
+		return {base_attr, race, class_template, base_armor, armor, weapon};
 	}
 }
