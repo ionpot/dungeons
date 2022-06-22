@@ -10,12 +10,20 @@
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
+	namespace dice = util::dice;
 
 	class Config {
 	public:
 		struct Armors {
 			Entity::Armor::Ptr leather;
 			Entity::Armor::Ptr scale_mail;
+		};
+
+		struct Attributes {
+			dice::Input strength;
+			dice::Input agility;
+			dice::Input intellect;
+			Entity::Attributes roll(dice::Engine&) const;
 		};
 
 		struct ClassTemplates {
@@ -38,7 +46,8 @@ namespace dungeons::game {
 
 		Config(util::CfgFile&&);
 
-		util::dice::Input attribute_dice() const;
+		Attributes human_attributes() const;
+		Attributes orc_attributes() const;
 
 		int base_armor() const;
 		Armors armors() const;
@@ -50,6 +59,7 @@ namespace dungeons::game {
 	private:
 		util::CfgFile m_file;
 
+		Attributes attributes(std::string section) const;
 		Entity::Armor armor(Entity::Armor::Id, std::string) const;
 		Class::Template class_template(Class::Template::Id, std::string) const;
 		Entity::Race race(Entity::Race::Id, std::string) const;

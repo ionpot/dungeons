@@ -1,3 +1,3 @@
-add_library(dungeons_game class.cpp config.cpp context.cpp dice.cpp entity.cpp log.cpp string.cpp)
+add_library(dungeons_game class.cpp config.cpp context.cpp entity.cpp log.cpp string.cpp)
 
 target_link_libraries(dungeons_game PUBLIC ionpot)

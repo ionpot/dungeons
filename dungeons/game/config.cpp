@@ -12,10 +12,33 @@
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
+	namespace dice = util::dice;
 
+	Entity::Attributes
+	Config::Attributes::roll(dice::Engine& dice) const
+	{
+		return {
+			dice.roll(strength),
+			dice.roll(agility),
+			dice.roll(intellect)
+		};
+	}
+
+	// Config
 	Config::Config(util::CfgFile&& file):
 		m_file {std::move(file)}
 	{}
+
+	Config::Attributes
+	Config::attributes(std::string section_name) const
+	{
+		auto section = m_file.find_section(section_name);
+		return {
+			section.find_pair("strength").to_dice(),
+			section.find_pair("agility").to_dice(),
+			section.find_pair("intellect").to_dice()
+		};
+	}
 
 	Entity::Armor
 	Config::armor(Entity::Armor::Id id, std::string section_name) const
@@ -38,12 +61,6 @@ namespace dungeons::game {
 			make(armor(Armor::Id::leather, "leather armor")),
 			make(armor(Armor::Id::scale_mail, "scale mail armor"))
 		};
-	}
-
-	util::dice::Input
-	Config::attribute_dice() const
-	{
-		return m_file.find_pair("attribute roll").to_dice();
 	}
 
 	int
@@ -72,6 +89,14 @@ namespace dungeons::game {
 			make(class_template(Template::Id::mage, "mage template"))
 		};
 	}
+
+	Config::Attributes
+	Config::human_attributes() const
+	{ return attributes("human attributes"); }
+
+	Config::Attributes
+	Config::orc_attributes() const
+	{ return attributes("orc attributes"); }
 
 	Entity::Race
 	Config::race(Entity::Race::Id id, std::string section_name) const

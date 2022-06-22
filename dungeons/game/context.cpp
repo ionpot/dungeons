@@ -2,15 +2,24 @@
 
 #include "class.hpp"
 #include "config.hpp"
-#include "dice.hpp"
 #include "entity.hpp"
+
+#include <ionpot/util/dice.hpp>
 
 #include <memory> // std::shared_ptr
 #include <vector>
 
 namespace dungeons::game {
-	Context::Context(const Config& config, std::shared_ptr<Dice> dice):
+	namespace util = ionpot::util;
+	namespace dice = util::dice;
+
+	Context::Context(
+			const Config& config,
+			std::shared_ptr<dice::Engine> dice
+	):
 		dice {dice},
+		human_attributes {config.human_attributes()},
+		orc_attributes {config.orc_attributes()},
 		armors {config.armors()},
 		base_armor {config.base_armor()},
 		class_templates {config.class_templates()},
@@ -48,11 +57,19 @@ namespace dungeons::game {
 		});
 	}
 
+	Entity::Attributes
+	Context::roll_human_attrs()
+	{ return human_attributes.roll(*dice); }
+
+	Entity::Attributes
+	Context::roll_orc_attrs()
+	{ return orc_attributes.roll(*dice); }
+
 	Entity
 	Context::roll_orc()
 	{
 		return {
-			dice->roll_base_attr(),
+			roll_orc_attrs(),
 			races.orc,
 			pick_class(),
 			base_armor,

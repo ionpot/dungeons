@@ -23,17 +23,17 @@ namespace dungeons {
 	NewCharScreen::NewCharScreen(
 			std::shared_ptr<game::Log> log,
 			std::shared_ptr<const ui::Context> ui,
-			const game::Context& game
+			std::shared_ptr<game::Context> game
 	):
 		m_log {log},
 		m_spacing {ui->section_spacing},
-		m_class {ui::class_select(*ui, game.class_templates)},
-		m_attributes {std::make_shared<ui::NewAttributes>(ui, game.dice)},
+		m_class {ui::class_select(*ui, game->class_templates)},
+		m_attributes {std::make_shared<ui::NewAttributes>(ui, game)},
 		m_stats {std::make_shared<ui::NewStats>(ui)},
-		m_armor {std::make_shared<ui::ArmorSelect>(*ui, game.armors)},
-		m_weapon {std::make_shared<ui::WeaponSelect>(*ui, game.weapons)},
+		m_armor {std::make_shared<ui::ArmorSelect>(*ui, game->armors)},
+		m_weapon {std::make_shared<ui::WeaponSelect>(*ui, game->weapons)},
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
-		m_chosen {game.races.human, game.base_armor}
+		m_chosen {game->races.human, game->base_armor}
 	{
 		elements({m_done});
 		groups({m_class, m_attributes, m_stats, m_armor, m_weapon});

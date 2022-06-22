@@ -8,7 +8,6 @@
 
 #include <game/config.hpp>
 #include <game/context.hpp>
-#include <game/dice.hpp>
 #include <game/log.hpp>
 
 #include <ionpot/sdl/base.hpp>
@@ -57,7 +56,7 @@ namespace dungeons {
 
 		log->put("Creating game context...");
 		std::random_device seed;
-		auto dice = std::make_shared<game::Dice>(game_config, seed());
+		auto dice = std::make_shared<util::dice::Engine>(seed());
 		auto game_ctx = std::make_shared<game::Context>(game_config, dice);
 
 		log->put("Starting game...");
