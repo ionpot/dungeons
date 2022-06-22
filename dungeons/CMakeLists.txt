@@ -17,7 +17,7 @@ add_subdirectory(game)
 add_subdirectory(ui)
 
 # WIN32 flag removes the console window on Windows
-add_executable(dungeons WIN32 combat_screen.cpp game.cpp main.cpp mouse.cpp run.cpp new_char_screen.cpp)
+add_executable(dungeons WIN32 combat_screen.cpp game.cpp init.cpp main.cpp mouse.cpp new_char_screen.cpp)
 
 # project version/build numbers placed here
 configure_file(version.hpp.in version.hpp @ONLY)

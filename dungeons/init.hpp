@@ -1,5 +1,7 @@
 #pragma once
 
+#include "game.hpp"
+
 #include <ui/config.hpp>
 
 #include <game/config.hpp>
@@ -9,7 +11,7 @@
 #include <string>
 
 namespace dungeons {
-	void run(
+	Game init(
 		std::shared_ptr<game::Log>,
 		const ui::Config&,
 		const game::Config&,

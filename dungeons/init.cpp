@@ -1,4 +1,4 @@
-#include "run.hpp"
+#include "init.hpp"
 
 #include "game.hpp"
 #include "screen.hpp"
@@ -26,8 +26,8 @@
 namespace dungeons {
 	namespace sdl = ionpot::sdl;
 
-	void
-	run(
+	Game
+	init(
 			std::shared_ptr<game::Log> log,
 			const ui::Config& config,
 			const game::Config& game_config,
@@ -59,10 +59,8 @@ namespace dungeons {
 		auto dice = std::make_shared<util::dice::Engine>(seed());
 		auto game_ctx = std::make_shared<game::Context>(game_config, dice);
 
-		log->put("Starting game...");
 		log->endl();
 
-		Game game {log, base, events, ui, game_ctx, sdl::Mouse {video}};
-		game.loop();
+		return {log, base, events, ui, game_ctx, sdl::Mouse {video}};
 	}
 }

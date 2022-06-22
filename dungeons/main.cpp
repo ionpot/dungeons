@@ -1,4 +1,4 @@
-#include "run.hpp"
+#include "init.hpp"
 
 #include <dungeons/version.hpp>
 
@@ -29,12 +29,12 @@ namespace {
 		auto title = "Dungeons v" + dungeons::version.to_string();
 		log->put(title);
 		log->put("Begin");
-		dungeons::run(
+		dungeons::init(
 			log,
 			dungeons::ui::Config {util::CfgFile {"ui.cfg"}},
 			dungeons::game::Config {util::CfgFile {"game.cfg"}},
 			title
-		);
+		).loop();
 		log->put("End");
 	}
 	catch (const util::Exception& err) {
