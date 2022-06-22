@@ -9,10 +9,19 @@
 #include <memory> // std::make_shared
 #include <string>
 #include <utility> // std::move
+#include <vector>
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
 	namespace dice = util::dice;
+
+	Entity::Armor::Ptr
+	Config::Armors::roll(dice::Engine& dice) const
+	{
+		return dice.pick(std::vector {
+			leather, scale_mail
+		});
+	}
 
 	Entity::Attributes
 	Config::Attributes::roll(dice::Engine& dice) const
@@ -22,6 +31,22 @@ namespace dungeons::game {
 			dice.roll(agility),
 			dice.roll(intellect)
 		};
+	}
+
+	Class::Template::Ptr
+	Config::ClassTemplates::roll(dice::Engine& dice) const
+	{
+		return dice.pick(std::vector {
+			warrior, hybrid, mage
+		});
+	}
+
+	Entity::Weapon::Ptr
+	Config::Weapons::roll(dice::Engine& dice) const
+	{
+		return dice.pick(std::vector {
+			dagger, mace, longsword, halberd
+		});
 	}
 
 	// Config

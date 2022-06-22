@@ -17,6 +17,7 @@ namespace dungeons::game {
 		struct Armors {
 			Entity::Armor::Ptr leather;
 			Entity::Armor::Ptr scale_mail;
+			Entity::Armor::Ptr roll(dice::Engine&) const;
 		};
 
 		struct Attributes {
@@ -30,6 +31,7 @@ namespace dungeons::game {
 			Class::Template::Ptr warrior;
 			Class::Template::Ptr hybrid;
 			Class::Template::Ptr mage;
+			Class::Template::Ptr roll(dice::Engine&) const;
 		};
 
 		struct Races {
@@ -42,6 +44,7 @@ namespace dungeons::game {
 			Entity::Weapon::Ptr mace;
 			Entity::Weapon::Ptr longsword;
 			Entity::Weapon::Ptr halberd;
+			Entity::Weapon::Ptr roll(dice::Engine&) const;
 		};
 
 		Config(util::CfgFile&&);

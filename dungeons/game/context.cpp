@@ -7,7 +7,6 @@
 #include <ionpot/util/dice.hpp>
 
 #include <memory> // std::shared_ptr
-#include <vector>
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
@@ -29,33 +28,15 @@ namespace dungeons::game {
 
 	Entity::Armor::Ptr
 	Context::pick_armor()
-	{
-		return dice->pick(std::vector {
-			armors.leather,
-			armors.scale_mail
-		});
-	}
+	{ return armors.roll(*dice); }
 
 	Class::Template::Ptr
 	Context::pick_class()
-	{
-		return dice->pick(std::vector {
-			class_templates.warrior,
-			class_templates.hybrid,
-			class_templates.mage
-		});
-	}
+	{ return class_templates.roll(*dice); }
 
 	Entity::Weapon::Ptr
 	Context::pick_weapon()
-	{
-		return dice->pick(std::vector {
-			weapons.dagger,
-			weapons.mace,
-			weapons.longsword,
-			weapons.halberd
-		});
-	}
+	{ return weapons.roll(*dice); }
 
 	Entity::Attributes
 	Context::roll_human_attrs()
