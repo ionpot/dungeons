@@ -25,8 +25,8 @@ namespace dungeons::ui {
 			normal_text(ui, "Weapon: " + game::string::weapon(entity))
 		)}
 	{
-		elements({primary, secondary, armor, weapon});
-		stack_text(ui, elements());
+		children({primary, secondary, armor, weapon});
+		stack_text(ui, children());
 		update_size();
 	}
 }

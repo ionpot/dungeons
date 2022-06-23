@@ -8,7 +8,6 @@
 #include <game/entity.hpp>
 
 #include <ionpot/widget/element.hpp>
-#include <ionpot/widget/group.hpp>
 
 #include <memory> // std::shared_ptr
 #include <optional>
@@ -16,7 +15,7 @@
 namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
-	class WeaponSelect : public widget::Group {
+	class WeaponSelect : public widget::Element {
 	public:
 		using Value = game::Entity::Weapon::Ptr;
 		using Radio = RadioGroup<Value>;

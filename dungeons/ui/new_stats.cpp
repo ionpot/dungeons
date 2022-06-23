@@ -18,7 +18,7 @@ namespace dungeons::ui {
 		m_will {std::make_shared<LabelValue>(ui, "Spell Resist")},
 		m_weapon {std::make_shared<LabelValue>(ui, "Weapon Damage")}
 	{
-		elements({LABELS});
+		children({LABELS});
 		stack_labels(*ui, {LABELS});
 		update_size();
 	}

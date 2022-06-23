@@ -35,8 +35,7 @@ namespace dungeons {
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
 		m_chosen {game->races.human, game->base_armor}
 	{
-		elements({m_done});
-		groups({m_class, m_attributes, m_stats, m_armor, m_weapon});
+		children({m_done, m_class, m_attributes, m_stats, m_armor, m_weapon});
 
 		m_class->position(ui->screen_margin);
 

@@ -11,7 +11,6 @@
 #include <game/log.hpp>
 
 #include <ionpot/widget/element.hpp>
-#include <ionpot/widget/group.hpp>
 
 #include <memory> // std::shared_ptr
 #include <optional>
@@ -19,7 +18,7 @@
 namespace dungeons {
 	namespace widget = ionpot::widget;
 
-	class CombatScreen : public widget::Group {
+	class CombatScreen : public widget::Element {
 	public:
 		CombatScreen(
 			std::shared_ptr<game::Log>,

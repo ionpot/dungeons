@@ -4,14 +4,14 @@
 
 #include <game/entity.hpp>
 
-#include <ionpot/widget/group.hpp>
+#include <ionpot/widget/element.hpp>
 
 #include <memory> // std::shared_ptr
 
 namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
-	struct EntityInfo : public widget::Group {
+	struct EntityInfo : public widget::Element {
 		std::shared_ptr<Text> primary;
 		std::shared_ptr<Text> secondary;
 		std::shared_ptr<Text> armor;

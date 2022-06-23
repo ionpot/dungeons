@@ -5,14 +5,14 @@
 
 #include <game/entity.hpp>
 
-#include <ionpot/widget/group.hpp>
+#include <ionpot/widget/element.hpp>
 
 #include <memory> // std::shared_ptr
 
 namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
-	class NewStats : public widget::Group {
+	class NewStats : public widget::Element {
 	public:
 		NewStats(std::shared_ptr<const Context>);
 

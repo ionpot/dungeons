@@ -4,7 +4,6 @@
 #include "texture.hpp"
 
 #include <ionpot/widget/element.hpp>
-#include <ionpot/widget/group.hpp>
 
 #include <ionpot/util/size.hpp>
 #include <ionpot/util/vector.hpp>
@@ -20,7 +19,7 @@ namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
 	template<class T> // T = copyable value
-	class RadioGroup : public widget::Group {
+	class RadioGroup : public widget::Element {
 	public:
 		using ToString = std::string (*)(T);
 
@@ -107,7 +106,7 @@ namespace dungeons::ui {
 			m_buttons {std::move(buttons)}
 		{
 			using Ptr = std::shared_ptr<widget::Element>;
-			elements(util::vector_cast<Ptr>(m_buttons));
+			children(util::vector_cast<Ptr>(m_buttons));
 			update_size();
 		}
 

@@ -8,7 +8,6 @@
 #include <game/entity.hpp>
 
 #include <ionpot/widget/element.hpp>
-#include <ionpot/widget/group.hpp>
 
 #include <memory> // std::shared_ptr
 #include <optional>
@@ -16,7 +15,7 @@
 namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
-	class NewAttributes : public widget::Group {
+	class NewAttributes : public widget::Element {
 	public:
 		using Value = game::Entity::Attributes;
 
@@ -27,7 +26,7 @@ namespace dungeons::ui {
 		std::optional<Value> on_click(const widget::Element&);
 
 	private:
-		class Labels : public widget::Group {
+		class Labels : public widget::Element {
 		public:
 			Labels(std::shared_ptr<const Context>);
 

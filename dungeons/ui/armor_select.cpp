@@ -29,8 +29,7 @@ namespace dungeons::ui {
 			})
 		)}
 	{
-		elements({m_title});
-		groups({m_radio});
+		children({m_title, m_radio});
 		m_radio->place_after(*m_title, ui.button.spacing);
 		m_title->center_y_to(*m_radio);
 		update_size();

@@ -16,7 +16,6 @@
 #include <game/log.hpp>
 
 #include <ionpot/widget/element.hpp>
-#include <ionpot/widget/group.hpp>
 
 #include <ionpot/util/size.hpp>
 
@@ -27,7 +26,7 @@ namespace dungeons {
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
-	class NewCharScreen : public widget::Group {
+	class NewCharScreen : public widget::Element {
 	public:
 		NewCharScreen(
 			std::shared_ptr<game::Log>,

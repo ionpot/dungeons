@@ -23,7 +23,7 @@ namespace dungeons::ui {
 		m_agi {std::make_shared<LabelValue>(ui, "Agility")},
 		m_int {std::make_shared<LabelValue>(ui, "Intellect")}
 	{
-		elements({LABELS});
+		children({LABELS});
 		stack_labels(*ui, {LABELS});
 		update_size();
 	}
@@ -46,7 +46,7 @@ namespace dungeons::ui {
 		m_reroll {std::make_shared<Button>(*ui, "Roll Again")},
 		m_labels {std::make_shared<Labels>(ui)}
 	{
-		elements({m_roll, m_reroll, m_labels});
+		children({m_roll, m_reroll, m_labels});
 		m_reroll->place_below(*m_labels, ui->text_spacing);
 		m_reroll->hide();
 		m_labels->hide();

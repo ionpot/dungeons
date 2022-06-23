@@ -31,8 +31,7 @@ namespace dungeons {
 		m_enemy_info {std::make_shared<ui::EntityInfo>(ui, *m_enemy)},
 		m_button {std::make_shared<ui::Button>(ui, "Done")}
 	{
-		elements({m_button});
-		groups({m_player_info, m_enemy_info});
+		children({m_button, m_player_info, m_enemy_info});
 		m_player_info->position(ui.screen_margin);
 		m_enemy_info->place_after(*m_player_info, ui.section_spacing);
 		m_button->place_below(*m_player_info, ui.section_spacing);
