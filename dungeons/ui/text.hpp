@@ -21,6 +21,6 @@ namespace dungeons::ui {
 
 	template<class T> // T = widget::Box*[]
 	void
-	stack_text(const Context& ui, T& boxes)
+	stack_text(const Context& ui, const T& boxes)
 	{ widget::stack_down(boxes, ui.text_spacing); }
 }
