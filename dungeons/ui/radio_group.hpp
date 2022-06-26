@@ -31,7 +31,7 @@ namespace dungeons::ui {
 				value {value}
 			{}
 			Input(const Context& ui, ToString f, T value):
-				Input {button_text(ui, f(value)), value}
+				Input {ui.button_text(f(value)), value}
 			{}
 		};
 
@@ -58,7 +58,7 @@ namespace dungeons::ui {
 			for (const auto& input : inputs)
 				text_size.pick_max(input.text.size());
 			auto box = std::make_shared<const Texture>(
-				button_box(ui, text_size)
+				ui.button_box(text_size)
 			);
 			std::vector<ButtonPtr> buttons;
 			for (auto&& input : inputs)
@@ -87,7 +87,7 @@ namespace dungeons::ui {
 				const std::vector<T>& values)
 		{
 			auto buttons = make_buttons(ui, to_string, values);
-			lay_buttons(ui, buttons);
+			ui.lay_buttons(buttons);
 			return {std::move(buttons)};
 		}
 
@@ -98,7 +98,7 @@ namespace dungeons::ui {
 				const std::vector<T>& values)
 		{
 			auto buttons = make_buttons(ui, to_string, values);
-			stack_buttons(ui, buttons);
+			ui.stack_buttons(buttons);
 			return {std::move(buttons)};
 		}
 

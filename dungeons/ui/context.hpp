@@ -3,6 +3,7 @@
 #include "config.hpp"
 #include "text.hpp"
 
+#include <ionpot/widget/side_by_side.hpp>
 #include <ionpot/widget/stack_down.hpp>
 
 #include <ionpot/sdl/font.hpp>
@@ -15,6 +16,7 @@
 #include <ionpot/util/stringify.hpp>
 
 #include <memory> // std::shared_ptr
+#include <vector>
 
 namespace dungeons::ui {
 	namespace sdl = ionpot::sdl;
@@ -53,9 +55,23 @@ namespace dungeons::ui {
 
 		util::Size bold_text_size(std::string) const;
 
+		Text button_box(util::Size content_size) const;
+		Text button_text(std::string content) const;
+		util::Size button_size(util::Size content_size) const;
+
 		template<class T> // T = widget::Box*[]
 		void
 		stack_text(const T& boxes) const
 		{ widget::stack_down(boxes, text_spacing); }
+
+		template<class T> // T = widget::Box*
+		void
+		lay_buttons(std::vector<T>& buttons) const
+		{ widget::side_by_side(buttons, button.spacing); }
+
+		template<class T> // T = widget::Box*
+		void
+		stack_buttons(std::vector<T>& buttons) const
+		{ widget::stack_down(buttons, button.spacing); }
 	};
 }
