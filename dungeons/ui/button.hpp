@@ -1,7 +1,7 @@
 #pragma once
 
 #include "context.hpp"
-#include "texture.hpp"
+#include "text.hpp"
 
 #include <ionpot/widget/element.hpp>
 #include <ionpot/widget/side_by_side.hpp>
@@ -22,17 +22,17 @@ namespace dungeons::ui {
 	public:
 		Button(
 			const Context&,
-			Texture&& text,
-			std::shared_ptr<const Texture> box);
+			Text&& text,
+			std::shared_ptr<const Text> box);
 
 		Button(
 			const Context&,
-			Texture&& text,
-			Texture&& box);
+			Text&& text,
+			Text&& box);
 
 		Button(
 			const Context&,
-			Texture&& text);
+			Text&& text);
 
 		Button(
 			const Context&,
@@ -44,13 +44,13 @@ namespace dungeons::ui {
 		void render(util::Point offset = {}) const final;
 
 	private:
-		Texture m_text;
-		std::shared_ptr<const Texture> m_box;
+		Text m_text;
+		std::shared_ptr<const Text> m_box;
 		util::Point m_click_dent;
 	};
 
-	Texture button_box(const Context&, util::Size content_size);
-	Texture button_text(const Context&, std::string content);
+	Text button_box(const Context&, util::Size content_size);
+	Text button_text(const Context&, std::string content);
 
 	util::Size button_size(const Context&, util::Size content_size);
 

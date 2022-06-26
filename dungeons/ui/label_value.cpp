@@ -17,7 +17,7 @@ namespace dungeons::ui {
 			std::string label
 	):
 		widget::LabelValue {
-			std::make_shared<Text>(normal_text(*ui, label)),
+			std::make_shared<Text>(ui->normal_text(label)),
 			std::make_shared<widget::Element>()
 		},
 		m_ui {ui}
@@ -28,7 +28,7 @@ namespace dungeons::ui {
 	LabelValue::value(std::string str)
 	{
 		widget::LabelValue::value(
-			std::make_shared<Text>(bold_text(*m_ui, str))
+			std::make_shared<Text>(m_ui->bold_text(str))
 		);
 	}
 
@@ -43,7 +43,7 @@ namespace dungeons::ui {
 	stack_labels(const Context& ui, const LabelValue::Vector& labels)
 	{
 		align_labels(ui, labels);
-		stack_text(ui, labels);
+		ui.stack_text(labels);
 	}
 
 	void

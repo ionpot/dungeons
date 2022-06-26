@@ -20,7 +20,7 @@ namespace dungeons::ui {
 			const game::Config::Armors& armors
 	):
 		m_title {std::make_shared<Text>(
-			normal_text(ui, "Armor")
+			ui.normal_text("Armor")
 		)},
 		m_radio {std::make_shared<Radio>(
 			Radio::vertical(ui, game::string::armor, {

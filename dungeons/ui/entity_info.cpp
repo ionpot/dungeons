@@ -1,5 +1,6 @@
 #include "entity_info.hpp"
 
+#include "context.hpp"
 #include "text.hpp"
 
 #include <game/entity.hpp>
@@ -13,20 +14,20 @@ namespace dungeons::ui {
 			const game::Entity& entity
 	):
 		primary {std::make_shared<Text>(
-			normal_text(ui, game::string::primary(entity))
+			ui.normal_text(game::string::primary(entity))
 		)},
 		secondary {std::make_shared<Text>(
-			normal_text(ui, game::string::secondary_attr(entity))
+			ui.normal_text(game::string::secondary_attr(entity))
 		)},
 		armor {std::make_shared<Text>(
-			normal_text(ui, "Armor: " + game::string::armor(entity))
+			ui.normal_text("Armor: " + game::string::armor(entity))
 		)},
 		weapon {std::make_shared<Text>(
-			normal_text(ui, "Weapon: " + game::string::weapon(entity))
+			ui.normal_text("Weapon: " + game::string::weapon(entity))
 		)}
 	{
 		children({primary, secondary, armor, weapon});
-		stack_text(ui, children());
+		ui.stack_text(children());
 		update_size();
 	}
 }

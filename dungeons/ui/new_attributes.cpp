@@ -3,7 +3,6 @@
 #include "button.hpp"
 #include "context.hpp"
 #include "label_value.hpp"
-#include "text.hpp"
 
 #include <game/context.hpp>
 

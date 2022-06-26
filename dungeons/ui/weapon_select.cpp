@@ -20,7 +20,7 @@ namespace dungeons::ui {
 			const game::Config::Weapons& weapons
 	):
 		m_title {std::make_shared<Text>(
-			normal_text(ui, "Weapon")
+			ui.normal_text("Weapon")
 		)},
 		m_radio {std::make_shared<Radio>(
 			Radio::vertical(ui, game::string::weapon, {

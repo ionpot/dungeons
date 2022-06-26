@@ -1,11 +1,10 @@
 #include "button.hpp"
 
 #include "context.hpp"
-#include "text.hpp"
-#include "texture.hpp"
 
 #include <ionpot/widget/element.hpp>
 #include <ionpot/widget/solid_box.hpp>
+#include <ionpot/widget/texture.hpp>
 
 #include <ionpot/util/point.hpp>
 #include <ionpot/util/size.hpp>
@@ -20,8 +19,8 @@ namespace dungeons::ui {
 
 	Button::Button(
 			const Context& ui,
-			Texture&& text,
-			std::shared_ptr<const Texture> box
+			widget::Texture&& text,
+			std::shared_ptr<const widget::Texture> box
 	):
 		widget::Element {box->size()},
 		m_text {std::move(text)},
@@ -34,16 +33,16 @@ namespace dungeons::ui {
 
 	Button::Button(
 			const Context& ui,
-			Texture&& text,
-			Texture&& box
+			widget::Texture&& text,
+			widget::Texture&& box
 	):
 		Button {ui, std::move(text),
-			std::make_shared<const Texture>(std::move(box))}
+			std::make_shared<const widget::Texture>(std::move(box))}
 	{}
 
 	Button::Button(
 			const Context& ui,
-			Texture&& text
+			widget::Texture&& text
 	):
 		Button {ui, std::move(text), button_box(ui, text.size())}
 	{}
@@ -52,7 +51,7 @@ namespace dungeons::ui {
 			const Context& ui,
 			std::string text
 	):
-		Button {ui, bold_text(ui, text)}
+		Button {ui, ui.bold_text(text)}
 	{}
 
 	void
@@ -76,7 +75,7 @@ namespace dungeons::ui {
 	}
 
 	// helpers
-	Texture
+	widget::Texture
 	button_box(const Context& ui, util::Size content_size)
 	{
 		return widget::solid_box(
@@ -91,7 +90,7 @@ namespace dungeons::ui {
 	button_size(const Context& ui, util::Size content_size)
 	{ return content_size + ui.button.padding.size(); }
 
-	Texture
+	widget::Texture
 	button_text(const Context& ui, std::string content)
-	{ return bold_text(ui, content); }
+	{ return ui.bold_text(content); }
 }

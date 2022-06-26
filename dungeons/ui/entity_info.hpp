@@ -1,5 +1,6 @@
 #pragma once
 
+#include "context.hpp"
 #include "text.hpp"
 
 #include <game/entity.hpp>

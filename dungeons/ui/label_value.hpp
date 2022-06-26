@@ -1,7 +1,6 @@
 #pragma once
 
 #include "context.hpp"
-#include "text.hpp"
 
 #include <ionpot/widget/label_value.hpp>
 
