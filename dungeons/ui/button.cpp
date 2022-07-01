@@ -4,7 +4,7 @@
 #include "text.hpp"
 #include "texture.hpp"
 
-#include <ionpot/widget/element.hpp>
+#include <ionpot/widget/text_box.hpp>
 
 #include <ionpot/util/point.hpp>
 
@@ -21,12 +21,12 @@ namespace dungeons::ui {
 			Text&& text,
 			std::shared_ptr<const Texture> box
 	):
-		widget::Element {box->size()},
-		m_text {std::move(text)},
-		m_box {box},
+		widget::TextBox {
+			std::make_shared<Text>(std::move(text)),
+			box
+		},
 		m_click_dent {ui.button.click_dent}
 	{
-		m_text.center_to(*m_box);
 		enable();
 	}
 
@@ -55,21 +55,19 @@ namespace dungeons::ui {
 
 	void
 	Button::disable()
-	{ clickable(false); }
+	{ clickable(false); half_transparent(); }
 
 	void
 	Button::enable()
-	{ clickable(true); }
+	{ clickable(true); opaque(); }
 
 	void
 	Button::render(util::Point offset) const
 	{
-		offset += position();
 		if (clickable()) {
 			if (held_down())
 				offset += m_click_dent;
-			m_box->render(offset);
 		}
-		m_text.render(offset);
+		widget::TextBox::render(offset);
 	}
 }

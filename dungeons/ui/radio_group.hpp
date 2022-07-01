@@ -57,14 +57,15 @@ namespace dungeons::ui {
 			util::Size text_size;
 			for (const auto& input : inputs)
 				text_size.pick_max(input.text.size());
-			auto box = std::make_shared<const Texture>(
-				ui.button_box(text_size)
-			);
 			std::vector<ButtonPtr> buttons;
-			for (auto&& input : inputs)
+			for (auto&& input : inputs) {
+				auto box = std::make_shared<const Texture>(
+					ui.button_box(text_size)
+				);
 				buttons.push_back(
 					std::make_shared<RadioButton>(
 						ui, std::move(input), box));
+			}
 			return buttons;
 		}
 

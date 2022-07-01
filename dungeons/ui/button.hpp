@@ -4,7 +4,7 @@
 #include "text.hpp"
 #include "texture.hpp"
 
-#include <ionpot/widget/element.hpp>
+#include <ionpot/widget/text_box.hpp>
 
 #include <ionpot/util/point.hpp>
 
@@ -15,7 +15,7 @@ namespace dungeons::ui {
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
-	class Button : public widget::Element {
+	class Button : public widget::TextBox {
 	public:
 		Button(
 			const Context&,
@@ -41,8 +41,6 @@ namespace dungeons::ui {
 		void render(util::Point offset = {}) const final;
 
 	private:
-		Text m_text;
-		std::shared_ptr<const Texture> m_box;
 		util::Point m_click_dent;
 	};
 }
