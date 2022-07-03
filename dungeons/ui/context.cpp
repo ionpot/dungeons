@@ -30,15 +30,26 @@ namespace dungeons::ui {
 		section_spacing {config.section_spacing()},
 		text_color {config.text_color()},
 		text_spacing {config.text_spacing()},
-		button {config.button()}
+		button {config.button()},
+		active_border {config.active_border()},
+		active_color {config.active_color()}
 	{}
 
 	template<>
 	Text
+	Context::active_text(std::string text) const
+	{ return bold_text(text, active_color); }
+
+	template<>
+	Text
 	Context::bold_text(std::string text) const
+	{ return bold_text(text, text_color); }
+
+	Text
+	Context::bold_text(std::string text, util::RGB color) const
 	{
 		font.set_bold();
-		return widget::text(renderer, font, text_color, text);
+		return widget::text(renderer, font, color, text);
 	}
 
 	util::Size
@@ -54,6 +65,17 @@ namespace dungeons::ui {
 	{
 		font.set_normal();
 		return widget::text(renderer, font, text_color, text);
+	}
+
+	widget::Texture
+	Context::active_button_box(util::Size content_size) const
+	{
+		return widget::solid_box(
+			renderer,
+			button_size(content_size),
+			button.bg_color,
+			active_border
+		);
 	}
 
 	widget::Texture

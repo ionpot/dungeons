@@ -18,17 +18,22 @@ namespace dungeons::ui {
 
 	Button::Button(
 			const Context& ui,
-			Text&& text,
+			std::shared_ptr<Text> text,
 			std::shared_ptr<const Texture> box
 	):
-		widget::TextBox {
-			std::make_shared<Text>(std::move(text)),
-			box
-		},
+		widget::TextBox {text, box},
 		m_click_dent {ui.button.click_dent}
 	{
 		enable();
 	}
+
+	Button::Button(
+			const Context& ui,
+			Text&& text,
+			std::shared_ptr<const Texture> box
+	):
+		Button {ui, std::make_shared<Text>(std::move(text)), box}
+	{}
 
 	Button::Button(
 			const Context& ui,

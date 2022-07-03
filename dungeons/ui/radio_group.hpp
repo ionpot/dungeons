@@ -1,9 +1,11 @@
 #pragma once
 
 #include "button.hpp"
+#include "radio_button.hpp"
 #include "texture.hpp"
 
 #include <ionpot/widget/element.hpp>
+#include <ionpot/widget/text_box.hpp>
 
 #include <ionpot/util/size.hpp>
 #include <ionpot/util/vector.hpp>
@@ -21,55 +23,58 @@ namespace dungeons::ui {
 	template<class T> // T = copyable value
 	class RadioGroup : public widget::Element {
 	public:
-		using ToString = std::string (*)(T);
-
 		struct Input {
-			Texture text;
+			std::shared_ptr<Texture> active_text;
+			std::shared_ptr<Texture> button_text;
 			T value;
-			Input(Texture&& tx, T value):
-				text {std::move(tx)},
+			Input(const Context& ui, std::string text, T value):
+				active_text {
+					std::make_shared<Texture>(
+						ui.active_text(text))
+				},
+				button_text {
+					std::make_shared<Texture>(
+						ui.bold_text(text))
+				},
 				value {value}
 			{}
-			Input(const Context& ui, ToString f, T value):
-				Input {ui.button_text(f(value)), value}
-			{}
+			util::Size
+			text_size() const
+			{
+				auto size = active_text->size();
+				size.pick_max(button_text->size());
+				return size;
+			}
 		};
 
-		struct RadioButton : public Button {
-			T value;
-			RadioButton(
-					const Context& ui,
-					Input&& input,
-					std::shared_ptr<const Texture> box
-			):
-				Button {ui, std::move(input.text), box},
-				value {input.value}
-			{}
-		};
+		using Button = RadioButton<T>;
+		using Buttons = util::PtrVector<Button>;
 
-		using ButtonPtr = std::shared_ptr<RadioButton>;
-
-		static std::vector<ButtonPtr>
+		static Buttons
 		make_buttons(
 				const Context& ui,
 				std::vector<Input>&& inputs)
 		{
 			util::Size text_size;
 			for (const auto& input : inputs)
-				text_size.pick_max(input.text.size());
-			std::vector<ButtonPtr> buttons;
-			for (auto&& input : inputs) {
-				auto box = std::make_shared<const Texture>(
-					ui.button_box(text_size)
-				);
+				text_size.pick_max(input.text_size());
+			auto button_box = std::make_shared<const Texture>(
+				ui.button_box(text_size));
+			auto active_box = std::make_shared<const Texture>(
+				ui.active_button_box(text_size));
+			Buttons buttons;
+			for (auto&& input : inputs)
 				buttons.push_back(
-					std::make_shared<RadioButton>(
-						ui, std::move(input), box));
-			}
+					std::make_shared<Button>(
+						ui::Button {ui, input.button_text, button_box},
+						widget::TextBox {input.active_text, active_box},
+						input.value));
 			return buttons;
 		}
 
-		static std::vector<ButtonPtr>
+		using ToString = std::string (*)(T);
+
+		static Buttons
 		make_buttons(
 				const Context& ui,
 				ToString to_string,
@@ -77,7 +82,7 @@ namespace dungeons::ui {
 		{
 			std::vector<Input> input;
 			for (auto value : values)
-				input.emplace_back(ui, to_string, value);
+				input.emplace_back(ui, to_string(value), value);
 			return make_buttons(ui, std::move(input));
 		}
 
@@ -103,7 +108,7 @@ namespace dungeons::ui {
 			return {std::move(buttons)};
 		}
 
-		RadioGroup(std::vector<ButtonPtr>&& buttons):
+		RadioGroup(Buttons&& buttons):
 			m_buttons {std::move(buttons)}
 		{
 			using Ptr = std::shared_ptr<widget::Element>;
@@ -112,22 +117,22 @@ namespace dungeons::ui {
 		}
 
 		std::optional<T>
-		on_click(const widget::Element& clicked)
+		on_click(const widget::Element& elmt)
 		{
-			for (auto button : m_buttons) {
-				if (*button == clicked) {
-					button->disable();
-					if (m_chosen)
-						m_chosen->enable();
-					m_chosen = button;
-					return button->value;
-				}
+			for (auto& button : m_buttons) {
+				if (!button->is_clicked(elmt))
+					continue;
+				button->choose();
+				if (m_chosen)
+					m_chosen->revert();
+				m_chosen = button;
+				return button->value();
 			}
 			return {};
 		}
 
 	private:
-		std::vector<ButtonPtr> m_buttons;
-		ButtonPtr m_chosen;
+		Buttons m_buttons;
+		std::shared_ptr<Button> m_chosen;
 	};
 }

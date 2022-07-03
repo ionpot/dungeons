@@ -19,6 +19,11 @@ namespace dungeons::ui {
 	public:
 		Button(
 			const Context&,
+			std::shared_ptr<Text> text,
+			std::shared_ptr<const Texture> box);
+
+		Button(
+			const Context&,
 			Text&& text,
 			std::shared_ptr<const Texture> box);
 

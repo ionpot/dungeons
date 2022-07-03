@@ -27,6 +27,8 @@ namespace dungeons::ui {
 
 		Config(util::CfgFile&&);
 
+		widget::Border active_border() const;
+		util::RGB active_color() const;
 		Button button() const;
 		sdl::Font::Config font() const;
 		util::Point screen_margin() const;

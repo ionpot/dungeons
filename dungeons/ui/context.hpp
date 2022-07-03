@@ -31,6 +31,8 @@ namespace dungeons::ui {
 		util::RGB text_color;
 		util::Size text_spacing;
 		Config::Button button;
+		widget::Border active_border;
+		util::RGB active_color;
 
 		Context(
 			std::shared_ptr<const sdl::Ttf>,
@@ -53,8 +55,19 @@ namespace dungeons::ui {
 		template<>
 		Text bold_text(std::string) const;
 
+		Text bold_text(std::string, util::RGB) const;
+
+		template<class T>
+		Text
+		active_text(T value) const
+		{ return active_text(util::stringify(value)); }
+
+		template<>
+		Text active_text(std::string) const;
+
 		util::Size bold_text_size(std::string) const;
 
+		Text active_button_box(util::Size content_size) const;
 		Text button_box(util::Size content_size) const;
 		Text button_text(std::string content) const;
 		util::Size button_size(util::Size content_size) const;

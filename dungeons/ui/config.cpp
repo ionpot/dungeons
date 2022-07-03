@@ -21,6 +21,20 @@ namespace dungeons::ui {
 		m_file {std::move(file)}
 	{}
 
+	widget::Border
+	Config::active_border() const
+	{
+		auto section = m_file.find_section("button");
+		return {
+			section.find_pair("border width").to_int(),
+			active_color()
+		};
+	}
+
+	util::RGB
+	Config::active_color() const
+	{ return m_file.find_pair("active color").to_rgb(); }
+
 	Config::Button
 	Config::button() const
 	{
