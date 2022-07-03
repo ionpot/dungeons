@@ -9,7 +9,6 @@
 #include <ionpot/widget/element.hpp>
 
 #include <memory> // std::make_shared, std::shared_ptr
-#include <optional>
 
 #define LABELS m_str, m_agi, m_int
 
@@ -41,30 +40,17 @@ namespace dungeons::ui {
 			std::shared_ptr<const Context> ui,
 			std::shared_ptr<game::Context> game):
 		m_game {game},
-		m_roll {std::make_shared<Button>(*ui, "Roll Attributes")},
 		m_reroll {std::make_shared<Button>(*ui, "Roll Again")},
 		m_labels {std::make_shared<Labels>(ui)}
 	{
-		children({m_roll, m_reroll, m_labels});
+		children({m_reroll, m_labels});
 		m_reroll->place_below(*m_labels, ui->text_spacing);
-		m_reroll->hide();
-		m_labels->hide();
 		update_size();
 	}
 
-	std::optional<NewAttributes::Value>
-	NewAttributes::on_click(const widget::Element& clicked)
-	{
-		if (*m_roll == clicked) {
-			m_roll->hide();
-			m_reroll->show();
-			m_labels->show();
-			return roll();
-		}
-		if (*m_reroll == clicked)
-			return roll();
-		return {};
-	}
+	bool
+	NewAttributes::is_clicked(const widget::Element& clicked)
+	{ return *m_reroll == clicked; }
 
 	NewAttributes::Value
 	NewAttributes::roll()

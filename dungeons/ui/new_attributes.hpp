@@ -10,7 +10,6 @@
 #include <ionpot/widget/element.hpp>
 
 #include <memory> // std::shared_ptr
-#include <optional>
 
 namespace dungeons::ui {
 	namespace widget = ionpot::widget;
@@ -23,7 +22,9 @@ namespace dungeons::ui {
 			std::shared_ptr<const Context>,
 			std::shared_ptr<game::Context>);
 
-		std::optional<Value> on_click(const widget::Element&);
+		bool is_clicked(const widget::Element&);
+
+		Value roll();
 
 	private:
 		class Labels : public widget::Element {
@@ -42,7 +43,5 @@ namespace dungeons::ui {
 		std::shared_ptr<Button> m_roll;
 		std::shared_ptr<Button> m_reroll;
 		std::shared_ptr<Labels> m_labels;
-
-		Value roll();
 	};
 }

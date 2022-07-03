@@ -17,13 +17,10 @@
 
 #include <ionpot/widget/element.hpp>
 
-#include <ionpot/util/size.hpp>
-
 #include <memory> // std::shared_ptr
 #include <optional>
 
 namespace dungeons {
-	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
 	class NewCharScreen : public widget::Element {
@@ -51,12 +48,12 @@ namespace dungeons {
 		};
 
 		std::shared_ptr<game::Log> m_log;
-		util::Size m_spacing;
 		std::shared_ptr<ui::ClassSelect> m_class;
 		std::shared_ptr<ui::NewAttributes> m_attributes;
 		std::shared_ptr<ui::NewStats> m_stats;
 		std::shared_ptr<ui::ArmorSelect> m_armor;
 		std::shared_ptr<ui::WeaponSelect> m_weapon;
+		std::shared_ptr<ui::Button> m_roll_attr;
 		std::shared_ptr<ui::Button> m_done;
 		Chosen m_chosen;
 

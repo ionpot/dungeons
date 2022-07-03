@@ -26,26 +26,34 @@ namespace dungeons {
 			std::shared_ptr<game::Context> game
 	):
 		m_log {log},
-		m_spacing {ui->section_spacing},
 		m_class {ui::class_select(*ui, game->class_templates)},
 		m_attributes {std::make_shared<ui::NewAttributes>(ui, game)},
 		m_stats {std::make_shared<ui::NewStats>(ui)},
 		m_armor {std::make_shared<ui::ArmorSelect>(*ui, game->armors)},
 		m_weapon {std::make_shared<ui::WeaponSelect>(*ui, game->weapons)},
+		m_roll_attr {std::make_shared<ui::Button>(*ui, "Roll Attributes")},
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
 		m_chosen {game->races.human, game->base_armor}
 	{
-		children({m_done, m_class, m_attributes, m_stats, m_armor, m_weapon});
+		children({m_roll_attr, m_done, m_class, m_attributes, m_stats, m_armor, m_weapon});
 
 		m_class->position(ui->screen_margin);
 
-		m_attributes->place_below(*m_class, m_spacing);
+		auto spacing = ui->section_spacing;
 
+		m_roll_attr->place_below(*m_class, spacing);
+		m_attributes->place_on(*m_roll_attr);
+		m_stats->place_after(*m_attributes, spacing);
+		m_armor->place_below(*m_attributes, spacing);
+		m_weapon->place_below(*m_armor, spacing);
+		m_done->place_after(*m_weapon, spacing);
+		m_done->center_y_to(*m_weapon);
+
+		m_roll_attr->hide();
 		m_attributes->hide();
 		m_stats->hide();
 		m_armor->hide();
 		m_weapon->hide();
-
 		m_done->hide();
 	}
 
@@ -63,40 +71,33 @@ namespace dungeons {
 		if (auto chosen = m_class->on_click(clicked)) {
 			m_chosen.class_template = *chosen;
 			refresh_stats();
-			if (m_attributes->hidden())
-				m_attributes->show();
+			m_roll_attr->show();
 			return {};
 		}
-		if (auto rolled = m_attributes->on_click(clicked)) {
-			m_chosen.base_attr = *rolled;
+		if (*m_roll_attr == clicked) {
+			m_roll_attr->hide();
+			m_chosen.base_attr = m_attributes->roll();
 			refresh_stats();
-			if (m_stats->hidden()) {
-				m_stats->place_after(*m_attributes, m_spacing);
-				m_stats->show();
-			}
-			if (m_armor->hidden()) {
-				m_armor->place_below(*m_attributes, m_spacing);
-				m_armor->show();
-			}
+			m_attributes->show();
+			m_stats->show();
+			m_armor->show();
+			return {};
+		}
+		if (m_attributes->is_clicked(clicked)) {
+			m_chosen.base_attr = m_attributes->roll();
+			refresh_stats();
 			return {};
 		}
 		if (auto armor = m_armor->on_click(clicked)) {
 			m_chosen.armor = *armor;
 			refresh_stats();
-			if (m_weapon->hidden()) {
-				m_weapon->place_below(*m_armor, m_spacing);
-				m_weapon->show();
-			}
+			m_weapon->show();
 			return {};
 		}
 		if (auto weapon = m_weapon->on_click(clicked)) {
 			m_chosen.weapon = *weapon;
 			refresh_stats();
-			if (m_done->hidden()) {
-				m_done->place_after(*m_weapon, m_spacing);
-				m_done->center_y_to(*m_weapon);
-				m_done->show();
-			}
+			m_done->show();
 			return {};
 		}
 		if (*m_done == clicked) {
