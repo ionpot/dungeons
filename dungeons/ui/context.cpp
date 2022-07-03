@@ -2,10 +2,10 @@
 
 #include "config.hpp"
 #include "text.hpp"
+#include "texture.hpp"
 
 #include <ionpot/widget/solid_box.hpp>
 #include <ionpot/widget/text.hpp>
-#include <ionpot/widget/texture.hpp>
 
 #include <ionpot/sdl/renderer.hpp>
 #include <ionpot/sdl/ttf.hpp>
@@ -67,7 +67,7 @@ namespace dungeons::ui {
 		return widget::text(renderer, font, text_color, text);
 	}
 
-	widget::Texture
+	Texture
 	Context::active_button_box(util::Size content_size) const
 	{
 		return widget::solid_box(
@@ -78,7 +78,7 @@ namespace dungeons::ui {
 		);
 	}
 
-	widget::Texture
+	Texture
 	Context::button_box(util::Size content_size) const
 	{
 		return widget::solid_box(
@@ -93,7 +93,7 @@ namespace dungeons::ui {
 	Context::button_size(util::Size content_size) const
 	{ return content_size + button.padding.size(); }
 
-	widget::Texture
+	Text
 	Context::button_text(std::string content) const
 	{ return bold_text(content); }
 }

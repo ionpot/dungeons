@@ -2,6 +2,7 @@
 
 #include "config.hpp"
 #include "text.hpp"
+#include "texture.hpp"
 
 #include <ionpot/widget/side_by_side.hpp>
 #include <ionpot/widget/stack_down.hpp>
@@ -67,8 +68,8 @@ namespace dungeons::ui {
 
 		util::Size bold_text_size(std::string) const;
 
-		Text active_button_box(util::Size content_size) const;
-		Text button_box(util::Size content_size) const;
+		Texture active_button_box(util::Size content_size) const;
+		Texture button_box(util::Size content_size) const;
 		Text button_text(std::string content) const;
 		util::Size button_size(util::Size content_size) const;
 
