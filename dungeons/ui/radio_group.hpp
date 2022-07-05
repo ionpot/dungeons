@@ -2,6 +2,7 @@
 
 #include "button.hpp"
 #include "radio_button.hpp"
+#include "text.hpp"
 #include "texture.hpp"
 
 #include <ionpot/widget/element.hpp>
@@ -24,16 +25,16 @@ namespace dungeons::ui {
 	class RadioGroup : public widget::Element {
 	public:
 		struct Input {
-			std::shared_ptr<Texture> active_text;
-			std::shared_ptr<Texture> button_text;
+			std::shared_ptr<Text> active_text;
+			std::shared_ptr<Text> button_text;
 			T value;
 			Input(const Context& ui, std::string text, T value):
 				active_text {
-					std::make_shared<Texture>(
+					std::make_shared<Text>(
 						ui.active_text(text))
 				},
 				button_text {
-					std::make_shared<Texture>(
+					std::make_shared<Text>(
 						ui.bold_text(text))
 				},
 				value {value}
