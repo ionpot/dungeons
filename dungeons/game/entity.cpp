@@ -46,12 +46,17 @@ namespace dungeons::game {
 		klass {class_template},
 		base_armor {base_armor},
 		armor {armor},
-		weapon {weapon}
+		weapon {weapon},
+		damage {0}
 	{}
 
 	int
 	Entity::agility() const
 	{ return base_attr.agility + race->attr.agility; }
+
+	int
+	Entity::current_hp() const
+	{ return total_hp() - damage; }
 
 	util::Percent
 	Entity::dodge_chance() const

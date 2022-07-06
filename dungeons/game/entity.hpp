@@ -59,6 +59,7 @@ namespace dungeons::game {
 		int base_armor;
 		Armor::Ptr armor;
 		Weapon::Ptr weapon;
+		int damage;
 
 		Entity(
 			Attributes,
@@ -75,6 +76,8 @@ namespace dungeons::game {
 		int total_armor() const;
 
 		int initiative() const;
+
+		int current_hp() const;
 		int total_hp() const;
 
 		util::Percent dodge_chance() const;
