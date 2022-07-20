@@ -80,6 +80,8 @@ namespace dungeons::game {
 		int current_hp() const;
 		int total_hp() const;
 
+		bool dead() const;
+
 		util::Percent dodge_chance() const;
 		util::Percent resist_chance() const;
 
@@ -87,5 +89,7 @@ namespace dungeons::game {
 		int weapon_damage_bonus() const;
 		int weapon_damage_min() const;
 		int weapon_damage_max() const;
+
+		int compare_speed_to(const Entity&) const;
 	};
 }

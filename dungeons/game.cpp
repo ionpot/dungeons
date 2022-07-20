@@ -40,7 +40,7 @@ namespace dungeons {
 	Game::next(const screen::Output& output)
 	{
 		if (auto* input = std::get_if<screen::ToCombat>(&output)) {
-			return loop(CombatScreen {m_log, *m_ui, *m_game, *input});
+			return loop(CombatScreen {m_log, m_ui, *m_game, *input});
 		}
 	}
 

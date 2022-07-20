@@ -2,6 +2,7 @@
 
 #include "class.hpp"
 
+#include <ionpot/util/compare.hpp>
 #include <ionpot/util/percent.hpp>
 
 namespace dungeons::game {
@@ -55,8 +56,24 @@ namespace dungeons::game {
 	{ return base_attr.agility + race->attr.agility; }
 
 	int
+	Entity::compare_speed_to(const Entity& e) const
+	{
+		if (auto i = util::compare(e.initiative(), initiative()))
+			return i;
+		if (auto i = util::compare(e.agility(), agility()))
+			return i;
+		if (auto i = util::compare(total_armor(), e.total_armor()))
+			return i;
+		return 0;
+	}
+
+	int
 	Entity::current_hp() const
 	{ return total_hp() - damage; }
+
+	bool
+	Entity::dead() const
+	{ return current_hp() <= 0; }
 
 	util::Percent
 	Entity::dodge_chance() const

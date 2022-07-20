@@ -40,6 +40,8 @@ namespace dungeons::ui {
 			std::shared_ptr<const sdl::Renderer>,
 			const Config&);
 
+		Text empty_text() const;
+
 		template<class T>
 		Text
 		normal_text(T value) const

@@ -59,6 +59,10 @@ namespace dungeons::ui {
 		return font.calculate_size(text);
 	}
 
+	Text
+	Context::empty_text() const
+	{ return normal_text(" "); }
+
 	template<>
 	Text
 	Context::normal_text(std::string text) const
