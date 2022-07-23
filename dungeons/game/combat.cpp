@@ -4,24 +4,24 @@
 
 #include <algorithm> // std::sort
 #include <memory> // std::shared_ptr
+#include <utility> // std::as_const
 
 namespace dungeons::game {
-	bool
-	Combat::compare_speed(const Unit& a, const Unit& b)
-	{
-		if (a == b)
-			return true;
-		return a->compare_speed_to(*b) == -1;
-	}
-
 	Combat::Combat(Unit player, Unit enemy):
 		m_turn_order {player, enemy},
 		m_round {1}
 	{
-		std::sort(
-			m_turn_order.begin(),
-			m_turn_order.end(),
-			compare_speed);
+		auto cmp = [&p = std::as_const(player)](
+				const Unit& a,
+				const Unit& b)
+		{
+			if (a == b)
+				return true;
+			if (auto i = a->compare_speed_to(*b))
+				return i == -1;
+			return a == p;
+		};
+		std::sort(m_turn_order.begin(), m_turn_order.end(), cmp);
 		m_current = m_turn_order.begin();
 	}
 
