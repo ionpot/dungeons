@@ -6,6 +6,7 @@
 #include <ionpot/util/dice.hpp>
 
 #include <memory> // std::shared_ptr
+#include <string>
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
@@ -30,6 +31,6 @@ namespace dungeons::game {
 		Entity::Attributes roll_human_attrs();
 		Entity::Attributes roll_orc_attrs();
 
-		Entity roll_orc();
+		Entity roll_orc(std::string name);
 	};
 }

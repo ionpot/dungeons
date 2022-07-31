@@ -8,9 +8,11 @@
 #include <ionpot/util/scale.hpp>
 
 #include <memory> // std::shared_ptr
+#include <string>
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
+	namespace dice = util::dice;
 
 	struct Entity {
 		struct Armor {
@@ -49,10 +51,11 @@ namespace dungeons::game {
 				longsword,
 				mace
 			} id;
-			util::dice::Input dice;
+			dice::Input dice;
 			int initiative {0};
 		};
 
+		std::string name;
 		Attributes base_attr;
 		Race::Ptr race;
 		Class klass;
@@ -62,6 +65,7 @@ namespace dungeons::game {
 		int damage;
 
 		Entity(
+			std::string name,
 			Attributes,
 			Race::Ptr,
 			Class::Template::Ptr,
@@ -82,6 +86,8 @@ namespace dungeons::game {
 
 		bool dead() const;
 
+		util::Percent chance_to_get_hit() const;
+		util::Percent deflect_chance() const;
 		util::Percent dodge_chance() const;
 		util::Percent resist_chance() const;
 
@@ -91,5 +97,8 @@ namespace dungeons::game {
 		int weapon_damage_max() const;
 
 		int compare_speed_to(const Entity&) const;
+
+		int roll_damage(dice::Engine&) const;
+		void take_damage(int);
 	};
 }

@@ -13,11 +13,17 @@ namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
 	struct EntityInfo : public widget::Element {
+		std::shared_ptr<const Context> ui;
+		std::shared_ptr<const game::Entity> entity;
 		std::shared_ptr<Text> primary;
 		std::shared_ptr<Text> secondary;
 		std::shared_ptr<Text> armor;
 		std::shared_ptr<Text> weapon;
 
-		EntityInfo(const Context&, const game::Entity&);
+		EntityInfo(
+			std::shared_ptr<const Context>,
+			std::shared_ptr<const game::Entity>);
+
+		void update();
 	};
 }

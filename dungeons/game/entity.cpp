@@ -5,6 +5,8 @@
 #include <ionpot/util/compare.hpp>
 #include <ionpot/util/percent.hpp>
 
+#include <string>
+
 namespace dungeons::game {
 	namespace util = ionpot::util;
 
@@ -35,6 +37,7 @@ namespace dungeons::game {
 
 	// Entity
 	Entity::Entity(
+			std::string name,
 			Attributes base_attr,
 			Race::Ptr race,
 			Class::Template::Ptr class_template,
@@ -42,6 +45,7 @@ namespace dungeons::game {
 			Armor::Ptr armor,
 			Weapon::Ptr weapon
 	):
+		name {name},
 		base_attr {base_attr},
 		race {race},
 		klass {class_template},
@@ -54,6 +58,10 @@ namespace dungeons::game {
 	int
 	Entity::agility() const
 	{ return base_attr.agility + race->attr.agility; }
+
+	util::Percent
+	Entity::chance_to_get_hit() const
+	{ return deflect_chance().invert(); }
 
 	int
 	Entity::compare_speed_to(const Entity& e) const
@@ -74,6 +82,10 @@ namespace dungeons::game {
 	bool
 	Entity::dead() const
 	{ return current_hp() <= 0; }
+
+	util::Percent
+	Entity::deflect_chance() const
+	{ return {total_armor()}; }
 
 	util::Percent
 	Entity::dodge_chance() const
@@ -106,8 +118,19 @@ namespace dungeons::game {
 	}
 
 	int
+	Entity::roll_damage(dice::Engine& dice) const
+	{
+		auto base = weapon ? dice.roll(weapon->dice) : 0;
+		return base + weapon_damage_bonus();
+	}
+
+	int
 	Entity::strength() const
 	{ return base_attr.strength + race->attr.strength; }
+
+	void
+	Entity::take_damage(int dmg)
+	{ damage += dmg; }
 
 	int
 	Entity::total_armor() const

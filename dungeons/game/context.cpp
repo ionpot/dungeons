@@ -7,6 +7,7 @@
 #include <ionpot/util/dice.hpp>
 
 #include <memory> // std::shared_ptr
+#include <string>
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
@@ -47,9 +48,10 @@ namespace dungeons::game {
 	{ return orc_attributes.roll(*dice); }
 
 	Entity
-	Context::roll_orc()
+	Context::roll_orc(std::string name)
 	{
 		return {
+			name,
 			roll_orc_attrs(),
 			races.orc,
 			pick_class(),

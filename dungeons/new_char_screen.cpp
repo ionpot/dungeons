@@ -57,14 +57,6 @@ namespace dungeons {
 		m_done->hide();
 	}
 
-	void
-	NewCharScreen::log_new_char()
-	{
-		m_log->put("New character");
-		m_log->entity(m_chosen.to_entity());
-		m_log->endl();
-	}
-
 	std::optional<screen::Output>
 	NewCharScreen::on_click(const widget::Element& clicked)
 	{
@@ -101,7 +93,8 @@ namespace dungeons {
 			return {};
 		}
 		if (*m_done == clicked) {
-			log_new_char();
+			m_log->entity(m_chosen.to_entity());
+			m_log->endl();
 			return screen::ToCombat {
 				std::make_shared<game::Entity>(
 					m_chosen.to_entity()
@@ -136,6 +129,6 @@ namespace dungeons {
 	{
 		if (!is_ready())
 			throw ui::Exception {"Entity not ready yet."};
-		return {base_attr, race, class_template, base_armor, armor, weapon};
+		return {"Player", base_attr, race, class_template, base_armor, armor, weapon};
 	}
 }

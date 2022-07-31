@@ -59,6 +59,7 @@ namespace dungeons {
 		auto dice = std::make_shared<util::dice::Engine>(seed());
 		auto game_ctx = std::make_shared<game::Context>(game_config, dice);
 
+		log->put("Ready");
 		log->endl();
 
 		return {log, base, events, ui, game_ctx, sdl::Mouse {video}};

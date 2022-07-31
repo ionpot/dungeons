@@ -57,7 +57,6 @@ namespace dungeons {
 		std::shared_ptr<ui::Button> m_done;
 		Chosen m_chosen;
 
-		void log_new_char();
 		void refresh_stats();
 	};
 }

@@ -27,12 +27,13 @@ namespace dungeons {
 			const screen::ToCombat& input
 	):
 		m_log {log},
+		m_dice {game.dice},
 		m_player {input.player},
-		m_enemy {std::make_shared<game::Entity>(game.roll_orc())},
+		m_enemy {std::make_shared<game::Entity>(game.roll_orc("Enemy"))},
 		m_combat {m_player, m_enemy},
-		m_ended {false},
-		m_player_info {std::make_shared<ui::EntityInfo>(*ui, *m_player)},
-		m_enemy_info {std::make_shared<ui::EntityInfo>(*ui, *m_enemy)},
+		m_begun {false},
+		m_player_info {std::make_shared<ui::EntityInfo>(ui, m_player)},
+		m_enemy_info {std::make_shared<ui::EntityInfo>(ui, m_enemy)},
 		m_button {std::make_shared<ui::Button>(*ui, "Next")},
 		m_status {std::make_shared<ui::CombatStatus>(ui)}
 	{
@@ -44,23 +45,27 @@ namespace dungeons {
 		m_button->place_below(*m_player_info, spacing);
 		m_status->place_below(*m_button, spacing);
 
-		m_log->put("Enemy");
 		m_log->entity(*m_enemy);
-
+		m_log->endl();
 		m_log->put("Combat begins");
-		update();
+
+		m_status->goes_first(*m_combat.turn_of());
 	}
 
 	std::optional<screen::Output>
 	CombatScreen::on_click(const widget::Element& clicked)
 	{
 		if (*m_button == clicked) {
-			if (m_ended)
+			if (m_combat.ended()) {
+				m_status->end();
+				m_log->endl();
+				m_log->put("Combat ends");
 				return screen::Quit {};
-			if (m_combat.ended())
-				m_ended = true;
-			else
+			}
+			if (m_begun)
 				m_combat.next_turn();
+			else
+				m_begun = true;
 			update();
 		}
 		return {};
@@ -69,26 +74,18 @@ namespace dungeons {
 	void
 	CombatScreen::update()
 	{
-		if (m_ended) {
-			m_status->end();
-			m_log->put("Combat ends");
-			return;
-		}
+		auto round = m_combat.round();
 		if (m_combat.new_round()) {
-			auto round = m_combat.current_round();
-			m_status->round(round);
+			m_log->endl();
 			m_log->pair("Round", round);
 		}
-		auto entity = m_combat.current_turn();
-		if (entity == m_player) {
-			m_status->player_turn();
-			m_log->put("Player turn");
-			return;
-		}
-		if (entity == m_enemy) {
-			m_status->enemy_turn();
-			m_log->put("Enemy turn");
-			return;
-		}
+		auto atk = m_combat.attack(*m_dice);
+		m_status->attack(atk, round);
+
+		m_log->endl();
+		m_log->lines(game::string::attack(atk));
+
+		m_player_info->update();
+		m_enemy_info->update();
 	}
 }

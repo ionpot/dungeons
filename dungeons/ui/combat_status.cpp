@@ -3,59 +3,49 @@
 #include "context.hpp"
 #include "text.hpp"
 
-#include <ionpot/widget/element.hpp>
+#include <game/combat.hpp>
+#include <game/entity.hpp>
+#include <game/string.hpp>
+
+#include <ionpot/widget/rows.hpp>
 
 #include <memory> // std::make_shared, std::shared_ptr
+#include <string>
 
 namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
 	CombatStatus::CombatStatus(std::shared_ptr<const Context> ui):
 		m_ui {ui},
-		m_round {std::make_shared<Text>(m_ui->empty_text())},
-		m_player_turn {std::make_shared<Text>(
-			m_ui->normal_text("Player turn"))},
-		m_enemy_turn {std::make_shared<Text>(
-			m_ui->normal_text("Enemy turn"))},
-		m_end {std::make_shared<Text>(
-			m_ui->normal_text("Combat ended"))}
+		m_first {std::make_shared<Text>(m_ui->empty_text())},
+		m_rows {std::make_shared<widget::Rows>(m_ui->text_spacing)},
+		m_end {std::make_shared<Text>(m_ui->normal_text("Combat ended"))}
 	{
-		children({m_round, m_player_turn, m_enemy_turn, m_end});
-		auto spacing = m_ui->text_spacing;
-		m_player_turn->place_below(*m_round, spacing);
-		m_enemy_turn->place_on(*m_player_turn);
-		update_size();
+		children({m_first, m_rows, m_end});
+		hide_children();
+	}
+
+	void
+	CombatStatus::attack(const game::Combat::Attack& atk, int round)
+	{
+		show_only(m_rows);
+		m_rows->clear();
+
+		namespace str = game::string;
+		m_rows->add(m_ui->bold_text(str::round(round)));
+		for (auto line : str::attack(atk))
+			m_rows->add(m_ui->normal_text(line));
 	}
 
 	void
 	CombatStatus::end()
-	{
-		m_round->hide();
-		m_player_turn->hide();
-		m_enemy_turn->hide();
-		m_end->show();
-	}
+	{ show_only(m_end); }
 
 	void
-	CombatStatus::enemy_turn()
+	CombatStatus::goes_first(const game::Entity& e)
 	{
-		m_player_turn->hide();
-		m_enemy_turn->show();
-	}
-
-	void
-	CombatStatus::player_turn()
-	{
-		m_enemy_turn->hide();
-		m_player_turn->show();
-	}
-
-	void
-	CombatStatus::round(int round)
-	{
-		m_end->hide();
-		m_round->swap(
-			m_ui->normal_text("Round " + std::to_string(round))
-		);
+		show_only(m_first);
+		m_first->swap(
+			m_ui->normal_text(e.name + " goes first."));
 	}
 }
