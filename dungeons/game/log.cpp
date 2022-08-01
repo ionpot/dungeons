@@ -11,6 +11,6 @@ namespace dungeons::game {
 		put(string::primary(e));
 		put(string::secondary_attr(e));
 		kv("Armor", string::armor(e));
-		kv("Damage", string::weapon(e));
+		kv("Damage", string::weapon_damage(e));
 	}
 }

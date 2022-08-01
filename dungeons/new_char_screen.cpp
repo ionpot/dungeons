@@ -33,8 +33,11 @@ namespace dungeons {
 		m_weapon {std::make_shared<ui::WeaponSelect>(*ui, game->weapons)},
 		m_roll_attr {std::make_shared<ui::Button>(*ui, "Roll Attributes")},
 		m_done {std::make_shared<ui::Button>(*ui, "Done")},
-		m_chosen {game->races.human, game->base_armor}
+		m_entity {std::make_shared<game::Entity>("Player")}
 	{
+		m_entity->race = game->races.human;
+		m_entity->base_armor = game->base_armor;
+
 		children({m_roll_attr, m_done, m_class, m_attributes, m_stats, m_armor, m_weapon});
 
 		m_class->position(ui->screen_margin);
@@ -49,86 +52,47 @@ namespace dungeons {
 		m_done->place_after(*m_weapon, spacing);
 		m_done->center_y_to(*m_weapon);
 
-		m_roll_attr->hide();
-		m_attributes->hide();
-		m_stats->hide();
-		m_armor->hide();
-		m_weapon->hide();
-		m_done->hide();
+		show_only(m_class);
 	}
 
 	std::optional<screen::Output>
 	NewCharScreen::on_click(const widget::Element& clicked)
 	{
-		if (auto chosen = m_class->on_click(clicked)) {
-			m_chosen.class_template = *chosen;
-			refresh_stats();
-			m_roll_attr->show();
-			return {};
+		if (*m_done == clicked) {
+			m_log->entity(*m_entity);
+			m_log->endl();
+			return screen::ToCombat {m_entity};
 		}
-		if (*m_roll_attr == clicked) {
+		if (auto chosen = m_class->on_click(clicked)) {
+			m_entity->klass.base_template = *chosen;
+			m_roll_attr->show();
+		}
+		else if (*m_roll_attr == clicked) {
 			m_roll_attr->hide();
-			m_chosen.base_attr = m_attributes->roll();
-			refresh_stats();
+			m_entity->base_attr = m_attributes->roll();
 			m_attributes->show();
 			m_stats->show();
 			m_armor->show();
-			return {};
 		}
-		if (m_attributes->is_clicked(clicked)) {
-			m_chosen.base_attr = m_attributes->roll();
-			refresh_stats();
-			return {};
+		else if (m_attributes->is_clicked(clicked)) {
+			m_entity->base_attr = m_attributes->roll();
 		}
-		if (auto armor = m_armor->on_click(clicked)) {
-			m_chosen.armor = *armor;
-			refresh_stats();
+		else if (auto armor = m_armor->on_click(clicked)) {
+			m_entity->armor = *armor;
 			m_weapon->show();
-			return {};
 		}
-		if (auto weapon = m_weapon->on_click(clicked)) {
-			m_chosen.weapon = *weapon;
-			refresh_stats();
+		else if (auto weapon = m_weapon->on_click(clicked)) {
+			m_entity->weapon = *weapon;
 			m_done->show();
-			return {};
 		}
-		if (*m_done == clicked) {
-			m_log->entity(m_chosen.to_entity());
-			m_log->endl();
-			return screen::ToCombat {
-				std::make_shared<game::Entity>(
-					m_chosen.to_entity()
-				)
-			};
-		}
+		refresh_stats();
 		return {};
 	}
 
 	void
 	NewCharScreen::refresh_stats()
 	{
-		if (m_chosen.is_ready())
-			m_stats->update(m_chosen.to_entity());
-	}
-
-	// Chosen
-	NewCharScreen::Chosen::Chosen(
-			game::Entity::Race::Ptr race,
-			int base_armor
-	):
-		race {race},
-		base_armor {base_armor}
-	{}
-
-	bool
-	NewCharScreen::Chosen::is_ready() const
-	{ return !!class_template; }
-
-	game::Entity
-	NewCharScreen::Chosen::to_entity() const
-	{
-		if (!is_ready())
-			throw ui::Exception {"Entity not ready yet."};
-		return {"Player", base_attr, race, class_template, base_armor, armor, weapon};
+		if (m_stats->visible())
+			m_stats->update(*m_entity);
 	}
 }

@@ -39,8 +39,17 @@ namespace dungeons::game::string {
 
 	std::string takes_damage(const Entity&, int dmg);
 
-	std::string weapon(Entity::Weapon::Id);
-	std::string weapon(Entity::Weapon::Ptr);
-	std::string weapon(const Entity&);
 	std::string weapon_attack(const Combat::Attack&);
+
+	std::string weapon_damage(const Entity&);
+
+	std::string weapon_dice(Entity::Weapon::Ptr);
+	std::string weapon_dice(const Entity&);
+
+	std::string weapon_info(Entity::Weapon::Ptr);
+	std::string weapon_info(const Entity&);
+
+	std::string weapon_name(Entity::Weapon::Id);
+	std::string weapon_name(Entity::Weapon::Ptr);
+	std::string weapon_name(const Entity&);
 }

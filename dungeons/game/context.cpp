@@ -50,14 +50,13 @@ namespace dungeons::game {
 	Entity
 	Context::roll_orc(std::string name)
 	{
-		return {
-			name,
-			roll_orc_attrs(),
-			races.orc,
-			pick_class(),
-			base_armor,
-			pick_armor(),
-			pick_weapon()
-		};
+		Entity e {name};
+		e.base_attr = roll_orc_attrs();
+		e.race = races.orc;
+		e.klass.base_template = pick_class();
+		e.base_armor = base_armor;
+		e.armor = pick_armor();
+		e.weapon = pick_weapon();
+		return e;
 	}
 }

@@ -10,7 +10,6 @@
 #include <ui/new_stats.hpp>
 #include <ui/weapon_select.hpp>
 
-#include <game/class.hpp>
 #include <game/context.hpp>
 #include <game/entity.hpp>
 #include <game/log.hpp>
@@ -33,20 +32,6 @@ namespace dungeons {
 		std::optional<screen::Output> on_click(const widget::Element&);
 
 	private:
-		struct Chosen {
-			game::Class::Template::Ptr class_template;
-			game::Entity::Attributes base_attr;
-			game::Entity::Armor::Ptr armor;
-			game::Entity::Race::Ptr race;
-			int base_armor;
-			game::Entity::Weapon::Ptr weapon;
-
-			Chosen(game::Entity::Race::Ptr, int base_armor);
-
-			bool is_ready() const;
-			game::Entity to_entity() const;
-		};
-
 		std::shared_ptr<game::Log> m_log;
 		std::shared_ptr<ui::ClassSelect> m_class;
 		std::shared_ptr<ui::NewAttributes> m_attributes;
@@ -55,7 +40,7 @@ namespace dungeons {
 		std::shared_ptr<ui::WeaponSelect> m_weapon;
 		std::shared_ptr<ui::Button> m_roll_attr;
 		std::shared_ptr<ui::Button> m_done;
-		Chosen m_chosen;
+		std::shared_ptr<game::Entity> m_entity;
 
 		void refresh_stats();
 	};

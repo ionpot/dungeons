@@ -64,14 +64,7 @@ namespace dungeons::game {
 		Weapon::Ptr weapon;
 		int damage;
 
-		Entity(
-			std::string name,
-			Attributes,
-			Race::Ptr,
-			Class::Template::Ptr,
-			int base_armor,
-			Armor::Ptr,
-			Weapon::Ptr);
+		Entity(std::string name);
 
 		int strength() const;
 		int agility() const;

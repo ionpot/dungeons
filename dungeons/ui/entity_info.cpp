@@ -27,7 +27,7 @@ namespace dungeons::ui {
 			ui->normal_text("Armor: " + str::armor(*entity))
 		)},
 		weapon {std::make_shared<Text>(
-			ui->normal_text("Weapon: " + str::weapon(*entity))
+			ui->normal_text("Weapon: " + str::weapon_info(*entity))
 		)}
 	{
 		children({primary, secondary, armor, weapon});

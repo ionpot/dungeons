@@ -84,11 +84,11 @@ namespace dungeons::game::string {
 
 	std::string
 	class_id(Class::Template::Ptr t)
-	{ return class_id(t->id); }
+	{ return t ? class_id(t->id) : "No Class"; }
 
 	std::string
 	class_id(const Entity& e)
-	{ return class_id(e.klass.get_template()); }
+	{ return class_id(e.klass.base_template); }
 
 	std::string
 	percent_roll(const util::PercentRoll& roll)
@@ -126,7 +126,7 @@ namespace dungeons::game::string {
 
 	std::string
 	race(Entity::Race::Ptr r)
-	{ return race(r->id); }
+	{ return r ? race(r->id) : "No Race"; }
 
 	std::string
 	race(const Entity& e)
@@ -154,7 +154,39 @@ namespace dungeons::game::string {
 	}
 
 	std::string
-	weapon(Entity::Weapon::Id id)
+	weapon_attack(const Combat::Attack& atk)
+	{
+		return atk.attacker->name
+			+ " attacks " + atk.defender->name
+			+ " with " + weapon_name(*atk.attacker)
+			+ ".";
+	}
+
+	std::string
+	weapon_damage(const Entity& e)
+	{
+		return e.weapon_damage().to_str()
+			+ " " + parens(weapon_name(e) + ", " + weapon_dice(e));
+	}
+
+	std::string
+	weapon_dice(Entity::Weapon::Ptr w)
+	{ return w ? w->dice.to_str() : "?d?"; }
+
+	std::string
+	weapon_dice(const Entity& e)
+	{ return weapon_dice(e.weapon); }
+
+	std::string
+	weapon_info(Entity::Weapon::Ptr w)
+	{ return weapon_name(w) + " " + parens(weapon_dice(w)); }
+
+	std::string
+	weapon_info(const Entity& e)
+	{ return weapon_info(e.weapon); }
+
+	std::string
+	weapon_name(Entity::Weapon::Id id)
 	{
 		switch (id) {
 		case Entity::Weapon::Id::dagger:
@@ -169,26 +201,10 @@ namespace dungeons::game::string {
 	}
 
 	std::string
-	weapon(Entity::Weapon::Ptr w)
-	{
-		return w
-			? weapon(w->id) + " " + parens(w->dice.to_str())
-			: "No Weapon";
-	}
+	weapon_name(Entity::Weapon::Ptr w)
+	{ return w ? weapon_name(w->id) : "No Weapon"; }
 
 	std::string
-	weapon(const Entity& e)
-	{
-		return e.weapon_damage().to_str() + " "
-			+ parens(weapon(e.weapon));
-	}
-
-	std::string
-	weapon_attack(const Combat::Attack& atk)
-	{
-		return atk.attacker->name
-			+ " attacks " + atk.defender->name
-			+ " with " + weapon(atk.attacker->weapon->id)
-			+ ".";
-	}
+	weapon_name(const Entity& e)
+	{ return weapon_name(e.weapon); }
 }

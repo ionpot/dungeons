@@ -36,22 +36,9 @@ namespace dungeons::game {
 	{ return {intellect}; }
 
 	// Entity
-	Entity::Entity(
-			std::string name,
-			Attributes base_attr,
-			Race::Ptr race,
-			Class::Template::Ptr class_template,
-			int base_armor,
-			Armor::Ptr armor,
-			Weapon::Ptr weapon
-	):
+	Entity::Entity(std::string name):
 		name {name},
-		base_attr {base_attr},
-		race {race},
-		klass {class_template},
-		base_armor {base_armor},
-		armor {armor},
-		weapon {weapon},
+		base_armor {0},
 		damage {0}
 	{}
 
