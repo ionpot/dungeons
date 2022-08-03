@@ -3,6 +3,7 @@
 #include "class.hpp"
 #include "combat.hpp"
 #include "entity.hpp"
+#include "exception.hpp"
 
 #include <ionpot/util/percent_roll.hpp>
 #include <ionpot/util/string.hpp>
@@ -25,6 +26,7 @@ namespace dungeons::game::string {
 		case Entity::Armor::Id::scale_mail:
 			return "Scale Mail";
 		}
+		throw Exception {"string::armor() received invalid id."};
 	}
 
 	std::string
@@ -67,6 +69,7 @@ namespace dungeons::game::string {
 		case Result::hit:
 			return takes_damage(*atk.defender, atk.damage);
 		}
+		throw Exception {"string::attack_result() received invalid result."};
 	}
 
 	std::string
@@ -80,6 +83,7 @@ namespace dungeons::game::string {
 		case Class::Template::Id::mage:
 			return "Mage";
 		}
+		throw Exception {"string::class_id() received invalid id."};
 	}
 
 	std::string
@@ -122,6 +126,7 @@ namespace dungeons::game::string {
 		case Entity::Race::Id::orc:
 			return "Orc";
 		}
+		throw Exception {"string::race() received invalid id."};
 	}
 
 	std::string
@@ -198,6 +203,7 @@ namespace dungeons::game::string {
 		case Entity::Weapon::Id::mace:
 			return "Mace";
 		}
+		throw Exception {"string::weapon_name() received invalid id."};
 	}
 
 	std::string
