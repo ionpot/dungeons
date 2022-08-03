@@ -4,7 +4,7 @@ build_then_install:
 
 .PHONY: build
 build:
-	cmake --build build
+	cmake --build build -j 8
 
 .PHONY: clean
 clean:
