@@ -104,6 +104,10 @@ namespace dungeons::game {
 			+ race->attr.resist_chance();
 	}
 
+	void
+	Entity::restore_hp()
+	{ damage_taken = 0; }
+
 	int
 	Entity::roll_damage(dice::Engine& dice) const
 	{

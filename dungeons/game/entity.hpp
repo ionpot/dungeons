@@ -92,6 +92,8 @@ namespace dungeons::game {
 		int compare_speed_to(const Entity&) const;
 
 		int roll_damage(dice::Engine&) const;
+
+		void restore_hp();
 		void take_damage(int);
 	};
 }

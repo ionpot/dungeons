@@ -60,7 +60,6 @@ namespace dungeons {
 	{
 		if (*m_done == clicked) {
 			m_log->entity(*m_entity);
-			m_log->endl();
 			return screen::ToCombat {m_entity};
 		}
 		if (auto chosen = m_class->on_click(clicked)) {

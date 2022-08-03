@@ -45,6 +45,7 @@ namespace dungeons {
 		m_button->place_below(*m_player_info, spacing);
 		m_status->place_below(*m_button, spacing);
 
+		m_log->endl();
 		m_log->entity(*m_enemy);
 		m_log->endl();
 		m_log->put("Combat begins");
@@ -60,7 +61,8 @@ namespace dungeons {
 				m_status->end();
 				m_log->endl();
 				m_log->put("Combat ends");
-				return screen::Quit {};
+				m_player->restore_hp();
+				return screen::ToCombat {m_player};
 			}
 			if (m_begun)
 				m_combat.next_turn();
