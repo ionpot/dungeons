@@ -49,7 +49,7 @@ namespace {
 	}
 }
 
-int main()
+int main(int, char**)
 try {
 	run(std::make_shared<Log>("dungeons.log"));
 	return EXIT_SUCCESS;
