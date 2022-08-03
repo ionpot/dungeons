@@ -39,7 +39,7 @@ namespace dungeons::game {
 	Entity::Entity(std::string name):
 		name {name},
 		base_armor {0},
-		damage {0}
+		damage_taken {0}
 	{}
 
 	int
@@ -64,7 +64,7 @@ namespace dungeons::game {
 
 	int
 	Entity::current_hp() const
-	{ return total_hp() - damage; }
+	{ return total_hp() - damage_taken; }
 
 	bool
 	Entity::dead() const
@@ -117,7 +117,7 @@ namespace dungeons::game {
 
 	void
 	Entity::take_damage(int dmg)
-	{ damage += dmg; }
+	{ damage_taken += dmg; }
 
 	int
 	Entity::total_armor() const

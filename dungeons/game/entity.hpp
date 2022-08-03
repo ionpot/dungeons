@@ -62,7 +62,7 @@ namespace dungeons::game {
 		int base_armor;
 		Armor::Ptr armor;
 		Weapon::Ptr weapon;
-		int damage;
+		int damage_taken;
 
 		Entity(std::string name);
 
