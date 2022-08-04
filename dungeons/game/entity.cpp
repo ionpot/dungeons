@@ -42,6 +42,10 @@ namespace dungeons::game {
 		damage_taken {0}
 	{}
 
+	bool
+	Entity::alive() const
+	{ return current_hp() > 0; }
+
 	int
 	Entity::agility() const
 	{ return base_attr.agility + race->attr.agility; }
@@ -96,6 +100,14 @@ namespace dungeons::game {
 	int
 	Entity::intellect() const
 	{ return base_attr.intellect + race->attr.intellect; }
+
+	void
+	Entity::level_up()
+	{ ++klass.level; }
+
+	void
+	Entity::reset_level()
+	{ klass.level = 1; }
 
 	util::Percent
 	Entity::resist_chance() const

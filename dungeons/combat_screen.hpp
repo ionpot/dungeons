@@ -33,18 +33,22 @@ namespace dungeons {
 
 		std::optional<screen::Output> on_click(const widget::Element&);
 
-		void update();
-
 	private:
+		enum class State {combat, end, next_screen};
+
 		std::shared_ptr<game::Log> m_log;
 		std::shared_ptr<util::dice::Engine> m_dice;
 		std::shared_ptr<game::Entity> m_player;
 		std::shared_ptr<game::Entity> m_enemy;
 		game::Combat m_combat;
-		bool m_begun;
+		State m_state;
 		std::shared_ptr<ui::EntityInfo> m_player_info;
 		std::shared_ptr<ui::EntityInfo> m_enemy_info;
 		std::shared_ptr<ui::Button> m_button;
 		std::shared_ptr<ui::CombatStatus> m_status;
+
+		void do_attack();
+		void do_end();
+		void do_first();
 	};
 }

@@ -17,18 +17,14 @@ namespace dungeons::ui {
 
 	CombatStatus::CombatStatus(std::shared_ptr<const Context> ui):
 		m_ui {ui},
-		m_first {std::make_shared<Text>(m_ui->empty_text())},
-		m_rows {std::make_shared<widget::Rows>(m_ui->text_spacing)},
-		m_end {std::make_shared<Text>(m_ui->normal_text("Combat ended"))}
+		m_rows {std::make_shared<widget::Rows>(m_ui->text_spacing)}
 	{
-		children({m_first, m_rows, m_end});
-		hide_children();
+		children({m_rows});
 	}
 
 	void
 	CombatStatus::attack(const game::Combat::Attack& atk, int round)
 	{
-		show_only(m_rows);
 		m_rows->clear();
 
 		namespace str = game::string;
@@ -38,14 +34,17 @@ namespace dungeons::ui {
 	}
 
 	void
-	CombatStatus::end()
-	{ show_only(m_end); }
+	CombatStatus::end(const game::Entity& e)
+	{
+		m_rows->clear();
+		m_rows->add(m_ui->normal_text("Combat ends."));
+		m_rows->add(m_ui->normal_text(e.name + " levels up."));
+	}
 
 	void
 	CombatStatus::goes_first(const game::Entity& e)
 	{
-		show_only(m_first);
-		m_first->swap(
-			m_ui->normal_text(e.name + " goes first."));
+		m_rows->clear();
+		m_rows->add(m_ui->normal_text(e.name + " goes first."));
 	}
 }

@@ -20,12 +20,10 @@ namespace dungeons::ui {
 
 		void attack(const game::Combat::Attack&, int round);
 		void goes_first(const game::Entity&);
-		void end();
+		void end(const game::Entity& winner);
 
 	private:
 		std::shared_ptr<const Context> m_ui;
-		std::shared_ptr<Text> m_first;
 		std::shared_ptr<widget::Rows> m_rows;
-		std::shared_ptr<Text> m_end;
 	};
 }

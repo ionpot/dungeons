@@ -10,6 +10,7 @@ namespace dungeons::screen {
 
 	struct ToCombat {
 		std::shared_ptr<game::Entity> player;
+		std::shared_ptr<game::Entity> enemy {};
 	};
 
 	using Output = std::variant<Quit, ToCombat>;

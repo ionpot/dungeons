@@ -77,6 +77,7 @@ namespace dungeons::game {
 		int current_hp() const;
 		int total_hp() const;
 
+		bool alive() const;
 		bool dead() const;
 
 		util::Percent chance_to_get_hit() const;
@@ -93,6 +94,8 @@ namespace dungeons::game {
 
 		int roll_damage(dice::Engine&) const;
 
+		void level_up();
+		void reset_level();
 		void restore_hp();
 		void take_damage(int);
 	};

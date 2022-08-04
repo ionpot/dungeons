@@ -25,6 +25,8 @@ namespace dungeons::game::string {
 	std::string class_id(Class::Template::Ptr);
 	std::string class_id(const Entity&);
 
+	std::string class_level(const Entity&);
+
 	std::string percent_roll(const util::PercentRoll&);
 
 	std::string primary(const Entity& e);

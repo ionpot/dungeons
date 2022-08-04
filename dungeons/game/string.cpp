@@ -95,6 +95,10 @@ namespace dungeons::game::string {
 	{ return class_id(e.klass.base_template); }
 
 	std::string
+	class_level(const Entity& e)
+	{ return "Lv" + std::to_string(e.klass.level); }
+
+	std::string
 	percent_roll(const util::PercentRoll& roll)
 	{
 		auto percent = roll.percent.to_str();
@@ -107,7 +111,10 @@ namespace dungeons::game::string {
 
 	std::string
 	primary(const Entity& e)
-	{ return race(e) + " " + class_id(e) + ": " + primary_attr(e); }
+	{
+		return race(e) + " " + class_id(e) + " " + class_level(e)
+			+ ": " + primary_attr(e);
+	}
 
 	std::string
 	primary_attr(const Entity& e)
