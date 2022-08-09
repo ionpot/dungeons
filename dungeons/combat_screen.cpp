@@ -73,25 +73,6 @@ namespace dungeons {
 	}
 
 	void
-	CombatScreen::do_end()
-	{
-		auto& winner = m_player->alive() ? *m_player : *m_enemy;
-		m_status->end(winner);
-		m_log->endl();
-		m_log->put("Combat ends");
-		winner.level_up();
-		winner.restore_hp();
-		if (m_player->dead()) {
-			m_player->reset_level();
-			m_player->restore_hp();
-		}
-		m_log->endl();
-		m_log->write(winner.name);
-		m_log->write(game::string::class_level(winner), ", ");
-		m_log->pair("Hp", winner.total_hp());
-	}
-
-	void
 	CombatScreen::do_first()
 	{
 		m_status->goes_first(*m_combat.turn_of());
@@ -99,19 +80,31 @@ namespace dungeons {
 		m_log->put("Combat begins");
 	}
 
+	void
+	CombatScreen::do_level_up()
+	{
+		m_player->level_up();
+		m_player->restore_hp();
+		m_status->end(*m_player);
+		m_log->endl();
+		m_log->write(m_player->name);
+		m_log->write(game::string::class_level(*m_player), ", ");
+		m_log->pair("Hp", m_player->total_hp());
+	}
+
 	std::optional<screen::Output>
 	CombatScreen::on_click(const widget::Element& clicked)
 	{
 		if (*m_button != clicked)
 			return {};
-		if (m_state == State::next_screen) {
-			return screen::ToCombat {
-				m_player,
-				m_enemy->alive() ? m_enemy : nullptr
-			};
-		}
+		if (m_state == State::next_screen)
+			return screen::ToCombat {m_player};
 		if (m_state == State::end) {
-			do_end();
+			m_log->endl();
+			m_log->put("Combat ends");
+			if (m_player->dead())
+				return screen::Quit {};
+			do_level_up();
 			m_state = State::next_screen;
 		}
 		else if (m_state == State::combat) {

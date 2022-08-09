@@ -1,7 +1,6 @@
 #include "combat_status.hpp"
 
 #include "context.hpp"
-#include "text.hpp"
 
 #include <game/combat.hpp>
 #include <game/entity.hpp>
@@ -10,7 +9,6 @@
 #include <ionpot/widget/rows.hpp>
 
 #include <memory> // std::make_shared, std::shared_ptr
-#include <string>
 
 namespace dungeons::ui {
 	namespace widget = ionpot::widget;
@@ -37,7 +35,6 @@ namespace dungeons::ui {
 	CombatStatus::end(const game::Entity& e)
 	{
 		m_rows->clear();
-		m_rows->add(m_ui->normal_text("Combat ends."));
 		m_rows->add(m_ui->normal_text(e.name + " levels up."));
 	}
 

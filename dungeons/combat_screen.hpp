@@ -48,7 +48,7 @@ namespace dungeons {
 		std::shared_ptr<ui::CombatStatus> m_status;
 
 		void do_attack();
-		void do_end();
 		void do_first();
+		void do_level_up();
 	};
 }
