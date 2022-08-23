@@ -18,7 +18,8 @@ namespace dungeons::ui {
 	):
 		widget::LabelValue {
 			std::make_shared<Text>(ui->normal_text(label)),
-			std::make_shared<widget::Element>()
+			std::make_shared<widget::Element>(),
+			ui->text_spacing
 		},
 		m_ui {ui}
 	{}
