@@ -75,6 +75,20 @@ namespace dungeons::ui {
 		Text button_text(std::string content) const;
 		util::Size button_size(util::Size content_size) const;
 
+		template<class T>
+		util::Size
+		button_text_size(
+				std::string (*to_str)(const T&),
+				const std::vector<T>& values) const
+		{
+			util::Size size;
+			for (const auto& v : values)
+				size.pick_max(button_text_size(to_str(v)));
+			return size;
+		}
+
+		util::Size button_text_size(std::string) const;
+
 		template<class T> // T = widget::Box*[]
 		void
 		stack_text(const T& boxes) const

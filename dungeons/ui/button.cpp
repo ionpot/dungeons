@@ -55,7 +55,15 @@ namespace dungeons::ui {
 			const Context& ui,
 			std::string text
 	):
-		Button {ui, ui.button_text(text)}
+		Button {ui, text, ui.button_text_size(text)}
+	{}
+
+	Button::Button(
+			const Context& ui,
+			std::string text,
+			util::Size content_size
+	):
+		Button {ui, ui.button_text(text), ui.button_box(content_size)}
 	{}
 
 	void
@@ -65,6 +73,10 @@ namespace dungeons::ui {
 	void
 	Button::enable()
 	{ clickable(true); opaque(); }
+
+	void
+	Button::left_align_text(const Context& ui)
+	{ widget::TextBox::left_align_text(ui.button.padding); }
 
 	void
 	Button::render(util::Point offset) const

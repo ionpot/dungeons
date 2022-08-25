@@ -100,4 +100,8 @@ namespace dungeons::ui {
 	Text
 	Context::button_text(std::string content) const
 	{ return bold_text(content); }
+
+	util::Size
+	Context::button_text_size(std::string content) const
+	{ return bold_text_size(content); }
 }
