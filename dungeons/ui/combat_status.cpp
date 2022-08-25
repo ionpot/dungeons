@@ -29,13 +29,7 @@ namespace dungeons::ui {
 		m_rows->add(m_ui->bold_text(str::round(round)));
 		for (auto line : str::attack(atk))
 			m_rows->add(m_ui->normal_text(line));
-	}
-
-	void
-	CombatStatus::end(const game::Entity& e)
-	{
-		m_rows->clear();
-		m_rows->add(m_ui->normal_text(e.name + " levels up."));
+		update_size();
 	}
 
 	void
@@ -43,5 +37,14 @@ namespace dungeons::ui {
 	{
 		m_rows->clear();
 		m_rows->add(m_ui->normal_text(e.name + " goes first."));
+		update_size();
+	}
+
+	void
+	CombatStatus::level_up(const game::Entity& e)
+	{
+		m_rows->clear();
+		m_rows->add(m_ui->normal_text(e.name + " level up."));
+		update_size();
 	}
 }

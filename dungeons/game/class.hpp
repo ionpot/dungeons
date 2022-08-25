@@ -14,5 +14,6 @@ namespace dungeons::game {
 		int level {1};
 
 		int hp_bonus() const;
+		int hp_bonus_per_level() const;
 	};
 }

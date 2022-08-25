@@ -73,6 +73,53 @@ namespace dungeons::game::string {
 	}
 
 	std::string
+	attribute(Entity::Attributes::Id id)
+	{
+		using Id = Entity::Attributes::Id;
+		switch (id) {
+		case Id::strength:
+			return "Strength";
+		case Id::agility:
+			return "Agility";
+		case Id::intellect:
+			return "Intellect";
+		}
+		throw Exception {"string::attribute() received invalid id."};
+	}
+
+	std::string
+	attribute_short(Entity::Attributes::Id id)
+	{
+		using Id = Entity::Attributes::Id;
+		switch (id) {
+		case Id::strength:
+			return "Str";
+		case Id::agility:
+			return "Agi";
+		case Id::intellect:
+			return "Int";
+		}
+		throw Exception {"string::attribute_short() received invalid id."};
+	}
+
+	std::string
+	attribute_bonus(Entity::Attributes::Id id, int i)
+	{
+		return i
+			? util::string::signed_int(i) + " " + attribute_short(id)
+			: "";
+	}
+
+	std::string
+	attribute_bonus(const Entity::Attributes& attrs)
+	{
+		std::vector<std::string> ls;
+		for (auto id : Entity::Attributes::ids)
+			ls.push_back(attribute_bonus(id, attrs.get(id)));
+		return util::string::join(", ", ls);
+	}
+
+	std::string
 	class_id(Class::Template::Id id)
 	{
 		switch (id) {
@@ -97,6 +144,16 @@ namespace dungeons::game::string {
 	std::string
 	class_level(const Entity& e)
 	{ return "Lv" + std::to_string(e.klass.level); }
+
+	std::string
+	level_up(const Entity::LevelUp& lvup)
+	{
+		std::string hp;
+		if (lvup.hp_bonus)
+			hp += util::string::signed_int(lvup.hp_bonus) + " Hp";
+		auto attr = attribute_bonus(lvup.attributes);
+		return util::string::join(", ", {hp, attr});
+	}
 
 	std::string
 	percent_roll(const util::PercentRoll& roll)

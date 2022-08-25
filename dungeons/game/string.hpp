@@ -21,11 +21,19 @@ namespace dungeons::game::string {
 	Lines attack(const Combat::Attack&);
 	std::string attack_result(const Combat::Attack&);
 
+	std::string attribute(Entity::Attributes::Id);
+	std::string attribute_short(Entity::Attributes::Id);
+
+	std::string attribute_bonus(Entity::Attributes::Id, int);
+	std::string attribute_bonus(const Entity::Attributes&);
+
 	std::string class_id(Class::Template::Id);
 	std::string class_id(Class::Template::Ptr);
 	std::string class_id(const Entity&);
 
 	std::string class_level(const Entity&);
+
+	std::string level_up(const Entity::LevelUp&);
 
 	std::string percent_roll(const util::PercentRoll&);
 

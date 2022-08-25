@@ -19,6 +19,37 @@ namespace dungeons::game {
 		intellect {intel}
 	{}
 
+	void
+	Attributes::add(Id id, int i)
+	{
+		switch (id) {
+		case Id::strength:
+			strength += i;
+			return;
+		case Id::agility:
+			agility += i;
+			return;
+		case Id::intellect:
+			intellect += i;
+			return;
+		}
+		throw Exception {"Invalid id in Attributes::add()."};
+	}
+
+	int
+	Attributes::get(Id id) const
+	{
+		switch (id) {
+		case Id::strength:
+			return strength;
+		case Id::agility:
+			return agility;
+		case Id::intellect:
+			return intellect;
+		}
+		throw Exception {"Invalid id in Attributes::get()."};
+	}
+
 	int
 	Attributes::hp() const
 	{ return strength; }
@@ -34,6 +65,40 @@ namespace dungeons::game {
 	util::Percent
 	Attributes::resist_chance() const
 	{ return {intellect}; }
+
+	int
+	Attributes::total_points() const
+	{ return strength + agility + intellect; }
+
+	Attributes
+	Attributes::operator+(const Attributes& a) const
+	{
+		return {
+			strength + a.strength,
+			agility + a.agility,
+			intellect + a.intellect
+		};
+	}
+
+	void
+	Attributes::operator+=(const Attributes& a)
+	{ *this = *this + a; }
+
+	// LevelUp
+	using LevelUp = Entity::LevelUp;
+
+	LevelUp::LevelUp(const Class& c):
+		attribute_bonus {2},
+		hp_bonus {c.hp_bonus_per_level()}
+	{}
+
+	bool
+	LevelUp::done() const
+	{ return points_remaining() <= 0; }
+
+	int
+	LevelUp::points_remaining() const
+	{ return attribute_bonus - attributes.total_points(); }
 
 	// Entity
 	Entity::Entity(std::string name):
@@ -101,13 +166,16 @@ namespace dungeons::game {
 	Entity::intellect() const
 	{ return base_attr.intellect + race->attr.intellect; }
 
-	void
-	Entity::level_up()
-	{ ++klass.level; }
+	LevelUp
+	Entity::level_up() const
+	{ return {klass}; }
 
 	void
-	Entity::reset_level()
-	{ klass.level = 1; }
+	Entity::level_up(const LevelUp& lvup)
+	{
+		base_attr += lvup.attributes;
+		++klass.level;
+	}
 
 	util::Percent
 	Entity::resist_chance() const

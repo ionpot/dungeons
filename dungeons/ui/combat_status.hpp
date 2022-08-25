@@ -19,7 +19,7 @@ namespace dungeons::ui {
 
 		void attack(const game::Combat::Attack&, int round);
 		void goes_first(const game::Entity&);
-		void end(const game::Entity& winner);
+		void level_up(const game::Entity&);
 
 	private:
 		std::shared_ptr<const Context> m_ui;
