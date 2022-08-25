@@ -82,12 +82,12 @@ namespace dungeons::ui {
 
 		template<class T> // T = widget::Box*
 		void
-		lay_buttons(std::vector<T>& buttons) const
+		lay_buttons(const std::vector<T>& buttons) const
 		{ widget::side_by_side(buttons, button.spacing); }
 
 		template<class T> // T = widget::Box*
 		void
-		stack_buttons(std::vector<T>& buttons) const
+		stack_buttons(const std::vector<T>& buttons) const
 		{ widget::stack_down(buttons, button.spacing); }
 	};
 }
