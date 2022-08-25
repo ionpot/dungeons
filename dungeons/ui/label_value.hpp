@@ -21,7 +21,6 @@ namespace dungeons::ui {
 		void value(T val)
 		{ value(util::stringify(val)); }
 
-		template<>
 		void value(std::string);
 
 	private:

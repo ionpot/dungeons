@@ -24,7 +24,6 @@ namespace dungeons::ui {
 		m_ui {ui}
 	{}
 
-	template<>
 	void
 	LabelValue::value(std::string str)
 	{

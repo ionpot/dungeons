@@ -34,13 +34,11 @@ namespace dungeons::ui {
 		active_border {config.active_border()},
 		active_color {config.active_color()}
 	{}
-
-	template<>
+	
 	Text
 	Context::active_text(std::string text) const
 	{ return bold_text(text, active_color); }
-
-	template<>
+	
 	Text
 	Context::bold_text(std::string text) const
 	{ return bold_text(text, text_color); }
@@ -62,8 +60,7 @@ namespace dungeons::ui {
 	Text
 	Context::empty_text() const
 	{ return normal_text(" "); }
-
-	template<>
+	
 	Text
 	Context::normal_text(std::string text) const
 	{

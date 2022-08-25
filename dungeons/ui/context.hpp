@@ -47,7 +47,6 @@ namespace dungeons::ui {
 		normal_text(T value) const
 		{ return normal_text(util::stringify(value)); }
 
-		template<>
 		Text normal_text(std::string) const;
 
 		template<class T>
@@ -55,9 +54,7 @@ namespace dungeons::ui {
 		bold_text(T value) const
 		{ return bold_text(util::stringify(value)); }
 
-		template<>
 		Text bold_text(std::string) const;
-
 		Text bold_text(std::string, util::RGB) const;
 
 		template<class T>
@@ -65,7 +62,6 @@ namespace dungeons::ui {
 		active_text(T value) const
 		{ return active_text(util::stringify(value)); }
 
-		template<>
 		Text active_text(std::string) const;
 
 		util::Size bold_text_size(std::string) const;
