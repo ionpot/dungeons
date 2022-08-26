@@ -119,6 +119,13 @@ namespace dungeons::game {
 	Config::human_attributes() const
 	{ return attributes("human attributes"); }
 
+	int
+	Config::level_up_attributes() const
+	{
+		return m_file.find_section("level up")
+			.find_pair("attribute points").to_int();
+	}
+
 	Config::Attributes
 	Config::orc_attributes() const
 	{ return attributes("orc attributes"); }

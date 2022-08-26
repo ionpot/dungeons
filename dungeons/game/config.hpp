@@ -55,6 +55,8 @@ namespace dungeons::game {
 		int base_armor() const;
 		Armors armors() const;
 
+		int level_up_attributes() const;
+
 		ClassTemplates class_templates() const;
 		Races races() const;
 		Weapons weapons() const;

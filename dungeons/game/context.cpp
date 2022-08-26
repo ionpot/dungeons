@@ -22,10 +22,15 @@ namespace dungeons::game {
 		orc_attributes {config.orc_attributes()},
 		armors {config.armors()},
 		base_armor {config.base_armor()},
+		level_up_attributes {config.level_up_attributes()},
 		class_templates {config.class_templates()},
 		races {config.races()},
 		weapons {config.weapons()}
 	{}
+
+	Entity::LevelUp
+	Context::level_up(const Entity& e) const
+	{ return e.level_up(level_up_attributes); }
 
 	Entity::Armor::Ptr
 	Context::pick_armor()

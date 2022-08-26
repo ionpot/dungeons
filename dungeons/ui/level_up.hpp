@@ -19,14 +19,13 @@ namespace dungeons::ui {
 
 		LevelUp(std::shared_ptr<const Context>);
 
-		void begin(const game::Entity&);
-
 		bool done() const;
 
 		bool on_click(const widget::Element&);
 
 		const game::Entity::LevelUp&
 			state() const;
+		void state(game::Entity::LevelUp);
 
 	private:
 		std::shared_ptr<LabelValue> m_remaining;

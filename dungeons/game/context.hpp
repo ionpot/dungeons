@@ -18,11 +18,14 @@ namespace dungeons::game {
 		Config::Attributes orc_attributes;
 		Config::Armors armors;
 		int base_armor;
+		int level_up_attributes;
 		Config::ClassTemplates class_templates;
 		Config::Races races;
 		Config::Weapons weapons;
 
 		Context(const Config&, std::shared_ptr<dice::Engine>);
+
+		Entity::LevelUp level_up(const Entity&) const;
 
 		Entity::Armor::Ptr pick_armor();
 		Class::Template::Ptr pick_class();

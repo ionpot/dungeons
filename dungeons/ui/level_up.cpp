@@ -34,10 +34,6 @@ namespace dungeons::ui {
 		refresh();
 	}
 
-	void
-	LevelUp::begin(const game::Entity& e)
-	{ m_level_up = e.level_up(); refresh(); }
-
 	bool
 	LevelUp::done() const
 	{ return m_level_up.done(); }
@@ -65,4 +61,8 @@ namespace dungeons::ui {
 	const game::Entity::LevelUp&
 	LevelUp::state() const
 	{ return m_level_up; }
+
+	void
+	LevelUp::state(game::Entity::LevelUp lvup)
+	{ m_level_up = lvup; refresh(); }
 }

@@ -15,13 +15,10 @@
 
 #include <ionpot/widget/element.hpp>
 
-#include <ionpot/util/dice.hpp>
-
 #include <memory> // std::shared_ptr
 #include <optional>
 
 namespace dungeons {
-	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
 	class CombatScreen : public widget::Element {
@@ -29,7 +26,7 @@ namespace dungeons {
 		CombatScreen(
 			std::shared_ptr<game::Log>,
 			std::shared_ptr<const ui::Context>,
-			game::Context&,
+			std::shared_ptr<game::Context>,
 			const screen::ToCombat&);
 
 		std::optional<screen::Output> on_click(const widget::Element&);
@@ -37,7 +34,7 @@ namespace dungeons {
 	private:
 		std::shared_ptr<game::Log> m_log;
 		std::shared_ptr<const ui::Context> m_ui;
-		std::shared_ptr<util::dice::Engine> m_dice;
+		std::shared_ptr<game::Context> m_game;
 		std::shared_ptr<game::Entity> m_player;
 		std::shared_ptr<game::Entity> m_enemy;
 		game::Combat m_combat;

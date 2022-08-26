@@ -25,16 +25,16 @@ namespace dungeons {
 	CombatScreen::CombatScreen(
 			std::shared_ptr<game::Log> log,
 			std::shared_ptr<const ui::Context> ui,
-			game::Context& game,
+			std::shared_ptr<game::Context> game,
 			const screen::ToCombat& input
 	):
 		m_log {log},
 		m_ui {ui},
-		m_dice {game.dice},
+		m_game {game},
 		m_player {input.player},
 		m_enemy {input.enemy
 			? input.enemy
-			: std::make_shared<game::Entity>(game.roll_orc("Enemy"))
+			: std::make_shared<game::Entity>(m_game->roll_orc("Enemy"))
 		},
 		m_combat {m_player, m_enemy},
 		m_player_info {std::make_shared<ui::EntityInfo>(*m_ui, *m_player)},
@@ -70,7 +70,7 @@ namespace dungeons {
 			m_log->endl();
 			m_log->pair("Round", round);
 		}
-		auto atk = m_combat.attack(*m_dice);
+		auto atk = m_combat.attack(*m_game->dice);
 		m_status->attack(atk, round);
 
 		m_log->endl();
@@ -116,8 +116,8 @@ namespace dungeons {
 			return screen::Quit {};
 		m_button->hide();
 		m_status->level_up(*m_player);
+		m_level_up->state(m_game->level_up(*m_player));
 		m_level_up->place_below(*m_status, m_ui->section_spacing);
-		m_level_up->begin(*m_player);
 		m_level_up->show();
 		level_up_info(m_level_up->state());
 		return {};

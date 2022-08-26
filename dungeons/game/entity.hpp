@@ -61,7 +61,7 @@ namespace dungeons::game {
 			int hp_bonus {0};
 
 			LevelUp() = default;
-			LevelUp(const Class&);
+			LevelUp(const Class&, int attr_points);
 
 			bool done() const;
 			int points_remaining() const;
@@ -110,7 +110,7 @@ namespace dungeons::game {
 		bool alive() const;
 		bool dead() const;
 
-		LevelUp level_up() const;
+		LevelUp level_up(int attr_points) const;
 		void level_up(const LevelUp&);
 
 		util::Percent chance_to_get_hit() const;

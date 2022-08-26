@@ -87,8 +87,8 @@ namespace dungeons::game {
 	// LevelUp
 	using LevelUp = Entity::LevelUp;
 
-	LevelUp::LevelUp(const Class& c):
-		attribute_bonus {2},
+	LevelUp::LevelUp(const Class& c, int attr_points):
+		attribute_bonus {attr_points},
 		hp_bonus {c.hp_bonus_per_level()}
 	{}
 
@@ -167,8 +167,8 @@ namespace dungeons::game {
 	{ return base_attr.intellect + race->attr.intellect; }
 
 	LevelUp
-	Entity::level_up() const
-	{ return {klass}; }
+	Entity::level_up(int attr_points) const
+	{ return {klass, attr_points}; }
 
 	void
 	Entity::level_up(const LevelUp& lvup)
