@@ -32,9 +32,8 @@ namespace dungeons {
 		m_ui {ui},
 		m_game {game},
 		m_player {input.player},
-		m_enemy {input.enemy
-			? input.enemy
-			: std::make_shared<game::Entity>(m_game->roll_orc("Enemy"))
+		m_enemy {
+			std::make_shared<game::Entity>(m_game->roll_enemy(*m_player))
 		},
 		m_combat {m_player, m_enemy},
 		m_player_info {std::make_shared<ui::EntityInfo>(*m_ui, *m_player)},

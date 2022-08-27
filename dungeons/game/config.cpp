@@ -4,6 +4,7 @@
 #include "entity.hpp"
 
 #include <ionpot/util/cfg_file.hpp>
+#include <ionpot/util/deviation.hpp>
 #include <ionpot/util/dice.hpp>
 
 #include <memory> // std::make_shared
@@ -114,6 +115,10 @@ namespace dungeons::game {
 			make(class_template(Template::Id::mage, "mage template"))
 		};
 	}
+
+	util::Deviation
+	Config::enemy_level_deviation() const
+	{ return m_file.find_pair("enemy level deviation").to_deviation(); }
 
 	Config::Attributes
 	Config::human_attributes() const

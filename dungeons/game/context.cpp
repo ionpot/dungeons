@@ -20,13 +20,25 @@ namespace dungeons::game {
 		dice {dice},
 		human_attributes {config.human_attributes()},
 		orc_attributes {config.orc_attributes()},
+		level_up_attributes {config.level_up_attributes()},
+		enemy_level_deviation {config.enemy_level_deviation()},
 		armors {config.armors()},
 		base_armor {config.base_armor()},
-		level_up_attributes {config.level_up_attributes()},
 		class_templates {config.class_templates()},
 		races {config.races()},
 		weapons {config.weapons()}
 	{}
+
+	void
+	Context::add_levels(Entity& e, int max_level)
+	{
+		while (e.klass.level < max_level)
+		{
+			auto lvup = level_up(e);
+			lvup.random_attributes(*dice);
+			e.level_up(lvup);
+		}
+	}
 
 	Entity::LevelUp
 	Context::level_up(const Entity& e) const
@@ -53,15 +65,24 @@ namespace dungeons::game {
 	{ return orc_attributes.roll(*dice); }
 
 	Entity
-	Context::roll_orc(std::string name)
+	Context::roll_enemy(const Entity& player)
 	{
-		Entity e {name};
+		Entity e {"Enemy"};
 		e.base_attr = roll_orc_attrs();
 		e.race = races.orc;
 		e.klass.base_template = pick_class();
 		e.base_armor = base_armor;
 		e.armor = pick_armor();
 		e.weapon = pick_weapon();
+		add_levels(e, roll_enemy_level(player));
 		return e;
+	}
+
+	int
+	Context::roll_enemy_level(const Entity& player)
+	{
+		auto range = enemy_level_deviation.range(player.klass.level);
+		range.min1();
+		return range.roll(*dice);
 	}
 }

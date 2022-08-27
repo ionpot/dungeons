@@ -4,6 +4,7 @@
 #include "entity.hpp"
 
 #include <ionpot/util/cfg_file.hpp>
+#include <ionpot/util/deviation.hpp>
 #include <ionpot/util/dice.hpp>
 
 #include <string>
@@ -54,6 +55,8 @@ namespace dungeons::game {
 
 		int base_armor() const;
 		Armors armors() const;
+
+		util::Deviation enemy_level_deviation() const;
 
 		int level_up_attributes() const;
 

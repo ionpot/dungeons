@@ -3,15 +3,21 @@
 #include "class.hpp"
 
 #include <ionpot/util/compare.hpp>
+#include <ionpot/util/dice.hpp>
 #include <ionpot/util/percent.hpp>
 
 #include <string>
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
+	namespace dice = util::dice;
 
 	// Attributes
 	using Attributes = Entity::Attributes;
+
+	Attributes::Id
+	Attributes::random_id(dice::Engine& dice)
+	{ return dice.pick(ids); }
 
 	Attributes::Attributes(int str, int agi, int intel):
 		strength {str},
@@ -99,6 +105,13 @@ namespace dungeons::game {
 	int
 	LevelUp::points_remaining() const
 	{ return attribute_bonus - attributes.total_points(); }
+
+	void
+	LevelUp::random_attributes(dice::Engine& dice)
+	{
+		while (points_remaining() > 0)
+			attributes.add(Attributes::random_id(dice));
+	}
 
 	// Entity
 	Entity::Entity(std::string name):

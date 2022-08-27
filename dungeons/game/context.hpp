@@ -3,6 +3,7 @@
 #include "config.hpp"
 #include "entity.hpp"
 
+#include <ionpot/util/deviation.hpp>
 #include <ionpot/util/dice.hpp>
 
 #include <memory> // std::shared_ptr
@@ -16,9 +17,10 @@ namespace dungeons::game {
 		std::shared_ptr<dice::Engine> dice;
 		Config::Attributes human_attributes;
 		Config::Attributes orc_attributes;
+		int level_up_attributes;
+		util::Deviation enemy_level_deviation;
 		Config::Armors armors;
 		int base_armor;
-		int level_up_attributes;
 		Config::ClassTemplates class_templates;
 		Config::Races races;
 		Config::Weapons weapons;
@@ -34,6 +36,8 @@ namespace dungeons::game {
 		Entity::Attributes roll_human_attrs();
 		Entity::Attributes roll_orc_attrs();
 
-		Entity roll_orc(std::string name);
+		Entity roll_enemy(const Entity& player);
+		int roll_enemy_level(const Entity& player);
+		void add_levels(Entity&, int max_level);
 	};
 }

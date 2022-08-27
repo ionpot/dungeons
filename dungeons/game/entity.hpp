@@ -33,6 +33,8 @@ namespace dungeons::game {
 			static inline const std::vector<Id> ids
 				{Id::strength, Id::agility, Id::intellect};
 
+			static Id random_id(dice::Engine&);
+
 			int strength {0};
 			int agility {0};
 			int intellect {0};
@@ -65,6 +67,8 @@ namespace dungeons::game {
 
 			bool done() const;
 			int points_remaining() const;
+
+			void random_attributes(dice::Engine&);
 		};
 
 		struct Race {
