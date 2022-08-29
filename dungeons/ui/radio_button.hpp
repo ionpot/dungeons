@@ -20,6 +20,7 @@ namespace dungeons::ui {
 			m_value {value}
 		{
 			children({m_button, m_chosen});
+			m_chosen->center_text();
 			m_chosen->center_to(*m_button);
 			update_size();
 			m_chosen->hide();

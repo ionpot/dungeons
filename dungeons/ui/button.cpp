@@ -24,6 +24,7 @@ namespace dungeons::ui {
 		widget::TextBox {text, box},
 		m_click_dent {ui.button.click_dent}
 	{
+		center_text();
 		enable();
 	}
 
