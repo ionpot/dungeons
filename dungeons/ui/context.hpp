@@ -74,7 +74,7 @@ namespace dungeons::ui {
 		template<class T>
 		util::Size
 		button_text_size(
-				std::string (*to_str)(const T&),
+				std::string (*to_str)(T),
 				const std::vector<T>& values) const
 		{
 			util::Size size;

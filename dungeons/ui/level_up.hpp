@@ -15,7 +15,7 @@ namespace dungeons::ui {
 
 	class LevelUp : public widget::Element {
 	public:
-		using Buttons = ButtonGroup<game::Entity::Attributes::Id>;
+		using Buttons = BasicButtonGroup<game::Entity::Attributes::Id>;
 
 		LevelUp(std::shared_ptr<const Context>);
 

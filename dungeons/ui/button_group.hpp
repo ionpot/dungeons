@@ -3,70 +3,79 @@
 #include "button.hpp"
 #include "context.hpp"
 
-#include <ionpot/widget/element.hpp>
-
-#include <ionpot/util/size.hpp>
+#include <ionpot/widget/button_group.hpp>
 
 #include <memory> // std::make_shared
-#include <optional>
 #include <string>
 #include <vector>
 
 namespace dungeons::ui {
-	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
+	template<class T> // T = Element
+	struct ButtonGroup : public widget::ButtonGroup<T> {
+		using Parent = widget::ButtonGroup<T>;
+
+        void
+        horizontal(const Context& ui)
+        { Parent::horizontal(ui.button.spacing); }
+
+        void
+        left_align_text(const Context& ui)
+        { Parent::left_align_text(ui.button.padding); }
+
+        void
+        vertical(const Context& ui)
+        { Parent::vertical(ui.button.spacing); }
+	};
+
 	template<class T> // T = copyable value
-	struct ButtonGroup : public widget::Element {
-		using ToString = std::string (*)(const T&);
+	struct BasicButtonGroup : public ButtonGroup<ButtonWithValue<T>> {
+		using Button = ButtonWithValue<T>;
+		using Parent = ButtonGroup<Button>;
+		using ToString = std::string (*)(T);
+		using Values = std::vector<T>;
 
-		struct Button : public ui::Button {
-			T value;
-			Button(
-					const Context& ui,
-					std::string text,
-					util::Size content_size,
-					T value
-			):
-				ui::Button {ui, text, content_size},
-				value {value}
-			{}
-		};
-
-		ButtonGroup(
+		BasicButtonGroup(
 				const Context& ui,
 				ToString to_str,
-				const std::vector<T>& values)
+				const Values& values)
 		{
 			auto size = ui.button_text_size(to_str, values);
-			for (const auto& value : values)
-				add_child(
+			for (auto value : values)
+				Parent::add_button(
 					std::make_shared<Button>(
 						ui, to_str(value), size, value));
-			update_size();
 		}
+	};
 
-		void
-		left_align_text(const Context& ui)
-		{
-			for (const auto& elmt : children())
-				std::static_pointer_cast<Button>(elmt)->left_align_text(ui);
-		}
+	template<class T> // T = copyable value
+	struct TwoStateButtonGroup
+	: public ButtonGroup<TwoStateButtonWithValue<T>> {
+		using Button = TwoStateButtonWithValue<T>;
+		using Parent = ButtonGroup<Button>;
+		using ToString = std::string (*)(T);
+		using Values = std::vector<T>;
 
-		std::optional<T>
-		on_click(const widget::Element& clicked) const
+		TwoStateButtonGroup(
+				const Context& ui,
+				ToString to_string,
+				const Values& values)
 		{
-			for (const auto& elmt : children())
-				if (*elmt == clicked)
-					return std::static_pointer_cast<Button>(elmt)->value;
-			return {};
-		}
-
-		void
-		vertical(const Context& ui)
-		{
-			ui.stack_buttons(children());
-			update_size();
+			auto text_size = ui.button_text_size(to_string, values);
+			auto normal_box = TwoStateButton::make_normal_box(ui, text_size);
+			auto active_box = TwoStateButton::make_active_box(ui, text_size);
+			for (auto value : values) {
+				auto text = to_string(value);
+				Parent::add_button(
+					std::make_shared<Button>(Button {
+						ui,
+						TwoStateButton::make_active(ui, text, active_box),
+						TwoStateButton::make_normal(ui, text, normal_box),
+						value
+					})
+				);
+			}
 		}
 	};
 }

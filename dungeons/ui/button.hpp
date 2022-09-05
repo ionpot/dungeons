@@ -4,9 +4,12 @@
 #include "text.hpp"
 #include "texture.hpp"
 
+#include <ionpot/widget/click_dent.hpp>
+#include <ionpot/widget/element.hpp>
+#include <ionpot/widget/padding.hpp>
+#include <ionpot/widget/texture.hpp>
 #include <ionpot/widget/text_box.hpp>
 
-#include <ionpot/util/point.hpp>
 #include <ionpot/util/size.hpp>
 
 #include <memory> // std::shared_ptr
@@ -16,17 +19,18 @@ namespace dungeons::ui {
 	namespace util = ionpot::util;
 	namespace widget = ionpot::widget;
 
-	class Button : public widget::TextBox {
-	public:
+	struct Button : public widget::ClickDent<widget::TextBox> {
+		using Parent = widget::ClickDent<widget::TextBox>;
+
 		Button(
 			const Context&,
 			std::shared_ptr<Text> text,
-			std::shared_ptr<const Texture> box);
+			std::shared_ptr<Texture> box);
 
 		Button(
 			const Context&,
 			Text&& text,
-			std::shared_ptr<const Texture> box);
+			std::shared_ptr<Texture> box);
 
 		Button(
 			const Context&,
@@ -50,10 +54,76 @@ namespace dungeons::ui {
 		void enable();
 
 		void left_align_text(const Context&);
+		void left_align_text(widget::Padding);
+	};
 
-		void render(util::Point offset = {}) const final;
+	template<class T>
+	class ButtonWithValue : public Button {
+	public:
+		ButtonWithValue(
+				const Context& ui,
+				std::string text,
+				util::Size content_size,
+				T value
+		):
+			Button {ui, text, content_size},
+			m_value {value}
+		{}
+
+		T
+		value() const
+		{ return m_value; }
 
 	private:
-		util::Point m_click_dent;
+		T m_value;
+	};
+
+	class TwoStateButton : public widget::ClickDent<> {
+	public:
+		using Parent = widget::ClickDent<>;
+		using BoxPtr = std::shared_ptr<Texture>;
+		using TextBoxPtr = std::shared_ptr<widget::TextBox>;
+
+		static BoxPtr make_active_box(const Context&, util::Size);
+		static BoxPtr make_normal_box(const Context&, util::Size);
+		static TextBoxPtr make_active(const Context&, std::string, BoxPtr);
+		static TextBoxPtr make_normal(const Context&, std::string, BoxPtr);
+
+		TwoStateButton(
+			const Context&,
+			TextBoxPtr active,
+			TextBoxPtr normal);
+
+		void active();
+		void normal();
+
+		void center_text();
+		void left_align_text(const Context&);
+		void left_align_text(widget::Padding);
+
+	private:
+		TextBoxPtr m_active;
+		TextBoxPtr m_normal;
+	};
+
+	template<class T>
+	class TwoStateButtonWithValue : public TwoStateButton {
+	public:
+		TwoStateButtonWithValue(
+				const Context& ui,
+				TextBoxPtr active,
+				TextBoxPtr normal,
+				T value
+		):
+			TwoStateButton {ui, active, normal},
+			m_value {value}
+		{}
+
+		T
+		value() const
+		{ return m_value; }
+
+	private:
+		T m_value;
 	};
 }

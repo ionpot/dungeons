@@ -19,13 +19,14 @@ namespace dungeons::ui {
 		using Attr = game::Entity::Attributes;
 
 		std::string
-		s_button_str(const Attr::Id& id)
+		s_button_str(Attr::Id id)
 		{ return "+ " + game::string::attribute(id); }
 	}
 
 	LevelUp::LevelUp(std::shared_ptr<const Context> ui):
 		m_remaining {std::make_shared<LabelValue>(ui, "Points remaining:")},
-		m_buttons {std::make_shared<Buttons>(*ui, s_button_str, Attr::ids)}
+		m_buttons {std::make_shared<Buttons>(
+			Buttons {*ui, s_button_str, Attr::ids})}
 	{
 		children({m_remaining, m_buttons});
 		m_buttons->vertical(*ui);
@@ -41,8 +42,8 @@ namespace dungeons::ui {
 	bool
 	LevelUp::on_click(const widget::Element& clicked)
 	{
-		if (auto value = m_buttons->on_click(clicked)) {
-			m_level_up.attributes.add(*value);
+		if (auto button = m_buttons->on_click(clicked)) {
+			m_level_up.attributes.add(button->value());
 			refresh();
 			return true;
 		}

@@ -5,20 +5,18 @@
 #include <game/config.hpp>
 #include <game/string.hpp>
 
-#include <memory> // std::make_shared, std::shared_ptr
-
 namespace dungeons::ui {
-	std::shared_ptr<ClassSelect>
-	class_select(
+	ClassSelect::ClassSelect(
 			const Context& ui,
-			const game::Config::ClassTemplates& templates)
+			const game::Config::ClassTemplates& templates
+	):
+		Parent {ui, game::string::class_id, {
+			templates.warrior,
+			templates.hybrid,
+			templates.mage
+		}}
 	{
-		return std::make_shared<ClassSelect>(
-			ClassSelect::horizontal(ui, game::string::class_id, {
-				templates.warrior,
-				templates.hybrid,
-				templates.mage
-			})
-		);
+		horizontal(ui);
+		center_text();
 	}
 }

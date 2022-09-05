@@ -23,15 +23,17 @@ namespace dungeons::ui {
 			ui.normal_text("Weapon")
 		)},
 		m_radio {std::make_shared<Radio>(
-			Radio::vertical(ui, game::string::weapon_info, {
+			Radio {ui, game::string::weapon_info, {
 				weapons.dagger,
 				weapons.mace,
 				weapons.longsword,
 				weapons.halberd
-			})
+			}}
 		)}
 	{
 		children({m_title, m_radio});
+		m_radio->vertical(ui);
+		m_radio->center_text();
 		m_radio->place_after(*m_title, ui.button.spacing);
 		m_title->center_y_to(*m_radio);
 		update_size();

@@ -6,11 +6,9 @@
 #include <game/class.hpp>
 #include <game/config.hpp>
 
-#include <memory> // std::shared_ptr
-
 namespace dungeons::ui {
-	using ClassSelect = RadioGroup<game::Class::Template::Ptr>;
-
-	std::shared_ptr<ClassSelect>
-		class_select(const Context&, const game::Config::ClassTemplates&);
+	struct ClassSelect : public RadioGroup<game::Class::Template::Ptr> {
+		using Parent = RadioGroup<game::Class::Template::Ptr>;
+		ClassSelect(const Context&, const game::Config::ClassTemplates&);
+	};
 }

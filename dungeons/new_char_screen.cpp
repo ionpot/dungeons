@@ -26,7 +26,7 @@ namespace dungeons {
 			std::shared_ptr<game::Context> game
 	):
 		m_log {log},
-		m_class {ui::class_select(*ui, game->class_templates)},
+		m_class {std::make_shared<ui::ClassSelect>(*ui, game->class_templates)},
 		m_attributes {std::make_shared<ui::NewAttributes>(ui, game)},
 		m_stats {std::make_shared<ui::NewStats>(ui)},
 		m_armor {std::make_shared<ui::ArmorSelect>(*ui, game->armors)},
