@@ -64,7 +64,8 @@ namespace dungeons {
 		}
 		if (auto chosen = m_class->on_click(clicked)) {
 			m_entity->klass.base_template = *chosen;
-			m_roll_attr->show();
+			if (m_attributes->hidden())
+				m_roll_attr->show();
 		}
 		else if (*m_roll_attr == clicked) {
 			m_roll_attr->hide();
