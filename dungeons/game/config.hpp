@@ -1,7 +1,10 @@
 #pragma once
 
+#include "armor.hpp"
+#include "attributes.hpp"
 #include "class.hpp"
-#include "entity.hpp"
+#include "race.hpp"
+#include "weapon.hpp"
 
 #include <ionpot/util/cfg_file.hpp>
 #include <ionpot/util/deviation.hpp>
@@ -16,16 +19,16 @@ namespace dungeons::game {
 	class Config {
 	public:
 		struct Armors {
-			Entity::Armor::Ptr leather;
-			Entity::Armor::Ptr scale_mail;
-			Entity::Armor::Ptr roll(dice::Engine&) const;
+			Armor::Ptr leather;
+			Armor::Ptr scale_mail;
+			Armor::Ptr roll(dice::Engine&) const;
 		};
 
 		struct Attributes {
 			dice::Input strength;
 			dice::Input agility;
 			dice::Input intellect;
-			Entity::Attributes roll(dice::Engine&) const;
+			game::Attributes roll(dice::Engine&) const;
 		};
 
 		struct ClassTemplates {
@@ -36,16 +39,16 @@ namespace dungeons::game {
 		};
 
 		struct Races {
-			Entity::Race::Ptr human;
-			Entity::Race::Ptr orc;
+			Race::Ptr human;
+			Race::Ptr orc;
 		};
 
 		struct Weapons {
-			Entity::Weapon::Ptr dagger;
-			Entity::Weapon::Ptr mace;
-			Entity::Weapon::Ptr longsword;
-			Entity::Weapon::Ptr halberd;
-			Entity::Weapon::Ptr roll(dice::Engine&) const;
+			Weapon::Ptr dagger;
+			Weapon::Ptr mace;
+			Weapon::Ptr longsword;
+			Weapon::Ptr halberd;
+			Weapon::Ptr roll(dice::Engine&) const;
 		};
 
 		Config(util::CfgFile&&);
@@ -68,9 +71,9 @@ namespace dungeons::game {
 		util::CfgFile m_file;
 
 		Attributes attributes(std::string section) const;
-		Entity::Armor armor(Entity::Armor::Id, std::string) const;
+		Armor armor(Armor::Id, std::string) const;
 		Class::Template class_template(Class::Template::Id, std::string) const;
-		Entity::Race race(Entity::Race::Id, std::string) const;
-		Entity::Weapon weapon(Entity::Weapon::Id, std::string) const;
+		Race race(Race::Id, std::string) const;
+		Weapon weapon(Weapon::Id, std::string) const;
 	};
 }

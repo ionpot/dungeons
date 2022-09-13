@@ -10,6 +10,7 @@
 
 #include <game/context.hpp>
 #include <game/entity.hpp>
+#include <game/level_up.hpp>
 #include <game/log.hpp>
 #include <game/string.hpp>
 
@@ -33,7 +34,7 @@ namespace dungeons {
 		m_game {game},
 		m_player {input.player},
 		m_enemy {
-			std::make_shared<game::Entity>(m_game->roll_enemy(*m_player))
+			std::make_shared<game::Entity>(m_player->roll_enemy(*m_game))
 		},
 		m_combat {m_player, m_enemy},
 		m_player_info {std::make_shared<ui::EntityInfo>(*m_ui, *m_player)},
@@ -115,7 +116,7 @@ namespace dungeons {
 			return screen::Quit {};
 		m_button->hide();
 		m_status->level_up(*m_player);
-		m_level_up->state(m_game->level_up(*m_player));
+		m_level_up->state(m_player->level_up(*m_game));
 		m_level_up->place_below(*m_status, m_ui->section_spacing);
 		m_level_up->show();
 		level_up_info(m_level_up->state());
@@ -123,7 +124,7 @@ namespace dungeons {
 	}
 
 	void
-	CombatScreen::level_up_info(const game::Entity::LevelUp& lvup)
+	CombatScreen::level_up_info(const game::LevelUp& lvup)
 	{
 		auto p = *m_player;
 		p.level_up(lvup);

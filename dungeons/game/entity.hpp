@@ -1,94 +1,24 @@
 #pragma once
 
+#include "armor.hpp"
+#include "attributes.hpp"
 #include "class.hpp"
+#include "context.hpp"
+#include "level_up.hpp"
+#include "race.hpp"
+#include "weapon.hpp"
 
 #include <ionpot/util/dice.hpp>
-#include <ionpot/util/exception.hpp>
 #include <ionpot/util/percent.hpp>
 #include <ionpot/util/range.hpp>
-#include <ionpot/util/scale.hpp>
 
-#include <memory> // std::shared_ptr
 #include <string>
-#include <vector>
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
 	namespace dice = util::dice;
 
 	struct Entity {
-		IONPOT_EXCEPTION("Game::Entity")
-
-		struct Armor {
-			using Ptr = std::shared_ptr<const Armor>;
-			enum class Id { leather, scale_mail } id;
-			int value {0};
-			int initiative {0};
-			util::Scale dodge_scale;
-		};
-
-		struct Attributes {
-			enum class Id { strength, agility, intellect };
-
-			static inline const std::vector<Id> ids
-				{Id::strength, Id::agility, Id::intellect};
-
-			static Id random_id(dice::Engine&);
-
-			int strength {0};
-			int agility {0};
-			int intellect {0};
-
-			Attributes() = default;
-			Attributes(int str, int agi, int intel);
-
-			int get(Id) const;
-
-			int hp() const;
-			int initiative() const;
-			util::Percent dodge_chance() const;
-			util::Percent resist_chance() const;
-
-			int total_points() const;
-
-			void add(Id, int = 1);
-
-			Attributes operator+(const Attributes&) const;
-			void operator+=(const Attributes&);
-		};
-
-		struct LevelUp {
-			Attributes attributes;
-			int attribute_bonus {0};
-			int hp_bonus {0};
-
-			LevelUp() = default;
-			LevelUp(const Class&, int attr_points);
-
-			bool done() const;
-			int points_remaining() const;
-
-			void random_attributes(dice::Engine&);
-		};
-
-		struct Race {
-			using Ptr = std::shared_ptr<const Race>;
-			enum class Id { human, orc } id;
-			Attributes attr;
-		};
-
-		struct Weapon {
-			using Ptr = std::shared_ptr<const Weapon>;
-			enum class Id {
-				dagger,
-				halberd,
-				longsword,
-				mace
-			} id;
-			dice::Input dice;
-			int initiative {0};
-		};
-
 		std::string name;
 		Attributes base_attr;
 		Race::Ptr race;
@@ -115,6 +45,7 @@ namespace dungeons::game {
 		bool dead() const;
 
 		LevelUp level_up(int attr_points) const;
+		LevelUp level_up(const Context&) const;
 		void level_up(const LevelUp&);
 
 		util::Percent chance_to_get_hit() const;
@@ -133,5 +64,9 @@ namespace dungeons::game {
 
 		void restore_hp();
 		void take_damage(int);
+
+		Entity roll_enemy(const Context&) const;
+		int roll_enemy_level(const Context&) const;
+		void add_levels(const Context&, int max_level);
 	};
 }

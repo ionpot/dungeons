@@ -4,8 +4,8 @@
 #include "radio_group.hpp"
 #include "text.hpp"
 
+#include <game/armor.hpp>
 #include <game/config.hpp>
-#include <game/entity.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -17,7 +17,7 @@ namespace dungeons::ui {
 
 	class ArmorSelect : public widget::Element {
 	public:
-		using Value = game::Entity::Armor::Ptr;
+		using Value = game::Armor::Ptr;
 		using Radio = RadioGroup<Value>;
 
 		ArmorSelect(const Context&, const game::Config::Armors&);

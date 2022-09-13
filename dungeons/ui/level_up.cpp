@@ -4,7 +4,8 @@
 #include "context.hpp"
 #include "label_value.hpp"
 
-#include <game/entity.hpp>
+#include <game/attributes.hpp>
+#include <game/level_up.hpp>
 #include <game/string.hpp>
 
 #include <ionpot/widget/element.hpp>
@@ -16,7 +17,7 @@ namespace dungeons::ui {
 	namespace widget = ionpot::widget;
 
 	namespace {
-		using Attr = game::Entity::Attributes;
+		using Attr = game::Attributes;
 
 		std::string
 		s_button_str(Attr::Id id)
@@ -59,11 +60,11 @@ namespace dungeons::ui {
 		update_size();
 	}
 
-	const game::Entity::LevelUp&
+	const game::LevelUp&
 	LevelUp::state() const
 	{ return m_level_up; }
 
 	void
-	LevelUp::state(game::Entity::LevelUp lvup)
+	LevelUp::state(game::LevelUp lvup)
 	{ m_level_up = lvup; refresh(); }
 }

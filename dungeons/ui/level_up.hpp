@@ -4,7 +4,8 @@
 #include "context.hpp"
 #include "label_value.hpp"
 
-#include <game/entity.hpp>
+#include <game/attributes.hpp>
+#include <game/level_up.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -15,7 +16,7 @@ namespace dungeons::ui {
 
 	class LevelUp : public widget::Element {
 	public:
-		using Buttons = BasicButtonGroup<game::Entity::Attributes::Id>;
+		using Buttons = BasicButtonGroup<game::Attributes::Id>;
 
 		LevelUp(std::shared_ptr<const Context>);
 
@@ -23,14 +24,14 @@ namespace dungeons::ui {
 
 		bool on_click(const widget::Element&);
 
-		const game::Entity::LevelUp&
+		const game::LevelUp&
 			state() const;
-		void state(game::Entity::LevelUp);
+		void state(game::LevelUp);
 
 	private:
 		std::shared_ptr<LabelValue> m_remaining;
 		std::shared_ptr<Buttons> m_buttons;
-		game::Entity::LevelUp m_level_up;
+		game::LevelUp m_level_up;
 
 		void refresh();
 	};

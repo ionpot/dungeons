@@ -4,8 +4,8 @@
 #include "context.hpp"
 #include "label_value.hpp"
 
+#include <game/attributes.hpp>
 #include <game/context.hpp>
-#include <game/entity.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -16,7 +16,7 @@ namespace dungeons::ui {
 
 	class NewAttributes : public widget::Element {
 	public:
-		using Value = game::Entity::Attributes;
+		using Value = game::Attributes;
 
 		NewAttributes(
 			std::shared_ptr<const Context>,

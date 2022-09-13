@@ -1,10 +1,12 @@
 #include "entity.hpp"
 
-#include "class.hpp"
+#include "context.hpp"
+#include "level_up.hpp"
 
 #include <ionpot/util/compare.hpp>
 #include <ionpot/util/dice.hpp>
 #include <ionpot/util/percent.hpp>
+#include <ionpot/util/range.hpp>
 
 #include <string>
 
@@ -12,113 +14,22 @@ namespace dungeons::game {
 	namespace util = ionpot::util;
 	namespace dice = util::dice;
 
-	// Attributes
-	using Attributes = Entity::Attributes;
-
-	Attributes::Id
-	Attributes::random_id(dice::Engine& dice)
-	{ return dice.pick(ids); }
-
-	Attributes::Attributes(int str, int agi, int intel):
-		strength {str},
-		agility {agi},
-		intellect {intel}
-	{}
-
-	void
-	Attributes::add(Id id, int i)
-	{
-		switch (id) {
-		case Id::strength:
-			strength += i;
-			return;
-		case Id::agility:
-			agility += i;
-			return;
-		case Id::intellect:
-			intellect += i;
-			return;
-		}
-		throw Exception {"Invalid id in Attributes::add()."};
-	}
-
-	int
-	Attributes::get(Id id) const
-	{
-		switch (id) {
-		case Id::strength:
-			return strength;
-		case Id::agility:
-			return agility;
-		case Id::intellect:
-			return intellect;
-		}
-		throw Exception {"Invalid id in Attributes::get()."};
-	}
-
-	int
-	Attributes::hp() const
-	{ return strength; }
-
-	int
-	Attributes::initiative() const
-	{ return agility + intellect; }
-
-	util::Percent
-	Attributes::dodge_chance() const
-	{ return {agility}; }
-
-	util::Percent
-	Attributes::resist_chance() const
-	{ return {intellect}; }
-
-	int
-	Attributes::total_points() const
-	{ return strength + agility + intellect; }
-
-	Attributes
-	Attributes::operator+(const Attributes& a) const
-	{
-		return {
-			strength + a.strength,
-			agility + a.agility,
-			intellect + a.intellect
-		};
-	}
-
-	void
-	Attributes::operator+=(const Attributes& a)
-	{ *this = *this + a; }
-
-	// LevelUp
-	using LevelUp = Entity::LevelUp;
-
-	LevelUp::LevelUp(const Class& c, int attr_points):
-		attribute_bonus {attr_points},
-		hp_bonus {c.hp_bonus_per_level()}
-	{}
-
-	bool
-	LevelUp::done() const
-	{ return points_remaining() <= 0; }
-
-	int
-	LevelUp::points_remaining() const
-	{ return attribute_bonus - attributes.total_points(); }
-
-	void
-	LevelUp::random_attributes(dice::Engine& dice)
-	{
-		while (points_remaining() > 0)
-			attributes.add(Attributes::random_id(dice));
-	}
-
-	// Entity
 	Entity::Entity(std::string name):
 		name {name},
 		base_armor {0},
 		damage_taken {0}
 	{}
+
+	void
+	Entity::add_levels(const Context& game, int max_level)
+	{
+		while (klass.level < max_level)
+		{
+			auto lvup = level_up(game.level_up_attributes);
+			lvup.random_attributes(*game.dice);
+			level_up(lvup);
+		}
+	}
 
 	bool
 	Entity::alive() const
@@ -183,6 +94,10 @@ namespace dungeons::game {
 	Entity::level_up(int attr_points) const
 	{ return {klass, attr_points}; }
 
+	LevelUp
+	Entity::level_up(const Context& game) const
+	{ return level_up(game.level_up_attributes); }
+
 	void
 	Entity::level_up(const LevelUp& lvup)
 	{
@@ -206,6 +121,30 @@ namespace dungeons::game {
 	{
 		auto base = weapon ? dice.roll(weapon->dice) : 0;
 		return base + weapon_damage_bonus();
+	}
+
+	Entity
+	Entity::roll_enemy(const Context& game) const
+	{
+		Entity e {"Enemy"};
+		e.base_attr = game.roll_orc_attrs();
+		e.race = game.races.orc;
+		e.klass.base_template = game.pick_class();
+		e.base_armor = base_armor;
+		e.armor = game.pick_armor();
+		e.weapon = game.pick_weapon();
+		e.add_levels(game, roll_enemy_level(game));
+		return e;
+	}
+
+	int
+	Entity::roll_enemy_level(const Context& game) const
+	{
+		auto range = game
+			.enemy_level_deviation
+			.range(klass.level);
+		range.min1();
+		return range.roll(*game.dice);
 	}
 
 	int

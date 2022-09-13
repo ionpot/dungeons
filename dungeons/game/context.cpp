@@ -1,13 +1,14 @@
 #include "context.hpp"
 
+#include "armor.hpp"
+#include "attributes.hpp"
 #include "class.hpp"
 #include "config.hpp"
-#include "entity.hpp"
+#include "weapon.hpp"
 
 #include <ionpot/util/dice.hpp>
 
 #include <memory> // std::shared_ptr
-#include <string>
 
 namespace dungeons::game {
 	namespace util = ionpot::util;
@@ -29,60 +30,23 @@ namespace dungeons::game {
 		weapons {config.weapons()}
 	{}
 
-	void
-	Context::add_levels(Entity& e, int max_level)
-	{
-		while (e.klass.level < max_level)
-		{
-			auto lvup = level_up(e);
-			lvup.random_attributes(*dice);
-			e.level_up(lvup);
-		}
-	}
-
-	Entity::LevelUp
-	Context::level_up(const Entity& e) const
-	{ return e.level_up(level_up_attributes); }
-
-	Entity::Armor::Ptr
-	Context::pick_armor()
+	Armor::Ptr
+	Context::pick_armor() const
 	{ return armors.roll(*dice); }
 
 	Class::Template::Ptr
-	Context::pick_class()
+	Context::pick_class() const
 	{ return class_templates.roll(*dice); }
 
-	Entity::Weapon::Ptr
-	Context::pick_weapon()
+	Weapon::Ptr
+	Context::pick_weapon() const
 	{ return weapons.roll(*dice); }
 
-	Entity::Attributes
-	Context::roll_human_attrs()
+	Attributes
+	Context::roll_human_attrs() const
 	{ return human_attributes.roll(*dice); }
 
-	Entity::Attributes
-	Context::roll_orc_attrs()
+	Attributes
+	Context::roll_orc_attrs() const
 	{ return orc_attributes.roll(*dice); }
-
-	Entity
-	Context::roll_enemy(const Entity& player)
-	{
-		Entity e {"Enemy"};
-		e.base_attr = roll_orc_attrs();
-		e.race = races.orc;
-		e.klass.base_template = pick_class();
-		e.base_armor = base_armor;
-		e.armor = pick_armor();
-		e.weapon = pick_weapon();
-		add_levels(e, roll_enemy_level(player));
-		return e;
-	}
-
-	int
-	Context::roll_enemy_level(const Entity& player)
-	{
-		auto range = enemy_level_deviation.range(player.klass.level);
-		range.min1();
-		return range.roll(*dice);
-	}
 }

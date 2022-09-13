@@ -1,7 +1,10 @@
 #include "config.hpp"
 
+#include "armor.hpp"
+#include "attributes.hpp"
 #include "class.hpp"
-#include "entity.hpp"
+#include "race.hpp"
+#include "weapon.hpp"
 
 #include <ionpot/util/cfg_file.hpp>
 #include <ionpot/util/deviation.hpp>
@@ -16,7 +19,7 @@ namespace dungeons::game {
 	namespace util = ionpot::util;
 	namespace dice = util::dice;
 
-	Entity::Armor::Ptr
+	Armor::Ptr
 	Config::Armors::roll(dice::Engine& dice) const
 	{
 		return dice.pick(std::vector {
@@ -24,7 +27,7 @@ namespace dungeons::game {
 		});
 	}
 
-	Entity::Attributes
+	Attributes
 	Config::Attributes::roll(dice::Engine& dice) const
 	{
 		return {
@@ -42,7 +45,7 @@ namespace dungeons::game {
 		});
 	}
 
-	Entity::Weapon::Ptr
+	Weapon::Ptr
 	Config::Weapons::roll(dice::Engine& dice) const
 	{
 		return dice.pick(std::vector {
@@ -66,8 +69,8 @@ namespace dungeons::game {
 		};
 	}
 
-	Entity::Armor
-	Config::armor(Entity::Armor::Id id, std::string section_name) const
+	Armor
+	Config::armor(Armor::Id id, std::string section_name) const
 	{
 		auto section = m_file.find_section(section_name);
 		return {
@@ -81,7 +84,7 @@ namespace dungeons::game {
 	Config::Armors
 	Config::armors() const
 	{
-		using Armor = Entity::Armor;
+		using Armor = Armor;
 		auto make = std::make_shared<const Armor, Armor&&>;
 		return {
 			make(armor(Armor::Id::leather, "leather armor")),
@@ -135,13 +138,13 @@ namespace dungeons::game {
 	Config::orc_attributes() const
 	{ return attributes("orc attributes"); }
 
-	Entity::Race
-	Config::race(Entity::Race::Id id, std::string section_name) const
+	Race
+	Config::race(Race::Id id, std::string section_name) const
 	{
 		auto section = m_file.find_section(section_name);
 		return {
 			id,
-			Entity::Attributes {
+			game::Attributes {
 				section.find_pair("strength").to_int(),
 				section.find_pair("agility").to_int(),
 				section.find_pair("intellect").to_int()
@@ -152,7 +155,6 @@ namespace dungeons::game {
 	Config::Races
 	Config::races() const
 	{
-		using Race = Entity::Race;
 		auto make = std::make_shared<const Race, Race&&>;
 		return {
 			make(race(Race::Id::human, "human bonus")),
@@ -160,8 +162,8 @@ namespace dungeons::game {
 		};
 	}
 
-	Entity::Weapon
-	Config::weapon(Entity::Weapon::Id id, std::string section_name) const
+	Weapon
+	Config::weapon(Weapon::Id id, std::string section_name) const
 	{
 		auto section = m_file.find_section(section_name);
 		return {
@@ -174,7 +176,6 @@ namespace dungeons::game {
 	Config::Weapons
 	Config::weapons() const
 	{
-		using Weapon = Entity::Weapon;
 		auto make = std::make_shared<const Weapon, Weapon&&>;
 		return {
 			make(weapon(Weapon::Id::dagger, "dagger")),

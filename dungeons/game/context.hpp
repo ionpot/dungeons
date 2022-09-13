@@ -1,7 +1,9 @@
 #pragma once
 
+#include "armor.hpp"
+#include "attributes.hpp"
 #include "config.hpp"
-#include "entity.hpp"
+#include "weapon.hpp"
 
 #include <ionpot/util/deviation.hpp>
 #include <ionpot/util/dice.hpp>
@@ -27,17 +29,11 @@ namespace dungeons::game {
 
 		Context(const Config&, std::shared_ptr<dice::Engine>);
 
-		Entity::LevelUp level_up(const Entity&) const;
+		Armor::Ptr pick_armor() const;
+		Class::Template::Ptr pick_class() const;
+		Weapon::Ptr pick_weapon() const;
 
-		Entity::Armor::Ptr pick_armor();
-		Class::Template::Ptr pick_class();
-		Entity::Weapon::Ptr pick_weapon();
-
-		Entity::Attributes roll_human_attrs();
-		Entity::Attributes roll_orc_attrs();
-
-		Entity roll_enemy(const Entity& player);
-		int roll_enemy_level(const Entity& player);
-		void add_levels(Entity&, int max_level);
+		Attributes roll_human_attrs() const;
+		Attributes roll_orc_attrs() const;
 	};
 }

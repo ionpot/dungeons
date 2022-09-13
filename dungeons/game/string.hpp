@@ -1,8 +1,13 @@
 #pragma once
 
+#include "armor.hpp"
+#include "attributes.hpp"
 #include "class.hpp"
 #include "combat.hpp"
 #include "entity.hpp"
+#include "level_up.hpp"
+#include "race.hpp"
+#include "weapon.hpp"
 
 #include <ionpot/util/percent_roll.hpp>
 
@@ -14,18 +19,18 @@ namespace dungeons::game::string {
 
 	using Lines = std::vector<std::string>;
 
-	std::string armor(Entity::Armor::Id);
-	std::string armor(Entity::Armor::Ptr);
+	std::string armor(Armor::Id);
+	std::string armor(Armor::Ptr);
 	std::string armor(const Entity&);
 
 	Lines attack(const Combat::Attack&);
 	std::string attack_result(const Combat::Attack&);
 
-	std::string attribute(Entity::Attributes::Id);
-	std::string attribute_short(Entity::Attributes::Id);
+	std::string attribute(Attributes::Id);
+	std::string attribute_short(Attributes::Id);
 
-	std::string attribute_bonus(Entity::Attributes::Id, int);
-	std::string attribute_bonus(const Entity::Attributes&);
+	std::string attribute_bonus(Attributes::Id, int);
+	std::string attribute_bonus(const Attributes&);
 
 	std::string class_id(Class::Template::Id);
 	std::string class_id(Class::Template::Ptr);
@@ -33,7 +38,7 @@ namespace dungeons::game::string {
 
 	std::string class_level(const Entity&);
 
-	std::string level_up(const Entity::LevelUp&);
+	std::string level_up(const LevelUp&);
 
 	std::string percent_roll(const util::PercentRoll&);
 
@@ -41,8 +46,8 @@ namespace dungeons::game::string {
 	std::string primary_attr(const Entity&);
 	std::string secondary_attr(const Entity&);
 
-	std::string race(Entity::Race::Id);
-	std::string race(Entity::Race::Ptr);
+	std::string race(Race::Id);
+	std::string race(Race::Ptr);
 	std::string race(const Entity&);
 
 	std::string round(int);
@@ -53,13 +58,13 @@ namespace dungeons::game::string {
 
 	std::string weapon_damage(const Entity&);
 
-	std::string weapon_dice(Entity::Weapon::Ptr);
+	std::string weapon_dice(Weapon::Ptr);
 	std::string weapon_dice(const Entity&);
 
-	std::string weapon_info(Entity::Weapon::Ptr);
+	std::string weapon_info(Weapon::Ptr);
 	std::string weapon_info(const Entity&);
 
-	std::string weapon_name(Entity::Weapon::Id);
-	std::string weapon_name(Entity::Weapon::Ptr);
+	std::string weapon_name(Weapon::Id);
+	std::string weapon_name(Weapon::Ptr);
 	std::string weapon_name(const Entity&);
 }

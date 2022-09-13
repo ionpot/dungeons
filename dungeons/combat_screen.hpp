@@ -11,6 +11,7 @@
 #include <game/combat.hpp>
 #include <game/context.hpp>
 #include <game/entity.hpp>
+#include <game/level_up.hpp>
 #include <game/log.hpp>
 
 #include <ionpot/widget/element.hpp>
@@ -49,7 +50,7 @@ namespace dungeons {
 		std::optional<screen::Output> do_end();
 		void do_level_up();
 
-		void level_up_info(const game::Entity::LevelUp&);
+		void level_up_info(const game::LevelUp&);
 
 		void refresh_info(ui::EntityInfo&, const game::Entity&);
 	};

@@ -5,7 +5,7 @@
 #include "text.hpp"
 
 #include <game/config.hpp>
-#include <game/entity.hpp>
+#include <game/weapon.hpp>
 
 #include <ionpot/widget/element.hpp>
 
@@ -17,7 +17,7 @@ namespace dungeons::ui {
 
 	class WeaponSelect : public widget::Element {
 	public:
-		using Value = game::Entity::Weapon::Ptr;
+		using Value = game::Weapon::Ptr;
 		using Radio = RadioGroup<Value>;
 
 		WeaponSelect(const Context&, const game::Config::Weapons&);

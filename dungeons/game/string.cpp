@@ -1,9 +1,14 @@
 #include "string.hpp"
 
+#include "armor.hpp"
+#include "attributes.hpp"
 #include "class.hpp"
 #include "combat.hpp"
 #include "entity.hpp"
 #include "exception.hpp"
+#include "level_up.hpp"
+#include "race.hpp"
+#include "weapon.hpp"
 
 #include <ionpot/util/percent_roll.hpp>
 #include <ionpot/util/string.hpp>
@@ -18,19 +23,19 @@ namespace dungeons::game::string {
 	}
 
 	std::string
-	armor(Entity::Armor::Id id)
+	armor(Armor::Id id)
 	{
 		switch (id) {
-		case Entity::Armor::Id::leather:
+		case Armor::Id::leather:
 			return "Leather";
-		case Entity::Armor::Id::scale_mail:
+		case Armor::Id::scale_mail:
 			return "Scale Mail";
 		}
 		throw Exception {"string::armor() received invalid id."};
 	}
 
 	std::string
-	armor(Entity::Armor::Ptr a)
+	armor(Armor::Ptr a)
 	{
 		return a
 			? armor(a->id)
@@ -73,9 +78,9 @@ namespace dungeons::game::string {
 	}
 
 	std::string
-	attribute(Entity::Attributes::Id id)
+	attribute(Attributes::Id id)
 	{
-		using Id = Entity::Attributes::Id;
+		using Id = Attributes::Id;
 		switch (id) {
 		case Id::strength:
 			return "Strength";
@@ -88,9 +93,9 @@ namespace dungeons::game::string {
 	}
 
 	std::string
-	attribute_short(Entity::Attributes::Id id)
+	attribute_short(Attributes::Id id)
 	{
-		using Id = Entity::Attributes::Id;
+		using Id = Attributes::Id;
 		switch (id) {
 		case Id::strength:
 			return "Str";
@@ -103,7 +108,7 @@ namespace dungeons::game::string {
 	}
 
 	std::string
-	attribute_bonus(Entity::Attributes::Id id, int i)
+	attribute_bonus(Attributes::Id id, int i)
 	{
 		return i
 			? util::string::signed_int(i) + " " + attribute_short(id)
@@ -111,10 +116,10 @@ namespace dungeons::game::string {
 	}
 
 	std::string
-	attribute_bonus(const Entity::Attributes& attrs)
+	attribute_bonus(const Attributes& attrs)
 	{
 		std::vector<std::string> ls;
-		for (auto id : Entity::Attributes::ids)
+		for (auto id : Attributes::ids)
 			ls.push_back(attribute_bonus(id, attrs.get(id)));
 		return util::string::join(", ", ls);
 	}
@@ -146,7 +151,7 @@ namespace dungeons::game::string {
 	{ return "Lv" + std::to_string(e.klass.level); }
 
 	std::string
-	level_up(const Entity::LevelUp& lvup)
+	level_up(const LevelUp& lvup)
 	{
 		std::string hp;
 		if (lvup.hp_bonus)
@@ -182,19 +187,19 @@ namespace dungeons::game::string {
 	}
 
 	std::string
-	race(Entity::Race::Id id)
+	race(Race::Id id)
 	{
 		switch (id) {
-		case Entity::Race::Id::human:
+		case Race::Id::human:
 			return "Human";
-		case Entity::Race::Id::orc:
+		case Race::Id::orc:
 			return "Orc";
 		}
 		throw Exception {"string::race() received invalid id."};
 	}
 
 	std::string
-	race(Entity::Race::Ptr r)
+	race(Race::Ptr r)
 	{ return r ? race(r->id) : "No Race"; }
 
 	std::string
@@ -239,7 +244,7 @@ namespace dungeons::game::string {
 	}
 
 	std::string
-	weapon_dice(Entity::Weapon::Ptr w)
+	weapon_dice(Weapon::Ptr w)
 	{ return w ? w->dice.to_str() : "?d?"; }
 
 	std::string
@@ -247,7 +252,7 @@ namespace dungeons::game::string {
 	{ return weapon_dice(e.weapon); }
 
 	std::string
-	weapon_info(Entity::Weapon::Ptr w)
+	weapon_info(Weapon::Ptr w)
 	{ return weapon_name(w) + " " + parens(weapon_dice(w)); }
 
 	std::string
@@ -255,23 +260,23 @@ namespace dungeons::game::string {
 	{ return weapon_info(e.weapon); }
 
 	std::string
-	weapon_name(Entity::Weapon::Id id)
+	weapon_name(Weapon::Id id)
 	{
 		switch (id) {
-		case Entity::Weapon::Id::dagger:
+		case Weapon::Id::dagger:
 			return "Dagger";
-		case Entity::Weapon::Id::halberd:
+		case Weapon::Id::halberd:
 			return "Halberd";
-		case Entity::Weapon::Id::longsword:
+		case Weapon::Id::longsword:
 			return "Longsword";
-		case Entity::Weapon::Id::mace:
+		case Weapon::Id::mace:
 			return "Mace";
 		}
 		throw Exception {"string::weapon_name() received invalid id."};
 	}
 
 	std::string
-	weapon_name(Entity::Weapon::Ptr w)
+	weapon_name(Weapon::Ptr w)
 	{ return w ? weapon_name(w->id) : "No Weapon"; }
 
 	std::string
