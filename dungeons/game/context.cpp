@@ -27,7 +27,8 @@ namespace dungeons::game {
 		base_armor {config.base_armor()},
 		class_templates {config.class_templates()},
 		races {config.races()},
-		weapons {config.weapons()}
+		weapons {config.weapons()},
+		xp {config.xp()}
 	{}
 
 	Armor::Ptr

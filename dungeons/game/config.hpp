@@ -51,6 +51,11 @@ namespace dungeons::game {
 			Weapon::Ptr roll(dice::Engine&) const;
 		};
 
+		struct Xp {
+			int gained_per_combat;
+			int needed_for_level;
+		};
+
 		Config(util::CfgFile&&);
 
 		Attributes human_attributes() const;
@@ -66,6 +71,8 @@ namespace dungeons::game {
 		ClassTemplates class_templates() const;
 		Races races() const;
 		Weapons weapons() const;
+
+		Xp xp() const;
 
 	private:
 		util::CfgFile m_file;

@@ -2,6 +2,7 @@
 
 #include "attributes.hpp"
 #include "class.hpp"
+#include "context.hpp"
 
 #include <ionpot/util/dice.hpp>
 
@@ -9,9 +10,10 @@ namespace dungeons::game {
 	namespace util = ionpot::util;
 	namespace dice = util::dice;
 
-	LevelUp::LevelUp(const Class& c, int attr_points):
-		attribute_bonus {attr_points},
-		hp_bonus {c.hp_bonus_per_level()}
+	LevelUp::LevelUp(const Context& game, const Class& klass):
+		attribute_bonus {game.level_up_attributes},
+		hp_bonus {klass.hp_bonus_per_level()},
+		xp_required {game.xp.needed_for_level}
 	{}
 
 	bool

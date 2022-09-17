@@ -12,6 +12,7 @@
 #include <ionpot/util/percent.hpp>
 #include <ionpot/util/range.hpp>
 
+#include <optional>
 #include <string>
 
 namespace dungeons::game {
@@ -27,6 +28,7 @@ namespace dungeons::game {
 		Armor::Ptr armor;
 		Weapon::Ptr weapon;
 		int damage_taken;
+		int current_xp;
 
 		Entity(std::string name);
 
@@ -44,9 +46,13 @@ namespace dungeons::game {
 		bool alive() const;
 		bool dead() const;
 
-		LevelUp level_up(int attr_points) const;
+		void add_xp(const Context&);
+
 		LevelUp level_up(const Context&) const;
 		void level_up(const LevelUp&);
+
+		std::optional<LevelUp>
+			try_level_up(const Context&) const;
 
 		util::Percent chance_to_get_hit() const;
 		util::Percent deflect_chance() const;

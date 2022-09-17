@@ -9,6 +9,7 @@
 #include <ionpot/util/dice.hpp>
 
 #include <memory> // std::shared_ptr
+#include <optional>
 #include <string>
 
 namespace dungeons::game {
@@ -26,6 +27,7 @@ namespace dungeons::game {
 		Config::ClassTemplates class_templates;
 		Config::Races races;
 		Config::Weapons weapons;
+		Config::Xp xp;
 
 		Context(const Config&, std::shared_ptr<dice::Engine>);
 

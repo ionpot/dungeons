@@ -112,15 +112,23 @@ namespace dungeons {
 	{
 		m_log->endl();
 		m_log->put("Combat ends");
+
 		if (m_player->dead())
 			return screen::Quit {};
-		m_button->hide();
-		m_status->level_up(*m_player);
-		m_level_up->state(m_player->level_up(*m_game));
-		m_level_up->place_below(*m_status, m_ui->section_spacing);
-		m_level_up->show();
-		level_up_info(m_level_up->state());
-		return {};
+
+		m_player->add_xp(*m_game);
+
+		if (auto lvup = m_player->try_level_up(*m_game)) {
+			m_button->hide();
+			m_status->level_up(*m_player);
+			m_level_up->state(*lvup);
+			m_level_up->place_below(*m_status, m_ui->section_spacing);
+			m_level_up->show();
+			level_up_info(m_level_up->state());
+			return {};
+		}
+
+		return next_combat();
 	}
 
 	void
@@ -131,6 +139,13 @@ namespace dungeons {
 		refresh_info(*m_player_info, p);
 	}
 
+	screen::Output
+	CombatScreen::next_combat() const
+	{
+		m_player->restore_hp();
+		return screen::ToCombat {m_player};
+	}
+
 	std::optional<screen::Output>
 	CombatScreen::on_click(const widget::Element& clicked)
 	{
@@ -139,10 +154,8 @@ namespace dungeons {
 			return {};
 		}
 		if (*m_button == clicked) {
-			if (m_level_up_done) {
-				m_player->restore_hp();
-				return screen::ToCombat {m_player};
-			}
+			if (m_level_up_done)
+				return next_combat();
 			if (m_combat.ended())
 				return do_end();
 			do_attack();

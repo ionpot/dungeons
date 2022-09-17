@@ -52,6 +52,8 @@ namespace dungeons {
 
 		void level_up_info(const game::LevelUp&);
 
+		screen::Output next_combat() const;
+
 		void refresh_info(ui::EntityInfo&, const game::Entity&);
 	};
 }

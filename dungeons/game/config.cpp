@@ -184,4 +184,14 @@ namespace dungeons::game {
 			make(weapon(Weapon::Id::halberd, "halberd"))
 		};
 	}
+
+	Config::Xp
+	Config::xp() const
+	{
+		auto section = m_file.find_section("xp");
+		return {
+			section.find_pair("gained per combat").to_int(),
+			section.find_pair("needed for level").to_int()
+		};
+	}
 }

@@ -8,6 +8,7 @@
 #include <ionpot/util/percent.hpp>
 #include <ionpot/util/range.hpp>
 
+#include <optional>
 #include <string>
 
 namespace dungeons::game {
@@ -17,19 +18,23 @@ namespace dungeons::game {
 	Entity::Entity(std::string name):
 		name {name},
 		base_armor {0},
-		damage_taken {0}
+		damage_taken {0},
+		current_xp {0}
 	{}
 
 	void
 	Entity::add_levels(const Context& game, int max_level)
 	{
-		while (klass.level < max_level)
-		{
-			auto lvup = level_up(game.level_up_attributes);
+		while (klass.level < max_level) {
+			auto lvup = level_up(game);
 			lvup.random_attributes(*game.dice);
 			level_up(lvup);
 		}
 	}
+
+	void
+	Entity::add_xp(const Context& game)
+	{ current_xp += game.xp.gained_per_combat; }
 
 	bool
 	Entity::alive() const
@@ -91,17 +96,14 @@ namespace dungeons::game {
 	{ return base_attr.intellect + race->attr.intellect; }
 
 	LevelUp
-	Entity::level_up(int attr_points) const
-	{ return {klass, attr_points}; }
-
-	LevelUp
 	Entity::level_up(const Context& game) const
-	{ return level_up(game.level_up_attributes); }
+	{ return {game, klass}; }
 
 	void
 	Entity::level_up(const LevelUp& lvup)
 	{
 		base_attr += lvup.attributes;
+		current_xp -= lvup.xp_required;
 		++klass.level;
 	}
 
@@ -165,6 +167,15 @@ namespace dungeons::game {
 		return base_attr.hp()
 			+ race->attr.hp()
 			+ klass.hp_bonus();
+	}
+
+	std::optional<LevelUp>
+	Entity::try_level_up(const Context& game) const
+	{
+		auto lvup = level_up(game);
+		if (current_xp < lvup.xp_required)
+			return {};
+		return lvup;
 	}
 
 	util::Range
