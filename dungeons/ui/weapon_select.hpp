@@ -22,7 +22,7 @@ namespace dungeons::ui {
 
 		WeaponSelect(const Context&, const game::Config::Weapons&);
 
-		std::optional<Value> on_click(const widget::Element&);
+		std::optional<Value> on_click(const widget::Element&) const;
 
 	private:
 		std::shared_ptr<Text> m_title;

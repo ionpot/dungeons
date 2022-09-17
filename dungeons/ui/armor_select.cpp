@@ -38,6 +38,6 @@ namespace dungeons::ui {
 	}
 
 	std::optional<ArmorSelect::Value>
-	ArmorSelect::on_click(const widget::Element& elmt)
+	ArmorSelect::on_click(const widget::Element& elmt) const
 	{ return m_radio->on_click(elmt); }
 }

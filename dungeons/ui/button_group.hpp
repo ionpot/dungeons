@@ -21,7 +21,7 @@ namespace dungeons::ui {
         { Parent::horizontal(ui.button.spacing); }
 
         void
-        left_align_text(const Context& ui)
+        left_align_text(const Context& ui) const
         { Parent::left_align_text(ui.button.padding); }
 
         void

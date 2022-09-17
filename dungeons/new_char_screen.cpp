@@ -56,7 +56,7 @@ namespace dungeons {
 	}
 
 	std::optional<screen::Output>
-	NewCharScreen::on_click(const widget::Element& clicked)
+	NewCharScreen::on_click(const widget::Element& clicked) const
 	{
 		if (*m_done == clicked) {
 			m_log->entity(*m_entity);
@@ -90,7 +90,7 @@ namespace dungeons {
 	}
 
 	void
-	NewCharScreen::refresh_stats()
+	NewCharScreen::refresh_stats() const
 	{
 		if (m_stats->visible())
 			m_stats->update(*m_entity);

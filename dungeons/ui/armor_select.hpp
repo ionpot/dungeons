@@ -22,7 +22,7 @@ namespace dungeons::ui {
 
 		ArmorSelect(const Context&, const game::Config::Armors&);
 
-		std::optional<Value> on_click(const widget::Element&);
+		std::optional<Value> on_click(const widget::Element&) const;
 
 	private:
 		std::shared_ptr<Text> m_title;

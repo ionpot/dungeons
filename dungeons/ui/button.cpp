@@ -79,11 +79,11 @@ namespace dungeons::ui {
 	{ clickable(true); opaque(); }
 
 	void
-	Button::left_align_text(const Context& ui)
+	Button::left_align_text(const Context& ui) const
 	{ left_align_text(ui.button.padding); }
 
 	void
-	Button::left_align_text(widget::Padding p)
+	Button::left_align_text(widget::Padding p) const
 	{ widget::TextBox::left_align_text(p); }
 
 	// TwoStateButton
@@ -147,32 +147,32 @@ namespace dungeons::ui {
 	}
 
 	void
-	TwoStateButton::active()
+	TwoStateButton::active() const
 	{
 		m_normal->hide();
 		m_active->show();
 	}
 
 	void
-	TwoStateButton::center_text()
+	TwoStateButton::center_text() const
 	{
 		m_normal->center_text();
 		m_active->center_text();
 	}
 
 	void
-	TwoStateButton::left_align_text(const Context& ui)
+	TwoStateButton::left_align_text(const Context& ui) const
 	{ left_align_text(ui.button.padding); }
 
 	void
-	TwoStateButton::left_align_text(widget::Padding p)
+	TwoStateButton::left_align_text(widget::Padding p) const
 	{
 		m_normal->left_align_text(p);
 		m_active->left_align_text(p);
 	}
 
 	void
-	TwoStateButton::normal()
+	TwoStateButton::normal() const
 	{
 		m_active->hide();
 		m_normal->show();

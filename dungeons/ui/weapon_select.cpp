@@ -40,6 +40,6 @@ namespace dungeons::ui {
 	}
 
 	std::optional<WeaponSelect::Value>
-	WeaponSelect::on_click(const widget::Element& elmt)
+	WeaponSelect::on_click(const widget::Element& elmt) const
 	{ return m_radio->on_click(elmt); }
 }

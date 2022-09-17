@@ -29,7 +29,7 @@ namespace dungeons {
 			std::shared_ptr<const ui::Context>,
 			std::shared_ptr<game::Context>);
 
-		std::optional<screen::Output> on_click(const widget::Element&);
+		std::optional<screen::Output> on_click(const widget::Element&) const;
 
 	private:
 		std::shared_ptr<game::Log> m_log;
@@ -42,6 +42,6 @@ namespace dungeons {
 		std::shared_ptr<ui::Button> m_done;
 		std::shared_ptr<game::Entity> m_entity;
 
-		void refresh_stats();
+		void refresh_stats() const;
 	};
 }

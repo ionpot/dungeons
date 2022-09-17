@@ -53,8 +53,8 @@ namespace dungeons::ui {
 		void disable();
 		void enable();
 
-		void left_align_text(const Context&);
-		void left_align_text(widget::Padding);
+		void left_align_text(const Context&) const;
+		void left_align_text(widget::Padding) const;
 	};
 
 	template<class T>
@@ -94,12 +94,12 @@ namespace dungeons::ui {
 			TextBoxPtr active,
 			TextBoxPtr normal);
 
-		void active();
-		void normal();
+		void active() const;
+		void normal() const;
 
-		void center_text();
-		void left_align_text(const Context&);
-		void left_align_text(widget::Padding);
+		void center_text() const;
+		void left_align_text(const Context&) const;
+		void left_align_text(widget::Padding) const;
 
 	private:
 		TextBoxPtr m_active;
