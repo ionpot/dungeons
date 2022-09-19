@@ -4,9 +4,14 @@ description: Describe the syntax and value types used in config files.
 
 # Config files
 
+The game uses two config files:
+
+* `game.cfg` file contains settings related to game logic: Attribute bonuses, dice rolls, etc.
+* [`ui.cfg`](config-files/ui.cfg.md) file contains UI settings: Window size, font style, padding, colours, etc.
+
 ### Syntax
 
-Config files consist of sections, and key-value pairs.
+Config files consist of key-value pairs, and sections (optional).
 
 ```
 key 1 = value 1
