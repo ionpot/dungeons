@@ -45,7 +45,9 @@ namespace dungeons {
 				if (auto event = m_events->poll()) {
 					if (event->quit())
 						return;
-					if (event->key_up())
+					if (event->key_up("Escape"))
+						return;
+					if (event->key_up("Space"))
 						return;
 					if (auto pos = event->lmb_down()) {
 						m_mouse.lmb_down(screen.find(*pos));
