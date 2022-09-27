@@ -4,16 +4,12 @@ class Button extends StatefulWidget {
   final Widget child;
   final VoidCallback onClick;
   final bool clickable;
-  final double? width;
-  final double? height;
 
   const Button({
     super.key,
     required this.child,
     required this.onClick,
     this.clickable = true,
-    this.width,
-    this.height,
   });
 
   Button.text(
@@ -21,14 +17,10 @@ class Button extends StatefulWidget {
     key,
     required onClick,
     clickable = true,
-    width,
-    height,
   }) : this(
           key: key,
           onClick: onClick,
           clickable: clickable,
-          width: width,
-          height: height,
           child: Text(text),
         );
 
@@ -58,8 +50,6 @@ class _ButtonState extends State<Button> {
       child: Container(
         margin: EdgeInsets.only(left: _checkMargin(2), top: _checkMargin(4)),
         padding: const EdgeInsets.all(8),
-        width: widget.width,
-        height: widget.height,
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
