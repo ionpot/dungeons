@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/create_screen.dart';
 import 'package:flutter/widgets.dart';
 
@@ -16,7 +17,7 @@ class TheApp extends StatelessWidget {
       textDirection: TextDirection.ltr,
       child: SizedBox.expand(
         child: Container(
-          color: const Color(0xFF000000),
+          color: black,
           child: CreateScreen(
             onDone: () => exit(0),
           ),

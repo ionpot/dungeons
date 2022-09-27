@@ -1,3 +1,4 @@
+import 'package:dungeons/widget/colors.dart';
 import 'package:flutter/widgets.dart';
 
 class ButtonChild extends StatelessWidget {
@@ -7,7 +8,7 @@ class ButtonChild extends StatelessWidget {
   const ButtonChild({
     super.key,
     required this.text,
-    this.color = const Color(0xFFFFFFFF),
+    this.color = white,
   });
 
   @override
