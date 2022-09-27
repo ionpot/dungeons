@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 
 class ButtonChild extends StatelessWidget {
-  final int color;
+  final Color color;
   final String text;
 
   const ButtonChild({
     super.key,
     required this.text,
-    this.color = 0xFFFFFFFF,
+    this.color = const Color(0xFFFFFFFF),
   });
 
   @override
@@ -17,11 +17,11 @@ class ButtonChild extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           width: 2,
-          color: Color(color),
+          color: color,
         ),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Text(text, style: TextStyle(color: Color(color))),
+      child: Text(text, style: TextStyle(color: color)),
     );
   }
 }
