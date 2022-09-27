@@ -1,28 +1,17 @@
+import 'package:dungeons/widget/button_child.dart';
 import 'package:flutter/widgets.dart';
 
 class Button extends StatefulWidget {
-  final Widget child;
+  final String text;
   final VoidCallback onClick;
   final bool clickable;
 
   const Button({
     super.key,
-    required this.child,
+    required this.text,
     required this.onClick,
     this.clickable = true,
   });
-
-  Button.text(
-    String text, {
-    key,
-    required onClick,
-    clickable = true,
-  }) : this(
-          key: key,
-          onClick: onClick,
-          clickable: clickable,
-          child: Text(text),
-        );
 
   @override
   State<Button> createState() => _ButtonState();
@@ -49,15 +38,7 @@ class _ButtonState extends State<Button> {
       onTap: () => {if (widget.clickable) widget.onClick()},
       child: Container(
         margin: EdgeInsets.only(left: _checkMargin(2), top: _checkMargin(4)),
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 2,
-            color: const Color(0xFFFFFFFF),
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: widget.child,
+        child: ButtonChild(text: widget.text),
       ),
     );
   }
