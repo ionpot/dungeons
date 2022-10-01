@@ -1,11 +1,11 @@
 import 'package:dungeons/widget/colors.dart';
 import 'package:flutter/widgets.dart';
 
-class ButtonChild extends StatelessWidget {
+class TextBox extends StatelessWidget {
   final Color color;
   final String text;
 
-  const ButtonChild({
+  const TextBox({
     super.key,
     required this.text,
     this.color = white,

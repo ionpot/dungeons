@@ -1,4 +1,4 @@
-import 'package:dungeons/widget/button_child.dart';
+import 'package:dungeons/widget/text_box.dart';
 import 'package:dungeons/widget/click_dent.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:flutter/widgets.dart';
@@ -23,7 +23,7 @@ class Button extends StatelessWidget {
       enabled: clickable,
       child: GestureDetector(
         onTap: () => {if (clickable) onClick()},
-        child: ButtonChild(
+        child: TextBox(
           text: text,
           color: active ? yellow : white,
         ),
