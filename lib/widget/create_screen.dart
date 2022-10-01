@@ -15,7 +15,7 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  final Entity entity = Entity();
+  final Entity entity = Entity('Player');
 
   @override
   Widget build(BuildContext context) {
