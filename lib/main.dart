@@ -13,14 +13,12 @@ class TheApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: SizedBox.expand(
-        child: Container(
-          color: black,
-          child: CreateScreen(
-            onDone: () => exit(0),
-          ),
+    return Container(
+      color: black,
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: CreateScreen(
+          onDone: () => exit(0),
         ),
       ),
     );
