@@ -23,11 +23,7 @@ class EntityAttributes {
     this.intellect = 0,
   });
 
-  factory EntityAttributes.random() {
-    final e = EntityAttributes();
-    e.roll();
-    return e;
-  }
+  factory EntityAttributes.random() => EntityAttributes()..roll();
 
   EntityAttributes operator +(EntityAttributes a) {
     return EntityAttributes(
