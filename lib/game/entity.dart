@@ -1,14 +1,19 @@
 import 'package:dungeons/game/entity_armor.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
+import 'package:dungeons/game/entity_race.dart';
 
 class Entity {
   final String name;
-  EntityAttributes attributes = EntityAttributes();
+  EntityAttributes base = EntityAttributes();
+  EntityRace? race;
   EntityClass? klass;
   EntityArmor? armor;
 
-  Entity(this.name);
+  Entity(this.name, {this.race});
+
+  EntityAttributes get attributes =>
+      (race == null) ? base : (base + race!.bonus);
 
   int get initiative => attributes.initiative + (armor?.initiative ?? 0);
 

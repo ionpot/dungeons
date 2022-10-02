@@ -1,6 +1,7 @@
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_armor.dart';
 import 'package:dungeons/game/entity_class.dart';
+import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/entity_info.dart';
 import 'package:dungeons/widget/radio_group.dart';
@@ -17,11 +18,11 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  final Entity entity = Entity('Player');
+  final Entity entity = Entity('Player', race: human);
 
   @override
   Widget build(BuildContext context) {
-    final hasAttr = !entity.attributes.isEmpty();
+    final hasAttr = !entity.base.isEmpty();
     return Column(
       children: [
         const Section.below(child: Text('Create character')),
@@ -37,7 +38,7 @@ class _CreateScreenState extends State<CreateScreen> {
           Section.below(
             child: Button(
               text: 'Roll attributes',
-              onClick: () => setState(entity.attributes.roll),
+              onClick: () => setState(entity.base.roll),
             ),
           ),
         if (hasAttr) Section.below(child: EntityInfo(entity)),

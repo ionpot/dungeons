@@ -29,6 +29,14 @@ class EntityAttributes {
     return e;
   }
 
+  EntityAttributes operator +(EntityAttributes a) {
+    return EntityAttributes(
+      strength: strength + a.strength,
+      agility: agility + a.agility,
+      intellect: intellect + a.intellect,
+    );
+  }
+
   int get initiative => (agility ~/ 2) + (intellect ~/ 2);
 
   bool isEmpty() {
