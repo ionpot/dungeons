@@ -23,7 +23,6 @@ class _CreateScreenState extends State<CreateScreen> {
     return Column(
       children: [
         const Section.below(child: Text('Create character')),
-        // ignore: avoid_print
         Section.below(
           child: RadioGroup(
             values: EntityClass.values,
