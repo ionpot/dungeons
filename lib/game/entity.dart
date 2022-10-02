@@ -7,4 +7,6 @@ class Entity {
   EntityClass? klass;
 
   Entity(this.name);
+
+  int totalHp() => attributes.strength + (klass?.hpBonus ?? 0);
 }

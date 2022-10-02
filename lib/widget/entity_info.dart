@@ -3,9 +3,9 @@ import 'package:dungeons/game/entity_attr.dart';
 import 'package:flutter/widgets.dart';
 
 class EntityInfo extends StatelessWidget {
-  final EntityAttributes attributes;
+  final Entity entity;
 
-  EntityInfo(Entity entity, {super.key}) : attributes = entity.attributes;
+  const EntityInfo(this.entity, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +16,30 @@ class EntityInfo extends StatelessWidget {
       },
       children: [
         for (final id in EntityAttributeId.values)
-          TableRow(children: [
-            TableCell(
-              child: Container(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text(id.text),
-              ),
-            ),
-            TableCell(child: Text(attributes.ofId(id).toString())),
-          ])
+          _buildRow(id.text, entity.attributes.ofId(id).toString()),
+        _buildRow('Total Hp', entity.totalHp().toString()),
       ],
+    );
+  }
+
+  TableRow _buildRow(String label, String value) {
+    return TableRow(
+      children: [
+        _buildCell(Text(label)),
+        _buildCell(Text(
+          value,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        )),
+      ],
+    );
+  }
+
+  TableCell _buildCell(Widget child) {
+    return TableCell(
+      child: Container(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: child,
+      ),
     );
   }
 }
