@@ -35,9 +35,7 @@ class EntityAttributes {
 
   int get initiative => (agility ~/ 2) + (intellect ~/ 2);
 
-  bool isEmpty() {
-    return (strength == 0) && (agility == 0) && (intellect == 0);
-  }
+  bool isEmpty() => (strength == 0) && (agility == 0) && (intellect == 0);
 
   int ofId(EntityAttributeId id) {
     switch (id) {
