@@ -1,4 +1,4 @@
-import 'package:dungeons/game/dice.dart';
+import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/has_text.dart';
 
 enum EntityAttributeId implements HasText {
