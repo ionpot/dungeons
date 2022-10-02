@@ -10,6 +10,8 @@ class Entity {
 
   Entity(this.name);
 
+  int get initiative => attributes.initiative + (armor?.initiative ?? 0);
+
   int totalArmor() => armor?.value ?? 0;
   int totalHp() => attributes.strength + (klass?.hpBonus ?? 0);
 }

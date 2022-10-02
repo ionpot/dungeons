@@ -29,6 +29,8 @@ class EntityAttributes {
     return e;
   }
 
+  int get initiative => (agility ~/ 2) + (intellect ~/ 2);
+
   bool isEmpty() {
     return (strength == 0) && (agility == 0) && (intellect == 0);
   }
