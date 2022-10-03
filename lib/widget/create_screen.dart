@@ -2,6 +2,7 @@ import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_armor.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
+import 'package:dungeons/game/entity_weapon.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/entity_info.dart';
 import 'package:dungeons/widget/radio_group.dart';
@@ -48,6 +49,15 @@ class _CreateScreenState extends State<CreateScreen> {
               values: EntityArmor.values,
               onChange: (armor) {
                 setState(() => entity.armor = armor);
+              },
+            ),
+          ),
+        if (hasAttr)
+          Section.below(
+            child: RadioGroup(
+              values: EntityWeapon.values,
+              onChange: (weapon) {
+                setState(() => entity.weapon = weapon);
               },
             ),
           ),

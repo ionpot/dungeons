@@ -19,6 +19,7 @@ class EntityInfo extends StatelessWidget {
     content['Initiative'] = entity.initiative.toString();
     content['Dodge'] = entity.dodge.text;
     content['Resist'] = entity.resist.text;
+    content['Damage'] = entity.damageDice?.fullText ?? '';
     return LabelValueTable(
       labelWidth: 64,
       content: content,
