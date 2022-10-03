@@ -22,7 +22,7 @@ class Dice implements Comparable<Dice>, HasText {
     final random = Random();
     int result = 0;
     for (int i = 0; i < count; ++i) {
-      result += random.nextInt(sides);
+      result += random.nextInt(sides) + 1;
     }
     return result + bonus;
   }
