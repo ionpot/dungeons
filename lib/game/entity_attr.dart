@@ -35,6 +35,7 @@ class EntityAttributes {
   }
 
   Percent get dodge => Percent(agility);
+  Percent get resist => Percent(intellect);
   int get initiative => (agility ~/ 2) + (intellect ~/ 2);
 
   bool isEmpty() => (strength == 0) && (agility == 0) && (intellect == 0);

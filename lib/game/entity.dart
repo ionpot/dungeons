@@ -17,6 +17,7 @@ class Entity {
       (race == null) ? base : (base + race!.bonus);
 
   Percent get dodge => attributes.dodge.scaleBy(armor?.dodge);
+  Percent get resist => attributes.resist;
   int get initiative => attributes.initiative + (armor?.initiative ?? 0);
 
   int totalArmor() => armor?.value ?? 0;
