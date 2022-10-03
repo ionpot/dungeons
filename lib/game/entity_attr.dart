@@ -49,10 +49,9 @@ class EntityAttributes {
   }
 
   void roll() {
-    strength = _roll();
-    agility = _roll();
-    intellect = _roll();
+    const dice = Dice(3, 6);
+    strength = dice.roll();
+    agility = dice.roll();
+    intellect = dice.roll();
   }
-
-  int _roll() => rollDice(3, 6);
 }

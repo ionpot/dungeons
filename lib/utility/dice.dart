@@ -1,20 +1,29 @@
 import 'dart:math';
 
-int rollDie(int sides) {
-  if (sides > 1) {
-    return Random().nextInt(sides) + 1;
-  }
-  if (sides == 1) return sides;
-  throw ArgumentError.value(sides, 'sides');
-}
+import 'package:dungeons/utility/has_text.dart';
 
-int rollDice(int count, int sides) {
-  if (count < 0) {
-    throw ArgumentError.value(count, 'count');
+class Dice implements Comparable<Dice>, HasText {
+  final int count;
+  final int sides;
+
+  const Dice(this.count, this.sides);
+  const Dice.sides(int sides) : this(1, sides);
+
+  int get min => count;
+  int get max => count * sides;
+
+  int roll() {
+    final random = Random();
+    int result = 0;
+    for (int i = 0; i < count; ++i) {
+      result += random.nextInt(sides);
+    }
+    return result;
   }
-  int result = 0;
-  while (count-- > 0) {
-    result += rollDie(sides);
-  }
-  return result;
+
+  @override
+  int compareTo(Dice other) => max - other.max;
+
+  @override
+  String get text => '${count}d$sides';
 }
