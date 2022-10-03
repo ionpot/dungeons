@@ -26,7 +26,8 @@ class EntityAttributes {
 
   factory EntityAttributes.random() => EntityAttributes()..roll();
 
-  EntityAttributes operator +(EntityAttributes a) {
+  EntityAttributes operator +(EntityAttributes? a) {
+    if (a == null) return this;
     return EntityAttributes(
       strength: strength + a.strength,
       agility: agility + a.agility,

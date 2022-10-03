@@ -13,12 +13,12 @@ class Entity {
 
   Entity(this.name, {this.race});
 
-  EntityAttributes get attributes =>
-      (race == null) ? base : (base + race!.bonus);
+  EntityAttributes get attributes => base + race?.bonus;
+
+  int get initiative => attributes.initiative + (armor?.initiative ?? 0);
 
   Percent get dodge => attributes.dodge.scaleBy(armor?.dodge);
   Percent get resist => attributes.resist;
-  int get initiative => attributes.initiative + (armor?.initiative ?? 0);
 
   int totalArmor() => armor?.value ?? 0;
   int totalHp() => attributes.strength + (klass?.hpBonus ?? 0);
