@@ -1,5 +1,6 @@
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/has_text.dart';
+import 'package:dungeons/utility/percent.dart';
 
 enum EntityAttributeId implements HasText {
   strength(text: 'Strength'),
@@ -33,6 +34,7 @@ class EntityAttributes {
     );
   }
 
+  Percent get dodge => Percent(agility);
   int get initiative => (agility ~/ 2) + (intellect ~/ 2);
 
   bool isEmpty() => (strength == 0) && (agility == 0) && (intellect == 0);

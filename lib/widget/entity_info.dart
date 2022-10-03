@@ -17,6 +17,7 @@ class EntityInfo extends StatelessWidget {
     content['Total Hp'] = entity.totalHp().toString();
     content['Armor'] = entity.totalArmor().toString();
     content['Initiative'] = entity.initiative.toString();
+    content['Dodge'] = entity.dodge.text;
     return LabelValueTable(
       labelWidth: 64,
       content: content,
