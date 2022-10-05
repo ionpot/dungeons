@@ -7,7 +7,8 @@ class Section extends StatelessWidget {
 
   const Section({super.key, this.child, this.left = 40, this.top = 20});
   const Section.after({key, child}) : this(key: key, child: child, top: 0);
-  const Section.below({key, child}) : this(key: key, child: child, left: 0);
+  const Section.below({key, child, double left = 0})
+      : this(key: key, child: child, left: left);
 
   @override
   Widget build(BuildContext context) {

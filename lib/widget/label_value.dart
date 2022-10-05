@@ -5,11 +5,13 @@ typedef LabelValueMap = Map<String, String>;
 class LabelValueTable extends StatelessWidget {
   final LabelValueMap content;
   final double labelWidth;
+  final double valueWidth;
 
   const LabelValueTable({
     super.key,
     required this.content,
     required this.labelWidth,
+    required this.valueWidth,
   });
 
   @override
@@ -17,7 +19,7 @@ class LabelValueTable extends StatelessWidget {
     return Table(
       columnWidths: <int, TableColumnWidth>{
         0: FixedColumnWidth(labelWidth),
-        1: const IntrinsicColumnWidth(),
+        1: FixedColumnWidth(valueWidth),
       },
       children: [
         for (final e in content.entries) _buildRow(e.key, e.value),
