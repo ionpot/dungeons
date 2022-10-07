@@ -69,12 +69,13 @@ class _CreateScreenState extends State<CreateScreen> {
               },
             ),
           ),
-        Section.below(
-          child: Button(
-            text: 'Done',
-            onClick: widget.onDone,
+        if (entity.ok)
+          Section.below(
+            child: Button(
+              text: 'Done',
+              onClick: widget.onDone,
+            ),
           ),
-        ),
       ],
     );
   }

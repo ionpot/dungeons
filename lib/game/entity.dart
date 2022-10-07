@@ -31,4 +31,7 @@ class Entity {
 
   int totalArmor() => armor?.value ?? 0;
   int totalHp() => attributes.strength + (klass?.hpBonus ?? 0);
+
+  bool get ok =>
+      (race != null) && (klass != null) && (armor != null) && (weapon != null);
 }
