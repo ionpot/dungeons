@@ -11,7 +11,7 @@ import 'package:dungeons/widget/section.dart';
 import 'package:flutter/widgets.dart';
 
 class CreateScreen extends StatefulWidget {
-  final VoidCallback onDone;
+  final ValueChanged<Entity> onDone;
 
   const CreateScreen({super.key, required this.onDone});
 
@@ -73,7 +73,7 @@ class _CreateScreenState extends State<CreateScreen> {
           Section.below(
             child: Button(
               text: 'Done',
-              onClick: widget.onDone,
+              onClick: () => widget.onDone(entity),
             ),
           ),
       ],

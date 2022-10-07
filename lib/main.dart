@@ -1,15 +1,18 @@
 import 'dart:io';
 
+import 'package:dungeons/game/log.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/create_screen.dart';
 import 'package:flutter/widgets.dart';
 
 void main() {
-  runApp(const TheApp());
+  runApp(TheApp());
 }
 
 class TheApp extends StatelessWidget {
-  const TheApp({super.key});
+  final log = Log.toFile('dungeons.log');
+
+  TheApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,11 @@ class TheApp extends StatelessWidget {
       child: Directionality(
         textDirection: TextDirection.ltr,
         child: CreateScreen(
-          onDone: () => exit(0),
+          onDone: (entity) async {
+            log.entity(entity);
+            await log.end();
+            exit(0);
+          },
         ),
       ),
     );
