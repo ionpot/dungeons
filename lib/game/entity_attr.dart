@@ -10,10 +10,12 @@ enum EntityAttributeId implements HasText {
   @override
   final String text;
 
+  String get short => text.substring(0, 3);
+
   const EntityAttributeId({required this.text});
 }
 
-class EntityAttributes {
+class EntityAttributes implements HasText {
   int strength;
   int agility;
   int intellect;
@@ -58,4 +60,8 @@ class EntityAttributes {
     agility = dice.roll();
     intellect = dice.roll();
   }
+
+  @override
+  String get text =>
+      EntityAttributeId.values.map((e) => '${e.short} ${ofId(e)}').join(', ');
 }
