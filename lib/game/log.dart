@@ -19,9 +19,9 @@ class Log {
     file
       ..writeln(e.name)
       ..writeln('${e.race?.text} ${e.klass?.text}: ${e.attributes.text}')
-      ..writeln('Hp ${e.totalHp()}, Init ${e.initiative}, '
+      ..writeln('Hp ${e.totalHp}, Init ${e.initiative}, '
           'Dodge ${e.dodge.text}, Resist ${e.resist.text}')
-      ..writeln('Armor: ${e.armor?.text} (${e.totalArmor()})')
+      ..writeln('Armor: ${e.armor?.text} (${e.totalArmor})')
       ..writeln('Weapon: ${e.weapon?.text}, ${e.damageDice?.fullText}');
   }
 }

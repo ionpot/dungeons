@@ -106,8 +106,8 @@ class _CreateScreenState extends State<CreateScreen> {
       labelWidth: 64,
       valueWidth: 128,
       content: {
-        'Total Hp': entity.totalHp().toString(),
-        'Armor': entity.totalArmor().toString(),
+        'Total Hp': entity.totalHp.toString(),
+        'Armor': entity.totalArmor.toString(),
         'Initiative': entity.initiative.toString(),
         'Dodge': entity.dodge.text,
         'Resist': entity.resist.text,

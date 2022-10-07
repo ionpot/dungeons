@@ -29,8 +29,8 @@ class Entity {
   int get damageBonus => attributes.strength ~/ 2;
   Dice? get damageDice => weapon?.dice.withBonus(damageBonus);
 
-  int totalArmor() => armor?.value ?? 0;
-  int totalHp() => attributes.strength + (klass?.hpBonus ?? 0);
+  int get totalArmor => armor?.value ?? 0;
+  int get totalHp => attributes.strength + (klass?.hpBonus ?? 0);
 
   bool get ok =>
       (race != null) && (klass != null) && (armor != null) && (weapon != null);
