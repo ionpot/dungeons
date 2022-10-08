@@ -1,5 +1,5 @@
+import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/entity_armor.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
@@ -54,7 +54,7 @@ class _CreateScreenState extends State<CreateScreen> {
         if (hasAttr)
           Section.below(
             child: RadioGroup(
-              values: EntityArmor.values,
+              values: Armor.values,
               onChange: (armor) {
                 setState(() => entity.armor = armor);
               },

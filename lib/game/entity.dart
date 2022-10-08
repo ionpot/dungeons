@@ -1,4 +1,4 @@
-import 'package:dungeons/game/entity_armor.dart';
+import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
@@ -11,7 +11,7 @@ class Entity {
   EntityAttributes base = EntityAttributes();
   EntityRace? race;
   EntityClass? klass;
-  EntityArmor? armor;
+  Armor? armor;
   Weapon? weapon;
 
   Entity(this.name, {this.race});
