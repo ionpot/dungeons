@@ -2,7 +2,7 @@ import 'package:dungeons/game/entity_armor.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
-import 'package:dungeons/game/entity_weapon.dart';
+import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
 
@@ -12,7 +12,7 @@ class Entity {
   EntityRace? race;
   EntityClass? klass;
   EntityArmor? armor;
-  EntityWeapon? weapon;
+  Weapon? weapon;
 
   Entity(this.name, {this.race});
 
