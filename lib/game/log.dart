@@ -22,6 +22,6 @@ class Log {
       ..writeln('Hp ${e.totalHp}, Init ${e.initiative}, '
           'Dodge ${e.dodge.text}, Resist ${e.resist.text}')
       ..writeln('Armor: ${e.armor?.text} (${e.totalArmor})')
-      ..writeln('Weapon: ${e.weapon?.text}, ${e.damageDice?.fullText}');
+      ..writeln('Weapon: ${e.weapon?.text} ${e.damageDice?.fullText}');
   }
 }
