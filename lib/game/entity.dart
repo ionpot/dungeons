@@ -9,14 +9,14 @@ import 'package:dungeons/utility/percent.dart';
 class Entity {
   final String name;
   EntityAttributes base = EntityAttributes();
-  EntityRace? race;
+  EntityRace race;
   EntityClass? klass;
   Armor? armor;
   Weapon? weapon;
 
-  Entity(this.name, {this.race});
+  Entity(this.name, {required this.race});
 
-  EntityAttributes get attributes => base + race?.bonus;
+  EntityAttributes get attributes => base + race.bonus;
 
   int get initiative =>
       attributes.initiative +
@@ -32,6 +32,5 @@ class Entity {
   int get totalArmor => armor?.value ?? 0;
   int get totalHp => attributes.strength + (klass?.hpBonus ?? 0);
 
-  bool get ok =>
-      (race != null) && (klass != null) && (armor != null) && (weapon != null);
+  bool get ok => (klass != null) && (armor != null) && (weapon != null);
 }
