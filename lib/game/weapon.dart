@@ -1,5 +1,6 @@
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/has_text.dart';
+import 'package:dungeons/utility/pick_random.dart';
 
 enum Weapon implements HasText {
   dagger(text: 'Dagger', dice: Dice.sides(4), initiative: 2),
@@ -12,6 +13,8 @@ enum Weapon implements HasText {
     required this.dice,
     this.initiative = 0,
   });
+
+  factory Weapon.random() => pickRandom(Weapon.values);
 
   final Dice dice;
   final int initiative;

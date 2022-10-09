@@ -1,4 +1,5 @@
 import 'package:dungeons/utility/has_text.dart';
+import 'package:dungeons/utility/pick_random.dart';
 import 'package:dungeons/utility/scale.dart';
 
 enum Armor implements HasText {
@@ -11,6 +12,8 @@ enum Armor implements HasText {
     this.initiative = 0,
     this.dodge = const Scale(),
   });
+
+  factory Armor.random() => pickRandom(Armor.values);
 
   final int value;
   final int initiative;

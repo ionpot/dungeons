@@ -33,4 +33,11 @@ class Entity {
   int get totalHp => attributes.strength + (klass?.hpBonus ?? 0);
 
   bool get ok => (klass != null) && (armor != null) && (weapon != null);
+
+  void randomize() {
+    base.roll();
+    klass = EntityClass.random();
+    armor = Armor.random();
+    weapon = Weapon.random();
+  }
 }
