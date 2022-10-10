@@ -1,6 +1,7 @@
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/widget/button.dart';
+import 'package:dungeons/widget/entity_stats.dart';
 import 'package:dungeons/widget/section.dart';
 import 'package:flutter/widgets.dart';
 
@@ -27,9 +28,9 @@ class _CombatScreenState extends State<CombatScreen> {
             children: [
               SizedBox(
                 width: 300,
-                child: _buildEntityStats(widget.player),
+                child: EntityStats(widget.player),
               ),
-              _buildEntityStats(widget.enemy),
+              EntityStats(widget.enemy),
             ],
           ),
           Section.below(
@@ -44,20 +45,6 @@ class _CombatScreenState extends State<CombatScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildEntityStats(Entity e) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(e.name),
-        Text('${e.race.text} ${e.klass?.text}: ${e.attributes.text}'),
-        Text('Hp ${e.totalHp}, Init ${e.initiative},'
-            ' Dodge ${e.dodge.text}, Resist ${e.resist.text}'),
-        Text('Armor: ${e.armor?.text} (${e.totalArmor})'),
-        Text('Weapon: ${e.weapon?.text} ${e.damageDice?.fullText}'),
-      ],
     );
   }
 }
