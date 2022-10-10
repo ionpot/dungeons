@@ -37,7 +37,7 @@ class TheAppState extends State<TheApp> {
       onDone: (entity) {
         widget.log.entity(entity);
         setState(() {
-          screen = CombatScreen(player: entity);
+          screen = CombatScreen.withPlayer(entity);
         });
       },
     );

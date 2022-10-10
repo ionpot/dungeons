@@ -1,15 +1,17 @@
+import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/entity_stats.dart';
 import 'package:dungeons/widget/section.dart';
 import 'package:flutter/widgets.dart';
 
 class CombatScreen extends StatefulWidget {
-  final Entity player;
-  final Entity enemy = Entity('Enemy', race: orc)..randomize();
+  final Combat combat;
 
-  CombatScreen({super.key, required this.player});
+  const CombatScreen(this.combat, {super.key});
+
+  factory CombatScreen.withPlayer(Entity player) =>
+      CombatScreen(Combat(player));
 
   @override
   State<CombatScreen> createState() => _CombatScreenState();
@@ -18,6 +20,7 @@ class CombatScreen extends StatefulWidget {
 class _CombatScreenState extends State<CombatScreen> {
   @override
   Widget build(BuildContext context) {
+    final combat = widget.combat;
     return Container(
       padding: const EdgeInsets.all(30),
       child: Column(
@@ -28,9 +31,9 @@ class _CombatScreenState extends State<CombatScreen> {
             children: [
               SizedBox(
                 width: 300,
-                child: EntityStats(widget.player),
+                child: EntityStats(combat.player),
               ),
-              EntityStats(widget.enemy),
+              EntityStats(combat.enemy),
             ],
           ),
           Section.below(
@@ -38,7 +41,7 @@ class _CombatScreenState extends State<CombatScreen> {
               text: 'Next',
               onClick: () {
                 setState(() {
-                  widget.enemy.randomize();
+                  combat.enemy.randomize();
                 });
               },
             ),
