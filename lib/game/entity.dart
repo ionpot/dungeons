@@ -4,6 +4,7 @@ import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/dice.dart';
+import 'package:dungeons/utility/intcmp.dart';
 import 'package:dungeons/utility/percent.dart';
 
 class Entity {
@@ -39,5 +40,13 @@ class Entity {
     klass = EntityClass.random();
     armor = Armor.random();
     weapon = Weapon.random();
+  }
+
+  int compareSpeed(Entity e) {
+    final i = intcmp(initiative, e.initiative);
+    if (i != 0) return i;
+    final a = intcmp(e.totalArmor, totalArmor);
+    if (a != 0) return a;
+    return 0;
   }
 }
