@@ -13,7 +13,7 @@ class Percent implements Comparable<Percent>, HasText {
     const dice = Dice.sides(100);
     final result = dice.roll();
     return PercentRoll(
-      roll: result,
+      result: result,
       success: result <= value,
     );
   }
@@ -28,11 +28,11 @@ class Percent implements Comparable<Percent>, HasText {
 }
 
 class PercentRoll {
-  final int? roll;
+  final int? result;
   final bool success;
 
   const PercentRoll({
-    this.roll,
+    this.result,
     required this.success,
   });
 
