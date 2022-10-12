@@ -9,8 +9,9 @@ class EntityStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final e = entity;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
+      direction: Axis.vertical,
+      spacing: 8,
       children: [
         Text(e.name),
         Text('${e.race.text} ${e.klass?.text}: ${e.attributes.text}'),
