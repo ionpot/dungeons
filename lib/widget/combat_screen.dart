@@ -1,6 +1,7 @@
 import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/log.dart';
 import 'package:dungeons/widget/attack_text.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/entity_stats.dart';
@@ -9,11 +10,12 @@ import 'package:flutter/widgets.dart';
 
 class CombatScreen extends StatefulWidget {
   final Combat combat;
+  final Log log;
 
-  const CombatScreen(this.combat, {super.key});
+  const CombatScreen(this.combat, {super.key, required this.log});
 
-  factory CombatScreen.withPlayer(Entity player) =>
-      CombatScreen(Combat(player));
+  factory CombatScreen.withPlayer(Entity player, {required Log log}) =>
+      CombatScreen(Combat(player), log: log);
 
   @override
   State<CombatScreen> createState() => _CombatScreenState();
@@ -27,6 +29,9 @@ class _CombatScreenState extends State<CombatScreen> {
   void initState() {
     super.initState();
     _combat = widget.combat;
+    widget.log
+      ..ln()
+      ..entity(_combat.enemy);
   }
 
   @override
@@ -50,20 +55,7 @@ class _CombatScreenState extends State<CombatScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Button(
-                  text: 'Next',
-                  onClick: () {
-                    setState(() {
-                      if (_combat.ended) {
-                        _attack = null;
-                        _combat = Combat(_combat.player);
-                      } else {
-                        _attack = _combat.attack()..apply();
-                        _combat.next();
-                      }
-                    });
-                  },
-                ),
+                Button(text: 'Next', onClick: _onNext),
                 Section.after(
                   child: (_attack != null)
                       ? AttackText(_attack!)
@@ -75,5 +67,23 @@ class _CombatScreenState extends State<CombatScreen> {
         ],
       ),
     );
+  }
+
+  void _onNext() {
+    setState(() {
+      if (_combat.ended) {
+        _attack = null;
+        _combat = Combat(_combat.player);
+        widget.log
+          ..ln()
+          ..entity(_combat.enemy);
+      } else {
+        _attack = _combat.attack()..apply();
+        _combat.next();
+        widget.log
+          ..ln()
+          ..attack(_attack!);
+      }
+    });
   }
 }
