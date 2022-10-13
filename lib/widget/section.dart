@@ -5,7 +5,7 @@ class Section extends StatelessWidget {
   final double top;
   final Widget? child;
 
-  const Section({super.key, this.child, this.left = 40, this.top = 20});
+  const Section({super.key, this.child, this.left = 60, this.top = 40});
   const Section.after({key, child}) : this(key: key, child: child, top: 0);
   const Section.below({key, child, double left = 0})
       : this(key: key, child: child, left: left);
