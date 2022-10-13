@@ -8,9 +8,9 @@ enum EntityAttributeId {
 
   final String text;
 
-  String get short => text.substring(0, 3);
-
   const EntityAttributeId({required this.text});
+
+  String get short => text.substring(0, 3);
 
   @override
   String toString() => text;
