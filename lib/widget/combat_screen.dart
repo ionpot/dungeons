@@ -72,6 +72,9 @@ class _CombatScreenState extends State<CombatScreen> {
   void _onNext() {
     setState(() {
       if (_combat.ended) {
+        widget.log
+          ..ln()
+          ..file.writeln('New combat');
         _attack = null;
         _combat = Combat(_combat.player);
         widget.log
