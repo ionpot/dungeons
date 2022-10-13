@@ -5,12 +5,12 @@ enum EntityClass {
   hybrid(text: 'Hybrid', hpBonus: 3),
   mage(text: 'Mage', hpBonus: 2);
 
+  final int hpBonus;
+  final String text;
+
   const EntityClass({required this.text, required this.hpBonus});
 
   factory EntityClass.random() => pickRandom(EntityClass.values);
-
-  final int hpBonus;
-  final String text;
 
   @override
   String toString() => text;

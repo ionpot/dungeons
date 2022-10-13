@@ -5,6 +5,11 @@ enum Armor {
   leather(text: 'Leather', value: 15, dodge: Scale(1.5)),
   scalemail(text: 'Scale Mail', value: 25, initiative: -5);
 
+  final int value;
+  final int initiative;
+  final Scale dodge;
+  final String text;
+
   const Armor({
     required this.text,
     required this.value,
@@ -13,11 +18,6 @@ enum Armor {
   });
 
   factory Armor.random() => pickRandom(Armor.values);
-
-  final int value;
-  final int initiative;
-  final Scale dodge;
-  final String text;
 
   @override
   String toString() => text;

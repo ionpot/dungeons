@@ -2,10 +2,9 @@ import 'package:dungeons/game/entity_attr.dart';
 
 class EntityRace {
   final EntityAttributes bonus;
+  final String text;
 
   const EntityRace(this.text, this.bonus);
-
-  final String text;
 
   @override
   String toString() => text;

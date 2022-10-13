@@ -7,6 +7,10 @@ enum Weapon {
   longsword(text: 'Longsword', dice: Dice.sides(8)),
   halberd(text: 'Halberd', dice: Dice.sides(10), initiative: -2);
 
+  final Dice dice;
+  final int initiative;
+  final String text;
+
   const Weapon({
     required this.text,
     required this.dice,
@@ -14,10 +18,6 @@ enum Weapon {
   });
 
   factory Weapon.random() => pickRandom(Weapon.values);
-
-  final Dice dice;
-  final int initiative;
-  final String text;
 
   @override
   String toString() => text;
