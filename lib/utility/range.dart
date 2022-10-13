@@ -1,6 +1,4 @@
-import 'package:dungeons/utility/has_text.dart';
-
-class Range implements HasText {
+class Range {
   final int min;
   final int max;
 
@@ -9,5 +7,5 @@ class Range implements HasText {
   Range operator +(int i) => Range(min + i, max + i);
 
   @override
-  String get text => (min == max) ? '$min' : '$min - $max';
+  String toString() => (min == max) ? '$min' : '$min - $max';
 }

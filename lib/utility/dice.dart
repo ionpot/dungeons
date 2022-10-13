@@ -1,10 +1,9 @@
 import 'dart:math';
 
 import 'package:dungeons/utility/bonus_text.dart';
-import 'package:dungeons/utility/has_text.dart';
 import 'package:dungeons/utility/range.dart';
 
-class Dice implements Comparable<Dice>, HasText {
+class Dice implements Comparable<Dice> {
   final int count;
   final int sides;
   final int bonus;
@@ -31,7 +30,7 @@ class Dice implements Comparable<Dice>, HasText {
   int compareTo(Dice other) => max - other.max;
 
   @override
-  String get text => '${count}d$sides${bonusText(bonus)}';
+  String toString() => '${count}d$sides${bonusText(bonus)}';
 
-  String get fullText => '($text) ${range.text}';
+  String get fullText => '($this) $range';
 }

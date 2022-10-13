@@ -1,21 +1,22 @@
 import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/has_text.dart';
 import 'package:dungeons/utility/percent.dart';
 
-enum EntityAttributeId implements HasText {
+enum EntityAttributeId {
   strength(text: 'Strength'),
   agility(text: 'Agility'),
   intellect(text: 'Intellect');
 
-  @override
   final String text;
 
   String get short => text.substring(0, 3);
 
   const EntityAttributeId({required this.text});
+
+  @override
+  String toString() => text;
 }
 
-class EntityAttributes implements HasText {
+class EntityAttributes {
   int strength;
   int agility;
   int intellect;
@@ -62,6 +63,6 @@ class EntityAttributes implements HasText {
   }
 
   @override
-  String get text =>
+  String toString() =>
       EntityAttributeId.values.map((e) => '${e.short} ${ofId(e)}').join(', ');
 }

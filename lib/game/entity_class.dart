@@ -1,7 +1,6 @@
-import 'package:dungeons/utility/has_text.dart';
 import 'package:dungeons/utility/pick_random.dart';
 
-enum EntityClass implements HasText {
+enum EntityClass {
   warrior(text: 'Warrior', hpBonus: 4),
   hybrid(text: 'Hybrid', hpBonus: 3),
   mage(text: 'Mage', hpBonus: 2);
@@ -11,7 +10,8 @@ enum EntityClass implements HasText {
   factory EntityClass.random() => pickRandom(EntityClass.values);
 
   final int hpBonus;
+  final String text;
 
   @override
-  final String text;
+  String toString() => text;
 }

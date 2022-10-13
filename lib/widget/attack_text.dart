@@ -16,14 +16,14 @@ class AttackText extends StatelessWidget {
     final lines = <String>[
       '${from.name} attacks ${target.name} '
           'with ${from.weapon?.text}.',
-      'Attack roll ${attack.roll.text}',
+      'Attack roll ${attack.roll}',
     ];
     if (attack.roll.fail) {
       lines.add('${target.name} deflects the attack.');
       return lines;
     }
     if (attack.dodge != null) {
-      lines.add('Dodge roll ${attack.dodge!.text}');
+      lines.add('Dodge roll ${attack.dodge}');
       if (attack.dodge!.success) {
         lines.add('${target.name} dodges the attack.');
         return lines;

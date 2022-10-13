@@ -1,8 +1,7 @@
 import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/has_text.dart';
 import 'package:dungeons/utility/scale.dart';
 
-class Percent implements Comparable<Percent>, HasText {
+class Percent implements Comparable<Percent> {
   final int value;
 
   const Percent([this.value = 0]);
@@ -18,10 +17,10 @@ class Percent implements Comparable<Percent>, HasText {
   int compareTo(Percent other) => value - other.value;
 
   @override
-  String get text => '$value%';
+  String toString() => '$value%';
 }
 
-class PercentRoll implements HasText {
+class PercentRoll {
   final Percent chance;
   bool success = false;
   int? result;
@@ -38,8 +37,8 @@ class PercentRoll implements HasText {
   bool get fail => !success;
 
   @override
-  String get text {
-    final head = '(${chance.text})';
+  String toString() {
+    final head = '($chance)';
     final tail = success ? 'success' : 'fail';
     if (result != null) {
       return '$head $result, $tail.';

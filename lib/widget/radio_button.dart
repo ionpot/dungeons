@@ -1,8 +1,7 @@
-import 'package:dungeons/utility/has_text.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:flutter/widgets.dart';
 
-typedef RadioValue = HasText;
+typedef RadioValue = Object;
 
 class RadioButton<T extends RadioValue> extends StatelessWidget {
   final T value;
@@ -22,7 +21,7 @@ class RadioButton<T extends RadioValue> extends StatelessWidget {
       active: chosen,
       clickable: !chosen,
       onClick: () => {if (!chosen) onChosen(value)},
-      text: value.text,
+      text: value.toString(),
     );
   }
 }

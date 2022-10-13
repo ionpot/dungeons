@@ -1,13 +1,14 @@
 import 'package:dungeons/game/entity_attr.dart';
-import 'package:dungeons/utility/has_text.dart';
 
-class EntityRace implements HasText {
+class EntityRace {
   final EntityAttributes bonus;
 
   const EntityRace(this.text, this.bonus);
 
-  @override
   final String text;
+
+  @override
+  String toString() => text;
 }
 
 final human = EntityRace('Human', EntityAttributes());

@@ -1,8 +1,7 @@
 import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/has_text.dart';
 import 'package:dungeons/utility/pick_random.dart';
 
-enum Weapon implements HasText {
+enum Weapon {
   dagger(text: 'Dagger', dice: Dice.sides(4), initiative: 2),
   mace(text: 'Mace', dice: Dice.sides(6)),
   longsword(text: 'Longsword', dice: Dice.sides(8)),
@@ -18,7 +17,8 @@ enum Weapon implements HasText {
 
   final Dice dice;
   final int initiative;
+  final String text;
 
   @override
-  final String text;
+  String toString() => text;
 }

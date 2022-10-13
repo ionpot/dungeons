@@ -109,8 +109,8 @@ class _CreateScreenState extends State<CreateScreen> {
         'Total Hp': entity.totalHp.toString(),
         'Armor': entity.totalArmor.toString(),
         'Initiative': entity.initiative.toString(),
-        'Dodge': entity.dodge.text,
-        'Resist': entity.resist.text,
+        'Dodge': entity.dodge.toString(),
+        'Resist': entity.resist.toString(),
         'Damage': entity.damageDice?.fullText ?? '',
       },
     );
