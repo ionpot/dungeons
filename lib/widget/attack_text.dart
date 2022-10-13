@@ -1,14 +1,25 @@
 import 'package:dungeons/game/attack.dart';
+import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/text_lines.dart';
 import 'package:flutter/widgets.dart';
 
 class AttackText extends StatelessWidget {
   final Attack attack;
+  final int round;
 
-  const AttackText(this.attack, {super.key});
+  const AttackText(this.attack, this.round, {super.key});
 
   @override
-  Widget build(BuildContext context) => TextLines(_lines);
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BoldText('Round $round'),
+        const SizedBox(height: 12),
+        TextLines(_lines),
+      ],
+    );
+  }
 
   List<String> get _lines {
     final from = attack.from;

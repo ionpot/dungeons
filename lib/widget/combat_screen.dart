@@ -23,12 +23,14 @@ class CombatScreen extends StatefulWidget {
 
 class _CombatScreenState extends State<CombatScreen> {
   late Combat _combat;
+  late int _round;
   Attack? _attack;
 
   @override
   void initState() {
     super.initState();
     _combat = widget.combat;
+    _round = _combat.round;
     widget.log
       ..ln()
       ..entity(_combat.enemy);
@@ -58,7 +60,7 @@ class _CombatScreenState extends State<CombatScreen> {
                 Button(text: 'Next', onClick: _onNext),
                 Section.after(
                   child: (_attack != null)
-                      ? AttackText(_attack!)
+                      ? AttackText(_attack!, _round)
                       : Text('${_combat.turn.name} goes first.'),
                 ),
               ],
@@ -77,10 +79,17 @@ class _CombatScreenState extends State<CombatScreen> {
           ..file.writeln('New combat');
         _attack = null;
         _combat = Combat(_combat.player);
+        _round = _combat.round;
         widget.log
           ..ln()
           ..entity(_combat.enemy);
       } else {
+        _round = _combat.round;
+        if (_combat.newRound) {
+          widget.log
+            ..ln()
+            ..newRound(_combat.round);
+        }
         _attack = _combat.attack()..apply();
         _combat.next();
         widget.log

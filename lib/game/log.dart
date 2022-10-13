@@ -50,4 +50,8 @@ class Log {
       return;
     }
   }
+
+  void newRound(int round) {
+    file.writeln('Round $round');
+  }
 }
