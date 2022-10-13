@@ -1,7 +1,8 @@
+import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/widget/attack_text.dart';
 import 'package:dungeons/widget/button.dart';
-import 'package:dungeons/widget/combat_status.dart';
 import 'package:dungeons/widget/entity_stats.dart';
 import 'package:dungeons/widget/section.dart';
 import 'package:flutter/widgets.dart';
@@ -20,6 +21,7 @@ class CombatScreen extends StatefulWidget {
 
 class _CombatScreenState extends State<CombatScreen> {
   late Combat _combat;
+  Attack? _attack;
 
   @override
   void initState() {
@@ -46,16 +48,27 @@ class _CombatScreenState extends State<CombatScreen> {
           ),
           Section.below(
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Button(
                   text: 'Next',
                   onClick: () {
                     setState(() {
-                      _combat = Combat(_combat.player);
+                      if (_combat.ended) {
+                        _attack = null;
+                        _combat = Combat(_combat.player);
+                      } else {
+                        _attack = _combat.attack()..apply();
+                        _combat.next();
+                      }
                     });
                   },
                 ),
-                Section.after(child: CombatStatus(turn: _combat.turn)),
+                Section.after(
+                  child: (_attack != null)
+                      ? AttackText(_attack!)
+                      : Text('${_combat.turn.name} goes first.'),
+                ),
               ],
             ),
           ),

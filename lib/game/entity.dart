@@ -14,6 +14,7 @@ class Entity {
   EntityClass? klass;
   Armor? armor;
   Weapon? weapon;
+  int _damage = 0;
 
   Entity(this.name, {required this.race});
 
@@ -30,10 +31,16 @@ class Entity {
   int get damageBonus => attributes.strength ~/ 2;
   Dice? get damageDice => weapon?.dice.withBonus(damageBonus);
 
+  int get hitBonus => attributes.agility ~/ 4;
+
   int get totalArmor => armor?.value ?? 0;
   int get totalHp => attributes.strength + (klass?.hpBonus ?? 0);
+  int get hp => totalHp - _damage;
 
   bool get ok => (klass != null) && (armor != null) && (weapon != null);
+
+  bool isAlive() => hp > 0;
+  bool isDead() => !isAlive();
 
   void randomize() {
     base.roll();
@@ -41,6 +48,16 @@ class Entity {
     armor = Armor.random();
     weapon = Weapon.random();
   }
+
+  void resetHp() {
+    _damage = 0;
+  }
+
+  void takeDamage(int value) {
+    _damage += value;
+  }
+
+  Percent toHit(Entity e) => Percent(e.totalArmor - hitBonus).invert();
 
   int compareSpeed(Entity e) {
     final i = intcmp(initiative, e.initiative);

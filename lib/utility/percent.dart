@@ -7,16 +7,10 @@ class Percent implements Comparable<Percent>, HasText {
 
   const Percent([this.value = 0]);
 
-  PercentRoll roll() {
-    if (value >= 100) return const PercentRoll(success: true);
-    if (value <= 0) return const PercentRoll(success: false);
-    const dice = Dice.sides(100);
-    final result = dice.roll();
-    return PercentRoll(
-      result: result,
-      success: result <= value,
-    );
-  }
+  bool get always => value >= 100;
+  bool get never => value <= 0;
+
+  Percent invert() => Percent(100 - value);
 
   Percent scaleBy(Scale? scale) => Percent(scale?.applyTo(value) ?? value);
 
@@ -27,14 +21,29 @@ class Percent implements Comparable<Percent>, HasText {
   String get text => '$value%';
 }
 
-class PercentRoll {
-  final int? result;
-  final bool success;
+class PercentRoll implements HasText {
+  final Percent chance;
+  bool success = false;
+  int? result;
 
-  const PercentRoll({
-    this.result,
-    required this.success,
-  });
+  PercentRoll(this.chance) {
+    if (chance.always) {
+      success = true;
+    } else if (!chance.never) {
+      result = const Dice.sides(100).roll();
+      success = result! <= chance.value;
+    }
+  }
 
   bool get fail => !success;
+
+  @override
+  String get text {
+    final head = '(${chance.text})';
+    final tail = success ? 'success' : 'fail';
+    if (result != null) {
+      return '$head $result, $tail.';
+    }
+    return '$head Auto-$tail.';
+  }
 }
