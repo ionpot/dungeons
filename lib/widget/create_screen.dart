@@ -93,6 +93,7 @@ class _CreateScreenState extends State<CreateScreen> {
           labelWidth: 64,
           valueWidth: 48,
         ),
+        const SizedBox(height: 20),
         Button(
           text: 'Reroll',
           onClick: () => setState(entity.base.roll),
