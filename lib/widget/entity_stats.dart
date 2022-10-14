@@ -12,7 +12,7 @@ class EntityStats extends StatelessWidget {
     final e = entity;
     return TextLines([
       e.name,
-      '${e.race.text} ${e.klass?.text}: ${e.attributes}',
+      '${e.race.text} ${e.klass?.text} Lv${e.level}: ${e.attributes}',
       'Hp ${e.hp}/${e.totalHp}, Init ${e.initiative},'
           ' Dodge ${e.dodge}, Resist ${e.resist}',
       'Armor: ${e.armor?.text} (${e.totalArmor})',

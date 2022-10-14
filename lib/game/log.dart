@@ -19,7 +19,7 @@ class Log {
   void entity(Entity e) {
     file
       ..writeln(e.name)
-      ..writeln('${e.race.text} ${e.klass?.text}: ${e.attributes}')
+      ..writeln('${e.race.text} ${e.klass?.text} Lv${e.level}: ${e.attributes}')
       ..writeln('Hp ${e.totalHp}, Init ${e.initiative}, '
           'Dodge ${e.dodge}, Resist ${e.resist}')
       ..writeln('Armor: ${e.armor?.text} (${e.totalArmor})')

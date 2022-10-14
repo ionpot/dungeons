@@ -54,6 +54,7 @@ class TheAppState extends State<TheApp> {
       log: widget.log,
       onDone: (player) {
         if (player.isAlive()) {
+          ++player.level;
           player.resetHp();
           _toScreen(_combatScreen(player));
         } else {

@@ -11,6 +11,7 @@ class Entity {
   final String name;
   EntityAttributes base = EntityAttributes();
   EntityRace race;
+  int level = 1;
   EntityClass? klass;
   Armor? armor;
   Weapon? weapon;
@@ -34,7 +35,7 @@ class Entity {
   int get hitBonus => attributes.agility ~/ 4;
 
   int get totalArmor => armor?.value ?? 0;
-  int get totalHp => attributes.strength + (klass?.hpBonus ?? 0);
+  int get totalHp => attributes.strength + level * (klass?.hpBonus ?? 0);
   int get hp => totalHp - _damage;
 
   bool get ok => (klass != null) && (armor != null) && (weapon != null);
