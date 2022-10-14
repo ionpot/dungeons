@@ -6,13 +6,14 @@ import 'package:dungeons/widget/create_screen.dart';
 import 'package:flutter/widgets.dart';
 
 void main() {
-  runApp(TheApp());
+  final log = Log.toFile('dungeons.log')..file.writeln('Dungeons');
+  runApp(TheApp(log));
 }
 
 class TheApp extends StatefulWidget {
-  final log = Log.toFile('dungeons.log');
+  final Log log;
 
-  TheApp({super.key});
+  const TheApp(this.log, {super.key});
 
   @override
   State<TheApp> createState() => TheAppState();
@@ -41,14 +42,25 @@ class TheAppState extends State<TheApp> {
   Widget _createScreen() {
     return CreateScreen(
       onDone: (player) {
-        widget.log.entity(player);
         _toScreen(_combatScreen(player));
       },
     );
   }
 
   Widget _combatScreen(Entity player) {
-    return CombatScreen.withPlayer(player, log: widget.log);
+    return CombatScreen.withPlayer(
+      player,
+      key: UniqueKey(),
+      log: widget.log,
+      onDone: (player) {
+        if (player.isAlive()) {
+          player.resetHp();
+          _toScreen(_combatScreen(player));
+        } else {
+          _toScreen(_createScreen());
+        }
+      },
+    );
   }
 
   void _toScreen(Widget screen) {
