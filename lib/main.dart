@@ -1,3 +1,4 @@
+import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/log.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/combat_screen.dart';
@@ -18,7 +19,13 @@ class TheApp extends StatefulWidget {
 }
 
 class TheAppState extends State<TheApp> {
-  Widget? screen;
+  late Widget _screen;
+
+  @override
+  void initState() {
+    super.initState();
+    _screen = _createScreen();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +33,27 @@ class TheAppState extends State<TheApp> {
       color: black,
       child: Directionality(
         textDirection: TextDirection.ltr,
-        child: _buildScreen(),
+        child: _screen,
       ),
     );
   }
 
-  Widget _buildScreen() {
-    if (screen != null) return screen!;
+  Widget _createScreen() {
     return CreateScreen(
-      onDone: (entity) {
-        widget.log.entity(entity);
-        setState(() {
-          screen = CombatScreen.withPlayer(entity, log: widget.log);
-        });
+      onDone: (player) {
+        widget.log.entity(player);
+        _toScreen(_combatScreen(player));
       },
     );
+  }
+
+  Widget _combatScreen(Entity player) {
+    return CombatScreen.withPlayer(player, log: widget.log);
+  }
+
+  void _toScreen(Widget screen) {
+    setState(() {
+      _screen = screen;
+    });
   }
 }
