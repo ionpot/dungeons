@@ -42,12 +42,14 @@ class _CombatScreenState extends State<CombatScreen> {
   late Combat _combat;
   late int _round;
   Attack? _attack;
+  late final int _xpGain;
 
   @override
   void initState() {
     super.initState();
     _combat = widget.combat;
     _round = _combat.round;
+    _xpGain = _combat.xpGain;
     widget.log
       ..ln()
       ..file.writeln('New combat')
@@ -81,7 +83,7 @@ class _CombatScreenState extends State<CombatScreen> {
                 Button(text: 'Next', onClick: _onNext),
                 Section.after(
                   child: (_attack != null)
-                      ? AttackText(_attack!, _round)
+                      ? AttackText(_attack!, round: _round, xpGain: _xpGain)
                       : Text('${_combat.turn.name} goes first.'),
                 ),
               ],
@@ -93,8 +95,16 @@ class _CombatScreenState extends State<CombatScreen> {
   }
 
   void _onNext() {
+    final player = _combat.player;
     if (_combat.ended) {
-      return widget.onDone(_combat.player);
+      if (player.isAlive()) {
+        player.xp += _xpGain;
+        widget.log.file.writeln('${player.name} gains $_xpGain XP'
+            '${player.canLevelUp() ? ', and levels up' : ''}.');
+        player.tryLevelUp();
+        player.resetHp();
+      }
+      return widget.onDone(player);
     }
     setState(() {
       _round = _combat.round;

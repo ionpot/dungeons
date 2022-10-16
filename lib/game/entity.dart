@@ -8,16 +8,20 @@ import 'package:dungeons/utility/intcmp.dart';
 import 'package:dungeons/utility/percent.dart';
 
 class Entity {
+  static int xpForLevelUp = 3;
+
   final String name;
+  final bool player;
   EntityAttributes base = EntityAttributes();
   EntityRace race;
   int level = 1;
+  int xp = 0;
   EntityClass? klass;
   Armor? armor;
   Weapon? weapon;
   int _damage = 0;
 
-  Entity(this.name, {required this.race});
+  Entity(this.name, {required this.race, this.player = false});
 
   EntityAttributes get attributes => base + race.bonus;
 
@@ -40,8 +44,20 @@ class Entity {
 
   bool get ok => (klass != null) && (armor != null) && (weapon != null);
 
+  bool canLevelUp() => canLevelUpWith(0);
+  bool canLevelUpWith(int x) => (xp + x) >= xpForLevelUp;
+
   bool isAlive() => hp > 0;
   bool isDead() => !isAlive();
+
+  void levelUp() {
+    xp -= xpForLevelUp;
+    ++level;
+  }
+
+  void tryLevelUp() {
+    if (canLevelUp()) levelUp();
+  }
 
   void randomize() {
     base.roll();
@@ -59,6 +75,12 @@ class Entity {
   }
 
   Percent toHit(Entity e) => Percent(e.totalArmor - hitBonus).invert();
+
+  int xpGain(Entity e) {
+    if (level <= e.level) return 3;
+    if (level - 1 == e.level) return 2;
+    return 1;
+  }
 
   int compareSpeed(Entity e) {
     final i = intcmp(initiative, e.initiative);

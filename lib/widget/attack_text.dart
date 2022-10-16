@@ -6,8 +6,14 @@ import 'package:flutter/widgets.dart';
 class AttackText extends StatelessWidget {
   final Attack attack;
   final int round;
+  final int xpGain;
 
-  const AttackText(this.attack, this.round, {super.key});
+  const AttackText(
+    this.attack, {
+    super.key,
+    required this.round,
+    required this.xpGain,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +49,10 @@ class AttackText extends StatelessWidget {
     if (attack.damage != null) {
       lines.add('${target.name} takes ${attack.damage} damage'
           '${target.isDead() ? ', and dies' : ''}.');
+      if (target.isDead() && from.player && xpGain > 0) {
+        lines.add('${from.name} gains $xpGain XP'
+            '${from.canLevelUpWith(xpGain) ? ', and levels up' : ''}.');
+      }
     }
     return lines;
   }

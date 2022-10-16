@@ -30,4 +30,6 @@ class Combat {
   }
 
   Entity get _other => (_current == player) ? enemy : player;
+
+  int get xpGain => player.xpGain(enemy);
 }
