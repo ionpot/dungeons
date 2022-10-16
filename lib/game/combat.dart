@@ -10,8 +10,9 @@ class Combat {
   int _round = 1;
 
   Combat(this.player) {
-    _first = _current = player.fasterThan(enemy) ? player : enemy;
     player.resetHp();
+    player.tryLevelUp();
+    _first = _current = player.fasterThan(enemy) ? player : enemy;
   }
 
   bool get ended => player.dead || enemy.dead;
