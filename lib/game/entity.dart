@@ -3,6 +3,7 @@ import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/weapon.dart';
+import 'package:dungeons/utility/deviate.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/intcmp.dart';
 import 'package:dungeons/utility/percent.dart';
@@ -73,6 +74,14 @@ class Entity {
     armor = Armor.random();
     weapon = Weapon.random();
   }
+
+  Entity rollEnemy() {
+    return Entity('Enemy', race: orc)
+      ..randomize()
+      ..level = rollEnemyLevel();
+  }
+
+  int rollEnemyLevel() => const Deviate(2, 0).from(level).withMin(1).roll();
 
   void resetHp() {
     _damage = 0;

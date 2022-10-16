@@ -1,18 +1,21 @@
 import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/entity_race.dart';
 
 class Combat {
   final Entity player;
-  final Entity enemy = Entity('Enemy', race: orc)..randomize();
+  final Entity enemy;
   late final Entity _first;
   late Entity _current;
   int _round = 1;
 
-  Combat(this.player) {
+  Combat(this.player, this.enemy) {
+    _first = _current = player.fasterThan(enemy) ? player : enemy;
+  }
+
+  factory Combat.withPlayer(Entity player) {
     player.resetHp();
     player.tryLevelUp();
-    _first = _current = player.fasterThan(enemy) ? player : enemy;
+    return Combat(player, player.rollEnemy());
   }
 
   bool get ended => player.dead || enemy.dead;

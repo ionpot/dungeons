@@ -30,7 +30,7 @@ class CombatScreen extends StatefulWidget {
     Key? key,
   }) =>
       CombatScreen(
-        Combat(player),
+        Combat.withPlayer(player),
         log: log,
         onWin: onWin,
         onLose: onLose,
