@@ -47,6 +47,14 @@ class Entity {
   bool get alive => hp > 0;
   bool get dead => !alive;
 
+  bool fasterThan(Entity e) {
+    final i = intcmp(initiative, e.initiative);
+    if (i != 0) return i == 1;
+    final a = intcmp(totalArmor, e.totalArmor);
+    if (a != 0) return a == -1;
+    return player;
+  }
+
   bool canLevelUp() => canLevelUpWith(0);
   bool canLevelUpWith(int x) => (xp + x) >= xpForLevelUp;
 
@@ -80,13 +88,5 @@ class Entity {
     if (level <= e.level) return 3;
     if (level - 1 == e.level) return 2;
     return 1;
-  }
-
-  int compareSpeed(Entity e) {
-    final i = intcmp(initiative, e.initiative);
-    if (i != 0) return i;
-    final a = intcmp(e.totalArmor, totalArmor);
-    if (a != 0) return a;
-    return 0;
   }
 }
