@@ -1,10 +1,13 @@
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
+import 'package:dungeons/utility/pick_random.dart';
 
 enum EntityAttributeId {
   strength(text: 'Strength'),
   agility(text: 'Agility'),
   intellect(text: 'Intellect');
+
+  static EntityAttributeId random() => pickRandom(EntityAttributeId.values);
 
   final String text;
 
@@ -52,6 +55,20 @@ class EntityAttributes {
         return agility;
       case EntityAttributeId.intellect:
         return intellect;
+    }
+  }
+
+  void add(EntityAttributeId id) {
+    switch (id) {
+      case EntityAttributeId.strength:
+        ++strength;
+        return;
+      case EntityAttributeId.agility:
+        ++agility;
+        return;
+      case EntityAttributeId.intellect:
+        ++intellect;
+        return;
     }
   }
 

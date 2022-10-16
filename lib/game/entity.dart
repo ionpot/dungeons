@@ -17,6 +17,7 @@ class Entity {
   EntityRace race;
   int level = 1;
   int xp = 0;
+  int extraPoints = 0;
   EntityClass? klass;
   Armor? armor;
   Weapon? weapon;
@@ -62,6 +63,14 @@ class Entity {
   void levelUp() {
     xp -= xpForLevelUp;
     ++level;
+    extraPoints += 2;
+    spendAllPoints();
+  }
+
+  void levelUpTo(int max) {
+    while (level < max) {
+      levelUp();
+    }
   }
 
   void tryLevelUp() {
@@ -77,14 +86,25 @@ class Entity {
 
   Entity rollEnemy() {
     return Entity('Enemy', race: orc)
-      ..randomize()
-      ..level = rollEnemyLevel();
+      ..levelUpTo(rollEnemyLevel())
+      ..randomize();
   }
 
   int rollEnemyLevel() => const Deviate(2, 0).from(level).withMin(1).roll();
 
   void resetHp() {
     _damage = 0;
+  }
+
+  void spendPointTo(EntityAttributeId id) {
+    base.add(id);
+    --extraPoints;
+  }
+
+  void spendAllPoints() {
+    while (extraPoints > 0) {
+      spendPointTo(EntityAttributeId.random());
+    }
   }
 
   void takeDamage(int value) {
