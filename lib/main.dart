@@ -52,13 +52,8 @@ class TheAppState extends State<TheApp> {
       player,
       key: UniqueKey(),
       log: widget.log,
-      onDone: (player) {
-        if (player.alive) {
-          _toScreen(_combatScreen(player));
-        } else {
-          _toScreen(_createScreen());
-        }
-      },
+      onWin: () => _toScreen(_combatScreen(player)),
+      onLose: () => _toScreen(_createScreen()),
     );
   }
 

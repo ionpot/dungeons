@@ -2,7 +2,6 @@ import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/log.dart';
-import 'package:dungeons/utility/value_callback.dart';
 import 'package:dungeons/widget/attack_text.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/entity_stats.dart';
@@ -12,25 +11,29 @@ import 'package:flutter/widgets.dart';
 class CombatScreen extends StatefulWidget {
   final Combat combat;
   final Log log;
-  final ValueCallback<Entity> onDone;
+  final VoidCallback onWin;
+  final VoidCallback onLose;
 
   const CombatScreen(
     this.combat, {
     super.key,
     required this.log,
-    required this.onDone,
+    required this.onWin,
+    required this.onLose,
   });
 
   factory CombatScreen.withPlayer(
     Entity player, {
     required Log log,
-    required ValueCallback<Entity> onDone,
+    required VoidCallback onWin,
+    required VoidCallback onLose,
     Key? key,
   }) =>
       CombatScreen(
         Combat(player),
         log: log,
-        onDone: onDone,
+        onWin: onWin,
+        onLose: onLose,
         key: key,
       );
 
@@ -103,8 +106,9 @@ class _CombatScreenState extends State<CombatScreen> {
             '${player.canLevelUp() ? ', and levels up' : ''}.');
         player.tryLevelUp();
         player.resetHp();
+        return widget.onWin();
       }
-      return widget.onDone(player);
+      return widget.onLose();
     }
     log() => widget.log..ln();
     if (_combat.newRound) {
