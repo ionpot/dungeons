@@ -106,18 +106,15 @@ class _CombatScreenState extends State<CombatScreen> {
       }
       return widget.onDone(player);
     }
+    log() => widget.log..ln();
+    if (_combat.newRound) {
+      log().newRound(_combat.round);
+    }
     setState(() {
       _round = _combat.round;
-      if (_combat.newRound) {
-        widget.log
-          ..ln()
-          ..newRound(_combat.round);
-      }
       _attack = _combat.attack()..apply();
       _combat.next();
-      widget.log
-        ..ln()
-        ..attack(_attack!);
     });
+    log().attack(_attack!);
   }
 }
