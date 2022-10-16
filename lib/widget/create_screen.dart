@@ -104,10 +104,11 @@ class _CreateScreenState extends State<CreateScreen> {
 
   Widget _buildSecondary() {
     return LabelValueTable(
-      labelWidth: 64,
+      labelWidth: 86,
       valueWidth: 128,
       content: {
         'Total Hp': entity.totalHp.toString(),
+        'Stress Cap': entity.stressCap.toString(),
         'Armor': entity.totalArmor.toString(),
         'Initiative': entity.initiative.toString(),
         'Dodge': entity.dodge.toString(),

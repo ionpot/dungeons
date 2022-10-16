@@ -15,6 +15,7 @@ class Entity {
   final bool player;
   EntityAttributes base = EntityAttributes();
   EntityRace race;
+  int stress = 0;
   int level = 1;
   int xp = 0;
   int extraPoints = 0;
@@ -42,6 +43,7 @@ class Entity {
 
   int get totalArmor => armor?.value ?? 0;
   int get totalHp => attributes.strength + level * (klass?.hpBonus ?? 0);
+  int get stressCap => attributes.intellect + level;
   int get hp => totalHp - _damage;
 
   bool get ok => (klass != null) && (armor != null) && (weapon != null);
