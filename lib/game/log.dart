@@ -46,7 +46,7 @@ class Log {
     }
     if (a.damage != null) {
       file.writeln('${target.name} takes ${a.damage} damage'
-          '${target.isDead() ? ', and dies' : ''}.');
+          '${target.dead ? ', and dies' : ''}.');
       return;
     }
   }

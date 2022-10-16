@@ -44,11 +44,11 @@ class Entity {
 
   bool get ok => (klass != null) && (armor != null) && (weapon != null);
 
+  bool get alive => hp > 0;
+  bool get dead => !alive;
+
   bool canLevelUp() => canLevelUpWith(0);
   bool canLevelUpWith(int x) => (xp + x) >= xpForLevelUp;
-
-  bool isAlive() => hp > 0;
-  bool isDead() => !isAlive();
 
   void levelUp() {
     xp -= xpForLevelUp;

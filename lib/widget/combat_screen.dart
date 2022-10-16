@@ -97,7 +97,7 @@ class _CombatScreenState extends State<CombatScreen> {
   void _onNext() {
     final player = _combat.player;
     if (_combat.ended) {
-      if (player.isAlive()) {
+      if (player.alive) {
         player.xp += _xpGain;
         widget.log.file.writeln('${player.name} gains $_xpGain XP'
             '${player.canLevelUp() ? ', and levels up' : ''}.');

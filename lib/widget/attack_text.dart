@@ -48,8 +48,8 @@ class AttackText extends StatelessWidget {
     }
     if (attack.damage != null) {
       lines.add('${target.name} takes ${attack.damage} damage'
-          '${target.isDead() ? ', and dies' : ''}.');
-      if (target.isDead() && from.player && xpGain > 0) {
+          '${target.dead ? ', and dies' : ''}.');
+      if (target.dead && from.player && xpGain > 0) {
         lines.add('${from.name} gains $xpGain XP'
             '${from.canLevelUpWith(xpGain) ? ', and levels up' : ''}.');
       }

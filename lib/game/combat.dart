@@ -16,7 +16,7 @@ class Combat {
     _first = _current;
   }
 
-  bool get ended => player.isDead() || enemy.isDead();
+  bool get ended => player.dead || enemy.dead;
 
   bool get newRound => _current == _first;
   int get round => _round;
