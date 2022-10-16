@@ -4,23 +4,22 @@ import 'package:dungeons/game/entity.dart';
 class Combat {
   final Entity player;
   final Entity enemy;
-  late final Entity _first;
-  late Entity _current;
+  final Entity first;
+  Entity _current;
   int _round = 1;
 
-  Combat(this.player, this.enemy) {
-    _first = _current = player.fasterThan(enemy) ? player : enemy;
-  }
+  Combat(this.player, this.enemy, this.first) : _current = first;
 
   factory Combat.withPlayer(Entity player) {
     player.resetHp();
-    player.tryLevelUp();
-    return Combat(player, player.rollEnemy());
+    final enemy = player.rollEnemy();
+    final first = player.fasterThan(enemy) ? player : enemy;
+    return Combat(player, enemy, first);
   }
 
   bool get ended => player.dead || enemy.dead;
 
-  bool get newRound => _current == _first;
+  bool get newRound => _current == first;
   int get round => _round;
   Entity get turn => _current;
 

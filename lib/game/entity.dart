@@ -64,7 +64,6 @@ class Entity {
     xp -= xpForLevelUp;
     ++level;
     extraPoints += 2;
-    spendAllPoints();
   }
 
   void levelUpTo(int max) {
@@ -82,6 +81,7 @@ class Entity {
     klass = EntityClass.random();
     armor = Armor.random();
     weapon = Weapon.random();
+    spendAllPoints();
   }
 
   Entity rollEnemy() {

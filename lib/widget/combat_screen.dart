@@ -1,9 +1,11 @@
 import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/log.dart';
-import 'package:dungeons/widget/attack_text.dart';
+import 'package:dungeons/widget/attribute_select.dart';
 import 'package:dungeons/widget/button.dart';
+import 'package:dungeons/widget/combat_text.dart';
 import 'package:dungeons/widget/entity_stats.dart';
 import 'package:dungeons/widget/section.dart';
 import 'package:flutter/widgets.dart';
@@ -42,7 +44,8 @@ class CombatScreen extends StatefulWidget {
 }
 
 class _CombatScreenState extends State<CombatScreen> {
-  late Combat _combat;
+  late final Combat _combat;
+  late final Entity _player;
   late int _round;
   Attack? _attack;
   late final int _xpGain;
@@ -51,13 +54,14 @@ class _CombatScreenState extends State<CombatScreen> {
   void initState() {
     super.initState();
     _combat = widget.combat;
+    _player = _combat.player;
     _round = _combat.round;
     _xpGain = _combat.xpGain;
     widget.log
       ..ln()
       ..file.writeln('New combat')
       ..ln()
-      ..entity(_combat.player)
+      ..entity(_player)
       ..ln()
       ..entity(_combat.enemy);
   }
@@ -74,7 +78,7 @@ class _CombatScreenState extends State<CombatScreen> {
             children: [
               SizedBox(
                 width: 300,
-                child: EntityStats(_combat.player),
+                child: EntityStats(_player),
               ),
               EntityStats(_combat.enemy),
             ],
@@ -83,11 +87,17 @@ class _CombatScreenState extends State<CombatScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Button(text: 'Next', onClick: _onNext),
+                _combat.player.extraPoints > 0
+                    ? AttributeSelect(onChosen: _onAttrChoice)
+                    : Button(text: 'Next', onClick: _onNext),
                 Section.after(
-                  child: (_attack != null)
-                      ? AttackText(_attack!, round: _round, xpGain: _xpGain)
-                      : Text('${_combat.turn.name} goes first.'),
+                  child: CombatText(
+                    attack: _attack,
+                    round: _round,
+                    xpGain: _xpGain,
+                    player: _player,
+                    first: _combat.first,
+                  ),
                 ),
               ],
             ),
@@ -97,16 +107,33 @@ class _CombatScreenState extends State<CombatScreen> {
     );
   }
 
+  void _onAttrChoice(EntityAttributeId id) {
+    setState(() {
+      _player.spendPointTo(id);
+    });
+    if (_player.extraPoints == 0) {
+      widget.onWin();
+    }
+  }
+
+  void _onCombatEnd() {
+    if (_player.dead) {
+      return widget.onLose();
+    }
+    _player.xp += _xpGain;
+    widget.log.file.writeln('${_player.name} gains $_xpGain XP'
+        '${_player.canLevelUp() ? ', and levels up' : ''}.');
+    setState(() {
+      _player.tryLevelUp();
+    });
+    if (_player.extraPoints == 0) {
+      widget.onWin();
+    }
+  }
+
   void _onNext() {
     if (_combat.ended) {
-      final player = _combat.player;
-      if (player.alive) {
-        player.xp += _xpGain;
-        widget.log.file.writeln('${player.name} gains $_xpGain XP'
-            '${player.canLevelUp() ? ', and levels up' : ''}.');
-        return widget.onWin();
-      }
-      return widget.onLose();
+      return _onCombatEnd();
     }
     log() => widget.log..ln();
     if (_combat.newRound) {
