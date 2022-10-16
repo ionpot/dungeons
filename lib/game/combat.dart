@@ -28,7 +28,7 @@ class Combat {
     if (newRound) ++_round;
   }
 
-  Entity get _other => (_current == player) ? enemy : player;
-
   int get xpGain => player.xpGain(enemy);
+
+  Entity get _other => (_current == player) ? enemy : player;
 }
