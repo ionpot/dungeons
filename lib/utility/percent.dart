@@ -1,5 +1,4 @@
 import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/scale.dart';
 
 class Percent implements Comparable<Percent> {
   final int value;
@@ -13,8 +12,6 @@ class Percent implements Comparable<Percent> {
 
   Percent of(Percent p) => Percent(ofInt(p.value));
   int ofInt(int i) => (value / 100 * i).floor();
-
-  Percent scaleBy(Scale? scale) => Percent(scale?.applyTo(value) ?? value);
 
   Percent operator +(Percent other) => Percent(value + other.value);
 
