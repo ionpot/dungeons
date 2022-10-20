@@ -1,5 +1,4 @@
 import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/percent.dart';
 import 'package:dungeons/utility/pick_random.dart';
 
 enum EntityAttributeId {
@@ -40,10 +39,6 @@ class EntityAttributes {
       intellect: intellect + a.intellect,
     );
   }
-
-  Percent get dodge => Percent(agility);
-  Percent get resist => Percent(intellect);
-  int get initiative => (agility + intellect) ~/ 2;
 
   bool isEmpty() => (strength == 0) && (agility == 0) && (intellect == 0);
 

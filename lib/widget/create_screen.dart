@@ -20,7 +20,11 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  final Entity entity = Entity('Player', player: true, race: human);
+  final Entity entity = Entity(
+    'Player',
+    player: true,
+    race: EntityRace.human,
+  );
 
   @override
   Widget build(BuildContext context) {

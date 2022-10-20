@@ -11,4 +11,6 @@ class Scale implements Comparable<Scale> {
 
   @override
   int compareTo(Scale other) => (value - other.value).sign.toInt();
+
+  Scale operator *(Scale other) => Scale(value * other.value);
 }

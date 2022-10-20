@@ -1,3 +1,4 @@
+import 'package:dungeons/game/effects.dart';
 import 'package:dungeons/utility/pick_random.dart';
 import 'package:dungeons/utility/scale.dart';
 
@@ -18,6 +19,11 @@ enum Armor {
   });
 
   factory Armor.random() => pickRandom(Armor.values);
+
+  EffectBonus get bonus => EffectBonus(
+        dodgeScale: dodge,
+        initiative: initiative,
+      );
 
   @override
   String toString() => text;

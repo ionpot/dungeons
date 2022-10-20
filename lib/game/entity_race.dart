@@ -1,14 +1,17 @@
-import 'package:dungeons/game/entity_attr.dart';
+enum EntityRace {
+  human('Human'),
+  orc('Orc', strength: 2, intellect: -2);
 
-class EntityRace {
-  final EntityAttributes bonus;
+  final int strength;
+  final int intellect;
   final String text;
 
-  const EntityRace(this.text, this.bonus);
+  const EntityRace(
+    this.text, {
+    this.strength = 0,
+    this.intellect = 0,
+  });
 
   @override
   String toString() => text;
 }
-
-final human = EntityRace('Human', EntityAttributes());
-final orc = EntityRace('Orc', EntityAttributes(strength: 2, intellect: -2));

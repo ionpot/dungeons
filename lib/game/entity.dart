@@ -1,4 +1,5 @@
 import 'package:dungeons/game/armor.dart';
+import 'package:dungeons/game/effects.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
@@ -13,43 +14,71 @@ class Entity {
 
   final String name;
   final bool player;
-  EntityAttributes base = EntityAttributes();
-  EntityRace race;
+  final base = EntityAttributes();
+  final EntityRace race;
+  final effects = Effects();
   int stress = 0;
   int level = 1;
   int xp = 0;
   int extraPoints = 0;
   EntityClass? klass;
-  Armor? armor;
-  Weapon? weapon;
+  Armor? _armor;
+  Weapon? _weapon;
   int _damage = 0;
 
   Entity(this.name, {required this.race, this.player = false});
 
-  EntityAttributes get attributes => base + race.bonus;
+  int get strength => base.strength + race.strength;
+  int get agility => base.agility;
+  int get intellect => base.intellect + race.intellect;
+
+  EntityAttributes get attributes => EntityAttributes(
+        strength: strength,
+        agility: agility,
+        intellect: intellect,
+      );
 
   int get initiative =>
-      attributes.initiative +
-      (armor?.initiative ?? 0) +
-      (weapon?.initiative ?? 0);
+      (agility + intellect) ~/ 2 + effects.sumInt((e) => e.initiative);
 
-  Percent get dodge => attributes.dodge.scaleBy(armor?.dodge);
-  Percent get resist => attributes.resist;
+  Percent get dodge =>
+      Percent(agility).scaleBy(effects.sumScale((e) => e.dodgeScale));
 
-  int get damageBonus => attributes.strength ~/ 2;
-  Dice? get damageDice => weapon?.dice.withBonus(damageBonus);
+  Percent get resist => Percent(intellect);
 
-  int get hitBonus => attributes.agility ~/ 4;
+  int get damageBonus => strength ~/ 2;
+  Dice? get damageDice => _weapon?.dice.withBonus(damageBonus);
 
-  int get totalArmor => armor?.value ?? 0;
-  int get totalHp => attributes.strength + level * (klass?.hpBonus ?? 0);
-  int get stressCap => attributes.intellect + level;
+  int get hitBonus => agility ~/ 4;
+
+  int get totalArmor => _armor?.value ?? 0;
+  int get totalHp => strength + level * (klass?.hpBonus ?? 0);
+  int get stressCap => intellect + level;
   int get hp => totalHp - _damage;
 
-  bool get ok => (klass != null) && (armor != null) && (weapon != null);
+  bool get ok => (klass != null) && (_armor != null) && (_weapon != null);
 
   bool get alive => hp > 0;
   bool get dead => !alive;
+
+  Weapon? get weapon => _weapon;
+  Armor? get armor => _armor;
+
+  set weapon(Weapon? w) {
+    _weapon = w;
+    effects.remove(EffectSource.weapon);
+    if (w != null) {
+      effects.add(EffectSource.weapon, w.bonus);
+    }
+  }
+
+  set armor(Armor? a) {
+    _armor = a;
+    effects.remove(EffectSource.armor);
+    if (a != null) {
+      effects.add(EffectSource.armor, a.bonus);
+    }
+  }
 
   bool fasterThan(Entity e) {
     final i = intcmp(initiative, e.initiative);
@@ -87,7 +116,7 @@ class Entity {
   }
 
   Entity rollEnemy() {
-    return Entity('Enemy', race: orc)
+    return Entity('Enemy', race: EntityRace.orc)
       ..levelUpTo(rollEnemyLevel())
       ..randomize();
   }

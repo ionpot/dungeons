@@ -1,3 +1,4 @@
+import 'package:dungeons/game/effects.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/pick_random.dart';
 
@@ -18,6 +19,8 @@ enum Weapon {
   });
 
   factory Weapon.random() => pickRandom(Weapon.values);
+
+  EffectBonus get bonus => EffectBonus(initiative: initiative);
 
   @override
   String toString() => text;
