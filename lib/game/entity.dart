@@ -3,6 +3,7 @@ import 'package:dungeons/game/effects.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
+import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
 import 'package:dungeons/utility/dice.dart';
@@ -38,8 +39,10 @@ class Entity {
         intellect: intellect,
       );
 
-  int get initiative =>
-      (agility + intellect) ~/ 2 + effects.sumInt((e) => e.initiative);
+  IntValue get initiative => IntValue(
+        base: (agility + intellect) ~/ 2,
+        bonus: effects.sumInt((e) => e.initiative),
+      );
 
   Percent get dodge =>
       Percent(agility).scaleBy(effects.sumScale((e) => e.dodgeScale));
@@ -81,7 +84,7 @@ class Entity {
   }
 
   bool fasterThan(Entity e) {
-    final i = intcmp(initiative, e.initiative);
+    final i = intcmp(initiative.total, e.initiative.total);
     if (i != 0) return i == 1;
     final a = intcmp(totalArmor, e.totalArmor);
     if (a != 0) return a == -1;
