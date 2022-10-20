@@ -11,7 +11,7 @@ class Attack {
   Attack({required this.from, required this.target}) {
     roll = PercentRoll(from.toHit(target));
     if (roll.success) {
-      dodge = PercentRoll(target.dodge);
+      dodge = PercentRoll(target.dodge.total);
       if (dodge!.fail) {
         damage = from.damageDice?.roll();
       }

@@ -44,8 +44,11 @@ class Entity {
         bonus: effects.sumInt((e) => e.initiative),
       );
 
-  Percent get dodge =>
-      Percent(agility).scaleBy(effects.sumScale((e) => e.dodgeScale));
+  PercentValue get dodge {
+    final base = Percent(agility);
+    final scale = effects.sumPercent((e) => e.dodgeScale);
+    return PercentValue(base: base, bonus: scale.of(base));
+  }
 
   Percent get resist => Percent(intellect);
 

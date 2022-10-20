@@ -11,7 +11,12 @@ class Percent implements Comparable<Percent> {
 
   Percent invert() => Percent(100 - value);
 
+  Percent of(Percent p) => Percent(ofInt(p.value));
+  int ofInt(int i) => (value / 100 * i).floor();
+
   Percent scaleBy(Scale? scale) => Percent(scale?.applyTo(value) ?? value);
+
+  Percent operator +(Percent other) => Percent(value + other.value);
 
   @override
   int compareTo(Percent other) => value - other.value;

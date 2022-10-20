@@ -1,10 +1,10 @@
-import 'package:dungeons/utility/scale.dart';
+import 'package:dungeons/utility/percent.dart';
 
 enum EffectSource { weapon, armor }
 
 class EffectBonus {
   final int? initiative;
-  final Scale? dodgeScale;
+  final Percent? dodgeScale;
 
   const EffectBonus({
     this.initiative,
@@ -42,11 +42,11 @@ class Effects {
     return sum;
   }
 
-  Scale sumScale(GetEffectBonus<Scale> f) {
-    var sum = const Scale();
+  Percent sumPercent(GetEffectBonus<Percent> f) {
+    var sum = const Percent();
     for (final effect in list) {
       final s = f(effect.bonus);
-      if (s != null) sum *= s;
+      if (s != null) sum += s;
     }
     return sum;
   }
