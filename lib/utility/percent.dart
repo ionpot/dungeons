@@ -15,6 +15,8 @@ class Percent implements Comparable<Percent> {
 
   Percent operator +(Percent other) => Percent(value + other.value);
 
+  int get sign => value.sign;
+
   @override
   int compareTo(Percent other) => value - other.value;
 

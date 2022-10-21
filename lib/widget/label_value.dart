@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-typedef LabelValueMap = Map<String, String>;
+typedef LabelValueMap = Map<String, Widget>;
 
 class LabelValueTable extends StatelessWidget {
   final LabelValueMap content;
@@ -27,14 +27,11 @@ class LabelValueTable extends StatelessWidget {
     );
   }
 
-  TableRow _buildRow(String label, String value) {
+  TableRow _buildRow(String label, Widget value) {
     return TableRow(
       children: [
         _buildCell(Text(label)),
-        _buildCell(Text(
-          value,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        )),
+        _buildCell(value),
       ],
     );
   }
