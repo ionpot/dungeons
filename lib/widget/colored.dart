@@ -2,58 +2,37 @@ import 'package:dungeons/game/value.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:flutter/widgets.dart';
 
-class ColoredInt extends StatelessWidget {
-  final IntValue value;
-  final bool bold;
-
-  const ColoredInt(this.value, {super.key, this.bold = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      value.total.toString(),
-      style: TextStyle(color: _color, fontWeight: _bold),
-    );
-  }
-
-  Color? get _color {
-    switch (value.bonus.sign) {
-      case 1:
-        return green;
-      case -1:
-        return red;
-      default:
-        return null;
-    }
-  }
-
-  FontWeight? get _bold => bold ? FontWeight.bold : null;
+TextStyle coloredTextStyle(int value, {bool bold = false}) {
+  return TextStyle(
+    color: colorOf(value),
+    fontWeight: bold ? FontWeight.bold : null,
+  );
 }
 
-class ColoredPercent extends StatelessWidget {
-  final PercentValue value;
-  final bool bold;
+Text coloredIntText(IntValue value, {bool bold = false}) {
+  return Text(
+    value.total.toString(),
+    style: coloredTextStyle(value.bonus, bold: bold),
+  );
+}
 
-  const ColoredPercent(this.value, {super.key, this.bold = false});
+TextSpan coloredIntSpan(IntValue value, {bool bold = false}) {
+  return TextSpan(
+    text: value.total.toString(),
+    style: coloredTextStyle(value.bonus, bold: bold),
+  );
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      value.total.toString(),
-      style: TextStyle(color: _color, fontWeight: _bold),
-    );
-  }
+Text coloredPercentText(PercentValue value, {bool bold = false}) {
+  return Text(
+    value.total.toString(),
+    style: coloredTextStyle(value.bonus.value, bold: bold),
+  );
+}
 
-  Color? get _color {
-    switch (value.bonus.sign) {
-      case 1:
-        return green;
-      case -1:
-        return red;
-      default:
-        return null;
-    }
-  }
-
-  FontWeight? get _bold => bold ? FontWeight.bold : null;
+TextSpan coloredPercentSpan(PercentValue value, {bool bold = false}) {
+  return TextSpan(
+    text: value.total.toString(),
+    style: coloredTextStyle(value.bonus.value, bold: bold),
+  );
 }

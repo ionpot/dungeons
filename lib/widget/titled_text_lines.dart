@@ -4,13 +4,20 @@ import 'package:flutter/widgets.dart';
 
 class TitledTextLines extends StatelessWidget {
   final String title;
-  final List<String> lines;
+  final TextLines lines;
 
   const TitledTextLines({
     super.key,
     required this.title,
     required this.lines,
   });
+
+  factory TitledTextLines.plain({
+    required String title,
+    required List<String> lines,
+  }) {
+    return TitledTextLines(title: title, lines: TextLines.plain(lines));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +26,7 @@ class TitledTextLines extends StatelessWidget {
       children: [
         BoldText(title),
         const SizedBox(height: 12),
-        TextLines(lines),
+        lines,
       ],
     );
   }

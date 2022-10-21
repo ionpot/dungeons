@@ -16,7 +16,7 @@ class AttackText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TitledTextLines(title: 'Round $round', lines: _lines);
+    return TitledTextLines.plain(title: 'Round $round', lines: _lines);
   }
 
   List<String> get _lines {

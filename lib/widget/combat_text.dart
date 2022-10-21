@@ -23,7 +23,7 @@ class CombatText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (player.extraPoints > 0) {
-      return TitledTextLines(
+      return TitledTextLines.plain(
         title: 'Choose attributes',
         lines: ['Points remaining: ${player.extraPoints}'],
       );

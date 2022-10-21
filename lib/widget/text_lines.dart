@@ -1,16 +1,19 @@
 import 'package:flutter/widgets.dart';
 
 class TextLines extends StatelessWidget {
-  final List<String> lines;
+  final List<Widget> lines;
 
   const TextLines(this.lines, {super.key});
+
+  factory TextLines.plain(List<String> lines) =>
+      TextLines([for (final text in lines) Text(text)]);
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
       direction: Axis.vertical,
       spacing: 8,
-      children: [for (final text in lines) Text(text)],
+      children: lines,
     );
   }
 }
