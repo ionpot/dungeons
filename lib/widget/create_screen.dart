@@ -5,7 +5,7 @@ import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/button.dart';
-import 'package:dungeons/widget/colored.dart';
+import 'package:dungeons/widget/colored_text.dart';
 import 'package:dungeons/widget/label_value.dart';
 import 'package:dungeons/widget/radio_group.dart';
 import 'package:dungeons/widget/section.dart';

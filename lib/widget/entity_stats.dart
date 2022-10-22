@@ -1,5 +1,5 @@
 import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/widget/colored.dart';
+import 'package:dungeons/widget/colored_text.dart';
 import 'package:dungeons/widget/text_lines.dart';
 import 'package:flutter/widgets.dart';
 
