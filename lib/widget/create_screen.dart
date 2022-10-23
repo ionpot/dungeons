@@ -114,7 +114,7 @@ class _CreateScreenState extends State<CreateScreen> {
       valueWidth: 128,
       content: {
         'Total Hp': BoldText(entity.totalHp.toString()),
-        'Stress Cap': BoldText(entity.stressCap.toString()),
+        'Stress Cap': BoldText(entity.stress.cap.toString()),
         'Armor': BoldText(entity.totalArmor.toString()),
         'Initiative': coloredIntText(entity.initiative, bold: true),
         'Dodge': coloredPercentText(entity.dodge, bold: true),

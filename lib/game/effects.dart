@@ -1,15 +1,22 @@
+import 'package:dungeons/game/armor.dart';
+import 'package:dungeons/game/effect_bonus.dart';
+import 'package:dungeons/game/skill.dart';
+import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/percent.dart';
 
-enum EffectSource { weapon, armor }
+class EffectSource {
+  final Weapon? weapon;
+  final Armor? armor;
+  final Skill? skill;
 
-class EffectBonus {
-  final int? initiative;
-  final Percent? dodgeScale;
+  const EffectSource({this.weapon, this.armor, this.skill});
 
-  const EffectBonus({
-    this.initiative,
-    this.dodgeScale,
-  });
+  bool equals(EffectSource e) {
+    if (weapon != null) return weapon == e.weapon;
+    if (armor != null) return armor == e.armor;
+    if (skill != null) return skill == e.skill;
+    throw Exception('Effect source can\'t be all null.');
+  }
 }
 
 class Effect {
@@ -26,12 +33,16 @@ class Effects {
 
   Effects();
 
+  bool has(EffectSource source) {
+    return list.any((e) => e.source.equals(source));
+  }
+
   void add(EffectSource source, EffectBonus bonus) {
     list.add(Effect(source, bonus));
   }
 
   void remove(EffectSource source) {
-    list.removeWhere((e) => e.source == source);
+    list.removeWhere((e) => e.source.equals(source));
   }
 
   int sumInt(GetEffectBonus<int> f) {

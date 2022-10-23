@@ -3,6 +3,8 @@ import 'package:dungeons/game/effects.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
+import 'package:dungeons/game/skill.dart';
+import 'package:dungeons/game/stress.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
@@ -18,14 +20,15 @@ class Entity {
   final base = EntityAttributes();
   final EntityRace race;
   final effects = Effects();
-  int stress = 0;
   int level = 1;
   int xp = 0;
   int extraPoints = 0;
   EntityClass? klass;
+
   Armor? _armor;
   Weapon? _weapon;
   int _damage = 0;
+  final int _stress = 0;
 
   Entity(this.name, {required this.race, this.player = false});
 
@@ -59,8 +62,15 @@ class Entity {
 
   int get totalArmor => _armor?.value ?? 0;
   int get totalHp => strength + level * (klass?.hpBonus ?? 0);
-  int get stressCap => intellect + level;
   int get hp => totalHp - _damage;
+
+  Stress get stress {
+    return Stress(
+      current: _stress,
+      reserved: effects.sumInt((e) => e.reserveStress),
+      cap: intellect + level,
+    );
+  }
 
   bool get ok => (klass != null) && (_armor != null) && (_weapon != null);
 
@@ -71,18 +81,18 @@ class Entity {
   Armor? get armor => _armor;
 
   set weapon(Weapon? w) {
+    effects.remove(EffectSource(weapon: _weapon));
     _weapon = w;
-    effects.remove(EffectSource.weapon);
     if (w != null) {
-      effects.add(EffectSource.weapon, w.bonus);
+      effects.add(EffectSource(weapon: w), w.bonus);
     }
   }
 
   set armor(Armor? a) {
+    effects.remove(EffectSource(armor: _armor));
     _armor = a;
-    effects.remove(EffectSource.armor);
     if (a != null) {
-      effects.add(EffectSource.armor, a.bonus);
+      effects.add(EffectSource(armor: a), a.bonus);
     }
   }
 
@@ -92,6 +102,31 @@ class Entity {
     final a = intcmp(totalArmor, e.totalArmor);
     if (a != 0) return a == -1;
     return player;
+  }
+
+  bool canUseSkill(Skill skill) {
+    final bonus = skill.bonus;
+    if (bonus.reserveStress != null) {
+      return stress.has(bonus.reserveStress!);
+    }
+    return true;
+  }
+
+  bool knowsSkill(Skill skill) {
+    switch (skill) {
+      case Skill.weaponFocus:
+        return klass == EntityClass.warrior;
+    }
+  }
+
+  SkillState skillState(Skill skill) {
+    if (effects.has(EffectSource(skill: skill))) {
+      return SkillState.active;
+    }
+    if (knowsSkill(skill)) {
+      return canUseSkill(skill) ? SkillState.ready : SkillState.disabled;
+    }
+    return SkillState.unknown;
   }
 
   bool canLevelUp() => canLevelUpWith(0);

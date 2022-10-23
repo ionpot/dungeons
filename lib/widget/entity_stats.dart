@@ -28,7 +28,8 @@ class EntityStats extends StatelessWidget {
         TextSpan(text: 'Hp ${e.hp}/${e.totalHp}'),
         const TextSpan(text: ', Initiative '),
         coloredIntSpan(e.initiative),
-        TextSpan(text: ', Stress ${e.stress}/${e.stressCap}'),
+        TextSpan(text: ', Stress ${e.stress.current}/'),
+        coloredStressCapSpan(e.stress),
       ]),
     );
   }

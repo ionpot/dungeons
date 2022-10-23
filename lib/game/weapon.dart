@@ -1,4 +1,4 @@
-import 'package:dungeons/game/effects.dart';
+import 'package:dungeons/game/effect_bonus.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/pick_random.dart';
 

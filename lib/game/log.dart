@@ -21,7 +21,7 @@ class Log {
       ..writeln(e.name)
       ..writeln('${e.race.text} ${e.klass?.text} Lv${e.level}: ${e.attributes}')
       ..writeln('Hp ${e.totalHp}, Initiative ${e.initiative},'
-          ' Stress Cap ${e.stressCap}')
+          ' Stress Cap ${e.stress.cap}')
       ..writeln('Dodge ${e.dodge}, Resist ${e.resist}')
       ..writeln('Armor: ${e.armor?.text} (${e.totalArmor})')
       ..writeln('Weapon: ${e.weapon?.text} ${e.damageDice?.fullText}');
