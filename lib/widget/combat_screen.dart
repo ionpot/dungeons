@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/log.dart';
-import 'package:dungeons/widget/attribute_select.dart';
-import 'package:dungeons/widget/button.dart';
-import 'package:dungeons/widget/combat_text.dart';
+import 'package:dungeons/widget/combat_attack.dart';
+import 'package:dungeons/widget/combat_level.dart';
+import 'package:dungeons/widget/combat_start.dart';
 import 'package:dungeons/widget/entity_stats.dart';
 import 'package:dungeons/widget/section.dart';
 import 'package:flutter/widgets.dart';
@@ -44,27 +46,13 @@ class CombatScreen extends StatefulWidget {
 }
 
 class _CombatScreenState extends State<CombatScreen> {
-  late final Combat _combat;
-  late final Entity _player;
-  late int _round;
+  bool _started = false;
   Attack? _attack;
-  late final int _xpGain;
 
-  @override
-  void initState() {
-    super.initState();
-    _combat = widget.combat;
-    _player = _combat.player;
-    _round = _combat.round;
-    _xpGain = _combat.xpGain;
-    widget.log
-      ..ln()
-      ..file.writeln('New combat')
-      ..ln()
-      ..entity(_player)
-      ..ln()
-      ..entity(_combat.enemy);
-  }
+  Combat get _combat => widget.combat;
+  Entity get _player => _combat.player;
+  Log get _log => widget.log..ln();
+  IOSink get _logFile => widget.log.file;
 
   @override
   Widget build(BuildContext context) {
@@ -78,72 +66,82 @@ class _CombatScreenState extends State<CombatScreen> {
             children: [
               SizedBox(
                 width: 300,
-                child: EntityStats(_player),
+                child: EntityStats(_combat.player),
               ),
               EntityStats(_combat.enemy),
             ],
           ),
-          Section.below(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _combat.player.extraPoints > 0
-                    ? AttributeSelect(onChosen: _onAttrChoice)
-                    : Button(text: 'Next', onClick: _onNext),
-                Section.after(
-                  child: CombatText(
-                    attack: _attack,
-                    round: _round,
-                    xpGain: _xpGain,
-                    player: _player,
-                    first: _combat.first,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          Section.below(child: _secondRow),
         ],
       ),
     );
   }
 
-  void _onAttrChoice(EntityAttributeId id) {
-    setState(() {
-      _player.spendPointTo(id);
-    });
-    if (_player.extraPoints == 0) {
-      widget.onWin();
+  Widget get _secondRow {
+    if (!_started) {
+      return CombatStart(_combat, onDone: _onStart);
     }
+    if (_player.extraPoints > 0) {
+      return CombatLevel(_player.extraPoints, onPoint: _onAttributePoint);
+    }
+    if (_attack != null) {
+      return CombatAttack(_combat, _attack!, onDone: _onNext);
+    }
+    throw Exception('Invalid combat state.');
   }
 
-  void _onCombatEnd() {
-    if (_player.dead) {
-      return widget.onLose();
-    }
-    _player.xp += _xpGain;
-    widget.log.file.writeln('${_player.name} gains $_xpGain XP'
-        '${_player.canLevelUp() ? ', and levels up' : ''}.');
+  void _onStart() {
+    _log
+      ..file.writeln('New combat')
+      ..ln()
+      ..entity(_combat.player)
+      ..ln()
+      ..entity(_combat.enemy);
     setState(() {
-      _player.tryLevelUp();
+      _started = true;
     });
-    if (_player.extraPoints == 0) {
-      widget.onWin();
-    }
+    _doAttack();
   }
 
   void _onNext() {
     if (_combat.ended) {
-      return _onCombatEnd();
+      return _doEnd();
     }
-    log() => widget.log..ln();
+    setState(() => _combat.next());
+    _doAttack();
+  }
+
+  void _onAttributePoint(EntityAttributeId id) {
+    setState(() {
+      _player.spendPointTo(id);
+    });
+    if (_player.extraPoints == 0) {
+      return widget.onWin();
+    }
+  }
+
+  void _doAttack() {
     if (_combat.newRound) {
-      log().newRound(_combat.round);
+      _log.newRound(_combat.round);
     }
     setState(() {
-      _round = _combat.round;
       _attack = _combat.attack()..apply();
-      _combat.next();
     });
-    log().attack(_attack!);
+    _log.attack(_attack!);
+  }
+
+  void _doEnd() {
+    if (_player.dead) {
+      return widget.onLose();
+    }
+    setState(() {
+      _combat.addXp();
+      _logFile.writeln('${_player.name} gains ${_combat.xpGain} XP'
+          '${_player.canLevelUp() ? ', and levels up' : ''}.');
+      _player.tryLevelUp();
+    });
+    if (_player.extraPoints == 0) {
+      return widget.onWin();
+    }
   }
 }

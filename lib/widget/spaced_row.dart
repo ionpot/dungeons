@@ -17,6 +17,7 @@ Widget buildSpacedRow({
   }
   return Row(
     mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: ls,
   );
 }

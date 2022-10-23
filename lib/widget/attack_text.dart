@@ -1,4 +1,5 @@
 import 'package:dungeons/game/attack.dart';
+import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/widget/titled_text_lines.dart';
 import 'package:flutter/widgets.dart';
 
@@ -7,12 +8,12 @@ class AttackText extends StatelessWidget {
   final int round;
   final int xpGain;
 
-  const AttackText(
-    this.attack, {
+  AttackText(
+    this.attack,
+    Combat combat, {
     super.key,
-    required this.round,
-    required this.xpGain,
-  });
+  })  : round = combat.round,
+        xpGain = combat.xpGain;
 
   @override
   Widget build(BuildContext context) {
