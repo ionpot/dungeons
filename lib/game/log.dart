@@ -32,7 +32,8 @@ class Log {
     final target = a.target;
     file
       ..writeln(
-          '${from.name} attacks ${target.name} with ${from.weapon?.text}.')
+        '${from.name} attacks ${target.name} with ${from.weapon?.text}.',
+      )
       ..writeln('Attack roll ${a.roll}');
     if (a.roll.fail) {
       file.writeln('${target.name} deflects the attack.');
