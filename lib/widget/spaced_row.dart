@@ -9,3 +9,14 @@ Widget buildSpacedRow({
     children: children,
   );
 }
+
+Widget buildSpacedColumn({
+  required List<Widget> children,
+  double spacing = 40,
+}) {
+  return Wrap(
+    direction: Axis.vertical,
+    spacing: spacing,
+    children: children,
+  );
+}

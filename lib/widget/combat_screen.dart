@@ -9,7 +9,7 @@ import 'package:dungeons/widget/combat_attack.dart';
 import 'package:dungeons/widget/combat_level.dart';
 import 'package:dungeons/widget/combat_start.dart';
 import 'package:dungeons/widget/entity_stats.dart';
-import 'package:dungeons/widget/section.dart';
+import 'package:dungeons/widget/spaced_row.dart';
 import 'package:flutter/widgets.dart';
 
 class CombatScreen extends StatefulWidget {
@@ -58,9 +58,7 @@ class _CombatScreenState extends State<CombatScreen> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(30),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: buildSpacedColumn(
         children: [
           Row(
             children: [
@@ -71,7 +69,7 @@ class _CombatScreenState extends State<CombatScreen> {
               EntityStats(_combat.enemy),
             ],
           ),
-          Section.below(child: _secondRow),
+          _secondRow,
         ],
       ),
     );

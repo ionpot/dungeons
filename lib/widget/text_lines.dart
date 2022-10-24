@@ -1,3 +1,4 @@
+import 'package:dungeons/widget/spaced_row.dart';
 import 'package:flutter/widgets.dart';
 
 class TextLines extends StatelessWidget {
@@ -10,10 +11,6 @@ class TextLines extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      direction: Axis.vertical,
-      spacing: 8,
-      children: lines,
-    );
+    return buildSpacedColumn(spacing: 8, children: lines);
   }
 }
