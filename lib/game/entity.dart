@@ -190,4 +190,6 @@ class Entity {
     if (level - 1 == e.level) return 2;
     return 1;
   }
+
+  String toXpString() => '$xp/${Entity.xpForLevelUp}';
 }

@@ -14,23 +14,34 @@ class EntityStats extends StatelessWidget {
     return TextLines([
       Text(e.name),
       Text('${e.race.text} ${e.klass?.text} Lv${e.level}: ${e.attributes}'),
-      _hpInitiativeStress,
+      _hpStressXp,
+      _initiative,
       _dodgeResist,
       Text('Armor: ${e.armor?.text} (${e.totalArmor})'),
       Text('Weapon: ${e.weapon?.text} ${e.damageDice?.fullText}'),
     ]);
   }
 
-  Widget get _hpInitiativeStress {
+  Widget get _hpStressXp {
     final e = entity;
     return RichText(
       text: TextSpan(children: [
         TextSpan(text: 'Hp ${e.hp}/${e.totalHp}'),
-        const TextSpan(text: ', Initiative '),
-        coloredIntSpan(e.initiative),
         TextSpan(text: ', Stress ${e.stress.current}/'),
         coloredStressCapSpan(e.stress),
+        if (e.player) TextSpan(text: ', XP ${e.toXpString()}'),
       ]),
+    );
+  }
+
+  Widget get _initiative {
+    return RichText(
+      text: TextSpan(
+        children: [
+          const TextSpan(text: 'Initiative '),
+          coloredIntSpan(entity.initiative),
+        ],
+      ),
     );
   }
 
