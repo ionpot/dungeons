@@ -20,7 +20,6 @@ class CombatAttack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return buildSpacedRow(
-      spacing: 60,
       children: [
         Button(text: 'Next', onClick: onDone),
         AttackText(attack, combat),

@@ -14,7 +14,6 @@ class CombatLevel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return buildSpacedRow(
-      spacing: 60,
       children: [
         AttributeSelect(onChosen: onPoint),
         TitledTextLines.plain(

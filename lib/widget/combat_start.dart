@@ -12,7 +12,6 @@ class CombatStart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return buildSpacedRow(
-      spacing: 60,
       children: [
         Button(text: 'Next', onClick: onDone),
         Text('${combat.first.name} goes first.'),
