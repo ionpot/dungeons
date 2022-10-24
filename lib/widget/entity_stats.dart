@@ -12,8 +12,8 @@ class EntityStats extends StatelessWidget {
   Widget build(BuildContext context) {
     final e = entity;
     return TextLines([
-      Text(e.name),
-      Text('${e.race.text} ${e.klass?.text} Lv${e.level}: ${e.attributes}'),
+      Text('${e.name}, ${e.race.text} ${e.klass?.text} Lv${e.level}'),
+      Text('${e.attributes}'),
       _hpStressXp,
       _initiative,
       _dodgeResist,

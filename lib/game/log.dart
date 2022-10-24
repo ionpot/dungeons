@@ -18,8 +18,8 @@ class Log {
 
   void entity(Entity e) {
     file
-      ..writeln(e.name)
-      ..writeln('${e.race.text} ${e.klass?.text} Lv${e.level}: ${e.attributes}')
+      ..writeln('${e.name}, ${e.race.text} ${e.klass?.text} Lv${e.level}')
+      ..writeln('${e.attributes}')
       ..writeln('Hp ${e.totalHp}'
           '${e.player ? ', Stress Cap ${e.stress.cap}' : ''}'
           '${e.player ? ', XP ${e.toXpString()}' : ''}')
