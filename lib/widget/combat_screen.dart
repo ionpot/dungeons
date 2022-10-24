@@ -9,7 +9,7 @@ import 'package:dungeons/widget/combat_attack.dart';
 import 'package:dungeons/widget/combat_level.dart';
 import 'package:dungeons/widget/combat_start.dart';
 import 'package:dungeons/widget/entity_stats.dart';
-import 'package:dungeons/widget/spaced_row.dart';
+import 'package:dungeons/widget/spaced.dart';
 import 'package:flutter/widgets.dart';
 
 class CombatScreen extends StatefulWidget {

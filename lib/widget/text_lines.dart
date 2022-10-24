@@ -1,4 +1,4 @@
-import 'package:dungeons/widget/spaced_row.dart';
+import 'package:dungeons/widget/spaced.dart';
 import 'package:flutter/widgets.dart';
 
 class TextLines extends StatelessWidget {

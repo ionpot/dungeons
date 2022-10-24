@@ -1,7 +1,7 @@
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/utility/value_callback.dart';
 import 'package:dungeons/widget/attribute_select.dart';
-import 'package:dungeons/widget/spaced_row.dart';
+import 'package:dungeons/widget/spaced.dart';
 import 'package:dungeons/widget/titled_text_lines.dart';
 import 'package:flutter/widgets.dart';
 

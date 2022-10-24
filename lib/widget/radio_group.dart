@@ -1,5 +1,5 @@
 import 'package:dungeons/widget/radio_button.dart';
-import 'package:dungeons/widget/spaced_row.dart';
+import 'package:dungeons/widget/spaced.dart';
 import 'package:flutter/widgets.dart';
 
 class RadioGroup<T extends RadioValue> extends StatefulWidget {

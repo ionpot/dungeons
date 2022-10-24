@@ -2,7 +2,7 @@ import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/widget/attack_text.dart';
 import 'package:dungeons/widget/button.dart';
-import 'package:dungeons/widget/spaced_row.dart';
+import 'package:dungeons/widget/spaced.dart';
 import 'package:flutter/widgets.dart';
 
 class CombatAttack extends StatelessWidget {
