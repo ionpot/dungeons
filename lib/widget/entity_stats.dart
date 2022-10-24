@@ -27,8 +27,8 @@ class EntityStats extends StatelessWidget {
     return RichText(
       text: TextSpan(children: [
         TextSpan(text: 'Hp ${e.hp}/${e.totalHp}'),
-        TextSpan(text: ', Stress ${e.stress.current}/'),
-        coloredStressCapSpan(e.stress),
+        if (e.player) TextSpan(text: ', Stress ${e.stress.current}/'),
+        if (e.player) coloredStressCapSpan(e.stress),
         if (e.player) TextSpan(text: ', XP ${e.toXpString()}'),
       ]),
     );
