@@ -18,10 +18,10 @@ class RadioButton<T extends RadioValue> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Button(
+      '$value',
       active: chosen,
       clickable: !chosen,
       onClick: () => {if (!chosen) onChosen(value)},
-      text: value.toString(),
     );
   }
 }

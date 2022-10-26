@@ -38,8 +38,7 @@ class _CreateScreenState extends State<CreateScreen> {
           if (_hasClass) _attrAndStats,
           if (_hasAttr) _armorSelect,
           if (_hasAttr) _weaponSelect,
-          if (entity.ok)
-            Button(text: 'Done', onClick: () => widget.onDone(entity)),
+          if (entity.ok) Button('Done', onClick: () => widget.onDone(entity)),
         ],
       ),
     );
@@ -77,10 +76,7 @@ class _CreateScreenState extends State<CreateScreen> {
             'Intellect': BoldText('${entity.intellect}'),
           },
         ),
-        Button(
-          text: 'Reroll',
-          onClick: () => setState(entity.base.roll),
-        ),
+        Button('Reroll', onClick: () => setState(entity.base.roll)),
       ],
     );
   }

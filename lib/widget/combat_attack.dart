@@ -21,7 +21,7 @@ class CombatAttack extends StatelessWidget {
   Widget build(BuildContext context) {
     return buildSpacedRow(
       children: [
-        Button(text: 'Next', onClick: onDone),
+        Button('Next', onClick: onDone),
         AttackText(attack, combat),
       ],
     );

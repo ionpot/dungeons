@@ -9,9 +9,9 @@ class Button extends StatelessWidget {
   final bool clickable;
   final bool active;
 
-  const Button({
+  const Button(
+    this.text, {
     super.key,
-    required this.text,
     required this.onClick,
     this.clickable = true,
     this.active = false,
