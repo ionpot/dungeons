@@ -21,7 +21,9 @@ class RadioButton<T extends RadioValue> extends StatelessWidget {
       '$value',
       active: chosen,
       clickable: !chosen,
-      onClick: () => {if (!chosen) onChosen(value)},
+      onClick: () {
+        if (!chosen) onChosen(value);
+      },
     );
   }
 }

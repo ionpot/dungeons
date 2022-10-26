@@ -22,7 +22,9 @@ class Button extends StatelessWidget {
     return ClickDent(
       enabled: clickable,
       child: GestureDetector(
-        onTap: () => {if (clickable) onClick()},
+        onTap: () {
+          if (clickable) onClick();
+        },
         child: TextBox(
           text: text,
           color: active ? yellow : white,
