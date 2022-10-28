@@ -4,7 +4,7 @@ import 'package:dungeons/utility/percent.dart';
 enum Skill {
   weaponFocus(
     text: 'Weapon Focus',
-    bonus: EffectBonus(hit: Percent(1), damage: 1, reserveStress: 1),
+    bonus: EffectBonus(hitChance: Percent(1), damage: 1, reserveStress: 1),
   );
 
   final String text;

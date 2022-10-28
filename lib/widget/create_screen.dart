@@ -92,7 +92,7 @@ class _CreateScreenState extends State<CreateScreen> {
         'Initiative': coloredIntText(entity.initiative, bold: true),
         'Dodge': coloredPercentText(entity.dodge, bold: true),
         'Resist': BoldText(entity.resist.toString()),
-        'Damage': BoldText(entity.damageDice?.fullText ?? ''),
+        'Damage': BoldText(entity.damage?.dice.fullText ?? ''),
       },
     );
   }

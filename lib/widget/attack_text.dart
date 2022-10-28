@@ -23,24 +23,26 @@ class AttackText extends StatelessWidget {
   List<String> get _lines {
     final from = attack.from;
     final target = attack.target;
+    final value = attack.value;
+    final result = attack.result;
     final lines = <String>[
       '${from.name} attacks ${target.name} '
           'with ${from.weapon?.text}.',
-      'Attack roll ${attack.roll}',
+      'Attack roll (${value.hitChance}) ${result.hit}',
     ];
-    if (attack.roll.fail) {
+    if (result.hit.fail) {
       lines.add('${target.name} deflects the attack.');
       return lines;
     }
-    if (attack.dodge != null) {
-      lines.add('Dodge roll ${attack.dodge}');
-      if (attack.dodge!.success) {
+    if (result.dodge != null) {
+      lines.add('Dodge roll (${value.dodgeChance}) ${result.dodge}');
+      if (result.dodge!.success) {
         lines.add('${target.name} dodges the attack.');
         return lines;
       }
     }
-    if (attack.damage != null) {
-      lines.add('${target.name} takes ${attack.damage} damage'
+    if (result.damage != null) {
+      lines.add('${target.name} takes ${result.damage} damage'
           '${target.dead ? ', and dies' : ''}.');
       if (target.dead && from.player && xpGain > 0) {
         lines.add('${from.name} gains $xpGain XP'

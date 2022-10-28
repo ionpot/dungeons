@@ -8,7 +8,6 @@ import 'package:dungeons/game/stress.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
-import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/intcmp.dart';
 import 'package:dungeons/utility/percent.dart';
 
@@ -55,10 +54,26 @@ class Entity {
 
   Percent get resist => Percent(intellect);
 
-  int get damageBonus => strength ~/ 2;
-  Dice? get damageDice => _weapon?.dice.withBonus(damageBonus);
+  IntValue get damageBonus {
+    return IntValue(
+      base: strength ~/ 2,
+      bonus: effects.sumInt((e) => e.damage),
+    );
+  }
+
+  DiceValue? get damage {
+    if (_weapon == null) return null;
+    return DiceValue(base: _weapon!.dice, bonus: damageBonus);
+  }
 
   int get hitBonus => agility ~/ 4;
+
+  PercentValue hitChance(Entity target) {
+    return PercentValue(
+      base: Percent(target.totalArmor - hitBonus).invert(),
+      bonus: effects.sumPercent((e) => e.hitChance),
+    );
+  }
 
   int get totalArmor => _armor?.value ?? 0;
   int get totalHp => strength + level * (klass?.hpBonus ?? 0);
@@ -182,8 +197,6 @@ class Entity {
   void takeDamage(int value) {
     _damage += value;
   }
-
-  Percent toHit(Entity e) => Percent(e.totalArmor - hitBonus).invert();
 
   int xpGain(Entity e) {
     if (level <= e.level) return 3;

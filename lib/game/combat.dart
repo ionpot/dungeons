@@ -23,7 +23,7 @@ class Combat {
   int get round => _round;
   Entity get turn => _current;
 
-  Attack attack() => Attack(from: _current, target: _other);
+  Attack attack() => Attack.make(from: _current, target: _other);
 
   void next() {
     _current = _other;

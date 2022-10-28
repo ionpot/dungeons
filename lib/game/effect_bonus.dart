@@ -5,13 +5,13 @@ class EffectBonus {
   final int? initiative;
   final int? reserveStress;
   final Percent? dodgeScale;
-  final Percent? hit;
+  final Percent? hitChance;
 
   const EffectBonus({
     this.damage,
     this.initiative,
     this.reserveStress,
     this.dodgeScale,
-    this.hit,
+    this.hitChance,
   });
 }
