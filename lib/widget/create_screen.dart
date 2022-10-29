@@ -5,11 +5,11 @@ import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/button.dart';
-import 'package:dungeons/widget/colored_text.dart';
 import 'package:dungeons/widget/empty.dart';
 import 'package:dungeons/widget/label_value.dart';
 import 'package:dungeons/widget/radio_group.dart';
 import 'package:dungeons/widget/spaced.dart';
+import 'package:dungeons/widget/value_span.dart';
 import 'package:flutter/widgets.dart';
 
 class CreateScreen extends StatefulWidget {
@@ -90,8 +90,8 @@ class _CreateScreenState extends State<CreateScreen> {
         'Total Hp': BoldText(entity.totalHp.toString()),
         'Stress Cap': BoldText(entity.stress.cap.toString()),
         'Armor': BoldText(entity.totalArmor.toString()),
-        'Initiative': coloredIntText(entity.initiative, bold: true),
-        'Dodge': coloredPercentText(entity.dodge, bold: true),
+        'Initiative': toText(IntValueSpan(entity.initiative, bold: true)),
+        'Dodge': toText(PercentValueSpan(entity.dodge, bold: true)),
         'Resist': BoldText(entity.resist.toString()),
         'Damage': entity.damage != null
             ? BoldText('(${entity.damage}) ${entity.damage?.range}')

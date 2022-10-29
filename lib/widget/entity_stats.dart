@@ -1,6 +1,6 @@
 import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/widget/colored_text.dart';
 import 'package:dungeons/widget/text_lines.dart';
+import 'package:dungeons/widget/value_span.dart';
 import 'package:flutter/widgets.dart';
 
 class EntityStats extends StatelessWidget {
@@ -27,9 +27,12 @@ class EntityStats extends StatelessWidget {
     return RichText(
       text: TextSpan(children: [
         TextSpan(text: 'Hp ${e.hp}/${e.totalHp}'),
-        if (e.player) TextSpan(text: ', Stress ${e.stress.current}/'),
-        if (e.player) coloredStressCapSpan(e.stress),
-        if (e.player) TextSpan(text: ', XP ${e.toXpString()}'),
+        if (e.player)
+          TextSpan(children: [
+            const TextSpan(text: ', Stress '),
+            StressSpan(e.stress),
+            TextSpan(text: ', XP ${e.toXpString()}'),
+          ]),
       ]),
     );
   }
@@ -39,7 +42,7 @@ class EntityStats extends StatelessWidget {
       text: TextSpan(
         children: [
           const TextSpan(text: 'Initiative '),
-          coloredIntSpan(entity.initiative),
+          IntValueSpan(entity.initiative),
         ],
       ),
     );
@@ -50,7 +53,7 @@ class EntityStats extends StatelessWidget {
     return RichText(
       text: TextSpan(children: [
         const TextSpan(text: 'Dodge '),
-        coloredPercentSpan(e.dodge),
+        PercentValueSpan(e.dodge),
         TextSpan(text: ', Resist ${e.resist}'),
       ]),
     );
