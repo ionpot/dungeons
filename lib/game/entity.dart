@@ -63,7 +63,7 @@ class Entity {
 
   DiceValue? get damage {
     if (_weapon == null) return null;
-    return DiceValue(base: _weapon!.dice, bonus: damageBonus);
+    return DiceValue(dice: _weapon!.dice, bonus: damageBonus);
   }
 
   int get hitBonus => agility ~/ 4;

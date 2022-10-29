@@ -18,7 +18,7 @@ class EntityStats extends StatelessWidget {
       _initiative,
       _dodgeResist,
       Text('Armor: ${e.armor?.text} (${e.totalArmor})'),
-      Text('Weapon: ${e.weapon?.text} ${e.damage?.dice.fullText}'),
+      Text('Weapon: ${e.weapon?.text} (${e.damage}) ${e.damage?.range}'),
     ]);
   }
 

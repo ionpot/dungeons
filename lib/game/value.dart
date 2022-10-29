@@ -1,5 +1,7 @@
+import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
+import 'package:dungeons/utility/range.dart';
 
 class IntValue {
   final int base;
@@ -28,15 +30,15 @@ class PercentValue {
 }
 
 class DiceValue {
-  final Dice base;
+  final Dice dice;
   final IntValue bonus;
 
-  const DiceValue({required this.base, required this.bonus});
+  const DiceValue({required this.dice, required this.bonus});
 
-  Dice get dice => base.withBonus(bonus.total);
+  Range get range => dice.range + bonus.total;
 
-  int roll() => dice.roll();
+  int roll() => dice.roll() + bonus.total;
 
   @override
-  String toString() => '$dice';
+  String toString() => '$dice${bonusText(bonus.total)}';
 }

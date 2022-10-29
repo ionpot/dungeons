@@ -6,6 +6,7 @@ import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/colored_text.dart';
+import 'package:dungeons/widget/empty.dart';
 import 'package:dungeons/widget/label_value.dart';
 import 'package:dungeons/widget/radio_group.dart';
 import 'package:dungeons/widget/spaced.dart';
@@ -92,7 +93,9 @@ class _CreateScreenState extends State<CreateScreen> {
         'Initiative': coloredIntText(entity.initiative, bold: true),
         'Dodge': coloredPercentText(entity.dodge, bold: true),
         'Resist': BoldText(entity.resist.toString()),
-        'Damage': BoldText(entity.damage?.dice.fullText ?? ''),
+        'Damage': entity.damage != null
+            ? BoldText('(${entity.damage}) ${entity.damage?.range}')
+            : const Empty(),
       },
     );
   }

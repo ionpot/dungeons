@@ -26,7 +26,7 @@ class Log {
       ..writeln('Initiative ${e.initiative}')
       ..writeln('Dodge ${e.dodge}, Resist ${e.resist}')
       ..writeln('Armor: ${e.armor?.text} (${e.totalArmor})')
-      ..writeln('Weapon: ${e.weapon?.text} ${e.damage?.dice.fullText}');
+      ..writeln('Weapon: ${e.weapon?.text} (${e.damage}) ${e.damage?.range}');
   }
 
   void attack(Attack a) {

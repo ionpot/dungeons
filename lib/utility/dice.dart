@@ -1,20 +1,17 @@
 import 'dart:math';
 
-import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/utility/range.dart';
 
 class Dice implements Comparable<Dice> {
   final int count;
   final int sides;
-  final int bonus;
 
-  const Dice(this.count, this.sides, {this.bonus = 0});
+  const Dice(this.count, this.sides);
   const Dice.sides(int sides) : this(1, sides);
 
-  Dice withBonus(int bonus) => Dice(count, sides, bonus: bonus);
+  int get min => count;
+  int get max => count * sides;
 
-  int get min => count + bonus;
-  int get max => count * sides + bonus;
   Range get range => Range(min, max);
 
   int roll() {
@@ -23,14 +20,12 @@ class Dice implements Comparable<Dice> {
     for (int i = 0; i < count; ++i) {
       result += random.nextInt(sides) + 1;
     }
-    return result + bonus;
+    return result;
   }
 
   @override
   int compareTo(Dice other) => max - other.max;
 
   @override
-  String toString() => '${count}d$sides${bonusText(bonus)}';
-
-  String get fullText => '($this) $range';
+  String toString() => '${count}d$sides';
 }
