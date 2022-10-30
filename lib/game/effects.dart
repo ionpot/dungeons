@@ -37,6 +37,14 @@ class Effects {
 
   Effects();
 
+  int get reservedStress {
+    int sum = 0;
+    for (final effect in contents) {
+      sum += effect.skill?.reserveStress ?? 0;
+    }
+    return sum;
+  }
+
   bool has(Effect effect) => contents.contains(effect);
 
   void add(Effect effect) {

@@ -82,7 +82,7 @@ class Entity {
   Stress get stress {
     return Stress(
       current: _stress,
-      reserved: effects.sumInt((e) => e.reserveStress),
+      reserved: effects.reservedStress,
       cap: intellect + level,
     );
   }
@@ -120,11 +120,8 @@ class Entity {
   }
 
   bool canUseSkill(Skill skill) {
-    final bonus = skill.bonus;
-    if (bonus.reserveStress != null) {
-      return stress.has(bonus.reserveStress!);
-    }
-    return true;
+    final cost = skill.reserveStress;
+    return cost != null ? stress.has(cost) : true;
   }
 
   bool knowsSkill(Skill skill) {
