@@ -37,7 +37,12 @@ class DiceValue {
 
   Range get range => dice.range + bonus.total;
 
-  int roll() => dice.roll() + bonus.total;
+  IntValue roll() {
+    return IntValue(
+      base: dice.roll() + bonus.base,
+      bonus: bonus.bonus,
+    );
+  }
 
   @override
   String toString() => '$dice${bonusText(bonus.total)}';

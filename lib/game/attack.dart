@@ -26,7 +26,7 @@ class Attack {
   }
 
   void apply() {
-    target.takeDamage(result.damage ?? 0);
+    target.takeDamage(result.damage?.total ?? 0);
   }
 }
 
@@ -56,7 +56,7 @@ class AttackValue {
 class AttackResult {
   final PercentRoll hit;
   final PercentRoll? dodge;
-  final int? damage;
+  final IntValue? damage;
 
   const AttackResult({required this.hit, this.dodge, this.damage});
 }
