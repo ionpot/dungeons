@@ -18,36 +18,38 @@ class Effect {
     throw Exception('Effect is null.');
   }
 
-  bool equals(Effect e) {
-    if (weapon != null) return weapon == e.weapon;
-    if (armor != null) return armor == e.armor;
-    if (skill != null) return skill == e.skill;
-    throw Exception('Effect is null.');
+  @override
+  bool operator ==(dynamic other) {
+    return other is Effect &&
+        weapon == other.weapon &&
+        armor == other.armor &&
+        skill == other.skill;
   }
+
+  @override
+  int get hashCode => Object.hash(weapon, armor, skill);
 }
 
 typedef GetEffectBonus<T extends Object> = T? Function(EffectBonus);
 
 class Effects {
-  final List<Effect> list = [];
+  final Set<Effect> contents = {};
 
   Effects();
 
-  bool has(Effect effect) {
-    return list.any((e) => e.equals(effect));
-  }
+  bool has(Effect effect) => contents.contains(effect);
 
   void add(Effect effect) {
-    list.add(effect);
+    contents.add(effect);
   }
 
   void remove(Effect effect) {
-    list.removeWhere((e) => e.equals(effect));
+    contents.remove(effect);
   }
 
   int sumInt(GetEffectBonus<int> f) {
     int sum = 0;
-    for (final effect in list) {
+    for (final effect in contents) {
       sum += f(effect.bonus) ?? 0;
     }
     return sum;
@@ -55,7 +57,7 @@ class Effects {
 
   Percent sumPercent(GetEffectBonus<Percent> f) {
     var sum = const Percent();
-    for (final effect in list) {
+    for (final effect in contents) {
       final s = f(effect.bonus);
       if (s != null) sum += s;
     }
