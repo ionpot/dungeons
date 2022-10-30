@@ -96,18 +96,18 @@ class Entity {
   Armor? get armor => _armor;
 
   set weapon(Weapon? w) {
-    effects.remove(EffectSource(weapon: _weapon));
+    effects.remove(Effect(weapon: _weapon));
     _weapon = w;
     if (w != null) {
-      effects.add(EffectSource(weapon: w), w.bonus);
+      effects.add(Effect(weapon: w));
     }
   }
 
   set armor(Armor? a) {
-    effects.remove(EffectSource(armor: _armor));
+    effects.remove(Effect(armor: _armor));
     _armor = a;
     if (a != null) {
-      effects.add(EffectSource(armor: a), a.bonus);
+      effects.add(Effect(armor: a));
     }
   }
 
@@ -135,7 +135,7 @@ class Entity {
   }
 
   SkillState skillState(Skill skill) {
-    if (effects.has(EffectSource(skill: skill))) {
+    if (effects.has(Effect(skill: skill))) {
       return SkillState.active;
     }
     if (knowsSkill(skill)) {

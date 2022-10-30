@@ -4,26 +4,26 @@ import 'package:dungeons/game/skill.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/percent.dart';
 
-class EffectSource {
+class Effect {
   final Weapon? weapon;
   final Armor? armor;
   final Skill? skill;
 
-  const EffectSource({this.weapon, this.armor, this.skill});
+  const Effect({this.weapon, this.armor, this.skill});
 
-  bool equals(EffectSource e) {
+  EffectBonus get bonus {
+    if (weapon != null) return weapon!.bonus;
+    if (armor != null) return armor!.bonus;
+    if (skill != null) return skill!.bonus;
+    throw Exception('Effect is null.');
+  }
+
+  bool equals(Effect e) {
     if (weapon != null) return weapon == e.weapon;
     if (armor != null) return armor == e.armor;
     if (skill != null) return skill == e.skill;
-    throw Exception('Effect source can\'t be all null.');
+    throw Exception('Effect is null.');
   }
-}
-
-class Effect {
-  final EffectSource source;
-  final EffectBonus bonus;
-
-  const Effect(this.source, this.bonus);
 }
 
 typedef GetEffectBonus<T extends Object> = T? Function(EffectBonus);
@@ -33,16 +33,16 @@ class Effects {
 
   Effects();
 
-  bool has(EffectSource source) {
-    return list.any((e) => e.source.equals(source));
+  bool has(Effect effect) {
+    return list.any((e) => e.equals(effect));
   }
 
-  void add(EffectSource source, EffectBonus bonus) {
-    list.add(Effect(source, bonus));
+  void add(Effect effect) {
+    list.add(effect);
   }
 
-  void remove(EffectSource source) {
-    list.removeWhere((e) => e.source.equals(source));
+  void remove(Effect effect) {
+    list.removeWhere((e) => e.equals(effect));
   }
 
   int sumInt(GetEffectBonus<int> f) {
