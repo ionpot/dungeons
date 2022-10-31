@@ -24,8 +24,8 @@ class EntityStats extends StatelessWidget {
 
   Widget get _hpStressXp {
     final e = entity;
-    return RichText(
-      text: TextSpan(children: [
+    return Text.rich(
+      TextSpan(children: [
         TextSpan(text: 'Hp ${e.hp}/${e.totalHp}'),
         if (e.player)
           TextSpan(children: [
@@ -38,8 +38,8 @@ class EntityStats extends StatelessWidget {
   }
 
   Widget get _initiative {
-    return RichText(
-      text: TextSpan(
+    return Text.rich(
+      TextSpan(
         children: [
           const TextSpan(text: 'Initiative '),
           IntValueSpan(entity.initiative),
@@ -50,8 +50,8 @@ class EntityStats extends StatelessWidget {
 
   Widget get _dodgeResist {
     final e = entity;
-    return RichText(
-      text: TextSpan(children: [
+    return Text.rich(
+      TextSpan(children: [
         const TextSpan(text: 'Dodge '),
         PercentValueSpan(e.dodge),
         TextSpan(text: ', Resist ${e.resist}'),
@@ -61,8 +61,8 @@ class EntityStats extends StatelessWidget {
 
   Widget get _weapon {
     final damage = entity.damage;
-    return RichText(
-      text: TextSpan(
+    return Text.rich(
+      TextSpan(
         children: [
           TextSpan(text: 'Weapon: ${entity.weapon?.text} ('),
           if (damage != null) DiceValueSpan(damage),
