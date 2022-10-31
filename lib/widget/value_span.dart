@@ -56,7 +56,7 @@ class StressSpan extends TextSpan {
           TextSpan(
             text: '${stress.currentCap}',
             style: _style(stress.reserved > 0 ? yellow : null, bold: bold),
-          )
+          ),
         ]);
 }
 
