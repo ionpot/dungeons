@@ -1,5 +1,6 @@
 import 'package:dungeons/game/stress.dart';
 import 'package:dungeons/game/value.dart';
+import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:flutter/widgets.dart';
 
@@ -31,6 +32,20 @@ class PercentValueSpan extends TextSpan {
       : super(
           text: '$value',
           style: _style(colorOf(value.bonus.value), bold: bold),
+        );
+}
+
+class DiceValueSpan extends TextSpan {
+  DiceValueSpan(DiceValue value, {bool bold = false})
+      : super(
+          children: [
+            TextSpan(text: '${value.dice}'),
+            TextSpan(
+              text: bonusText(value.bonus.total),
+              style: _style(colorOf(value.bonus.bonus)),
+            ),
+          ],
+          style: _style(null, bold: bold),
         );
 }
 

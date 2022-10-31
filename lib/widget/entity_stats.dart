@@ -18,7 +18,7 @@ class EntityStats extends StatelessWidget {
       _initiative,
       _dodgeResist,
       Text('Armor: ${e.armor?.text} (${e.totalArmor})'),
-      Text('Weapon: ${e.weapon?.text} (${e.damage}) ${e.damage?.range}'),
+      _weapon,
     ]);
   }
 
@@ -56,6 +56,19 @@ class EntityStats extends StatelessWidget {
         PercentValueSpan(e.dodge),
         TextSpan(text: ', Resist ${e.resist}'),
       ]),
+    );
+  }
+
+  Widget get _weapon {
+    final damage = entity.damage;
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(text: 'Weapon: ${entity.weapon?.text} ('),
+          if (damage != null) DiceValueSpan(damage),
+          TextSpan(text: ') ${damage?.range}'),
+        ],
+      ),
     );
   }
 }
