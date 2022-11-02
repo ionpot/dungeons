@@ -14,5 +14,3 @@ enum Skill {
 
   const Skill({required this.text, required this.bonus, this.reserveStress});
 }
-
-enum SkillState { active, ready, disabled, unknown }

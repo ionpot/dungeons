@@ -130,23 +130,6 @@ class Entity {
     return cost != null ? stress.has(cost) : true;
   }
 
-  bool knowsSkill(Skill skill) {
-    switch (skill) {
-      case Skill.weaponFocus:
-        return klass == EntityClass.warrior;
-    }
-  }
-
-  SkillState skillState(Skill skill) {
-    if (effects.has(Effect(skill: skill))) {
-      return SkillState.active;
-    }
-    if (knowsSkill(skill)) {
-      return canUseSkill(skill) ? SkillState.ready : SkillState.disabled;
-    }
-    return SkillState.unknown;
-  }
-
   bool canLevelUp() => canLevelUpWith(0);
   bool canLevelUpWith(int x) => (xp + x) >= xpForLevelUp;
 
