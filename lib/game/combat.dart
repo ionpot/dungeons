@@ -30,6 +30,11 @@ class Combat {
     if (newRound) ++_round;
   }
 
+  void activateSkills() {
+    player.activateSkill();
+    enemy.activateSkill();
+  }
+
   int get xpGain => player.xpGain(enemy);
 
   void addXp() {

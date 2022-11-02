@@ -97,6 +97,7 @@ class _CombatScreenState extends State<CombatScreen> {
       ..entity(_combat.enemy);
     setState(() {
       _started = true;
+      _combat.activateSkills();
     });
     _doAttack();
   }

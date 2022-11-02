@@ -119,6 +119,12 @@ class Entity {
     return player;
   }
 
+  void activateSkill() {
+    if (klass == EntityClass.warrior) {
+      effects.add(const Effect(skill: Skill.weaponFocus));
+    }
+  }
+
   bool canUseSkill(Skill skill) {
     final cost = skill.reserveStress;
     return cost != null ? stress.has(cost) : true;
