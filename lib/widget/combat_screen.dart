@@ -48,6 +48,7 @@ class CombatScreen extends StatefulWidget {
 class _CombatScreenState extends State<CombatScreen> {
   bool _started = false;
   Attack? _attack;
+  AttackResult? _result;
 
   Combat get _combat => widget.combat;
   Entity get _player => _combat.player;
@@ -83,7 +84,7 @@ class _CombatScreenState extends State<CombatScreen> {
       return CombatLevel(_player.extraPoints, onPoint: _onAttributePoint);
     }
     if (_attack != null) {
-      return CombatAttack(_combat, _attack!, onDone: _onNext);
+      return CombatAttack(_attack!, _result!, _combat, onDone: _onNext);
     }
     throw Exception('Invalid combat state.');
   }
@@ -124,9 +125,11 @@ class _CombatScreenState extends State<CombatScreen> {
       _log.newRound(_combat.round);
     }
     setState(() {
-      _attack = _combat.attack()..apply();
+      _attack = _combat.attack();
+      _result = _attack!.roll();
+      _attack!.apply(_result!);
     });
-    _log.attack(_attack!);
+    _log.attack(_attack!, _result!);
   }
 
   void _doEnd() {

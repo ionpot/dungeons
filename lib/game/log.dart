@@ -29,22 +29,20 @@ class Log {
       ..writeln('Weapon: ${e.weapon?.text} (${e.damage}) ${e.damage?.range}');
   }
 
-  void attack(Attack a) {
+  void attack(Attack a, AttackResult result) {
     final from = a.from;
     final target = a.target;
-    final value = a.value;
-    final result = a.result;
     file
       ..writeln(
         '${from.name} attacks ${target.name} with ${from.weapon?.text}.',
       )
-      ..writeln('Attack roll (${value.hitChance}) ${result.hit}');
+      ..writeln('Attack roll (${a.hitChance}) ${result.hit}');
     if (result.hit.fail) {
       file.writeln('${target.name} deflects the attack.');
       return;
     }
     if (result.dodge != null) {
-      file.writeln('Dodge roll (${value.dodgeChance}) ${result.dodge}');
+      file.writeln('Dodge roll (${a.dodgeChance}) ${result.dodge}');
       if (result.dodge!.success) {
         file.writeln('${target.name} dodges the attack.');
         return;

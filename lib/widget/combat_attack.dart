@@ -7,12 +7,14 @@ import 'package:flutter/widgets.dart';
 
 class CombatAttack extends StatelessWidget {
   final Attack attack;
+  final AttackResult result;
   final Combat combat;
   final VoidCallback onDone;
 
   const CombatAttack(
-    this.combat,
-    this.attack, {
+    this.attack,
+    this.result,
+    this.combat, {
     super.key,
     required this.onDone,
   });
@@ -22,7 +24,7 @@ class CombatAttack extends StatelessWidget {
     return buildSpacedRow(
       children: [
         Button('Next', onClick: onDone),
-        AttackText(attack, combat),
+        AttackText(attack, result, combat),
       ],
     );
   }
