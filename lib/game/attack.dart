@@ -1,3 +1,4 @@
+import 'package:dungeons/game/damage.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
@@ -46,6 +47,9 @@ class AttackResult {
     this.sneakDamage,
   });
 
-  IntValue? get damage =>
-      ifdef(weaponDamage, (wd) => wd.addBonus(sneakDamage ?? 0));
+  Damage? get damage {
+    return ifdef(weaponDamage, (wd) {
+      return Damage(wd.addBonus(sneakDamage ?? 0));
+    });
+  }
 }

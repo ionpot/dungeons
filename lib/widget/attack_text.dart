@@ -92,7 +92,7 @@ class AttackText extends StatelessWidget {
       TextSpan(
         children: [
           TextSpan(text: '${_target.name} takes '),
-          IntValueSpan(result.damage!),
+          IntValueSpan(result.damage!.value),
           TextSpan(
             text: ' damage${_target.dead ? ', and dies' : ''}.',
           ),
