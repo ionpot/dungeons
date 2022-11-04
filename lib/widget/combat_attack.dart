@@ -1,5 +1,5 @@
-import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/combat.dart';
+import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/widget/attack_text.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/spaced.dart';

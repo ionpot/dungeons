@@ -1,6 +1,6 @@
-import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/widget/text_lines.dart';
 import 'package:dungeons/widget/titled_text_lines.dart';
 import 'package:dungeons/widget/value_span.dart';

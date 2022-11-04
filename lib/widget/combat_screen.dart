@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/log.dart';
+import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/widget/combat_attack.dart';
 import 'package:dungeons/widget/combat_level.dart';
 import 'package:dungeons/widget/combat_start.dart';

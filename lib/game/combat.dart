@@ -1,5 +1,5 @@
-import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/weapon_attack.dart';
 
 class Combat {
   final Entity player;

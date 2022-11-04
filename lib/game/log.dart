@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:dungeons/game/attack.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/weapon_attack.dart';
 
 class Log {
   final IOSink file;
