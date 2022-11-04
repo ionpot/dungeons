@@ -48,6 +48,10 @@ class AttackText extends StatelessWidget {
         return lines;
       }
     }
+    if (result.sneakDamage != null) {
+      lines.add(
+          Text('Sneak attack (${attack.sneakDamage}) ${result.sneakDamage}'));
+    }
     if (result.damage != null) {
       lines.add(_damageRoll);
       if (_target.dead && _from.player && xpGain > 0) {

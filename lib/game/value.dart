@@ -11,6 +11,10 @@ class IntValue {
 
   int get total => base + bonus;
 
+  IntValue addBonus(int b) => IntValue(base: base, bonus: bonus + b);
+
+  bool operator >(IntValue other) => total > other.total;
+
   @override
   String toString() => total.toString();
 }

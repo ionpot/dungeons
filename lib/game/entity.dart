@@ -8,6 +8,7 @@ import 'package:dungeons/game/stress.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
+import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/intcmp.dart';
 import 'package:dungeons/utility/percent.dart';
 
@@ -66,6 +67,10 @@ class Entity {
     return DiceValue(dice: _weapon!.dice, bonus: damageBonus);
   }
 
+  Dice? sneakDamage(Entity target) {
+    return canSneakAttack(target) ? Skill.sneakAttack.dice : null;
+  }
+
   int get hitBonus => agility ~/ 4;
 
   PercentValue hitChance(Entity target) {
@@ -119,15 +124,30 @@ class Entity {
     return player;
   }
 
+  bool canSneakAttack(Entity target) {
+    return hasSkill(Skill.sneakAttack) && initiative > target.initiative;
+  }
+
   void activateSkill() {
-    if (klass == EntityClass.warrior) {
-      effects.add(const Effect(skill: Skill.weaponFocus));
+    switch (klass) {
+      case EntityClass.warrior:
+        effects.add(const Effect(skill: Skill.weaponFocus));
+        break;
+      case EntityClass.trickster:
+        effects.add(const Effect(skill: Skill.sneakAttack));
+        break;
+      default:
+        break;
     }
   }
 
   bool canUseSkill(Skill skill) {
     final cost = skill.reserveStress;
     return cost != null ? stress.has(cost) : true;
+  }
+
+  bool hasSkill(Skill skill) {
+    return effects.has(Effect(skill: skill));
   }
 
   bool canLevelUp() => canLevelUpWith(0);

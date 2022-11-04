@@ -1,4 +1,5 @@
 import 'package:dungeons/game/effect_bonus.dart';
+import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
 
 enum Skill {
@@ -6,11 +7,13 @@ enum Skill {
     text: 'Weapon Focus',
     bonus: EffectBonus(hitChance: Percent(1), damage: 1),
     reserveStress: 1,
-  );
+  ),
+  sneakAttack(text: 'Sneak Attack', dice: Dice.sides(6));
 
   final String text;
-  final EffectBonus bonus;
+  final EffectBonus? bonus;
   final int? reserveStress;
+  final Dice? dice;
 
-  const Skill({required this.text, required this.bonus, this.reserveStress});
+  const Skill({required this.text, this.bonus, this.reserveStress, this.dice});
 }

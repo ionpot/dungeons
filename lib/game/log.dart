@@ -48,6 +48,9 @@ class Log {
         return;
       }
     }
+    if (result.sneakDamage != null) {
+      file.writeln('Sneak attack (${a.sneakDamage}) ${result.sneakDamage}');
+    }
     if (result.damage != null) {
       file.writeln('${target.name} takes ${result.damage} damage'
           '${target.dead ? ', and dies' : ''}.');
