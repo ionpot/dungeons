@@ -5,23 +5,23 @@ import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
 
-class Attack {
+class WeaponAttack {
   final Entity from;
   final Entity target;
 
-  const Attack({required this.from, required this.target});
+  const WeaponAttack({required this.from, required this.target});
 
   PercentValue get hitChance => from.hitChance(target);
   PercentValue get dodgeChance => target.dodge;
   DiceValue? get damage => from.damage;
   Dice? get sneakDamage => from.sneakDamage(target);
 
-  AttackResult roll() {
+  WeaponAttackResult roll() {
     final hit = hitChance.roll();
     final dodge = hit.success ? dodgeChance.roll() : null;
     final weapon = ifyes(dodge?.fail, () => damage?.roll());
     final sneak = ifdef(weapon, (_) => sneakDamage?.roll());
-    return AttackResult(
+    return WeaponAttackResult(
       hit: hit,
       dodge: dodge,
       weaponDamage: weapon,
@@ -29,18 +29,18 @@ class Attack {
     );
   }
 
-  void apply(AttackResult result) {
+  void apply(WeaponAttackResult result) {
     target.takeDamage(result.damage?.total ?? 0);
   }
 }
 
-class AttackResult {
+class WeaponAttackResult {
   final PercentRoll hit;
   final PercentRoll? dodge;
   final IntValue? weaponDamage;
   final int? sneakDamage;
 
-  const AttackResult({
+  const WeaponAttackResult({
     required this.hit,
     this.dodge,
     this.weaponDamage,

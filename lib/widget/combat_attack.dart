@@ -6,8 +6,8 @@ import 'package:dungeons/widget/spaced.dart';
 import 'package:flutter/widgets.dart';
 
 class CombatAttack extends StatelessWidget {
-  final Attack attack;
-  final AttackResult result;
+  final WeaponAttack attack;
+  final WeaponAttackResult result;
   final Combat combat;
   final VoidCallback onDone;
 

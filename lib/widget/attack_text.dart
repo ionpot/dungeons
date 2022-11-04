@@ -7,8 +7,8 @@ import 'package:dungeons/widget/value_span.dart';
 import 'package:flutter/widgets.dart';
 
 class AttackText extends StatelessWidget {
-  final Attack attack;
-  final AttackResult result;
+  final WeaponAttack attack;
+  final WeaponAttackResult result;
   final int round;
   final int xpGain;
 

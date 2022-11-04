@@ -47,8 +47,8 @@ class CombatScreen extends StatefulWidget {
 
 class _CombatScreenState extends State<CombatScreen> {
   bool _started = false;
-  Attack? _attack;
-  AttackResult? _result;
+  WeaponAttack? _attack;
+  WeaponAttackResult? _result;
 
   Combat get _combat => widget.combat;
   Entity get _player => _combat.player;

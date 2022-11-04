@@ -29,7 +29,7 @@ class Log {
       ..writeln('Weapon: ${e.weapon?.text} (${e.damage}) ${e.damage?.range}');
   }
 
-  void attack(Attack a, AttackResult result) {
+  void attack(WeaponAttack a, WeaponAttackResult result) {
     final from = a.from;
     final target = a.target;
     file
