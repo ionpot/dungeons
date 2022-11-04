@@ -50,7 +50,8 @@ class AttackText extends StatelessWidget {
     }
     if (result.sneakDamage != null) {
       lines.add(
-          Text('Sneak attack (${attack.sneakDamage}) ${result.sneakDamage}'));
+        Text('Sneak attack (${attack.sneakDamage}) ${result.sneakDamage}'),
+      );
     }
     if (result.damage != null) {
       lines.add(_damageRoll);
