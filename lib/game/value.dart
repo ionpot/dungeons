@@ -3,7 +3,7 @@ import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
 import 'package:dungeons/utility/range.dart';
 
-class IntValue {
+class IntValue implements Comparable<IntValue> {
   final int base;
   final int bonus;
 
@@ -17,6 +17,9 @@ class IntValue {
 
   @override
   String toString() => total.toString();
+
+  @override
+  int compareTo(IntValue other) => total - other.total;
 }
 
 class PercentValue {

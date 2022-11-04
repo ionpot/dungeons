@@ -9,7 +9,6 @@ import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
 import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/intcmp.dart';
 import 'package:dungeons/utility/percent.dart';
 
 class Entity {
@@ -116,11 +115,11 @@ class Entity {
     }
   }
 
-  bool fasterThan(Entity e) {
-    final i = intcmp(initiative.total, e.initiative.total);
-    if (i != 0) return i == 1;
-    final a = intcmp(totalArmor, e.totalArmor);
-    if (a != 0) return a == -1;
+  bool fasterThan(Entity other) {
+    final i = initiative.compareTo(other.initiative);
+    if (i != 0) return i > 0;
+    final a = totalArmor.compareTo(other.totalArmor);
+    if (a != 0) return a < 0;
     return player;
   }
 
