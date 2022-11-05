@@ -69,13 +69,16 @@ class DamageSpan extends TextSpan {
 
 class StressSpan extends TextSpan {
   StressSpan(Stress stress, {bool bold = false})
-      : super(children: [
-          TextSpan(text: '${stress.current}/'),
-          TextSpan(
-            text: '${stress.currentCap}',
-            style: _style(stress.reserved > 0 ? yellow : null, bold: bold),
-          ),
-        ]);
+      : super(
+          children: [
+            TextSpan(text: '${stress.current}/'),
+            TextSpan(
+              text: '${stress.currentCap}',
+              style: _style(stress.reserved > 0 ? yellow : null),
+            ),
+          ],
+          style: _style(null, bold: bold),
+        );
 }
 
 class SpellNameSpan extends TextSpan {
