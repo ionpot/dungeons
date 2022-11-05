@@ -1,7 +1,11 @@
-B? ifdef<A, B>(A? a, B? Function(A) f) {
-  return a != null ? f(a) : null;
+B? ifdef<A, B>(A? a, B? Function(A)? f) {
+  return a != null ? f?.call(a) : null;
 }
 
-T? ifyes<T>(bool? b, T? Function() f) {
-  return b == true ? f() : null;
+B? ifok<A, B>(A? a, B? Function()? f) {
+  return a != null ? f?.call() : null;
+}
+
+T? ifyes<T>(bool? b, T? Function()? f) {
+  return b == true ? f?.call() : null;
 }

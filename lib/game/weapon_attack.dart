@@ -19,8 +19,8 @@ class WeaponAttack {
   WeaponAttackResult roll() {
     final hit = hitChance.roll();
     final dodge = hit.success ? dodgeChance.roll() : null;
-    final weapon = ifyes(dodge?.fail, () => damage?.roll());
-    final sneak = ifdef(weapon, (_) => sneakDamage?.roll());
+    final weapon = ifyes(dodge?.fail, damage?.roll);
+    final sneak = ifok(weapon, sneakDamage?.roll);
     return WeaponAttackResult(
       hit: hit,
       dodge: dodge,

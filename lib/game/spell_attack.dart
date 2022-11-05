@@ -18,7 +18,7 @@ class SpellAttack {
     final resist = resistChance.roll();
     return SpellAttackResult(
       resist: resist,
-      damage: ifyes(resist.fail, () => damage?.roll()),
+      damage: ifyes(resist.fail, damage?.roll),
     );
   }
 
