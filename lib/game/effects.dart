@@ -15,11 +15,7 @@ class Effect {
   const Effect({this.weapon, this.armor, this.skill, this.spell});
 
   EffectBonus? get bonus {
-    if (weapon != null) return weapon!.bonus;
-    if (armor != null) return armor!.bonus;
-    if (skill != null) return skill!.bonus;
-    if (spell != null) return spell!.effect;
-    return null;
+    return weapon?.bonus ?? armor?.bonus ?? skill?.bonus ?? spell?.effect;
   }
 
   @override
