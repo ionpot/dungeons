@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/spell_attack.dart';
 import 'package:dungeons/game/weapon_attack.dart';
+import 'package:dungeons/utility/if.dart';
 
 class Log {
   final IOSink file;
@@ -29,32 +32,57 @@ class Log {
       ..writeln('Weapon: ${e.weapon?.text} (${e.damage}) ${e.damage?.range}');
   }
 
-  void attack(WeaponAttack a, WeaponAttackResult result) {
-    final from = a.from;
-    final target = a.target;
+  void combatTurn(CombatTurn turn) {
+    ifdef(turn.weaponTurn, weaponTurn);
+    ifdef(turn.spellTurn, spellTurn);
+  }
+
+  void weaponTurn(WeaponAttackTurn turn) {
+    final attack = turn.attack;
+    final result = turn.result;
+    final from = attack.from;
+    final target = attack.target;
     file
       ..writeln(
         '${from.name} attacks ${target.name} with ${from.weapon?.text}.',
       )
-      ..writeln('Attack roll (${a.hitChance}) ${result.hit}');
+      ..writeln('Attack roll (${attack.hitChance}) ${result.hit}');
     if (result.hit.fail) {
       file.writeln('${target.name} deflects the attack.');
       return;
     }
     if (result.dodge != null) {
-      file.writeln('Dodge roll (${a.dodgeChance}) ${result.dodge}');
+      file.writeln('Dodge roll (${attack.dodgeChance}) ${result.dodge}');
       if (result.dodge!.success) {
         file.writeln('${target.name} dodges the attack.');
         return;
       }
     }
     if (result.sneakDamage != null) {
-      file.writeln('Sneak attack (${a.sneakDamage}) ${result.sneakDamage}');
+      file.writeln(
+        'Sneak attack (${attack.sneakDamage}) ${result.sneakDamage}',
+      );
     }
     if (result.damage != null) {
       file.writeln('${target.name} takes ${result.damage} damage'
           '${target.dead ? ', and dies' : ''}.');
       return;
+    }
+  }
+
+  void spellTurn(SpellAttackTurn turn) {
+    final attack = turn.attack;
+    final result = turn.result;
+    final from = attack.from;
+    final target = attack.target;
+    final spell = attack.spell;
+    file.writeln('${from.name} casts ${spell.text} at ${target.name}');
+    if (!spell.autoHit) {
+      file.writeln('Resist (${attack.resistChance}) ${result.resist}');
+    }
+    if (result.damage != null) {
+      file.writeln('${target.name} takes ${result.damage} damage'
+          '${target.dead ? ', and dies' : ''}.');
     }
   }
 

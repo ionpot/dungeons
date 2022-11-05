@@ -4,7 +4,6 @@ import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/log.dart';
-import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/widget/combat_attack.dart';
 import 'package:dungeons/widget/combat_level.dart';
 import 'package:dungeons/widget/combat_start.dart';
@@ -47,8 +46,7 @@ class CombatScreen extends StatefulWidget {
 
 class _CombatScreenState extends State<CombatScreen> {
   bool _started = false;
-  WeaponAttack? _attack;
-  WeaponAttackResult? _result;
+  CombatTurn? _turn;
 
   Combat get _combat => widget.combat;
   Entity get _player => _combat.player;
@@ -83,8 +81,8 @@ class _CombatScreenState extends State<CombatScreen> {
     if (_player.extraPoints > 0) {
       return CombatLevel(_player.extraPoints, onPoint: _onAttributePoint);
     }
-    if (_attack != null) {
-      return CombatAttack(_attack!, _result!, _combat, onDone: _onNext);
+    if (_turn != null) {
+      return CombatAttack(_turn!, _combat, onDone: _onNext);
     }
     throw Exception('Invalid combat state.');
   }
@@ -125,11 +123,10 @@ class _CombatScreenState extends State<CombatScreen> {
       _log.newRound(_combat.round);
     }
     setState(() {
-      _attack = _combat.attack();
-      _result = _attack!.roll();
-      _attack!.apply(_result!);
+      _turn = _combat.doTurn();
+      _turn!.apply();
     });
-    _log.attack(_attack!, _result!);
+    _log.combatTurn(_turn!);
   }
 
   void _doEnd() {

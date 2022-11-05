@@ -1,3 +1,4 @@
+import 'package:dungeons/game/damage.dart';
 import 'package:flutter/widgets.dart';
 
 const black = Color(0xFF000000);
@@ -14,5 +15,14 @@ Color? colorOf(int i) {
       return red;
     default:
       return null;
+  }
+}
+
+Color? damageTypeColor(DamageType type) {
+  switch (type) {
+    case DamageType.normal:
+      return null;
+    case DamageType.astral:
+      return const Color(0xFFFF00FF);
   }
 }

@@ -4,6 +4,7 @@ import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/skill.dart';
+import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/stress.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
@@ -27,7 +28,7 @@ class Entity {
   Armor? _armor;
   Weapon? _weapon;
   int _damage = 0;
-  final int _stress = 0;
+  int _stress = 0;
 
   Entity(this.name, {required this.race, this.player = false});
 
@@ -91,6 +92,14 @@ class Entity {
     );
   }
 
+  void addStress(int stress) {
+    _stress += stress;
+  }
+
+  void clearStress() {
+    _stress = 0;
+  }
+
   bool get ok => (klass != null) && (_armor != null) && (_weapon != null);
 
   bool get alive => hp > 0;
@@ -147,6 +156,10 @@ class Entity {
 
   bool hasSkill(Skill skill) {
     return effects.has(Effect(skill: skill));
+  }
+
+  bool canCast(Spell spell) {
+    return klass == EntityClass.mage && stress.has(spell.stress);
   }
 
   bool canLevelUp() => canLevelUpWith(0);

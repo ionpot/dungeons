@@ -1,4 +1,6 @@
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/spell.dart';
+import 'package:dungeons/game/spell_attack.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 
 class Combat {
@@ -11,7 +13,9 @@ class Combat {
   Combat(this.player, this.enemy, this.first) : _current = first;
 
   factory Combat.withPlayer(Entity player) {
-    player.resetHp();
+    player
+      ..resetHp()
+      ..clearStress();
     final enemy = player.rollEnemy();
     final first = player.fasterThan(enemy) ? player : enemy;
     return Combat(player, enemy, first);
@@ -21,9 +25,17 @@ class Combat {
 
   bool get newRound => _current == first;
   int get round => _round;
-  Entity get turn => _current;
+  Entity get current => _current;
 
-  WeaponAttack attack() => WeaponAttack(from: _current, target: _other);
+  CombatTurn doTurn() {
+    const spell = Spell.magicMissile;
+    if (current.canCast(spell)) {
+      final attack = SpellAttack(spell, from: _current, target: _other);
+      return CombatTurn.spell(attack);
+    }
+    final attack = WeaponAttack(from: _current, target: _other);
+    return CombatTurn.weapon(attack);
+  }
 
   void next() {
     _current = _other;
@@ -37,9 +49,31 @@ class Combat {
 
   int get xpGain => player.xpGain(enemy);
 
+  bool get xpGained => player.alive && enemy.dead;
+
   void addXp() {
     player.xp += xpGain;
   }
 
   Entity get _other => (_current == player) ? enemy : player;
+}
+
+class CombatTurn {
+  final WeaponAttackTurn? weaponTurn;
+  final SpellAttackTurn? spellTurn;
+
+  const CombatTurn({this.weaponTurn, this.spellTurn});
+
+  factory CombatTurn.weapon(WeaponAttack attack) {
+    return CombatTurn(weaponTurn: WeaponAttackTurn(attack));
+  }
+
+  factory CombatTurn.spell(SpellAttack attack) {
+    return CombatTurn(spellTurn: SpellAttackTurn(attack));
+  }
+
+  void apply() {
+    weaponTurn?.apply();
+    spellTurn?.apply();
+  }
 }

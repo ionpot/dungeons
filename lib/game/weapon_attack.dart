@@ -53,3 +53,18 @@ class WeaponAttackResult {
     });
   }
 }
+
+class WeaponAttackTurn {
+  final WeaponAttack attack;
+  final WeaponAttackResult result;
+
+  const WeaponAttackTurn._(this.attack, this.result);
+
+  factory WeaponAttackTurn(WeaponAttack attack) {
+    return WeaponAttackTurn._(attack, attack.roll());
+  }
+
+  void apply() {
+    attack.apply(result);
+  }
+}
