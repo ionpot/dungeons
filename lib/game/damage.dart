@@ -1,7 +1,7 @@
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
 
-enum DamageType { normal, astral }
+enum DamageType { normal, astral, cold }
 
 class Damage {
   final IntValue value;

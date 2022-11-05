@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_attack.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
@@ -64,8 +65,8 @@ class Log {
       );
     }
     if (result.damage != null) {
-      file.writeln('${target.name} takes ${result.damage} damage'
-          '${target.dead ? ', and dies' : ''}.');
+      file.write('${target.name} takes ${result.damage} damage');
+      _writeStatus(target);
       return;
     }
   }
@@ -81,12 +82,23 @@ class Log {
       file.writeln('Resist (${attack.resistChance}) ${result.resist}');
     }
     if (result.damage != null) {
-      file.writeln('${target.name} takes ${result.damage} damage'
-          '${target.dead ? ', and dies' : ''}.');
+      file.write('${target.name} takes ${result.damage} damage');
+      _writeStatus(target, turn);
     }
   }
 
   void newRound(int round) {
     file.writeln('Round $round');
+  }
+
+  void _writeStatus(Entity target, [SpellAttackTurn? spellTurn]) {
+    if (target.dead) {
+      file.write(', and dies');
+    } else if (spellTurn?.result.affected == true) {
+      if (spellTurn?.attack.spell == Spell.rayOfFrost) {
+        file.write(', and is slowed');
+      }
+    }
+    file.writeln('.');
   }
 }

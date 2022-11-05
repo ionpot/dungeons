@@ -1,4 +1,6 @@
 import 'package:dungeons/game/combat.dart';
+import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_attack.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
@@ -65,7 +67,7 @@ class CombatAttack extends StatelessWidget {
         _rich(
           '${target.name} takes ',
           IntValueSpan(result.damage!.value),
-          ' damage${target.dead ? ', and dies' : ''}.',
+          ' damage${_status(target)}.',
         ),
     ]);
   }
@@ -87,9 +89,21 @@ class CombatAttack extends StatelessWidget {
         _rich(
           '${target.name} takes ',
           DamageSpan(result.damage!),
-          ' damage${target.dead ? ', and dies' : ''}.',
+          ' damage${_status(target, turn)}.',
         ),
     ]);
+  }
+
+  String _status(Entity target, [SpellAttackTurn? spellTurn]) {
+    if (target.dead) {
+      return ', and dies';
+    }
+    if (spellTurn?.result.affected == true) {
+      if (spellTurn?.attack.spell == Spell.rayOfFrost) {
+        return ', and is slowed';
+      }
+    }
+    return '';
   }
 
   Widget _buildXp(int xp) {

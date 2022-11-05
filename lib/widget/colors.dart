@@ -24,5 +24,7 @@ Color? damageTypeColor(DamageType type) {
       return null;
     case DamageType.astral:
       return const Color(0xFFFF00FF);
+    case DamageType.cold:
+      return const Color(0xFF00F2FF);
   }
 }

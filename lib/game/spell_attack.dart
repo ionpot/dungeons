@@ -19,6 +19,8 @@ class SpellAttack {
     return SpellAttackResult(
       resist: resist,
       damage: ifyes(resist.fail, damage?.roll),
+      affected:
+          resist.fail && spell.effect != null && !target.hasSpellEffect(spell),
     );
   }
 
@@ -27,15 +29,20 @@ class SpellAttack {
       from.addStress(spell.stress);
     }
     target.takeDamage(result.damage?.total ?? 0);
+    if (result.affected) {
+      target.addSpellEffect(spell);
+    }
   }
 }
 
 class SpellAttackResult {
   final PercentRoll resist;
+  final bool affected;
   final Damage? damage;
 
   const SpellAttackResult({
     required this.resist,
+    required this.affected,
     this.damage,
   });
 }

@@ -1,6 +1,7 @@
 import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/effect_bonus.dart';
 import 'package:dungeons/game/skill.dart';
+import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
@@ -9,13 +10,15 @@ class Effect {
   final Weapon? weapon;
   final Armor? armor;
   final Skill? skill;
+  final Spell? spell;
 
-  const Effect({this.weapon, this.armor, this.skill});
+  const Effect({this.weapon, this.armor, this.skill, this.spell});
 
   EffectBonus? get bonus {
     if (weapon != null) return weapon!.bonus;
     if (armor != null) return armor!.bonus;
     if (skill != null) return skill!.bonus;
+    if (spell != null) return spell!.effect;
     return null;
   }
 
@@ -24,11 +27,12 @@ class Effect {
     return other is Effect &&
         weapon == other.weapon &&
         armor == other.armor &&
-        skill == other.skill;
+        skill == other.skill &&
+        spell == other.spell;
   }
 
   @override
-  int get hashCode => Object.hash(weapon, armor, skill);
+  int get hashCode => Object.hash(weapon, armor, skill, spell);
 }
 
 typedef GetEffectBonus<T extends Object> = T? Function(EffectBonus);

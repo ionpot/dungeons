@@ -149,6 +149,18 @@ class Entity {
     }
   }
 
+  void addSpellEffect(Spell spell) {
+    effects.add(Effect(spell: spell));
+  }
+
+  void clearSpellEffects() {
+    effects.contents.removeWhere((e) => e.spell != null);
+  }
+
+  bool hasSpellEffect(Spell spell) {
+    return effects.has(Effect(spell: spell));
+  }
+
   bool canUseSkill(Skill skill) {
     final cost = skill.reserveStress;
     return cost != null ? stress.has(cost) : true;

@@ -15,7 +15,8 @@ class Combat {
   factory Combat.withPlayer(Entity player) {
     player
       ..resetHp()
-      ..clearStress();
+      ..clearStress()
+      ..clearSpellEffects();
     final enemy = player.rollEnemy();
     final first = player.fasterThan(enemy) ? player : enemy;
     return Combat(player, enemy, first);
@@ -28,7 +29,7 @@ class Combat {
   Entity get current => _current;
 
   CombatTurn doTurn() {
-    const spell = Spell.magicMissile;
+    const spell = Spell.rayOfFrost;
     if (current.canCast(spell)) {
       final attack = SpellAttack(spell, from: _current, target: _other);
       return CombatTurn.spell(attack);
