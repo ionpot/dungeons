@@ -139,26 +139,37 @@ class Entity {
   void activateSkill() {
     switch (klass) {
       case EntityClass.warrior:
-        effects.add(const Effect(skill: Skill.weaponFocus));
-        break;
+        return effects.reset(const Effect(skill: Skill.weaponFocus));
       case EntityClass.trickster:
-        effects.add(const Effect(skill: Skill.sneakAttack));
-        break;
+        return effects.reset(const Effect(skill: Skill.sneakAttack));
       default:
-        break;
+        return;
+    }
+  }
+
+  void addEffect(Effect effect) {
+    if (effect.stacks) {
+      effects.add(effect);
+    } else {
+      effects.reset(effect);
     }
   }
 
   void addSpellEffect(Spell spell) {
-    effects.add(Effect(spell: spell));
+    addEffect(Effect(spell: spell));
   }
 
   void clearSpellEffects() {
-    effects.contents.removeWhere((e) => e.spell != null);
+    effects.clearSpells();
   }
 
   bool hasSpellEffect(Spell spell) {
     return effects.has(Effect(spell: spell));
+  }
+
+  bool canSpellEffect(Spell spell) {
+    if (spell.stacks) return true;
+    return !hasSpellEffect(spell);
   }
 
   bool canUseSkill(Skill skill) {

@@ -20,7 +20,7 @@ class SpellAttack {
       resist: resist,
       damage: ifyes(resist.fail, damage?.roll),
       affected:
-          resist.fail && spell.effect != null && !target.hasSpellEffect(spell),
+          resist.fail && spell.effect != null && target.canSpellEffect(spell),
     );
   }
 

@@ -18,6 +18,8 @@ class Effect {
     return weapon?.bonus ?? armor?.bonus ?? skill?.bonus ?? spell?.effect;
   }
 
+  bool get stacks => spell?.stacks == true;
+
   @override
   bool operator ==(dynamic other) {
     return other is Effect &&
@@ -34,39 +36,44 @@ class Effect {
 typedef GetEffectBonus<T extends Object> = T? Function(EffectBonus);
 
 class Effects {
-  final Set<Effect> contents = {};
+  final Map<Effect, EffectBonus> contents = {};
 
   Effects();
 
-  List<EffectBonus> get bonuses {
-    final ls = <EffectBonus>[];
-    for (final effect in contents) {
-      ifdef(effect.bonus, ls.add);
-    }
-    return ls;
-  }
-
   int get reservedStress {
     int sum = 0;
-    for (final effect in contents) {
+    for (final effect in contents.keys) {
       sum += effect.skill?.reserveStress ?? 0;
     }
     return sum;
   }
 
-  bool has(Effect effect) => contents.contains(effect);
+  bool has(Effect effect) => contents.containsKey(effect);
 
   void add(Effect effect) {
-    contents.add(effect);
+    final bonus = effect.bonus ?? const EffectBonus();
+    contents.update(
+      effect,
+      (b) => b + bonus,
+      ifAbsent: () => bonus,
+    );
+  }
+
+  void reset(Effect effect) {
+    contents[effect] = effect.bonus ?? const EffectBonus();
   }
 
   void remove(Effect effect) {
     contents.remove(effect);
   }
 
+  void clearSpells() {
+    contents.removeWhere((key, value) => key.spell != null);
+  }
+
   int sumInt(GetEffectBonus<int> f) {
     int sum = 0;
-    for (final bonus in bonuses) {
+    for (final bonus in contents.values) {
       sum += f(bonus) ?? 0;
     }
     return sum;
@@ -74,7 +81,7 @@ class Effects {
 
   Percent sumPercent(GetEffectBonus<Percent> f) {
     var sum = const Percent();
-    for (final bonus in bonuses) {
+    for (final bonus in contents.values) {
       ifdef(f(bonus), (p) => sum += p);
     }
     return sum;

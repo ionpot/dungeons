@@ -14,11 +14,13 @@ enum Spell {
     stress: 1,
     damage: DamageDice(Dice(2, 8), type: DamageType.cold),
     effect: EffectBonus(initiative: -2),
+    stacks: true,
   );
 
   final String text;
   final int stress;
   final bool autoHit;
+  final bool stacks;
   final DamageDice? damage;
   final EffectBonus? effect;
 
@@ -26,6 +28,7 @@ enum Spell {
     required this.text,
     required this.stress,
     this.autoHit = false,
+    this.stacks = false,
     this.damage,
     this.effect,
   });
