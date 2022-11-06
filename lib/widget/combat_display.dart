@@ -12,7 +12,7 @@ import 'package:dungeons/widget/value_span.dart';
 import 'package:flutter/widgets.dart';
 
 class CombatDisplay extends StatelessWidget {
-  final CombatTurn turn;
+  final CombatTurn? turn;
   final Combat combat;
   final VoidCallback onDone;
 
@@ -28,15 +28,22 @@ class CombatDisplay extends StatelessWidget {
     return buildSpacedRow(
       children: [
         Button('Next', onClick: onDone),
-        TitledTextLines(
-          title: 'Round ${combat.round}',
-          lines: TextLines([
-            if (turn.weaponTurn != null) _buildWeapon(turn.weaponTurn!),
-            if (turn.spellTurn != null) _buildSpell(turn.spellTurn!),
-            if (combat.xpGained) _buildXp(combat.xpGain),
-          ]),
-        ),
+        if (turn != null)
+          _buildTurn(turn!)
+        else
+          Text('${combat.current.name} goes first.'),
       ],
+    );
+  }
+
+  Widget _buildTurn(CombatTurn turn) {
+    return TitledTextLines(
+      title: 'Round ${combat.round}',
+      lines: TextLines([
+        if (turn.weaponTurn != null) _buildWeapon(turn.weaponTurn!),
+        if (turn.spellTurn != null) _buildSpell(turn.spellTurn!),
+        if (combat.xpGained) _buildXp(combat.xpGain),
+      ]),
     );
   }
 

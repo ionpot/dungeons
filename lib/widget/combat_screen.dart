@@ -6,7 +6,6 @@ import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/log.dart';
 import 'package:dungeons/widget/combat_display.dart';
 import 'package:dungeons/widget/combat_level.dart';
-import 'package:dungeons/widget/combat_start.dart';
 import 'package:dungeons/widget/entity_stats.dart';
 import 'package:dungeons/widget/spaced.dart';
 import 'package:flutter/widgets.dart';
@@ -45,7 +44,6 @@ class CombatScreen extends StatefulWidget {
 }
 
 class _CombatScreenState extends State<CombatScreen> {
-  bool _started = false;
   CombatTurn? _turn;
 
   Combat get _combat => widget.combat;
@@ -75,16 +73,10 @@ class _CombatScreenState extends State<CombatScreen> {
   }
 
   Widget get _secondRow {
-    if (!_started) {
-      return CombatStart(_combat, onDone: _onStart);
-    }
     if (_player.extraPoints > 0) {
       return CombatLevel(_player.extraPoints, onPoint: _onAttributePoint);
     }
-    if (_turn != null) {
-      return CombatDisplay(_turn!, _combat, onDone: _onNext);
-    }
-    throw Exception('Invalid combat state.');
+    return CombatDisplay(_turn, _combat, onDone: _onNext);
   }
 
   void _onStart() {
@@ -95,17 +87,19 @@ class _CombatScreenState extends State<CombatScreen> {
       ..ln()
       ..entity(_combat.enemy);
     setState(() {
-      _started = true;
       _combat.activateSkills();
     });
-    _doAttack();
   }
 
   void _onNext() {
     if (_combat.ended) {
       return _doEnd();
     }
-    setState(() => _combat.next());
+    if (_turn == null) {
+      _onStart();
+    } else {
+      setState(() => _combat.next());
+    }
     _doAttack();
   }
 
