@@ -14,7 +14,7 @@ class CombatStart extends StatelessWidget {
     return buildSpacedRow(
       children: [
         Button('Next', onClick: onDone),
-        Text('${combat.first.name} goes first.'),
+        Text('${combat.current.name} goes first.'),
       ],
     );
   }
