@@ -4,7 +4,7 @@ import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/log.dart';
-import 'package:dungeons/widget/combat_attack.dart';
+import 'package:dungeons/widget/combat_display.dart';
 import 'package:dungeons/widget/combat_level.dart';
 import 'package:dungeons/widget/combat_start.dart';
 import 'package:dungeons/widget/entity_stats.dart';
@@ -82,7 +82,7 @@ class _CombatScreenState extends State<CombatScreen> {
       return CombatLevel(_player.extraPoints, onPoint: _onAttributePoint);
     }
     if (_turn != null) {
-      return CombatAttack(_turn!, _combat, onDone: _onNext);
+      return CombatDisplay(_turn!, _combat, onDone: _onNext);
     }
     throw Exception('Invalid combat state.');
   }

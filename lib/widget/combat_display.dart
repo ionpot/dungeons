@@ -11,12 +11,12 @@ import 'package:dungeons/widget/titled_text_lines.dart';
 import 'package:dungeons/widget/value_span.dart';
 import 'package:flutter/widgets.dart';
 
-class CombatAttack extends StatelessWidget {
+class CombatDisplay extends StatelessWidget {
   final CombatTurn turn;
   final Combat combat;
   final VoidCallback onDone;
 
-  const CombatAttack(
+  const CombatDisplay(
     this.turn,
     this.combat, {
     super.key,
