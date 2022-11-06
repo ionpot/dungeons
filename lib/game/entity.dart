@@ -133,17 +133,12 @@ class Entity {
   }
 
   bool canSneakAttack(Entity target) {
-    return hasSkill(Skill.sneakAttack) && initiative > target.initiative;
+    return klass == EntityClass.trickster && initiative > target.initiative;
   }
 
   void activateSkill() {
-    switch (klass) {
-      case EntityClass.warrior:
-        return effects.reset(const Effect(skill: Skill.weaponFocus));
-      case EntityClass.trickster:
-        return effects.reset(const Effect(skill: Skill.sneakAttack));
-      default:
-        return;
+    if (klass == EntityClass.warrior) {
+      effects.reset(const Effect(skill: Skill.weaponFocus));
     }
   }
 
