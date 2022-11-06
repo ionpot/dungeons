@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/spell.dart';
@@ -38,10 +39,14 @@ class Combat {
   Entity get other => current == player ? enemy : player;
 
   CombatTurn doTurn() {
-    const spell = Spell.rayOfFrost;
-    if (current.canCast(spell)) {
-      final attack = SpellAttack(spell, from: current, target: other);
-      return CombatTurn.spell(attack);
+    final len = Spell.values.length;
+    final i = Random().nextInt(len + 1);
+    if (i < len) {
+      final spell = Spell.values[i];
+      if (current.canCast(spell)) {
+        final attack = SpellAttack(spell, from: current, target: other);
+        return CombatTurn.spell(attack);
+      }
     }
     final attack = WeaponAttack(from: current, target: other);
     return CombatTurn.weapon(attack);
