@@ -2,6 +2,7 @@ import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_attack.dart';
+import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/value_callback.dart';
@@ -94,11 +95,7 @@ class CombatDisplay extends StatelessWidget {
       if (result.sneakDamage != null)
         Text('Sneak attack (${attack.sneakDamage}) ${result.sneakDamage}'),
       if (result.damage != null)
-        _rich(
-          '${target.name} takes ',
-          IntValueSpan(result.damage!),
-          ' damage${_status(target)}.',
-        ),
+        _damageAndStatus(result.damage!, weaponTurn: turn),
     ]);
   }
 
@@ -117,12 +114,19 @@ class CombatDisplay extends StatelessWidget {
       if (!spell.autoHit)
         Text('Resist (${attack.resistChance}) ${result.resist}'),
       if (result.damage != null)
-        _rich(
-          '${target.name} takes ',
-          DamageSpan(result.damage!, spell.source),
-          ' damage${_status(target, turn)}.',
-        ),
+        _damageAndStatus(result.damage!, spellTurn: turn),
     ]);
+  }
+
+  Widget _damageAndStatus(IntValue damage,
+      {WeaponAttackTurn? weaponTurn, SpellAttackTurn? spellTurn}) {
+    final target = weaponTurn?.attack.target ?? spellTurn!.attack.target;
+    final source = weaponTurn?.attack.source ?? spellTurn!.attack.source;
+    return _rich(
+      '${target.name} takes ',
+      DamageSpan(damage, source),
+      ' damage${_status(target, spellTurn)}.',
+    );
   }
 
   String _status(Entity target, [SpellAttackTurn? spellTurn]) {

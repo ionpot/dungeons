@@ -56,11 +56,10 @@ class DamageSpan extends TextSpan {
       : super(
           children: [
             IntValueSpan(damage),
-            if (source != Source.physical)
-              TextSpan(
-                text: ' ${source.name}',
-                style: _style(sourceColor(source)),
-              ),
+            TextSpan(
+              text: ' ${source.name}',
+              style: _style(sourceColor(source)),
+            ),
           ],
           style: _style(null, bold: bold),
         );

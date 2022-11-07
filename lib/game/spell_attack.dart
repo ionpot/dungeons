@@ -1,4 +1,5 @@
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
@@ -13,6 +14,8 @@ class SpellAttack {
   const SpellAttack(this.spell, {required this.from, required this.target});
 
   Percent get resistChance => spell.autoHit ? const Percent() : target.resist;
+
+  Source get source => spell.source;
 
   SpellAttackResult roll() {
     final resist = resistChance.roll();

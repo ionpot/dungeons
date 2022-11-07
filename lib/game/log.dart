@@ -5,6 +5,7 @@ import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_attack.dart';
+import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
 
@@ -66,7 +67,7 @@ class Log {
       );
     }
     if (result.damage != null) {
-      file.write('${target.name} takes ${result.damage} damage');
+      _writeDamage(target, result.damage!, attack.source);
       _writeStatus(target);
       return;
     }
@@ -83,11 +84,7 @@ class Log {
       file.writeln('Resist (${attack.resistChance}) ${result.resist}');
     }
     if (result.damage != null) {
-      file.write('${target.name} takes ${result.damage!.total}');
-      if (spell.source != Source.physical) {
-        file.write(' ${spell.source.name}');
-      }
-      file.write(' damage');
+      _writeDamage(target, result.damage!, spell.source);
       _writeStatus(target, turn);
     }
   }
@@ -99,6 +96,10 @@ class Log {
   void xpGain(Combat combat) {
     file.writeln('${combat.player.name} gains ${combat.xpGain} XP'
         '${combat.canLevelUp() ? ', and levels up' : ''}.');
+  }
+
+  void _writeDamage(Entity target, IntValue damage, Source source) {
+    file.write('${target.name} takes $damage ${source.name} damage');
   }
 
   void _writeStatus(Entity target, [SpellAttackTurn? spellTurn]) {

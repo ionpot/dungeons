@@ -1,4 +1,5 @@
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
@@ -14,6 +15,7 @@ class WeaponAttack {
   PercentValue get dodgeChance => target.dodge;
   DiceValue? get damage => from.damage;
   Dice? get sneakDamage => from.sneakDamage(target);
+  Source get source => Source.physical;
 
   WeaponAttackResult roll() {
     final hit = hitChance.roll();
