@@ -113,6 +113,8 @@ class CombatDisplay extends StatelessWidget {
       ),
       if (!spell.autoHit)
         Text('Resist (${attack.resistChance}) ${result.resist}'),
+      if (result.damageDice != null)
+        Text('Damage roll (${spell.damage}) ${result.damageDice}'),
       if (result.damage != null)
         _damageAndStatus(result.damage!, spellTurn: turn),
     ]);

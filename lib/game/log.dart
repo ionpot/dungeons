@@ -84,6 +84,7 @@ class Log {
       file.writeln('Resist (${attack.resistChance}) ${result.resist}');
     }
     if (result.damage != null) {
+      file.writeln('Damage roll (${spell.damage}) ${result.damageDice}');
       _writeDamage(target, result.damage!, spell.source);
       _writeStatus(target, turn);
     }
