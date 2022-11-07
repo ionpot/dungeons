@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_attack.dart';
 import 'package:dungeons/game/weapon_attack.dart';
@@ -81,8 +82,12 @@ class Log {
     if (!spell.autoHit) {
       file.writeln('Resist (${attack.resistChance}) ${result.resist}');
     }
-    if (result.damageRoll != null) {
-      file.write('${target.name} takes ${result.damageRoll!.total} damage');
+    if (result.damage != null) {
+      file.write('${target.name} takes ${result.damage!.total}');
+      if (spell.source != Source.physical) {
+        file.write(' ${spell.source.name}');
+      }
+      file.write(' damage');
       _writeStatus(target, turn);
     }
   }

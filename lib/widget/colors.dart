@@ -1,4 +1,4 @@
-import 'package:dungeons/game/damage.dart';
+import 'package:dungeons/game/source.dart';
 import 'package:flutter/widgets.dart';
 
 const black = Color(0xFF000000);
@@ -18,13 +18,13 @@ Color? colorOf(int i) {
   }
 }
 
-Color? damageTypeColor(DamageType type) {
-  switch (type) {
-    case DamageType.normal:
+Color? sourceColor(Source source) {
+  switch (source) {
+    case Source.physical:
       return null;
-    case DamageType.astral:
+    case Source.astral:
       return const Color(0xFFFF00FF);
-    case DamageType.cold:
+    case Source.cold:
       return const Color(0xFF00F2FF);
   }
 }

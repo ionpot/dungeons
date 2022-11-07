@@ -96,7 +96,7 @@ class CombatDisplay extends StatelessWidget {
       if (result.damage != null)
         _rich(
           '${target.name} takes ',
-          IntValueSpan(result.damage!.value),
+          IntValueSpan(result.damage!),
           ' damage${_status(target)}.',
         ),
     ]);
@@ -107,18 +107,19 @@ class CombatDisplay extends StatelessWidget {
     final result = turn.result;
     final from = attack.from;
     final target = attack.target;
+    final spell = attack.spell;
     return TextLines([
       _rich(
         '${from.name} casts ',
-        SpellNameSpan(attack.spell),
+        SpellNameSpan(spell),
         ' at ${target.name}',
       ),
-      if (!attack.spell.autoHit)
+      if (!spell.autoHit)
         Text('Resist (${attack.resistChance}) ${result.resist}'),
-      if (result.damageRoll != null)
+      if (result.damage != null)
         _rich(
           '${target.name} takes ',
-          DamageSpan(result.damageRoll!.damage),
+          DamageSpan(result.damage!, spell.source),
           ' damage${_status(target, turn)}.',
         ),
     ]);

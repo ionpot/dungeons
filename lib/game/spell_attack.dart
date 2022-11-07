@@ -1,6 +1,7 @@
-import 'package:dungeons/game/damage.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/spell.dart';
+import 'package:dungeons/game/value.dart';
+import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
 
@@ -12,13 +13,12 @@ class SpellAttack {
   const SpellAttack(this.spell, {required this.from, required this.target});
 
   Percent get resistChance => spell.autoHit ? const Percent() : target.resist;
-  DamageDice? get damageDice => spell.damage;
 
   SpellAttackResult roll() {
     final resist = resistChance.roll();
     return SpellAttackResult(
       resist: resist,
-      damageRoll: ifyes(resist.fail, damageDice?.roll),
+      damageDice: ifyes(resist.fail, spell.damage?.roll),
       affected:
           resist.fail && spell.effect != null && target.canSpellEffect(spell),
     );
@@ -28,7 +28,7 @@ class SpellAttack {
     if (from.player) {
       from.addStress(spell.stress);
     }
-    target.takeDamage(result.damageRoll?.total ?? 0);
+    target.takeDamage(result.damageDice?.total ?? 0);
     if (result.affected) {
       target.addSpellEffect(spell);
     }
@@ -38,13 +38,16 @@ class SpellAttack {
 class SpellAttackResult {
   final PercentRoll resist;
   final bool affected;
-  final DamageRoll? damageRoll;
+  final DiceRoll? damageDice;
 
   const SpellAttackResult({
     required this.resist,
     required this.affected,
-    this.damageRoll,
+    this.damageDice,
   });
+
+  IntValue? get damage =>
+      ifdef(damageDice, (dice) => IntValue(base: dice.total));
 }
 
 class SpellAttackTurn {

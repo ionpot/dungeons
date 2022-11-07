@@ -1,9 +1,8 @@
-import 'package:dungeons/game/damage.dart';
+import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/stress.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/bonus_text.dart';
-import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:flutter/widgets.dart';
 
@@ -53,14 +52,14 @@ class DiceValueSpan extends TextSpan {
 }
 
 class DamageSpan extends TextSpan {
-  DamageSpan(Damage damage, {bool bold = false})
+  DamageSpan(IntValue damage, Source source, {bool bold = false})
       : super(
           children: [
-            IntValueSpan(damage.value),
-            if (damage.type != DamageType.normal)
+            IntValueSpan(damage),
+            if (source != Source.physical)
               TextSpan(
-                text: ' ${damage.type.name}',
-                style: _style(damageTypeColor(damage.type)),
+                text: ' ${source.name}',
+                style: _style(sourceColor(source)),
               ),
           ],
           style: _style(null, bold: bold),
@@ -85,10 +84,7 @@ class SpellNameSpan extends TextSpan {
   SpellNameSpan(Spell spell, {bool bold = false})
       : super(
           text: spell.text,
-          style: _style(
-            ifdef(spell.damage, (d) => damageTypeColor(d.type)),
-            bold: bold,
-          ),
+          style: _style(sourceColor(spell.source), bold: bold),
         );
 }
 
