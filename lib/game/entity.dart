@@ -108,6 +108,10 @@ class Entity {
   Weapon? get weapon => _weapon;
   Armor? get armor => _armor;
 
+  List<Spell> get knownSpells {
+    return klass == EntityClass.mage ? Spell.values : [];
+  }
+
   set weapon(Weapon? w) {
     effects.remove(Effect(weapon: _weapon));
     _weapon = w;
@@ -177,7 +181,7 @@ class Entity {
   }
 
   bool canCast(Spell spell) {
-    return klass == EntityClass.mage && stress.has(spell.stress);
+    return stress.has(spell.stress);
   }
 
   bool canLevelUp() => canLevelUpWith(0);

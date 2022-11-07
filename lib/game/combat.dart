@@ -42,15 +42,10 @@ class Combat {
   Entity get other => current == player ? enemy : player;
 
   CombatAction randomAction() {
-    final len = Spell.values.length;
+    final spells = current.knownSpells;
+    final len = spells.length;
     final i = Random().nextInt(len + 1);
-    if (i < len) {
-      final spell = Spell.values[i];
-      if (current.canCast(spell)) {
-        return CombatAction(castSpell: spell);
-      }
-    }
-    return const CombatAction();
+    return i < len ? CombatAction(castSpell: spells[i]) : const CombatAction();
   }
 
   CombatTurn toTurn(CombatAction action) =>
