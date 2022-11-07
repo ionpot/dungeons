@@ -91,6 +91,11 @@ class Log {
     file.writeln('Round $round');
   }
 
+  void xpGain(Combat combat) {
+    file.writeln('${combat.player.name} gains ${combat.xpGain} XP'
+        '${combat.canLevelUp() ? ', and levels up' : ''}.');
+  }
+
   void _writeStatus(Entity target, [SpellAttackTurn? spellTurn]) {
     if (target.dead) {
       file.write(', and dies');

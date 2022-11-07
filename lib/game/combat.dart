@@ -5,6 +5,7 @@ import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_attack.dart';
 import 'package:dungeons/game/weapon_attack.dart';
+import 'package:dungeons/utility/if.dart';
 
 class Combat {
   final Entity player;
@@ -31,6 +32,8 @@ class Combat {
   }
 
   bool get ended => player.dead || enemy.dead;
+  bool get won => ended && enemy.dead;
+  bool get lost => ended && player.dead;
 
   bool get newRound => _queue.isEmpty;
   int get round => _round;
@@ -38,19 +41,27 @@ class Combat {
   Entity get current => _queue.first;
   Entity get other => current == player ? enemy : player;
 
-  CombatTurn doTurn() {
+  CombatAction randomAction() {
     final len = Spell.values.length;
     final i = Random().nextInt(len + 1);
     if (i < len) {
       final spell = Spell.values[i];
       if (current.canCast(spell)) {
-        final attack = SpellAttack(spell, from: current, target: other);
-        return CombatTurn.spell(attack);
+        return CombatAction(castSpell: spell);
       }
     }
-    final attack = WeaponAttack(from: current, target: other);
-    return CombatTurn.weapon(attack);
+    return const CombatAction();
   }
+
+  CombatTurn toTurn(CombatAction action) =>
+      ifdef(action.castSpell, (spell) {
+        return CombatTurn.spell(
+          SpellAttack(spell, from: current, target: other),
+        );
+      }) ??
+      CombatTurn.weapon(
+        WeaponAttack(from: current, target: other),
+      );
 
   void next() {
     _queue.removeFirst();
@@ -72,6 +83,14 @@ class Combat {
   void addXp() {
     player.xp += xpGain;
   }
+
+  bool canLevelUp() => player.canLevelUpWith(xpGain);
+}
+
+class CombatAction {
+  final Spell? castSpell;
+
+  const CombatAction({this.castSpell});
 }
 
 class CombatTurn {

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_attr.dart';
@@ -45,11 +43,11 @@ class CombatScreen extends StatefulWidget {
 
 class _CombatScreenState extends State<CombatScreen> {
   CombatTurn? _turn;
+  int _round = 1;
 
   Combat get _combat => widget.combat;
   Entity get _player => _combat.player;
   Log get _log => widget.log..ln();
-  IOSink get _logFile => widget.log.file;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +74,15 @@ class _CombatScreenState extends State<CombatScreen> {
     if (_player.extraPoints > 0) {
       return CombatLevel(_player.extraPoints, onPoint: _onAttributePoint);
     }
-    return CombatDisplay(_turn, _combat, onDone: _onNext);
+    return CombatDisplay(
+      _turn,
+      _round,
+      _combat,
+      onPlayerAction: _onAction,
+      onEnemyAction: () => _onAction(_combat.randomAction()),
+      onWin: _onWin,
+      onLose: widget.onLose,
+    );
   }
 
   void _onStart() {
@@ -91,16 +97,20 @@ class _CombatScreenState extends State<CombatScreen> {
     });
   }
 
-  void _onNext() {
-    if (_combat.ended) {
-      return _doEnd();
-    }
+  void _onAction(CombatAction action) {
     if (_turn == null) {
       _onStart();
-    } else {
-      setState(() => _combat.next());
     }
-    _doAttack();
+    if (_combat.newRound) {
+      _log.newRound(_combat.round);
+    }
+    setState(() {
+      _turn = _combat.toTurn(action);
+      _turn!.apply();
+      _round = _combat.round;
+      _combat.next();
+    });
+    _log.combatTurn(_turn!);
   }
 
   void _onAttributePoint(EntityAttributeId id) {
@@ -112,25 +122,10 @@ class _CombatScreenState extends State<CombatScreen> {
     }
   }
 
-  void _doAttack() {
-    if (_combat.newRound) {
-      _log.newRound(_combat.round);
-    }
-    setState(() {
-      _turn = _combat.doTurn();
-      _turn!.apply();
-    });
-    _log.combatTurn(_turn!);
-  }
-
-  void _doEnd() {
-    if (_player.dead) {
-      return widget.onLose();
-    }
+  void _onWin() {
+    widget.log.xpGain(_combat);
     setState(() {
       _combat.addXp();
-      _logFile.writeln('${_player.name} gains ${_combat.xpGain} XP'
-          '${_player.canLevelUp() ? ', and levels up' : ''}.');
       _player.tryLevelUp();
     });
     if (_player.extraPoints == 0) {

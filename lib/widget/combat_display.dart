@@ -4,6 +4,8 @@ import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_attack.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
+import 'package:dungeons/utility/value_callback.dart';
+import 'package:dungeons/widget/action_select.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/spaced.dart';
 import 'package:dungeons/widget/text_lines.dart';
@@ -13,32 +15,53 @@ import 'package:flutter/widgets.dart';
 
 class CombatDisplay extends StatelessWidget {
   final CombatTurn? turn;
+  final int round;
   final Combat combat;
-  final VoidCallback onDone;
+  final ValueCallback<CombatAction> onPlayerAction;
+  final VoidCallback onEnemyAction;
+  final VoidCallback onWin;
+  final VoidCallback onLose;
 
   const CombatDisplay(
     this.turn,
+    this.round,
     this.combat, {
     super.key,
-    required this.onDone,
+    required this.onPlayerAction,
+    required this.onEnemyAction,
+    required this.onWin,
+    required this.onLose,
   });
 
   @override
   Widget build(BuildContext context) {
     return buildSpacedRow(
       children: [
-        Button('Next', onClick: onDone),
-        if (turn != null)
-          _buildTurn(turn!)
-        else
-          Text('${combat.current.name} goes first.'),
+        SizedBox(width: 120, child: Wrap(children: [_buildButtons()])),
+        ifdef(turn, _buildTurn) ?? Text('${_current.name} goes first.'),
       ],
     );
   }
 
+  Entity get _current => combat.current;
+
+  Widget _buildButtons() {
+    if (combat.won) {
+      final text = combat.canLevelUp() ? 'Level Up' : 'Next';
+      return Button(text, onClick: onWin);
+    }
+    if (combat.lost) {
+      return Button('End', onClick: onLose);
+    }
+    if (_current.player) {
+      return ActionSelect(_current, onChosen: onPlayerAction);
+    }
+    return Button('Next', onClick: onEnemyAction);
+  }
+
   Widget _buildTurn(CombatTurn turn) {
     return TitledTextLines(
-      title: 'Round ${combat.round}',
+      title: 'Round $round',
       lines: TextLines([
         if (turn.weaponTurn != null) _buildWeapon(turn.weaponTurn!),
         if (turn.spellTurn != null) _buildSpell(turn.spellTurn!),
