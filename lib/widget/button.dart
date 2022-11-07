@@ -8,6 +8,7 @@ class Button extends StatelessWidget {
   final VoidCallback onClick;
   final bool clickable;
   final bool active;
+  final Color? color;
 
   const Button(
     this.text, {
@@ -15,6 +16,7 @@ class Button extends StatelessWidget {
     required this.onClick,
     this.clickable = true,
     this.active = false,
+    this.color,
   });
 
   @override
@@ -27,7 +29,7 @@ class Button extends StatelessWidget {
         },
         child: TextBox(
           text: text,
-          color: active ? yellow : white,
+          color: active ? yellow : color,
         ),
       ),
     );

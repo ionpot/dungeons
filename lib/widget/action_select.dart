@@ -1,7 +1,9 @@
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/value_callback.dart';
 import 'package:dungeons/widget/button.dart';
+import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/spaced.dart';
 import 'package:flutter/widgets.dart';
 
@@ -22,6 +24,7 @@ class ActionSelect extends StatelessWidget {
             Button(
               spell.text,
               onClick: () => onChosen(CombatAction(castSpell: spell)),
+              color: ifdef(spell.damage?.type, damageTypeColor),
             ),
       ],
     );
