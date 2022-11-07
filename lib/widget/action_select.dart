@@ -20,12 +20,12 @@ class ActionSelect extends StatelessWidget {
       children: [
         Button('Attack', onClick: () => onChosen(const CombatAction())),
         for (final spell in entity.knownSpells)
-          if (entity.canCast(spell))
-            Button(
-              spell.text,
-              onClick: () => onChosen(CombatAction(castSpell: spell)),
-              color: ifdef(spell.damage?.type, damageTypeColor),
-            ),
+          Button(
+            spell.text,
+            disabled: !entity.canCast(spell),
+            onClick: () => onChosen(CombatAction(castSpell: spell)),
+            color: ifdef(spell.damage?.type, damageTypeColor),
+          ),
       ],
     );
   }
