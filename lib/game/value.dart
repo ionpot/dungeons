@@ -45,13 +45,27 @@ class DiceValue {
 
   Range get range => dice.range + bonus.total;
 
-  IntValue roll() {
+  DiceRollValue roll() => DiceRollValue(dice.roll(), bonus);
+
+  @override
+  String toString() => '$dice${bonusText(bonus.total)}';
+}
+
+class DiceRollValue {
+  final DiceRoll dice;
+  final IntValue bonus;
+
+  const DiceRollValue(this.dice, this.bonus);
+
+  int get total => dice.total + bonus.total;
+
+  IntValue get value {
     return IntValue(
-      base: dice.roll() + bonus.base,
+      base: dice.total + bonus.base,
       bonus: bonus.bonus,
     );
   }
 
   @override
-  String toString() => '$dice${bonusText(bonus.total)}';
+  String toString() => total.toString();
 }

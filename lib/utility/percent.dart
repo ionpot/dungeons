@@ -16,7 +16,7 @@ class Percent implements Comparable<Percent> {
   PercentRoll roll() {
     if (always) return PercentRoll(success: true);
     if (never) return PercentRoll(success: false);
-    final result = const Dice.sides(100).roll();
+    final result = const Dice.sides(100).roll().total;
     return PercentRoll(
       success: result <= value,
       result: result,

@@ -115,10 +115,10 @@ class CombatDisplay extends StatelessWidget {
       ),
       if (!attack.spell.autoHit)
         Text('Resist (${attack.resistChance}) ${result.resist}'),
-      if (result.damage != null)
+      if (result.damageRoll != null)
         _rich(
           '${target.name} takes ',
-          DamageSpan(result.damage!),
+          DamageSpan(result.damageRoll!.damage),
           ' damage${_status(target, turn)}.',
         ),
     ]);

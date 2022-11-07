@@ -81,8 +81,8 @@ class Log {
     if (!spell.autoHit) {
       file.writeln('Resist (${attack.resistChance}) ${result.resist}');
     }
-    if (result.damage != null) {
-      file.write('${target.name} takes ${result.damage} damage');
+    if (result.damageRoll != null) {
+      file.write('${target.name} takes ${result.damageRoll!.total} damage');
       _writeStatus(target, turn);
     }
   }

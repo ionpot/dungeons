@@ -14,13 +14,14 @@ class Dice implements Comparable<Dice> {
 
   Range get range => Range(min, max);
 
-  int roll() {
+  DiceRoll roll() {
     final random = Random();
-    int result = 0;
-    for (int i = 0; i < count; ++i) {
-      result += random.nextInt(sides) + 1;
-    }
-    return result;
+    final rolls = List.generate(
+      count,
+      (_) => random.nextInt(sides) + 1,
+      growable: false,
+    );
+    return DiceRoll(rolls);
   }
 
   @override
@@ -28,4 +29,15 @@ class Dice implements Comparable<Dice> {
 
   @override
   String toString() => '${count}d$sides';
+}
+
+class DiceRoll {
+  final List<int> rolls;
+
+  const DiceRoll(this.rolls);
+
+  int get total => rolls.fold(0, (previous, current) => previous + current);
+
+  @override
+  String toString() => rolls.join(" ");
 }

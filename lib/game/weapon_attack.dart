@@ -37,8 +37,8 @@ class WeaponAttack {
 class WeaponAttackResult {
   final PercentRoll hit;
   final PercentRoll? dodge;
-  final IntValue? weaponDamage;
-  final int? sneakDamage;
+  final DiceRollValue? weaponDamage;
+  final DiceRoll? sneakDamage;
 
   const WeaponAttackResult({
     required this.hit,
@@ -49,7 +49,7 @@ class WeaponAttackResult {
 
   Damage? get damage {
     return ifdef(weaponDamage, (wd) {
-      return Damage(wd.addBonus(sneakDamage ?? 0));
+      return Damage(wd.value.addBonus(sneakDamage?.total ?? 0));
     });
   }
 }

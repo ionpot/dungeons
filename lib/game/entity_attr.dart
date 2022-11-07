@@ -68,10 +68,10 @@ class EntityAttributes {
   }
 
   void roll() {
-    const dice = Dice(3, 6);
-    strength = dice.roll();
-    agility = dice.roll();
-    intellect = dice.roll();
+    int roll() => const Dice(3, 6).roll().total;
+    strength = roll();
+    agility = roll();
+    intellect = roll();
   }
 
   @override
