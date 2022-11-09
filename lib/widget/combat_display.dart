@@ -27,25 +27,25 @@ class CombatDisplay extends StatelessWidget {
       return _points(points);
     }
     if (turn != null) {
-      return _buildTurn(turn!);
+      return _combatTurn(turn!);
     }
     return Text('${_current.name} goes first.');
   }
 
   Entity get _current => combat.current;
 
-  Widget _buildTurn(CombatTurn turn) {
+  Widget _combatTurn(CombatTurn turn) {
     return TitledTextLines(
       title: 'Round ${combat.round}',
       lines: TextLines([
-        if (turn.weaponTurn != null) _buildWeapon(turn.weaponTurn!),
-        if (turn.spellTurn != null) _buildSpell(turn.spellTurn!),
-        if (combat.xpGained) _buildXp(combat.xpGain),
+        if (turn.weaponTurn != null) _weaponTurn(turn.weaponTurn!),
+        if (turn.spellTurn != null) _spellTurn(turn.spellTurn!),
+        if (combat.xpGained) _xpText(combat.xpGain),
       ]),
     );
   }
 
-  Widget _buildWeapon(WeaponAttackTurn turn) {
+  Widget _weaponTurn(WeaponAttackTurn turn) {
     final attack = turn.attack;
     final result = turn.result;
     final from = attack.from;
@@ -53,14 +53,14 @@ class CombatDisplay extends StatelessWidget {
     final dodge = ifdef(result.dodge, (d) => d.success);
     return TextLines([
       Text('${from.name} attacks ${target.name} with ${from.weapon?.text}.'),
-      _rich(
+      _richText(
         'Attack roll (',
         PercentValueSpan(attack.hitChance),
         ') ${result.hit}',
       ),
       if (result.hit.fail) Text('${target.name} deflects the attack.'),
       if (dodge != null)
-        _rich(
+        _richText(
           'Dodge roll (',
           PercentValueSpan(attack.dodgeChance),
           ') ${result.dodge}',
@@ -73,14 +73,14 @@ class CombatDisplay extends StatelessWidget {
     ]);
   }
 
-  Widget _buildSpell(SpellAttackTurn turn) {
+  Widget _spellTurn(SpellAttackTurn turn) {
     final attack = turn.attack;
     final result = turn.result;
     final from = attack.from;
     final target = attack.target;
     final spell = attack.spell;
     return TextLines([
-      _rich(
+      _richText(
         '${from.name} casts ',
         SpellNameSpan(spell),
         ' at ${target.name}',
@@ -101,7 +101,7 @@ class CombatDisplay extends StatelessWidget {
   }) {
     final target = weaponTurn?.attack.target ?? spellTurn!.attack.target;
     final source = weaponTurn?.attack.source ?? spellTurn!.attack.source;
-    return _rich(
+    return _richText(
       '${target.name} takes ',
       DamageSpan(damage, source),
       ' damage${_status(target, spellTurn)}.',
@@ -120,7 +120,7 @@ class CombatDisplay extends StatelessWidget {
     return '';
   }
 
-  Widget _buildXp(int xp) {
+  Widget _xpText(int xp) {
     final player = combat.player;
     return Text('${player.name} gains $xp XP'
         '${player.canLevelUpWith(xp) ? ', and levels up' : ''}.');
@@ -133,7 +133,7 @@ class CombatDisplay extends StatelessWidget {
     );
   }
 
-  Widget _rich(String prefix, TextSpan span, String suffix) {
+  Widget _richText(String prefix, TextSpan span, String suffix) {
     return Text.rich(
       TextSpan(
         children: [TextSpan(text: prefix), span, TextSpan(text: suffix)],
