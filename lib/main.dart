@@ -1,9 +1,9 @@
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/log.dart';
+import 'package:dungeons/widget/character_screen.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/combat_screen.dart';
-import 'package:dungeons/widget/create_screen.dart';
 import 'package:flutter/widgets.dart';
 
 void main() {
@@ -26,7 +26,7 @@ class TheAppState extends State<TheApp> {
   @override
   void initState() {
     super.initState();
-    _screen = _createScreen();
+    _screen = _characterScreen();
   }
 
   @override
@@ -40,8 +40,8 @@ class TheAppState extends State<TheApp> {
     );
   }
 
-  Widget _createScreen() {
-    return CreateScreen(
+  Widget _characterScreen() {
+    return CharacterScreen(
       onDone: (player) {
         _toScreen(_combatScreen(player));
       },
@@ -54,7 +54,7 @@ class TheAppState extends State<TheApp> {
       key: UniqueKey(),
       log: widget.log,
       onWin: () => _toScreen(_combatScreen(player)),
-      onLose: () => _toScreen(_createScreen()),
+      onLose: () => _toScreen(_characterScreen()),
     );
   }
 

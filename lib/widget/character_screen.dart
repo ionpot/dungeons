@@ -12,16 +12,16 @@ import 'package:dungeons/widget/spaced.dart';
 import 'package:dungeons/widget/value_span.dart';
 import 'package:flutter/widgets.dart';
 
-class CreateScreen extends StatefulWidget {
+class CharacterScreen extends StatefulWidget {
   final ValueChanged<Entity> onDone;
 
-  const CreateScreen({super.key, required this.onDone});
+  const CharacterScreen({super.key, required this.onDone});
 
   @override
-  State<CreateScreen> createState() => _CreateScreenState();
+  State<CharacterScreen> createState() => _CharacterScreenState();
 }
 
-class _CreateScreenState extends State<CreateScreen> {
+class _CharacterScreenState extends State<CharacterScreen> {
   final Entity entity = Entity(
     'Player',
     player: true,
@@ -44,6 +44,9 @@ class _CreateScreenState extends State<CreateScreen> {
       ),
     );
   }
+
+  bool get _hasAttr => !entity.base.isEmpty();
+  bool get _hasClass => entity.klass != null;
 
   Widget get _classSelect {
     return RadioGroup(
@@ -117,7 +120,4 @@ class _CreateScreenState extends State<CreateScreen> {
       },
     );
   }
-
-  bool get _hasAttr => !entity.base.isEmpty();
-  bool get _hasClass => entity.klass != null;
 }
