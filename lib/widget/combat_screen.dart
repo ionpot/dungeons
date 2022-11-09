@@ -43,7 +43,6 @@ class CombatScreen extends StatefulWidget {
 
 class _CombatScreenState extends State<CombatScreen> {
   CombatTurn? _turn;
-  int _round = 1;
 
   Combat get _combat => widget.combat;
   Entity get _player => _combat.player;
@@ -76,7 +75,6 @@ class _CombatScreenState extends State<CombatScreen> {
     }
     return CombatDisplay(
       _turn,
-      _round,
       _combat,
       onPlayerAction: _onAction,
       onEnemyAction: () => _onAction(_combat.randomAction()),
@@ -100,6 +98,8 @@ class _CombatScreenState extends State<CombatScreen> {
   void _onAction(CombatAction action) {
     if (_turn == null) {
       _onStart();
+    } else {
+      setState(_combat.nextTurn);
     }
     if (_combat.newRound) {
       _log.newRound(_combat.round);
@@ -107,8 +107,6 @@ class _CombatScreenState extends State<CombatScreen> {
     setState(() {
       _turn = _combat.toTurn(action);
       _turn!.apply();
-      _round = _combat.round;
-      _combat.nextTurn();
     });
     _log.combatTurn(_turn!);
   }

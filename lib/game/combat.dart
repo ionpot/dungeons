@@ -39,6 +39,7 @@ class Combat {
   int get round => _round;
 
   Entity get current => _queue.first;
+  Entity get next => other;
   Entity get other => current == player ? enemy : player;
 
   CombatAction randomAction() {

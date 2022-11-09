@@ -16,7 +16,6 @@ import 'package:flutter/widgets.dart';
 
 class CombatDisplay extends StatelessWidget {
   final CombatTurn? turn;
-  final int round;
   final Combat combat;
   final ValueCallback<CombatAction> onPlayerAction;
   final VoidCallback onEnemyAction;
@@ -25,7 +24,6 @@ class CombatDisplay extends StatelessWidget {
 
   const CombatDisplay(
     this.turn,
-    this.round,
     this.combat, {
     super.key,
     required this.onPlayerAction,
@@ -45,6 +43,7 @@ class CombatDisplay extends StatelessWidget {
   }
 
   Entity get _current => combat.current;
+  Entity get _next => combat.next;
 
   Widget _buildButtons() {
     if (combat.won) {
@@ -54,15 +53,16 @@ class CombatDisplay extends StatelessWidget {
     if (combat.lost) {
       return Button('End', onClick: onLose);
     }
-    if (_current.player) {
-      return ActionSelect(_current, onChosen: onPlayerAction);
+    final turnOf = turn == null ? _current : _next;
+    if (turnOf.player) {
+      return ActionSelect(turnOf, onChosen: onPlayerAction);
     }
     return Button('Next', onClick: onEnemyAction);
   }
 
   Widget _buildTurn(CombatTurn turn) {
     return TitledTextLines(
-      title: 'Round $round',
+      title: 'Round ${combat.round}',
       lines: TextLines([
         if (turn.weaponTurn != null) _buildWeapon(turn.weaponTurn!),
         if (turn.spellTurn != null) _buildSpell(turn.spellTurn!),
