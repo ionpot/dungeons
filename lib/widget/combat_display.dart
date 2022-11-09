@@ -120,8 +120,11 @@ class CombatDisplay extends StatelessWidget {
     ]);
   }
 
-  Widget _damageAndStatus(IntValue damage,
-      {WeaponAttackTurn? weaponTurn, SpellAttackTurn? spellTurn}) {
+  Widget _damageAndStatus(
+    IntValue damage, {
+    WeaponAttackTurn? weaponTurn,
+    SpellAttackTurn? spellTurn,
+  }) {
     final target = weaponTurn?.attack.target ?? spellTurn!.attack.target;
     final source = weaponTurn?.attack.source ?? spellTurn!.attack.source;
     return _rich(
