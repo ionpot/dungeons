@@ -2,8 +2,9 @@ import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/log.dart';
+import 'package:dungeons/widget/sized_wrap.dart';
+import 'package:dungeons/widget/combat_buttons.dart';
 import 'package:dungeons/widget/combat_display.dart';
-import 'package:dungeons/widget/combat_level.dart';
 import 'package:dungeons/widget/entity_stats.dart';
 import 'package:dungeons/widget/spaced.dart';
 import 'package:flutter/widgets.dart';
@@ -44,7 +45,23 @@ class _CombatScreenState extends State<CombatScreen> {
               EntityStats(_combat.enemy),
             ],
           ),
-          _secondRow,
+          Wrap(
+            children: [
+              SizedWrap(
+                width: 160,
+                child: CombatButtons(
+                  _combat,
+                  turn: _turn == null ? _combat.current : _combat.next,
+                  onPlayerAction: _onAction,
+                  onEnemyAction: () => _onAction(_combat.randomAction()),
+                  onWin: _onWin,
+                  onLose: widget.onLose,
+                  onAttributePoint: _onAttributePoint,
+                ),
+              ),
+              CombatDisplay(_turn, _combat),
+            ],
+          ),
         ],
       ),
     );
@@ -53,20 +70,6 @@ class _CombatScreenState extends State<CombatScreen> {
   Combat get _combat => widget.combat;
   Entity get _player => _combat.player;
   Log get _log => widget.log..ln();
-
-  Widget get _secondRow {
-    if (_player.extraPoints > 0) {
-      return CombatLevel(_player.extraPoints, onPoint: _onAttributePoint);
-    }
-    return CombatDisplay(
-      _turn,
-      _combat,
-      onPlayerAction: _onAction,
-      onEnemyAction: () => _onAction(_combat.randomAction()),
-      onWin: _onWin,
-      onLose: widget.onLose,
-    );
-  }
 
   void _onStart() {
     _log

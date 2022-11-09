@@ -5,10 +5,6 @@ import 'package:dungeons/game/spell_attack.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
-import 'package:dungeons/utility/value_callback.dart';
-import 'package:dungeons/widget/action_select.dart';
-import 'package:dungeons/widget/button.dart';
-import 'package:dungeons/widget/spaced.dart';
 import 'package:dungeons/widget/text_lines.dart';
 import 'package:dungeons/widget/titled_text_lines.dart';
 import 'package:dungeons/widget/value_span.dart';
@@ -17,48 +13,26 @@ import 'package:flutter/widgets.dart';
 class CombatDisplay extends StatelessWidget {
   final CombatTurn? turn;
   final Combat combat;
-  final ValueCallback<CombatAction> onPlayerAction;
-  final VoidCallback onEnemyAction;
-  final VoidCallback onWin;
-  final VoidCallback onLose;
 
   const CombatDisplay(
     this.turn,
     this.combat, {
     super.key,
-    required this.onPlayerAction,
-    required this.onEnemyAction,
-    required this.onWin,
-    required this.onLose,
   });
 
   @override
   Widget build(BuildContext context) {
-    return buildSpacedRow(
-      children: [
-        SizedBox(width: 120, child: Wrap(children: [_buildButtons()])),
-        ifdef(turn, _buildTurn) ?? Text('${_current.name} goes first.'),
-      ],
-    );
+    final points = combat.player.extraPoints;
+    if (points > 0) {
+      return _points(points);
+    }
+    if (turn != null) {
+      return _buildTurn(turn!);
+    }
+    return Text('${_current.name} goes first.');
   }
 
   Entity get _current => combat.current;
-  Entity get _next => combat.next;
-
-  Widget _buildButtons() {
-    if (combat.won) {
-      final text = combat.canLevelUp() ? 'Level Up' : 'Next';
-      return Button(text, onClick: onWin);
-    }
-    if (combat.lost) {
-      return Button('End', onClick: onLose);
-    }
-    final turnOf = turn == null ? _current : _next;
-    if (turnOf.player) {
-      return ActionSelect(turnOf, onChosen: onPlayerAction);
-    }
-    return Button('Next', onClick: onEnemyAction);
-  }
 
   Widget _buildTurn(CombatTurn turn) {
     return TitledTextLines(
@@ -150,6 +124,13 @@ class CombatDisplay extends StatelessWidget {
     final player = combat.player;
     return Text('${player.name} gains $xp XP'
         '${player.canLevelUpWith(xp) ? ', and levels up' : ''}.');
+  }
+
+  Widget _points(int points) {
+    return TitledTextLines.plain(
+      title: 'Choose attributes',
+      lines: ['Points remaining: $points'],
+    );
   }
 
   Widget _rich(String prefix, TextSpan span, String suffix) {
