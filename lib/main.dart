@@ -1,3 +1,4 @@
+import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/log.dart';
 import 'package:dungeons/widget/colors.dart';
@@ -48,8 +49,8 @@ class TheAppState extends State<TheApp> {
   }
 
   Widget _combatScreen(Entity player) {
-    return CombatScreen.withPlayer(
-      player,
+    return CombatScreen(
+      Combat.withPlayer(player),
       key: UniqueKey(),
       log: widget.log,
       onWin: () => _toScreen(_combatScreen(player)),

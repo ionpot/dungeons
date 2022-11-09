@@ -22,31 +22,12 @@ class CombatScreen extends StatefulWidget {
     required this.onLose,
   });
 
-  factory CombatScreen.withPlayer(
-    Entity player, {
-    required Log log,
-    required VoidCallback onWin,
-    required VoidCallback onLose,
-    Key? key,
-  }) =>
-      CombatScreen(
-        Combat.withPlayer(player),
-        log: log,
-        onWin: onWin,
-        onLose: onLose,
-        key: key,
-      );
-
   @override
   State<CombatScreen> createState() => _CombatScreenState();
 }
 
 class _CombatScreenState extends State<CombatScreen> {
   CombatTurn? _turn;
-
-  Combat get _combat => widget.combat;
-  Entity get _player => _combat.player;
-  Log get _log => widget.log..ln();
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +49,10 @@ class _CombatScreenState extends State<CombatScreen> {
       ),
     );
   }
+
+  Combat get _combat => widget.combat;
+  Entity get _player => _combat.player;
+  Log get _log => widget.log..ln();
 
   Widget get _secondRow {
     if (_player.extraPoints > 0) {
