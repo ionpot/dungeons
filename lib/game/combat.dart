@@ -58,7 +58,7 @@ class Combat {
         WeaponAttack(from: current, target: other),
       );
 
-  void next() {
+  void nextTurn() {
     _queue.removeFirst();
     if (newRound) {
       ++_round;

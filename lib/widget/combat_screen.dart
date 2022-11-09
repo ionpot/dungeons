@@ -108,7 +108,7 @@ class _CombatScreenState extends State<CombatScreen> {
       _turn = _combat.toTurn(action);
       _turn!.apply();
       _round = _combat.round;
-      _combat.next();
+      _combat.nextTurn();
     });
     _log.combatTurn(_turn!);
   }
