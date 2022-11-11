@@ -53,7 +53,12 @@ class Entity {
     return PercentValue(base: base, bonus: scale.of(base));
   }
 
-  Percent get resist => Percent(intellect);
+  PercentValue get resist {
+    return PercentValue(
+      base: Percent(intellect),
+      bonus: effects.sumPercent((e) => e.resistChance),
+    );
+  }
 
   IntValue get damageBonus {
     return IntValue(
@@ -88,7 +93,10 @@ class Entity {
     return Stress(
       current: _stress,
       reserved: effects.reservedStress,
-      cap: intellect + level,
+      cap: IntValue(
+        base: intellect + level,
+        bonus: effects.sumInt((e) => e.stressCap),
+      ),
     );
   }
 
@@ -109,7 +117,16 @@ class Entity {
   Armor? get armor => _armor;
 
   List<Spell> get knownSpells {
-    return klass == EntityClass.mage ? Spell.values : [];
+    switch (klass) {
+      case EntityClass.cleric:
+        return [Spell.bless];
+      case EntityClass.mage:
+        return [Spell.magicMissile, Spell.rayOfFrost];
+      case EntityClass.warrior:
+      case EntityClass.trickster:
+      case null:
+        return [];
+    }
   }
 
   set weapon(Weapon? w) {

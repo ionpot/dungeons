@@ -18,6 +18,8 @@ class Effect {
     return weapon?.bonus ?? armor?.bonus ?? skill?.bonus ?? spell?.effect;
   }
 
+  int? get reservedStress => skill?.reserveStress ?? spell?.reserveStress;
+
   bool get stacks => spell?.stacks == true;
 
   @override
@@ -43,7 +45,7 @@ class Effects {
   int get reservedStress {
     int sum = 0;
     for (final effect in contents.keys) {
-      sum += effect.skill?.reserveStress ?? 0;
+      sum += effect.reservedStress ?? 0;
     }
     return sum;
   }

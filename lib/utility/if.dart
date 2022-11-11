@@ -9,3 +9,7 @@ B? ifok<A, B>(A? a, B? Function()? f) {
 T? ifyes<T>(bool? b, T? Function()? f) {
   return b == true ? f?.call() : null;
 }
+
+T? ifnot<T>(bool? b, T? Function()? f) {
+  return b == false ? f?.call() : null;
+}

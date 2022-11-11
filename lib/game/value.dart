@@ -27,7 +27,10 @@ class PercentValue {
   final Percent base;
   final Percent bonus;
 
-  const PercentValue({required this.base, required this.bonus});
+  const PercentValue({
+    this.base = const Percent(),
+    this.bonus = const Percent(),
+  });
 
   Percent get total => base + bonus;
 

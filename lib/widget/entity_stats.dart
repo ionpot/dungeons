@@ -54,7 +54,8 @@ class EntityStats extends StatelessWidget {
       TextSpan(children: [
         const TextSpan(text: 'Dodge '),
         PercentValueSpan(e.dodge),
-        TextSpan(text: ', Resist ${e.resist}'),
+        const TextSpan(text: ', Resist '),
+        PercentValueSpan(e.resist),
       ]),
     );
   }

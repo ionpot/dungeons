@@ -79,8 +79,10 @@ class Log {
     final from = attack.from;
     final target = attack.target;
     final spell = attack.spell;
-    file.writeln('${from.name} casts ${spell.text} at ${target.name}');
-    if (!spell.autoHit) {
+    file
+      ..write('${from.name} casts ${spell.text} ')
+      ..writeln(attack.self ? 'to self.' : 'at ${target.name}.');
+    if (result.resist != null) {
       file.writeln('Resist (${attack.resistChance}) ${result.resist}');
     }
     if (result.damage != null) {

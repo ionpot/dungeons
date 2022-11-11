@@ -1,8 +1,19 @@
 import 'package:dungeons/game/effect_bonus.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/utility/dice.dart';
+import 'package:dungeons/utility/percent.dart';
 
 enum Spell {
+  bless(
+    text: 'Bless',
+    source: Source.radiant,
+    reserveStress: 2,
+    effect: EffectBonus(
+      stressCap: 1,
+      hitChance: Percent(1),
+      resistChance: Percent(1),
+    ),
+  ),
   magicMissile(
     text: 'Magic Missile',
     source: Source.astral,
@@ -22,6 +33,7 @@ enum Spell {
   final String text;
   final Source source;
   final int stress;
+  final int reserveStress;
   final bool autoHit;
   final bool stacks;
   final Dice? damage;
@@ -30,7 +42,8 @@ enum Spell {
   const Spell({
     required this.text,
     required this.source,
-    required this.stress,
+    this.stress = 0,
+    this.reserveStress = 0,
     this.autoHit = false,
     this.stacks = false,
     this.damage,

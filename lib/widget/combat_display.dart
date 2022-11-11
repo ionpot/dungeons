@@ -83,10 +83,14 @@ class CombatDisplay extends StatelessWidget {
       _richText(
         '${from.name} casts ',
         SpellNameSpan(spell),
-        ' at ${target.name}',
+        attack.self ? ' to self.' : ' at ${target.name}.',
       ),
-      if (!spell.autoHit)
-        Text('Resist (${attack.resistChance}) ${result.resist}'),
+      if (result.resist != null)
+        _richText(
+          'Resist (',
+          PercentValueSpan(attack.resistChance),
+          ') ${result.resist}',
+        ),
       if (result.damageDice != null)
         Text('Damage roll (${spell.damage}) ${result.damageDice}'),
       if (result.damage != null)

@@ -13,17 +13,25 @@ class SpellAttack {
 
   const SpellAttack(this.spell, {required this.from, required this.target});
 
-  Percent get resistChance => spell.autoHit ? const Percent() : target.resist;
+  bool get self => from == target;
 
+  PercentValue get resistChance =>
+      spell.autoHit ? const PercentValue() : target.resist;
+
+  bool get autoHit => spell.autoHit;
   Source get source => spell.source;
 
   SpellAttackResult roll() {
-    final resist = resistChance.roll();
+    final affected = target.canSpellEffect(spell);
+    if (self) {
+      return SpellAttackResult(affected: affected);
+    }
+    final resist = ifnot(autoHit, resistChance.roll);
+    final hit = autoHit ? true : resist?.fail == true;
     return SpellAttackResult(
       resist: resist,
-      damageDice: ifyes(resist.fail, spell.damage?.roll),
-      affected:
-          resist.fail && spell.effect != null && target.canSpellEffect(spell),
+      damageDice: ifyes(hit, spell.damage?.roll),
+      affected: hit && spell.effect != null && affected,
     );
   }
 
@@ -39,13 +47,13 @@ class SpellAttack {
 }
 
 class SpellAttackResult {
-  final PercentRoll resist;
   final bool affected;
+  final PercentRoll? resist;
   final DiceRoll? damageDice;
 
   const SpellAttackResult({
-    required this.resist,
     required this.affected,
+    this.resist,
     this.damageDice,
   });
 

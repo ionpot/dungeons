@@ -3,6 +3,7 @@ import 'package:dungeons/utility/pick_random.dart';
 enum EntityClass {
   warrior(text: 'Warrior', hpBonus: 4),
   trickster(text: 'Trickster', hpBonus: 3),
+  cleric(text: 'Cleric', hpBonus: 3),
   mage(text: 'Mage', hpBonus: 2);
 
   final int hpBonus;

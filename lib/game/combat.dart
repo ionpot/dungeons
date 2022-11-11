@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_attack.dart';
 import 'package:dungeons/game/weapon_attack.dart';
@@ -44,20 +45,47 @@ class Combat {
   Entity _otherOf(Entity e) => e == player ? enemy : player;
 
   CombatAction randomAction() {
+    switch (current.klass) {
+      case EntityClass.warrior:
+      case EntityClass.trickster:
+      case null:
+        return CombatAction(target: _other);
+      case EntityClass.cleric:
+        return _clericAction;
+      case EntityClass.mage:
+        return _mageAction;
+    }
+  }
+
+  CombatAction get _clericAction {
+    if (current.hasSpellEffect(Spell.bless)) {
+      return CombatAction(target: _other);
+    }
+    return CombatAction(target: current, castSpell: Spell.bless);
+  }
+
+  CombatAction get _mageAction {
     final spells = current.knownSpells;
     final len = spells.length;
     final i = Random().nextInt(len + 1);
-    return i < len ? CombatAction(castSpell: spells[i]) : const CombatAction();
+    return CombatAction(
+      target: _other,
+      castSpell: i < len ? spells[i] : null,
+    );
   }
 
   CombatTurn toTurn(CombatAction action) =>
       ifdef(action.castSpell, (spell) {
         return CombatTurn.spell(
-          SpellAttack(spell, from: current, target: _other),
+          SpellAttack(
+            spell,
+            from: current,
+            target: action.target,
+          ),
         );
       }) ??
       CombatTurn.weapon(
-        WeaponAttack(from: current, target: _other),
+        WeaponAttack(from: current, target: action.target),
       );
 
   void nextTurn() {
@@ -85,9 +113,10 @@ class Combat {
 }
 
 class CombatAction {
+  final Entity target;
   final Spell? castSpell;
 
-  const CombatAction({this.castSpell});
+  const CombatAction({required this.target, this.castSpell});
 }
 
 class CombatTurn {

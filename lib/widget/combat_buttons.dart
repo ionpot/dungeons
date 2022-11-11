@@ -40,7 +40,7 @@ class CombatButtons extends StatelessWidget {
       return Button('End', onClick: onLose);
     }
     if (turn.player) {
-      return ActionSelect(turn, onChosen: onPlayerAction);
+      return ActionSelect(turn, combat.enemy, onChosen: onPlayerAction);
     }
     return Button('Next', onClick: onEnemyAction);
   }
