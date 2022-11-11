@@ -26,9 +26,7 @@ class Combat {
   }
 
   void resetQueue() {
-    _queue = Queue.from(
-      player.fasterThan(enemy) ? [player, enemy] : [enemy, player],
-    );
+    _queue = Queue.from([_faster, _otherOf(_faster)]);
   }
 
   bool get ended => player.dead || enemy.dead;
@@ -39,8 +37,11 @@ class Combat {
   int get round => _round;
 
   Entity get current => _queue.first;
-  Entity get next => other;
-  Entity get other => current == player ? enemy : player;
+  Entity get next => _queue.length == 2 ? _queue.last : _faster;
+
+  Entity get _faster => player.fasterThan(enemy) ? player : enemy;
+  Entity get _other => _otherOf(current);
+  Entity _otherOf(Entity e) => e == player ? enemy : player;
 
   CombatAction randomAction() {
     final spells = current.knownSpells;
@@ -52,11 +53,11 @@ class Combat {
   CombatTurn toTurn(CombatAction action) =>
       ifdef(action.castSpell, (spell) {
         return CombatTurn.spell(
-          SpellAttack(spell, from: current, target: other),
+          SpellAttack(spell, from: current, target: _other),
         );
       }) ??
       CombatTurn.weapon(
-        WeaponAttack(from: current, target: other),
+        WeaponAttack(from: current, target: _other),
       );
 
   void nextTurn() {
