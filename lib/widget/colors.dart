@@ -1,4 +1,7 @@
 import 'package:dungeons/game/source.dart';
+import 'package:dungeons/game/stress.dart';
+import 'package:dungeons/game/value.dart';
+import 'package:dungeons/utility/percent.dart';
 import 'package:flutter/widgets.dart';
 
 const black = Color(0xFF000000);
@@ -17,6 +20,14 @@ Color? intColor(int i) {
       return null;
   }
 }
+
+Color? percentColor(Percent percent) => intColor(percent.value);
+Color? intValueColor(IntValue value) => intColor(value.bonus);
+Color? percentValueColor(PercentValue value) => percentColor(value.bonus);
+Color? diceValueColor(DiceValue value) => intValueColor(value.bonus);
+
+Color? stressColor(Stress stress) =>
+    stress.reserved > 0 ? yellow : intValueColor(stress.cap);
 
 Color? sourceColor(Source source) {
   switch (source) {

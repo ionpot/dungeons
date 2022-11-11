@@ -25,7 +25,7 @@ class IntValueSpan extends TextSpan {
   IntValueSpan(IntValue value, {bool bold = false})
       : super(
           text: '$value',
-          style: _style(intColor(value.bonus), bold: bold),
+          style: _style(intValueColor(value), bold: bold),
         );
 }
 
@@ -33,7 +33,7 @@ class PercentValueSpan extends TextSpan {
   PercentValueSpan(PercentValue value, {bool bold = false})
       : super(
           text: '$value',
-          style: _style(intColor(value.bonus.value), bold: bold),
+          style: _style(percentValueColor(value), bold: bold),
         );
 }
 
@@ -44,7 +44,7 @@ class DiceValueSpan extends TextSpan {
             TextSpan(text: '${value.dice}'),
             TextSpan(
               text: bonusText(value.bonus.total),
-              style: _style(intColor(value.bonus.bonus)),
+              style: _style(diceValueColor(value)),
             ),
           ],
           style: _style(null, bold: bold),
@@ -72,9 +72,7 @@ class StressSpan extends TextSpan {
             TextSpan(text: '${stress.current}/'),
             TextSpan(
               text: '${stress.currentCap}',
-              style: _style(
-                stress.reserved > 0 ? yellow : intColor(stress.cap.bonus),
-              ),
+              style: _style(stressColor(stress)),
             ),
           ],
           style: _style(null, bold: bold),
