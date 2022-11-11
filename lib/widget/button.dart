@@ -34,7 +34,7 @@ class Button extends StatelessWidget {
           opacity: disabled ? 0.5 : 1.0,
           child: TextBox(
             text: text,
-            color: active ? yellow : color,
+            color: active ? green : color,
           ),
         ),
       ),
