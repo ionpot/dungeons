@@ -53,7 +53,7 @@ class _CombatScreenState extends State<CombatScreen> {
                   _combat,
                   turn: _turn == null ? _combat.current : _combat.next,
                   onPlayerAction: _onAction,
-                  onEnemyAction: () => _onAction(_combat.randomAction()),
+                  onEnemyAction: () => _onAction(null),
                   onWin: _onWin,
                   onLose: widget.onLose,
                   onAttributePoint: _onAttributePoint,
@@ -83,7 +83,7 @@ class _CombatScreenState extends State<CombatScreen> {
     });
   }
 
-  void _onAction(CombatAction action) {
+  void _onAction(CombatAction? action) {
     if (_turn == null) {
       _onStart();
     } else {
@@ -93,7 +93,7 @@ class _CombatScreenState extends State<CombatScreen> {
       _log.newRound(_combat.round);
     }
     setState(() {
-      _turn = _combat.toTurn(action);
+      _turn = _combat.toTurn(action ?? _combat.randomAction());
       _turn!.apply();
     });
     _log.combatTurn(_turn!);
