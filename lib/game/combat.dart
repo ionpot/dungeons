@@ -48,12 +48,13 @@ class Combat {
     switch (current.klass) {
       case EntityClass.warrior:
       case EntityClass.trickster:
-      case null:
         return CombatAction(target: _other);
       case EntityClass.cleric:
         return _clericAction;
       case EntityClass.mage:
         return _mageAction;
+      case null:
+        throw Exception('null class');
     }
   }
 

@@ -124,8 +124,9 @@ class Entity {
         return [Spell.magicMissile, Spell.rayOfFrost];
       case EntityClass.warrior:
       case EntityClass.trickster:
-      case null:
         return [];
+      case null:
+        throw Exception('null class');
     }
   }
 
