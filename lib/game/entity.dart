@@ -17,20 +17,26 @@ class Entity {
 
   final String name;
   final bool player;
-  final base = EntityAttributes();
+  final EntityAttributes base;
   final EntityRace race;
+  final EntityClass klass;
   final effects = Effects();
   int level = 1;
   int xp = 0;
   int extraPoints = 0;
-  EntityClass? klass;
 
   Armor? _armor;
   Weapon? _weapon;
   int _damage = 0;
   int _stress = 0;
 
-  Entity(this.name, {required this.race, this.player = false});
+  Entity(
+    this.name, {
+    required this.base,
+    required this.race,
+    required this.klass,
+    this.player = false,
+  });
 
   int get strength => base.strength + race.strength;
   int get agility => base.agility;
@@ -90,7 +96,7 @@ class Entity {
   }
 
   int get totalArmor => _armor?.value ?? 0;
-  int get totalHp => strength + level * (klass?.hpBonus ?? 0);
+  int get totalHp => strength + level * (klass.hpBonus);
   int get hp => totalHp - _damage;
 
   Stress get stress {
@@ -112,8 +118,6 @@ class Entity {
     _stress = 0;
   }
 
-  bool get ok => (klass != null) && (_armor != null) && (_weapon != null);
-
   bool get alive => hp > 0;
   bool get dead => !alive;
 
@@ -129,8 +133,6 @@ class Entity {
       case EntityClass.warrior:
       case EntityClass.trickster:
         return [];
-      case null:
-        throw Exception('null class');
     }
   }
 
@@ -225,18 +227,17 @@ class Entity {
     if (canLevelUp()) levelUp();
   }
 
-  void randomize() {
-    base.roll();
-    klass = EntityClass.random();
-    armor = Armor.random();
-    weapon = Weapon.random();
-    spendAllPoints();
-  }
-
   Entity rollEnemy() {
-    return Entity('Enemy', race: EntityRace.orc)
+    return Entity(
+      'Enemy',
+      base: EntityAttributes.random(),
+      race: EntityRace.orc,
+      klass: EntityClass.random(),
+    )
       ..levelUpTo(rollEnemyLevel())
-      ..randomize();
+      ..spendAllPoints()
+      ..weapon = Weapon.random()
+      ..armor = Armor.random();
   }
 
   int rollEnemyLevel() => const Deviate(2, 0).from(level).withMin(1).roll();

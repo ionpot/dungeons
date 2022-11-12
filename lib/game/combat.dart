@@ -53,8 +53,6 @@ class Combat {
         return _clericAction;
       case EntityClass.mage:
         return _mageAction;
-      case null:
-        throw Exception('null class');
     }
   }
 

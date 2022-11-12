@@ -1,5 +1,6 @@
 import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/weapon.dart';
@@ -22,52 +23,63 @@ class CharacterScreen extends StatefulWidget {
 }
 
 class _CharacterScreenState extends State<CharacterScreen> {
-  final Entity entity = Entity(
-    'Player',
-    player: true,
-    race: EntityRace.human,
-  );
+  EntityAttributes? _attributes;
+  EntityClass? _class;
+  Weapon? _weapon;
+  Armor? _armor;
+
+  Entity? get _entity {
+    if (_attributes == null || _class == null) return null;
+    return Entity(
+      'Player',
+      player: true,
+      base: _attributes!,
+      klass: _class!,
+      race: EntityRace.human,
+    )
+      ..weapon = _weapon
+      ..armor = _armor;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final entity = _entity;
     return Container(
       padding: const EdgeInsets.all(30),
       child: buildSpacedColumn(
         children: [
           const Text('New character'),
-          _classSelect,
-          if (_hasClass) _attrAndStats,
-          if (_hasAttr) _armorSelect,
-          if (_hasAttr) _weaponSelect,
-          if (entity.ok) Button('Done', onClick: () => widget.onDone(entity)),
+          _classSelect(),
+          if (entity != null) _attrAndStats(entity),
+          if (entity != null) _armorSelect(),
+          if (entity != null) _weaponSelect(),
+          if (entity != null && _weapon != null && _armor != null)
+            Button('Done', onClick: () => widget.onDone(entity)),
         ],
       ),
     );
   }
 
-  bool get _hasAttr => !entity.base.isEmpty();
-  bool get _hasClass => entity.klass != null;
-
-  Widget get _classSelect {
+  Widget _classSelect() {
     return RadioGroup(
       values: EntityClass.values,
       onChange: (klass) {
         setState(() {
-          entity.klass = klass;
-          if (!_hasAttr) entity.base.roll();
+          _class = klass;
+          _attributes ??= EntityAttributes.random();
         });
       },
     );
   }
 
-  Widget get _attrAndStats {
+  Widget _attrAndStats(Entity entity) {
     return buildSpacedRow(
-      children: [_attrRoll, _stats],
+      children: [_attrRoll(entity), _stats(entity)],
       spacing: 0,
     );
   }
 
-  Widget get _attrRoll {
+  Widget _attrRoll(Entity entity) {
     return buildSpacedColumn(
       spacing: 20,
       children: [
@@ -80,12 +92,14 @@ class _CharacterScreenState extends State<CharacterScreen> {
             'Intellect': BoldText('${entity.intellect}'),
           },
         ),
-        Button('Reroll', onClick: () => setState(entity.base.roll)),
+        Button('Reroll', onClick: () {
+          setState(() => _attributes?.roll());
+        }),
       ],
     );
   }
 
-  Widget get _stats {
+  Widget _stats(Entity entity) {
     return LabelValueTable(
       labelWidth: 86,
       valueWidth: 128,
@@ -103,20 +117,20 @@ class _CharacterScreenState extends State<CharacterScreen> {
     );
   }
 
-  Widget get _armorSelect {
+  Widget _armorSelect() {
     return RadioGroup(
       values: Armor.values,
       onChange: (armor) {
-        setState(() => entity.armor = armor);
+        setState(() => _armor = armor);
       },
     );
   }
 
-  Widget get _weaponSelect {
+  Widget _weaponSelect() {
     return RadioGroup(
       values: Weapon.values,
       onChange: (weapon) {
-        setState(() => entity.weapon = weapon);
+        setState(() => _weapon = weapon);
       },
     );
   }
