@@ -12,12 +12,12 @@ class EntityStats extends StatelessWidget {
   Widget build(BuildContext context) {
     final e = entity;
     return TextLines([
-      Text('${e.name}, ${e.race.text} ${e.klass?.text} Lv${e.level}'),
+      Text('${e.name}, ${e.race} ${e.klass} Lv${e.level}'),
       Text('${e.attributes}'),
       _hpStressXp,
       _initiative,
       _dodgeResist,
-      Text('Armor: ${e.armor?.text} (${e.totalArmor})'),
+      Text('Armor: ${e.armor} (${e.totalArmor})'),
       _weapon,
     ]);
   }
@@ -65,7 +65,7 @@ class EntityStats extends StatelessWidget {
     return Text.rich(
       TextSpan(
         children: [
-          TextSpan(text: 'Weapon: ${entity.weapon?.text} ('),
+          TextSpan(text: 'Weapon: ${entity.weapon} ('),
           if (damage != null) DiceValueSpan(damage),
           TextSpan(text: ') ${damage?.range}'),
         ],
