@@ -24,15 +24,15 @@ class Log {
 
   void entity(Entity e) {
     file
-      ..writeln('${e.name}, ${e.race.text} ${e.klass?.text} Lv${e.level}')
+      ..writeln('${e.name}, ${e.race} ${e.klass} Lv${e.level}')
       ..writeln('${e.attributes}')
       ..writeln('Hp ${e.totalHp}'
           '${e.player ? ', Stress Cap ${e.stress.cap}' : ''}'
           '${e.player ? ', XP ${e.toXpString()}' : ''}')
       ..writeln('Initiative ${e.initiative}')
       ..writeln('Dodge ${e.dodge}, Resist ${e.resist}')
-      ..writeln('Armor: ${e.armor?.text} (${e.totalArmor})')
-      ..writeln('Weapon: ${e.weapon?.text} (${e.damage}) ${e.damage?.range}');
+      ..writeln('Armor: ${e.armor} (${e.totalArmor})')
+      ..writeln('Weapon: ${e.weapon} (${e.damage}) ${e.damage?.range}');
   }
 
   void combatTurn(CombatTurn turn) {
@@ -47,7 +47,7 @@ class Log {
     final target = attack.target;
     file
       ..writeln(
-        '${from.name} attacks ${target.name} with ${from.weapon?.text}.',
+        '${from.name} attacks ${target.name} with ${from.weapon}.',
       )
       ..writeln('Attack roll (${attack.hitChance}) ${result.hit}');
     if (result.hit.fail) {
@@ -80,7 +80,7 @@ class Log {
     final target = attack.target;
     final spell = attack.spell;
     file
-      ..write('${from.name} casts ${spell.text} ')
+      ..write('${from.name} casts $spell ')
       ..writeln(attack.self ? 'to self.' : 'at ${target.name}.');
     if (result.resist != null) {
       file.writeln('Resist (${attack.resistChance}) ${result.resist}');

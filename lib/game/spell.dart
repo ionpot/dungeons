@@ -49,4 +49,7 @@ enum Spell {
     this.damage,
     this.effect,
   });
+
+  @override
+  String toString() => text;
 }
