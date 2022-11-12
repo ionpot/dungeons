@@ -29,12 +29,12 @@ class ActionSelect extends StatelessWidget {
           Button(
             spell.text,
             disabled: !player.canCast(spell),
-            onClick: () => onChosen(
-              CombatAction(
+            onClick: () {
+              onChosen(CombatAction(
                 castSpell: spell,
                 target: spell == Spell.bless ? player : enemy,
-              ),
-            ),
+              ));
+            },
             color: sourceColor(spell.source),
           ),
       ],

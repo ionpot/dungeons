@@ -36,16 +36,20 @@ class Entity {
   int get agility => base.agility;
   int get intellect => base.intellect + race.intellect;
 
-  EntityAttributes get attributes => EntityAttributes(
-        strength: strength,
-        agility: agility,
-        intellect: intellect,
-      );
+  EntityAttributes get attributes {
+    return EntityAttributes(
+      strength: strength,
+      agility: agility,
+      intellect: intellect,
+    );
+  }
 
-  IntValue get initiative => IntValue(
-        base: (agility + intellect) ~/ 2,
-        bonus: effects.sumInt((e) => e.initiative),
-      );
+  IntValue get initiative {
+    return IntValue(
+      base: (agility + intellect) ~/ 2,
+      bonus: effects.sumInt((e) => e.initiative),
+    );
+  }
 
   PercentValue get dodge {
     final base = Percent(agility);

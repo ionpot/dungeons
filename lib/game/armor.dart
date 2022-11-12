@@ -20,10 +20,12 @@ enum Armor {
 
   factory Armor.random() => pickRandom(Armor.values);
 
-  EffectBonus get bonus => EffectBonus(
-        dodgeScale: dodge,
-        initiative: initiative,
-      );
+  EffectBonus get bonus {
+    return EffectBonus(
+      dodgeScale: dodge,
+      initiative: initiative,
+    );
+  }
 
   @override
   String toString() => text;
