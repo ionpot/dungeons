@@ -1,6 +1,5 @@
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/utility/value_callback.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/colors.dart';
@@ -32,7 +31,7 @@ class ActionSelect extends StatelessWidget {
             onClick: () {
               onChosen(CombatAction(
                 castSpell: spell,
-                target: spell == Spell.bless ? player : enemy,
+                target: spell.selfCast ? player : enemy,
               ));
             },
             color: sourceColor(spell.source),

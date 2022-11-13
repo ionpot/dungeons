@@ -99,6 +99,8 @@ class Entity {
   int get totalHp => strength + level * (klass.hpBonus);
   int get hp => totalHp - _damage;
 
+  bool get injured => _damage > 0;
+
   Stress get stress {
     return Stress(
       current: _stress,
@@ -127,7 +129,7 @@ class Entity {
   List<Spell> get knownSpells {
     switch (klass) {
       case EntityClass.cleric:
-        return [Spell.bless];
+        return [Spell.bless, Spell.heal];
       case EntityClass.mage:
         return [Spell.magicMissile, Spell.rayOfFrost];
       case EntityClass.warrior:
@@ -254,6 +256,14 @@ class Entity {
   void spendAllPoints() {
     while (extraPoints > 0) {
       spendPointTo(EntityAttributeId.random());
+    }
+  }
+
+  void heal(int value) {
+    if (_damage > value) {
+      _damage -= value;
+    } else {
+      _damage = 0;
     }
   }
 

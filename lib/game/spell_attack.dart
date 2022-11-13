@@ -24,7 +24,10 @@ class SpellAttack {
   SpellAttackResult roll() {
     final affected = target.canSpellEffect(spell);
     if (self) {
-      return SpellAttackResult(affected: affected);
+      return SpellAttackResult(
+        affected: affected,
+        healDice: spell.heals?.roll(),
+      );
     }
     final resist = ifnot(autoHit, resistChance.roll);
     final hit = autoHit ? true : resist?.fail == true;
@@ -39,6 +42,7 @@ class SpellAttack {
     if (from.player) {
       from.addStress(spell.stress);
     }
+    target.heal(result.healDice?.total ?? 0);
     target.takeDamage(result.damageDice?.total ?? 0);
     if (result.affected) {
       target.addSpellEffect(spell);
@@ -50,15 +54,19 @@ class SpellAttackResult {
   final bool affected;
   final PercentRoll? resist;
   final DiceRoll? damageDice;
+  final DiceRollValue? healDice;
 
   const SpellAttackResult({
     required this.affected,
     this.resist,
     this.damageDice,
+    this.healDice,
   });
 
   IntValue? get damage =>
       ifdef(damageDice, (dice) => IntValue(base: dice.total));
+
+  IntValue? get heal => ifdef(healDice, (dice) => IntValue(base: dice.total));
 }
 
 class SpellAttackTurn {

@@ -57,10 +57,13 @@ class Combat {
   }
 
   CombatAction get _clericAction {
-    if (current.hasSpellEffect(Spell.bless)) {
-      return CombatAction(target: _other);
+    if (!current.hasSpellEffect(Spell.bless)) {
+      return CombatAction(target: current, castSpell: Spell.bless);
     }
-    return CombatAction(target: current, castSpell: Spell.bless);
+    if (current.injured && Random().nextBool()) {
+      return CombatAction(target: current, castSpell: Spell.heal);
+    }
+    return CombatAction(target: _other);
   }
 
   CombatAction get _mageAction {
