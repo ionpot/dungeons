@@ -7,8 +7,7 @@ class IntValue implements Comparable<IntValue> {
   final int base;
   final int bonus;
 
-  const IntValue({required this.base, this.bonus = 0});
-  const IntValue.base(int base) : this(base: base);
+  const IntValue({this.base = 0, this.bonus = 0});
 
   int get total => base + bonus;
 
