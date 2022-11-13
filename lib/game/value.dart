@@ -43,7 +43,7 @@ class DiceValue {
   final Dice base;
   final IntValue bonus;
 
-  const DiceValue({required this.base, required this.bonus});
+  const DiceValue({required this.base, this.bonus = const IntValue()});
 
   Range get range => base.range + bonus.total;
 
