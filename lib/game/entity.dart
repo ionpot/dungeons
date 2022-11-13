@@ -79,7 +79,7 @@ class Entity {
 
   DiceValue? get damage {
     if (_weapon == null) return null;
-    return DiceValue(dice: _weapon!.dice, bonus: damageBonus);
+    return DiceValue(base: _weapon!.dice, bonus: damageBonus);
   }
 
   Dice? sneakDamage(Entity target) {

@@ -40,30 +40,30 @@ class PercentValue {
 }
 
 class DiceValue {
-  final Dice dice;
+  final Dice base;
   final IntValue bonus;
 
-  const DiceValue({required this.dice, required this.bonus});
+  const DiceValue({required this.base, required this.bonus});
 
-  Range get range => dice.range + bonus.total;
+  Range get range => base.range + bonus.total;
 
-  DiceRollValue roll() => DiceRollValue(dice.roll(), bonus);
+  DiceRollValue roll() => DiceRollValue(base.roll(), bonus);
 
   @override
-  String toString() => '$dice${bonusText(bonus.total)}';
+  String toString() => '$base${bonusText(bonus.total)}';
 }
 
 class DiceRollValue {
-  final DiceRoll dice;
+  final DiceRoll base;
   final IntValue bonus;
 
-  const DiceRollValue(this.dice, this.bonus);
+  const DiceRollValue(this.base, this.bonus);
 
-  int get total => dice.total + bonus.total;
+  int get total => base.total + bonus.total;
 
   IntValue get value {
     return IntValue(
-      base: dice.total + bonus.base,
+      base: base.total + bonus.base,
       bonus: bonus.bonus,
     );
   }

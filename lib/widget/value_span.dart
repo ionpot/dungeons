@@ -41,7 +41,7 @@ class DiceValueSpan extends TextSpan {
   DiceValueSpan(DiceValue value, {bool bold = false})
       : super(
           children: [
-            TextSpan(text: '${value.dice}'),
+            TextSpan(text: '${value.base}'),
             TextSpan(
               text: bonusText(value.bonus.total),
               style: _style(diceValueColor(value)),
