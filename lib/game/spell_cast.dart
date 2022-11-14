@@ -6,12 +6,12 @@ import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
 
-class SpellAttack {
+class SpellCast {
   final Spell spell;
   final Entity from;
   final Entity target;
 
-  const SpellAttack(this.spell, {required this.from, required this.target});
+  const SpellCast(this.spell, {required this.from, required this.target});
 
   bool get self => from == target;
 
@@ -20,24 +20,24 @@ class SpellAttack {
 
   Source get source => spell.source;
 
-  SpellAttackResult roll() {
+  SpellCastResult roll() {
     final affected = target.canSpellEffect(spell);
     if (self) {
-      return SpellAttackResult(
+      return SpellCastResult(
         affected: affected,
         healDice: spell.heals?.roll(),
       );
     }
     final resist = ifnot(spell.autoHit, resistChance.roll);
     final hit = resist?.success != true;
-    return SpellAttackResult(
+    return SpellCastResult(
       resist: resist,
       damageDice: ifyes(hit, spell.damage?.roll),
       affected: hit && affected,
     );
   }
 
-  void apply(SpellAttackResult result) {
+  void apply(SpellCastResult result) {
     if (from.player) {
       from.addStress(spell.stress);
     }
@@ -49,13 +49,13 @@ class SpellAttack {
   }
 }
 
-class SpellAttackResult {
+class SpellCastResult {
   final bool affected;
   final PercentRoll? resist;
   final DiceRoll? damageDice;
   final DiceRollValue? healDice;
 
-  const SpellAttackResult({
+  const SpellCastResult({
     required this.affected,
     this.resist,
     this.damageDice,
@@ -68,14 +68,14 @@ class SpellAttackResult {
   IntValue? get heal => ifdef(healDice, (dice) => IntValue(base: dice.total));
 }
 
-class SpellAttackTurn {
-  final SpellAttack attack;
-  final SpellAttackResult result;
+class SpellCastTurn {
+  final SpellCast attack;
+  final SpellCastResult result;
 
-  const SpellAttackTurn._(this.attack, this.result);
+  const SpellCastTurn._(this.attack, this.result);
 
-  factory SpellAttackTurn(SpellAttack attack) {
-    return SpellAttackTurn._(attack, attack.roll());
+  factory SpellCastTurn(SpellCast attack) {
+    return SpellCastTurn._(attack, attack.roll());
   }
 
   void apply() {

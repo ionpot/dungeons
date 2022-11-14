@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/spell_attack.dart';
+import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
 
@@ -79,7 +79,7 @@ class Combat {
   CombatTurn toTurn(CombatAction action) =>
       ifdef(action.castSpell, (spell) {
         return CombatTurn.spell(
-          SpellAttack(
+          SpellCast(
             spell,
             from: current,
             target: action.target,
@@ -123,7 +123,7 @@ class CombatAction {
 
 class CombatTurn {
   final WeaponAttackTurn? weaponTurn;
-  final SpellAttackTurn? spellTurn;
+  final SpellCastTurn? spellTurn;
 
   const CombatTurn({this.weaponTurn, this.spellTurn});
 
@@ -131,8 +131,8 @@ class CombatTurn {
     return CombatTurn(weaponTurn: WeaponAttackTurn(attack));
   }
 
-  factory CombatTurn.spell(SpellAttack attack) {
-    return CombatTurn(spellTurn: SpellAttackTurn(attack));
+  factory CombatTurn.spell(SpellCast cast) {
+    return CombatTurn(spellTurn: SpellCastTurn(cast));
   }
 
   void apply() {

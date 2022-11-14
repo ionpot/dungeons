@@ -4,7 +4,7 @@ import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/spell_attack.dart';
+import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
@@ -73,7 +73,7 @@ class Log {
     }
   }
 
-  void spellTurn(SpellAttackTurn turn) {
+  void spellTurn(SpellCastTurn turn) {
     final attack = turn.attack;
     final result = turn.result;
     final from = attack.from;
@@ -109,7 +109,7 @@ class Log {
     file.write('${target.name} takes $damage ${source.name} damage');
   }
 
-  void _writeStatus(Entity target, [SpellAttackTurn? spellTurn]) {
+  void _writeStatus(Entity target, [SpellCastTurn? spellTurn]) {
     if (target.dead) {
       file.write(', and dies');
     } else if (spellTurn?.result.affected == true) {

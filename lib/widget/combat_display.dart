@@ -1,7 +1,7 @@
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/spell_attack.dart';
+import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
@@ -73,7 +73,7 @@ class CombatDisplay extends StatelessWidget {
     ]);
   }
 
-  Widget _spellTurn(SpellAttackTurn turn) {
+  Widget _spellTurn(SpellCastTurn turn) {
     final attack = turn.attack;
     final result = turn.result;
     final from = attack.from;
@@ -105,7 +105,7 @@ class CombatDisplay extends StatelessWidget {
   Widget _damageAndStatus(
     IntValue damage, {
     WeaponAttackTurn? weaponTurn,
-    SpellAttackTurn? spellTurn,
+    SpellCastTurn? spellTurn,
   }) {
     final target = weaponTurn?.attack.target ?? spellTurn!.attack.target;
     final source = weaponTurn?.attack.source ?? spellTurn!.attack.source;
@@ -116,7 +116,7 @@ class CombatDisplay extends StatelessWidget {
     );
   }
 
-  String _status(Entity target, [SpellAttackTurn? spellTurn]) {
+  String _status(Entity target, [SpellCastTurn? spellTurn]) {
     if (target.dead) {
       return ', and dies';
     }
