@@ -40,7 +40,7 @@ class CombatDisplay extends StatelessWidget {
       lines: TextLines([
         if (turn.weaponTurn != null) _weaponTurn(turn.weaponTurn!),
         if (turn.spellTurn != null) _spellTurn(turn.spellTurn!),
-        if (combat.xpGained) _xpText(combat.xpGain),
+        if (combat.canGainXp()) _xpText(combat.xpGain),
       ]),
     );
   }

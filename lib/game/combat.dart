@@ -105,7 +105,7 @@ class Combat {
 
   int get xpGain => player.xpGain(enemy);
 
-  bool get xpGained => player.alive && enemy.dead;
+  bool canGainXp() => player.alive && enemy.dead;
 
   void addXp() {
     player.xp += xpGain;
