@@ -72,11 +72,7 @@ class SpellCastTurn {
   final SpellCast attack;
   final SpellCastResult result;
 
-  const SpellCastTurn._(this.attack, this.result);
-
-  factory SpellCastTurn(SpellCast attack) {
-    return SpellCastTurn._(attack, attack.roll());
-  }
+  const SpellCastTurn(this.attack, this.result);
 
   void apply() {
     attack.apply(result);

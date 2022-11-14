@@ -128,11 +128,11 @@ class CombatTurn {
   const CombatTurn({this.weaponTurn, this.spellTurn});
 
   factory CombatTurn.weapon(WeaponAttack attack) {
-    return CombatTurn(weaponTurn: WeaponAttackTurn(attack));
+    return CombatTurn(weaponTurn: WeaponAttackTurn(attack, attack.roll()));
   }
 
   factory CombatTurn.spell(SpellCast cast) {
-    return CombatTurn(spellTurn: SpellCastTurn(cast));
+    return CombatTurn(spellTurn: SpellCastTurn(cast, cast.roll()));
   }
 
   void apply() {
