@@ -193,6 +193,7 @@ class Entity {
   }
 
   bool canSpellEffect(Spell spell) {
+    if (spell.effect == null) return false;
     if (spell.stacks) return true;
     return !hasSpellEffect(spell);
   }

@@ -18,7 +18,6 @@ class SpellAttack {
   PercentValue get resistChance =>
       spell.autoHit ? const PercentValue() : target.resist;
 
-  bool get autoHit => spell.autoHit;
   Source get source => spell.source;
 
   SpellAttackResult roll() {
@@ -29,12 +28,12 @@ class SpellAttack {
         healDice: spell.heals?.roll(),
       );
     }
-    final resist = ifnot(autoHit, resistChance.roll);
-    final hit = autoHit ? true : resist?.fail == true;
+    final resist = ifnot(spell.autoHit, resistChance.roll);
+    final hit = resist?.success != true;
     return SpellAttackResult(
       resist: resist,
       damageDice: ifyes(hit, spell.damage?.roll),
-      affected: hit && spell.effect != null && affected,
+      affected: hit && affected,
     );
   }
 
