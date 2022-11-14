@@ -260,11 +260,7 @@ class Entity {
   }
 
   void heal(int value) {
-    if (_damage > value) {
-      _damage -= value;
-    } else {
-      _damage = 0;
-    }
+    _damage -= _damage > value ? value : _damage;
   }
 
   void takeDamage(int value) {
