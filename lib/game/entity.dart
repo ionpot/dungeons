@@ -10,6 +10,7 @@ import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
 import 'package:dungeons/utility/dice.dart';
+import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
 
 class Entity {
@@ -139,19 +140,15 @@ class Entity {
   }
 
   set weapon(Weapon? w) {
-    effects.remove(Effect(weapon: _weapon));
+    ifdef(_weapon, effects.removeWeapon);
     _weapon = w;
-    if (w != null) {
-      effects.add(Effect(weapon: w));
-    }
+    ifdef(w, effects.addWeapon);
   }
 
   set armor(Armor? a) {
-    effects.remove(Effect(armor: _armor));
+    ifdef(_armor, effects.removeArmor);
     _armor = a;
-    if (a != null) {
-      effects.add(Effect(armor: a));
-    }
+    ifdef(a, effects.addArmor);
   }
 
   bool fasterThan(Entity other) {
@@ -168,43 +165,14 @@ class Entity {
 
   void activateSkill() {
     if (klass == EntityClass.warrior) {
-      effects.reset(const Effect(skill: Skill.weaponFocus));
+      effects.addSkill(Skill.weaponFocus);
     }
-  }
-
-  void addEffect(Effect effect) {
-    if (effect.stacks) {
-      effects.add(effect);
-    } else {
-      effects.reset(effect);
-    }
-  }
-
-  void addSpellEffect(Spell spell) {
-    addEffect(Effect(spell: spell));
-  }
-
-  void clearSpellEffects() {
-    effects.clearSpells();
-  }
-
-  bool hasSpellEffect(Spell spell) {
-    return effects.has(Effect(spell: spell));
   }
 
   bool canSpellEffect(Spell spell) {
     if (spell.effect == null) return false;
     if (spell.stacks) return true;
-    return !hasSpellEffect(spell);
-  }
-
-  bool canUseSkill(Skill skill) {
-    final cost = skill.reserveStress;
-    return cost != null ? stress.has(cost) : true;
-  }
-
-  bool hasSkill(Skill skill) {
-    return effects.has(Effect(skill: skill));
+    return !effects.hasSpell(spell);
   }
 
   bool canCast(Spell spell) {

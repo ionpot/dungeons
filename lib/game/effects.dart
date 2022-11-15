@@ -54,20 +54,30 @@ class Effects {
 
   void add(Effect effect) {
     final bonus = effect.bonus ?? const EffectBonus();
-    contents.update(
-      effect,
-      (b) => b + bonus,
-      ifAbsent: () => bonus,
-    );
+    if (effect.stacks) {
+      contents.update(
+        effect,
+        (b) => b + bonus,
+        ifAbsent: () => bonus,
+      );
+    } else {
+      contents[effect] = bonus;
+    }
   }
 
-  void reset(Effect effect) {
-    contents[effect] = effect.bonus ?? const EffectBonus();
-  }
+  void remove(Effect effect) => contents.remove(effect);
 
-  void remove(Effect effect) {
-    contents.remove(effect);
-  }
+  void addWeapon(Weapon weapon) => add(Effect(weapon: weapon));
+  void removeWeapon(Weapon weapon) => remove(Effect(weapon: weapon));
+
+  void addArmor(Armor armor) => add(Effect(armor: armor));
+  void removeArmor(Armor armor) => remove(Effect(armor: armor));
+
+  void addSkill(Skill skill) => add(Effect(skill: skill));
+  bool hasSkill(Skill skill) => has(Effect(skill: skill));
+
+  void addSpell(Spell spell) => add(Effect(spell: spell));
+  bool hasSpell(Spell spell) => has(Effect(spell: spell));
 
   void clearSpells() {
     contents.removeWhere((key, value) => key.spell != null);
