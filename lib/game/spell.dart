@@ -20,7 +20,7 @@ enum Spell {
     text: 'Heal',
     source: Source.radiant,
     stress: 1,
-    heals: DiceValue(base: Dice(1, 6), bonus: IntValue(base: 2)),
+    heals: DiceValue(base: Dice(1, 6), bonus: IntValue(base: 4)),
     selfCast: true,
   ),
   magicMissile(
