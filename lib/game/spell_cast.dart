@@ -44,7 +44,7 @@ class SpellCast {
     target.heal(result.healDice?.total ?? 0);
     target.takeDamage(result.damageDice?.total ?? 0);
     if (result.affected) {
-      target.effects.addSpell(spell);
+      target.addSpellEffect(spell);
     }
   }
 }

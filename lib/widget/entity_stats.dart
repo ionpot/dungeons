@@ -30,7 +30,7 @@ class EntityStats extends StatelessWidget {
         if (e.player)
           TextSpan(children: [
             const TextSpan(text: ', Stress '),
-            StressSpan(e.stress),
+            StressSpan(e),
             TextSpan(text: ', XP ${e.toXpString()}'),
           ]),
       ]),
@@ -61,7 +61,7 @@ class EntityStats extends StatelessWidget {
   }
 
   Widget get _weapon {
-    final damage = entity.damage;
+    final damage = entity.weaponDamage;
     return Text.rich(
       TextSpan(
         children: [

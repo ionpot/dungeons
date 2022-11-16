@@ -5,7 +5,6 @@ import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/skill.dart';
 import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/stress.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
@@ -13,31 +12,104 @@ import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
 
-class Entity {
-  static int xpForLevelUp = 3;
+class Entity extends _Base
+    with
+        _Effects,
+        _Attributes,
+        _Levels,
+        _Health,
+        _Stress,
+        _Weapon,
+        _Armor,
+        _Spells {
+  Entity(
+    super.name, {
+    required super.race,
+    required super.klass,
+    super.player = false,
+  });
 
+  PercentValue hitChance(Entity target) {
+    final bonus = agility ~/ 4;
+    return PercentValue(
+      base: Percent(target.totalArmor - bonus).invert(),
+      bonus: _effects.sumPercent((e) => e.hitChance),
+    );
+  }
+
+  Dice? sneakDamage(Entity target) {
+    return canSneakAttack(target) ? Skill.sneakAttack.dice : null;
+  }
+
+  bool fasterThan(Entity other) {
+    final i = initiative.compareTo(other.initiative);
+    if (i != 0) return i > 0;
+    final a = totalArmor.compareTo(other.totalArmor);
+    if (a != 0) return a < 0;
+    return player;
+  }
+
+  bool canSneakAttack(Entity target) {
+    return klass == EntityClass.trickster && initiative > target.initiative;
+  }
+
+  Entity rollEnemy() {
+    return Entity(
+      'Enemy',
+      race: EntityRace.orc,
+      klass: EntityClass.random(),
+    )
+      ..base.roll()
+      ..levelUpTo(rollEnemyLevel())
+      ..spendAllPoints()
+      ..weapon = Weapon.random()
+      ..armor = Armor.random();
+  }
+
+  int rollEnemyLevel() => const Deviate(2, 0).from(level).withMin(1).roll();
+
+  int xpGain(Entity e) {
+    if (level <= e.level) return 3;
+    if (level - 1 == e.level) return 2;
+    return 1;
+  }
+}
+
+class _Base {
   final String name;
   final bool player;
-  final EntityAttributes base;
   final EntityRace race;
   final EntityClass klass;
-  final effects = Effects();
-  int level = 1;
-  int xp = 0;
-  int extraPoints = 0;
 
-  Armor? _armor;
-  Weapon? _weapon;
-  int _damage = 0;
-  int _stress = 0;
-
-  Entity(
+  _Base(
     this.name, {
-    required this.base,
     required this.race,
     required this.klass,
-    this.player = false,
+    required this.player,
   });
+}
+
+mixin _Effects on _Base {
+  final _effects = Effects();
+
+  void clearSpellEffects() => _effects.clearSpells();
+  bool hasSpellEffect(Spell spell) => _effects.hasSpell(spell);
+  void addSpellEffect(Spell spell) => _effects.addSpell(spell);
+  bool canSpellEffect(Spell spell) {
+    if (spell.effect == null) return false;
+    if (spell.stacks) return true;
+    return !_effects.hasSpell(spell);
+  }
+
+  void activateSkill() {
+    if (klass == EntityClass.warrior) {
+      _effects.addSkill(Skill.weaponFocus);
+    }
+  }
+}
+
+mixin _Attributes on _Base, _Effects {
+  var base = EntityAttributes();
 
   int get strength => base.strength + race.strength;
   int get agility => base.agility;
@@ -54,138 +126,88 @@ class Entity {
   IntValue get initiative {
     return IntValue(
       base: (agility + intellect) ~/ 2,
-      bonus: effects.sumInt((e) => e.initiative),
+      bonus: _effects.sumInt((e) => e.initiative),
     );
   }
 
   PercentValue get dodge {
     final base = Percent(agility);
-    final scale = effects.sumPercent((e) => e.dodgeScale);
+    final scale = _effects.sumPercent((e) => e.dodgeScale);
     return PercentValue(base: base, bonus: scale.of(base));
   }
 
   PercentValue get resist {
     return PercentValue(
       base: Percent(intellect),
-      bonus: effects.sumPercent((e) => e.resistChance),
+      bonus: _effects.sumPercent((e) => e.resistChance),
     );
   }
+}
 
-  IntValue get damageBonus {
-    return IntValue(
-      base: strength ~/ 2,
-      bonus: effects.sumInt((e) => e.damage),
-    );
-  }
+mixin _Health on _Base, _Attributes, _Levels {
+  int _damageTaken = 0;
 
-  DiceValue? get damage {
-    if (_weapon == null) return null;
-    return DiceValue(base: _weapon!.dice, bonus: damageBonus);
-  }
-
-  Dice? sneakDamage(Entity target) {
-    return canSneakAttack(target) ? Skill.sneakAttack.dice : null;
-  }
-
-  int get hitBonus => agility ~/ 4;
-
-  PercentValue hitChance(Entity target) {
-    return PercentValue(
-      base: Percent(target.totalArmor - hitBonus).invert(),
-      bonus: effects.sumPercent((e) => e.hitChance),
-    );
-  }
-
-  int get totalArmor => _armor?.value ?? 0;
   int get totalHp => strength + level * (klass.hpBonus);
-  int get hp => totalHp - _damage;
+  int get hp => totalHp - _damageTaken;
+  bool get injured => _damageTaken > 0;
+  bool get alive => hp > 0;
+  bool get dead => !alive;
 
-  bool get injured => _damage > 0;
+  void resetHp() {
+    _damageTaken = 0;
+  }
 
-  Stress get stress {
-    return Stress(
-      current: _stress,
-      reserved: effects.reservedStress,
-      cap: IntValue(
-        base: intellect + level,
-        bonus: effects.sumInt((e) => e.stressCap),
-      ),
+  void heal(int x) {
+    _damageTaken -= _damageTaken > x ? x : _damageTaken;
+  }
+
+  void takeDamage(int x) {
+    _damageTaken += x;
+  }
+}
+
+mixin _Stress on _Effects, _Attributes, _Levels {
+  int _stress = 0;
+
+  int get stress => _stress;
+  int get reservedStress => _effects.reservedStress;
+  int get stressCap => stressCapValue.total - reservedStress;
+  IntValue get stressCapValue {
+    return IntValue(
+      base: intellect + level,
+      bonus: _effects.sumInt((e) => e.stressCap),
     );
   }
 
-  void addStress(int stress) {
-    _stress += stress;
+  bool hasStress(int x) => (stress + x) <= stressCap;
+
+  void addStress(int x) {
+    _stress += x;
   }
 
   void clearStress() {
     _stress = 0;
   }
+}
 
-  bool get alive => hp > 0;
-  bool get dead => !alive;
+mixin _Levels on _Base, _Attributes {
+  static const _xpForLevelUp = 3;
 
-  Weapon? get weapon => _weapon;
-  Armor? get armor => _armor;
+  int xp = 0;
 
-  List<Spell> get knownSpells {
-    switch (klass) {
-      case EntityClass.cleric:
-        return [Spell.bless, Spell.heal];
-      case EntityClass.mage:
-        return [Spell.magicMissile, Spell.rayOfFrost];
-      case EntityClass.warrior:
-      case EntityClass.trickster:
-        return [];
-    }
-  }
+  int _extraPoints = 0;
+  int _level = 1;
 
-  set weapon(Weapon? w) {
-    ifdef(_weapon, effects.removeWeapon);
-    _weapon = w;
-    ifdef(w, effects.addWeapon);
-  }
-
-  set armor(Armor? a) {
-    ifdef(_armor, effects.removeArmor);
-    _armor = a;
-    ifdef(a, effects.addArmor);
-  }
-
-  bool fasterThan(Entity other) {
-    final i = initiative.compareTo(other.initiative);
-    if (i != 0) return i > 0;
-    final a = totalArmor.compareTo(other.totalArmor);
-    if (a != 0) return a < 0;
-    return player;
-  }
-
-  bool canSneakAttack(Entity target) {
-    return klass == EntityClass.trickster && initiative > target.initiative;
-  }
-
-  void activateSkill() {
-    if (klass == EntityClass.warrior) {
-      effects.addSkill(Skill.weaponFocus);
-    }
-  }
-
-  bool canSpellEffect(Spell spell) {
-    if (spell.effect == null) return false;
-    if (spell.stacks) return true;
-    return !effects.hasSpell(spell);
-  }
-
-  bool canCast(Spell spell) {
-    return stress.has(spell.stress);
-  }
+  int get level => _level;
+  int get extraPoints => _extraPoints;
 
   bool canLevelUp() => canLevelUpWith(0);
-  bool canLevelUpWith(int x) => (xp + x) >= xpForLevelUp;
+  bool canLevelUpWith(int x) => (xp + x) >= _xpForLevelUp;
 
   void levelUp() {
-    xp -= xpForLevelUp;
-    ++level;
-    extraPoints += 2;
+    xp -= _xpForLevelUp;
+    ++_level;
+    _extraPoints += 2;
   }
 
   void levelUpTo(int max) {
@@ -198,28 +220,9 @@ class Entity {
     if (canLevelUp()) levelUp();
   }
 
-  Entity rollEnemy() {
-    return Entity(
-      'Enemy',
-      base: EntityAttributes.random(),
-      race: EntityRace.orc,
-      klass: EntityClass.random(),
-    )
-      ..levelUpTo(rollEnemyLevel())
-      ..spendAllPoints()
-      ..weapon = Weapon.random()
-      ..armor = Armor.random();
-  }
-
-  int rollEnemyLevel() => const Deviate(2, 0).from(level).withMin(1).roll();
-
-  void resetHp() {
-    _damage = 0;
-  }
-
   void spendPointTo(EntityAttributeId id) {
     base.add(id);
-    --extraPoints;
+    --_extraPoints;
   }
 
   void spendAllPoints() {
@@ -228,19 +231,59 @@ class Entity {
     }
   }
 
-  void heal(int value) {
-    _damage -= _damage > value ? value : _damage;
+  String toXpString() => '$xp/$_xpForLevelUp';
+}
+
+mixin _Weapon on _Effects, _Attributes {
+  Weapon? _weapon;
+
+  Weapon? get weapon => _weapon;
+
+  set weapon(Weapon? w) {
+    ifdef(weapon, _effects.removeWeapon);
+    _weapon = w;
+    ifdef(w, _effects.addWeapon);
   }
 
-  void takeDamage(int value) {
-    _damage += value;
+  IntValue get weaponDamageBonus {
+    return IntValue(
+      base: strength ~/ 2,
+      bonus: _effects.sumInt((e) => e.damage),
+    );
   }
 
-  int xpGain(Entity e) {
-    if (level <= e.level) return 3;
-    if (level - 1 == e.level) return 2;
-    return 1;
+  DiceValue? get weaponDamage {
+    if (weapon == null) return null;
+    return DiceValue(base: weapon!.dice, bonus: weaponDamageBonus);
+  }
+}
+
+mixin _Armor on _Effects {
+  Armor? _armor;
+
+  Armor? get armor => _armor;
+
+  set armor(Armor? a) {
+    ifdef(armor, _effects.removeArmor);
+    _armor = a;
+    ifdef(a, _effects.addArmor);
   }
 
-  String toXpString() => '$xp/${Entity.xpForLevelUp}';
+  int get totalArmor => armor?.value ?? 0;
+}
+
+mixin _Spells on _Base, _Stress {
+  bool canCast(Spell spell) => hasStress(spell.stress);
+
+  List<Spell> get knownSpells {
+    switch (klass) {
+      case EntityClass.cleric:
+        return [Spell.bless, Spell.heal];
+      case EntityClass.mage:
+        return [Spell.magicMissile, Spell.rayOfFrost];
+      case EntityClass.warrior:
+      case EntityClass.trickster:
+        return [];
+    }
+  }
 }

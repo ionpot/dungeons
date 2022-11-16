@@ -23,16 +23,17 @@ class Log {
   }
 
   void entity(Entity e) {
+    final damage = e.weaponDamage;
     file
       ..writeln('${e.name}, ${e.race} ${e.klass} Lv${e.level}')
       ..writeln('${e.attributes}')
       ..writeln('Hp ${e.totalHp}'
-          '${e.player ? ', Stress Cap ${e.stress.cap}' : ''}'
+          '${e.player ? ', Stress Cap ${e.stressCap}' : ''}'
           '${e.player ? ', XP ${e.toXpString()}' : ''}')
       ..writeln('Initiative ${e.initiative}')
       ..writeln('Dodge ${e.dodge}, Resist ${e.resist}')
       ..writeln('Armor: ${e.armor} (${e.totalArmor})')
-      ..writeln('Weapon: ${e.weapon} (${e.damage}) ${e.damage?.range}');
+      ..writeln('Weapon: ${e.weapon} ($damage) ${damage?.range}');
   }
 
   void combatTurn(CombatTurn turn) {

@@ -1,6 +1,6 @@
+import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/stress.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/widget/colors.dart';
@@ -66,13 +66,13 @@ class DamageSpan extends TextSpan {
 }
 
 class StressSpan extends TextSpan {
-  StressSpan(Stress stress, {bool bold = false})
+  StressSpan(Entity entity, {bool bold = false})
       : super(
           children: [
-            TextSpan(text: '${stress.current}/'),
+            TextSpan(text: '${entity.stress}/'),
             TextSpan(
-              text: '${stress.currentCap}',
-              style: _style(stressColor(stress)),
+              text: '${entity.stressCap}',
+              style: _style(stressColor(entity)),
             ),
           ],
           style: _style(null, bold: bold),

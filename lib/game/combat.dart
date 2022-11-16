@@ -22,7 +22,7 @@ class Combat {
     player
       ..resetHp()
       ..clearStress()
-      ..effects.clearSpells();
+      ..clearSpellEffects();
     return Combat(player, player.rollEnemy());
   }
 
@@ -57,7 +57,7 @@ class Combat {
   }
 
   CombatAction get _clericAction {
-    if (!current.effects.hasSpell(Spell.bless)) {
+    if (!current.hasSpellEffect(Spell.bless)) {
       return CombatAction(target: current, castSpell: Spell.bless);
     }
     if (current.injured && Random().nextBool()) {

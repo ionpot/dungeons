@@ -1,5 +1,5 @@
+import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
-import 'package:dungeons/game/stress.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/percent.dart';
 import 'package:flutter/widgets.dart';
@@ -26,8 +26,8 @@ Color? intValueColor(IntValue value) => intColor(value.bonus);
 Color? percentValueColor(PercentValue value) => percentColor(value.bonus);
 Color? diceValueColor(DiceValue value) => intValueColor(value.bonus);
 
-Color? stressColor(Stress stress) =>
-    stress.reserved > 0 ? yellow : intValueColor(stress.cap);
+Color? stressColor(Entity e) =>
+    e.reservedStress > 0 ? yellow : intValueColor(e.stressCapValue);
 
 Color? sourceColor(Source source) {
   switch (source) {

@@ -13,7 +13,7 @@ class WeaponAttack {
 
   PercentValue get hitChance => from.hitChance(target);
   PercentValue get dodgeChance => target.dodge;
-  DiceValue? get damage => from.damage;
+  DiceValue? get damage => from.weaponDamage;
   Dice? get sneakDamage => from.sneakDamage(target);
   Source get source => Source.physical;
 
