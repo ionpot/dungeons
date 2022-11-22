@@ -12,8 +12,8 @@ enum Spell {
     selfCast: true,
     effect: EffectBonus(
       stressCap: 1,
-      hitChance: Percent(1),
-      resistChance: Percent(1),
+      maxWeaponDamage: true,
+      resistChance: Percent(4),
     ),
   ),
   heal(

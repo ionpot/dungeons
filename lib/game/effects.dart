@@ -83,6 +83,15 @@ class Effects {
     contents.removeWhere((key, value) => key.spell != null);
   }
 
+  bool sumBool(GetEffectBonus<bool> f) {
+    for (final bonus in contents.values) {
+      if (f(bonus) == true) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   int sumInt(GetEffectBonus<int> f) {
     int sum = 0;
     for (final bonus in contents.values) {

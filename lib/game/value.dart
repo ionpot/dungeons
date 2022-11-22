@@ -48,6 +48,7 @@ class DiceValue {
   Range get range => base.range + bonus.total;
 
   DiceRollValue roll() => DiceRollValue(base.roll(), bonus);
+  DiceRollValue rollMax() => DiceRollValue(base.rollMax(), bonus);
 
   @override
   String toString() => '$base${bonusText(bonus.total)}';

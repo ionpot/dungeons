@@ -24,6 +24,11 @@ class Dice implements Comparable<Dice> {
     return DiceRoll(rolls);
   }
 
+  DiceRoll rollMax() {
+    final rolls = List.filled(count, sides);
+    return DiceRoll(rolls);
+  }
+
   @override
   int compareTo(Dice other) => max - other.max;
 

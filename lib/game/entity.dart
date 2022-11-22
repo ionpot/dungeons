@@ -106,6 +106,8 @@ mixin _Effects on _Base {
       _effects.addSkill(Skill.weaponFocus);
     }
   }
+
+  bool hasMaxWeaponDamage() => _effects.sumBool((e) => e.maxWeaponDamage);
 }
 
 mixin _Attributes on _Base, _Effects {

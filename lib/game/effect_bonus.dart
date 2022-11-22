@@ -7,6 +7,7 @@ class EffectBonus {
   final Percent? dodgeScale;
   final Percent? hitChance;
   final Percent? resistChance;
+  final bool maxWeaponDamage;
 
   const EffectBonus({
     this.damage,
@@ -15,6 +16,7 @@ class EffectBonus {
     this.dodgeScale,
     this.hitChance,
     this.resistChance,
+    this.maxWeaponDamage = false,
   });
 
   EffectBonus operator +(EffectBonus other) {
@@ -25,6 +27,7 @@ class EffectBonus {
       dodgeScale: _addPercent(dodgeScale, other.dodgeScale),
       hitChance: _addPercent(hitChance, other.hitChance),
       resistChance: _addPercent(resistChance, other.resistChance),
+      maxWeaponDamage: maxWeaponDamage || other.maxWeaponDamage,
     );
   }
 
