@@ -19,7 +19,7 @@ class WeaponAttack {
 
   WeaponAttackResult roll() {
     final hit = hitChance.roll();
-    final dodge = hit.success ? dodgeChance.roll() : null;
+    final dodge = ifyes(hit.success, dodgeChance.roll);
     final weapon = ifyes(dodge?.fail, () {
       return ifdef(damage, (d) {
         return from.hasMaxWeaponDamage() ? d.rollMax() : d.roll();
