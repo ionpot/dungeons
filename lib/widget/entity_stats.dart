@@ -26,7 +26,8 @@ class EntityStats extends StatelessWidget {
     final e = entity;
     return Text.rich(
       TextSpan(children: [
-        TextSpan(text: 'Hp ${e.hp}/${e.totalHp}'),
+        const TextSpan(text: 'Hp '),
+        HpSpan(e),
         if (e.player)
           TextSpan(children: [
             const TextSpan(text: ', Stress '),

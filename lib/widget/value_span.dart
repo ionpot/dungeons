@@ -82,6 +82,22 @@ class DamageSpan extends TextSpan {
         );
 }
 
+class HpSpan extends TextSpan {
+  HpSpan(Entity entity, {bool bold = false})
+      : super(
+          children: [
+            TextSpan(
+              text: '${entity.hp}',
+              style: _style(hpColor(entity), bold: bold),
+            ),
+            TextSpan(
+              text: '/${entity.totalHp}',
+              style: _style(null, bold: bold),
+            ),
+          ],
+        );
+}
+
 class StressSpan extends TextSpan {
   StressSpan(Entity entity, {bool bold = false})
       : super(

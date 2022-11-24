@@ -26,6 +26,8 @@ Color? intValueColor(IntValue value) => intColor(value.bonus);
 Color? percentValueColor(PercentValue value) => percentColor(value.bonus);
 Color? diceValueColor(DiceValue value) => intValueColor(value.bonus);
 
+Color? hpColor(Entity e) => e.alive ? null : red;
+
 Color? stressColor(Entity e) =>
     e.reservedStress > 0 ? yellow : intValueColor(e.stressCapValue);
 
