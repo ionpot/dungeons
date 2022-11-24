@@ -62,12 +62,15 @@ class EntityStats extends StatelessWidget {
 
   Widget get _weapon {
     final damage = entity.weaponDamage;
+    final max = entity.hasMaxWeaponDamage();
     return Text.rich(
       TextSpan(
         children: [
-          TextSpan(text: 'Weapon: ${entity.weapon} ('),
-          if (damage != null) DiceValueSpan(damage),
-          TextSpan(text: ') ${damage?.range}'),
+          TextSpan(text: 'Weapon: ${entity.weapon}'),
+          if (damage != null) const TextSpan(text: ' ('),
+          if (damage != null) DiceValueSpan(damage, max: max),
+          if (damage != null) const TextSpan(text: ') '),
+          if (damage != null) RangeSpan(damage.range, max: max),
         ],
       ),
     );

@@ -3,6 +3,8 @@ import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/bonus_text.dart';
+import 'package:dungeons/utility/dice.dart';
+import 'package:dungeons/utility/range.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:flutter/widgets.dart';
 
@@ -37,17 +39,32 @@ class PercentValueSpan extends TextSpan {
         );
 }
 
+class RangeSpan extends TextSpan {
+  RangeSpan(Range range, {bool bold = false, bool max = false})
+      : super(
+          text: '${max ? range.max : range}',
+          style: _style(max ? green : null, bold: bold),
+        );
+}
+
+class DiceSpan extends TextSpan {
+  DiceSpan(Dice dice, {bool bold = false, bool max = false})
+      : super(
+          text: '${max ? dice.max : dice}',
+          style: _style(max ? green : null, bold: bold),
+        );
+}
+
 class DiceValueSpan extends TextSpan {
-  DiceValueSpan(DiceValue value, {bool bold = false})
+  DiceValueSpan(DiceValue value, {bool bold = false, bool max = false})
       : super(
           children: [
-            TextSpan(text: '${value.base}'),
+            DiceSpan(value.base, bold: bold, max: max),
             TextSpan(
               text: bonusText(value.bonus.total),
-              style: _style(diceValueColor(value)),
+              style: _style(diceValueColor(value), bold: bold),
             ),
           ],
-          style: _style(null, bold: bold),
         );
 }
 
