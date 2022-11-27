@@ -8,121 +8,102 @@ import 'package:dungeons/utility/range.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:flutter/widgets.dart';
 
-TextStyle _style(Color? color, {bool bold = false}) {
-  return TextStyle(
-    color: color,
-    fontWeight: bold ? FontWeight.bold : null,
-  );
-}
-
 class IntSpan extends TextSpan {
-  IntSpan(int value, {bool bold = false})
+  IntSpan(int value)
       : super(
           text: '$value',
-          style: _style(intColor(value), bold: bold),
+          style: TextStyle(color: intColor(value)),
         );
 }
 
 class IntValueSpan extends TextSpan {
-  IntValueSpan(IntValue value, {bool bold = false})
+  IntValueSpan(IntValue value)
       : super(
           text: '$value',
-          style: _style(intValueColor(value), bold: bold),
+          style: TextStyle(color: intValueColor(value)),
         );
 }
 
 class PercentValueSpan extends TextSpan {
-  PercentValueSpan(PercentValue value, {bool bold = false})
+  PercentValueSpan(PercentValue value)
       : super(
           text: '$value',
-          style: _style(percentValueColor(value), bold: bold),
+          style: TextStyle(color: percentValueColor(value)),
         );
 }
 
 class RangeSpan extends TextSpan {
-  RangeSpan(Range range, {bool bold = false, bool max = false})
+  RangeSpan(Range range, {bool max = false})
       : super(
           text: '${max ? range.max : range}',
-          style: _style(max ? green : null, bold: bold),
+          style: TextStyle(color: max ? green : null),
         );
 }
 
 class DiceSpan extends TextSpan {
-  DiceSpan(Dice dice, {bool bold = false, bool max = false})
+  DiceSpan(Dice dice, {bool max = false})
       : super(
           text: '${max ? dice.max : dice}',
-          style: _style(max ? green : null, bold: bold),
+          style: TextStyle(color: max ? green : null),
         );
 }
 
 class DiceValueSpan extends TextSpan {
-  DiceValueSpan(DiceValue value, {bool bold = false, bool max = false})
+  DiceValueSpan(DiceValue value, {bool max = false})
       : super(
           children: [
-            DiceSpan(value.base, bold: bold, max: max),
+            DiceSpan(value.base, max: max),
             TextSpan(
               text: bonusText(value.bonus.total),
-              style: _style(diceValueColor(value), bold: bold),
+              style: TextStyle(color: diceValueColor(value)),
             ),
           ],
         );
 }
 
 class DamageSpan extends TextSpan {
-  DamageSpan(IntValue damage, Source source, {bool bold = false})
+  DamageSpan(IntValue damage, Source source)
       : super(
           children: [
             IntValueSpan(damage),
             TextSpan(
               text: ' ${source.name}',
-              style: _style(sourceColor(source)),
+              style: TextStyle(color: sourceColor(source)),
             ),
           ],
-          style: _style(null, bold: bold),
         );
 }
 
 class HpSpan extends TextSpan {
-  HpSpan(Entity entity, {bool bold = false})
+  HpSpan(Entity entity)
       : super(
           children: [
             TextSpan(
               text: '${entity.hp}',
-              style: _style(hpColor(entity), bold: bold),
+              style: TextStyle(color: hpColor(entity)),
             ),
-            TextSpan(
-              text: '/${entity.totalHp}',
-              style: _style(null, bold: bold),
-            ),
+            TextSpan(text: '/${entity.totalHp}'),
           ],
         );
 }
 
 class StressSpan extends TextSpan {
-  StressSpan(Entity entity, {bool bold = false})
+  StressSpan(Entity entity)
       : super(
           children: [
             TextSpan(text: '${entity.stress}/'),
             TextSpan(
               text: '${entity.stressCap}',
-              style: _style(stressColor(entity)),
+              style: TextStyle(color: stressColor(entity)),
             ),
           ],
-          style: _style(null, bold: bold),
         );
 }
 
 class SpellNameSpan extends TextSpan {
-  SpellNameSpan(Spell spell, {bool bold = false})
+  SpellNameSpan(Spell spell)
       : super(
           text: spell.text,
-          style: _style(sourceColor(spell.source), bold: bold),
+          style: TextStyle(color: sourceColor(spell.source)),
         );
-}
-
-Text toText(TextSpan span) {
-  return Text(
-    span.text ?? '',
-    style: span.style,
-  );
 }

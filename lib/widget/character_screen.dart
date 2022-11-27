@@ -108,8 +108,8 @@ class _CharacterScreenState extends State<CharacterScreen> {
         'Total Hp': BoldText(entity.totalHp.toString()),
         'Stress Cap': BoldText(entity.stressCap.toString()),
         'Armor': BoldText(entity.totalArmor.toString()),
-        'Initiative': toText(IntValueSpan(entity.initiative, bold: true)),
-        'Dodge': toText(PercentValueSpan(entity.dodge, bold: true)),
+        'Initiative': BoldText.fromSpan(IntValueSpan(entity.initiative)),
+        'Dodge': BoldText.fromSpan(PercentValueSpan(entity.dodge)),
         'Resist': BoldText(entity.resist.toString()),
         'Damage': damage != null
             ? BoldText('($damage) ${damage.range}')

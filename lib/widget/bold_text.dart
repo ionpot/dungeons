@@ -1,15 +1,15 @@
 import 'package:flutter/widgets.dart';
 
 class BoldText extends StatelessWidget {
-  final String text;
+  final Widget widget;
 
-  const BoldText(this.text, {super.key});
+  BoldText(String text, {super.key}) : widget = Text(text, style: _style);
+
+  BoldText.fromSpan(TextSpan span, {super.key})
+      : widget = Text.rich(span, style: _style);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(fontWeight: FontWeight.bold),
-    );
-  }
+  Widget build(BuildContext context) => widget;
+
+  static const _style = TextStyle(fontWeight: FontWeight.bold);
 }
