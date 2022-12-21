@@ -1,6 +1,5 @@
 import 'package:dungeons/game/effect_bonus.dart';
 import 'package:dungeons/game/source.dart';
-import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
 
@@ -20,7 +19,7 @@ enum Spell {
     text: 'Heal',
     source: Source.radiant,
     stress: 1,
-    heals: DiceValue(base: Dice(1, 6), bonus: IntValue(base: 4)),
+    heals: Dice(1, 6, bonus: 4),
     selfCast: true,
   ),
   magicMissile(
@@ -47,7 +46,7 @@ enum Spell {
   final bool selfCast;
   final bool stacks;
   final Dice? damage;
-  final DiceValue? heals;
+  final Dice? heals;
   final EffectBonus? effect;
 
   const Spell({

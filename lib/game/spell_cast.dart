@@ -53,7 +53,7 @@ class SpellCastResult {
   final bool affected;
   final PercentRoll? resist;
   final DiceRoll? damageDice;
-  final DiceRollValue? healDice;
+  final DiceRoll? healDice;
 
   const SpellCastResult({
     required this.affected,

@@ -87,7 +87,7 @@ class Log {
       file.writeln('Resist (${attack.resistChance}) ${result.resist}');
     }
     if (result.heal != null) {
-      file.writeln('Heal roll (${spell.heals}) ${result.healDice!.base}');
+      file.writeln('Heal roll (${spell.heals}) ${result.healDice}');
       file.writeln('${target.name} is healed by ${result.heal}.');
     }
     if (result.damage != null) {

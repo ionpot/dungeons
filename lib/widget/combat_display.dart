@@ -94,7 +94,7 @@ class CombatDisplay extends StatelessWidget {
       if (result.damageDice != null)
         Text('Damage roll (${spell.damage}) ${result.damageDice}'),
       if (result.healDice != null)
-        Text('Heal roll (${spell.heals}) ${result.healDice!.base}'),
+        Text('Heal roll (${spell.heals}) ${result.healDice}'),
       if (result.healDice != null)
         Text('${target.name} is healed by ${result.healDice!.total}.'),
       if (result.damage != null)
