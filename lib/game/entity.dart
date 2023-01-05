@@ -107,7 +107,8 @@ mixin _Effects on _Base {
     }
   }
 
-  bool hasMaxWeaponDamage() => _effects.sumBool((e) => e.maxWeaponDamage);
+  bool hasMaxWeaponDamage() =>
+      _effects.findEffect((e) => e.maxWeaponDamage) != null;
 }
 
 mixin _Attributes on _Base, _Effects {

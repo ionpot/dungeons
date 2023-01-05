@@ -55,13 +55,13 @@ class Effects {
     contents.removeWhere((key, value) => key.spell != null);
   }
 
-  bool sumBool(GetEffectBonus<bool> f) {
-    for (final bonus in contents.values) {
-      if (f(bonus) == true) {
-        return true;
+  Effect? findEffect(GetEffectBonus<bool> f) {
+    for (final entry in contents.entries) {
+      if (f(entry.value) == true) {
+        return entry.key;
       }
     }
-    return false;
+    return null;
   }
 
   IntEffects toIntEffects(GetEffectBonus<int> f) {
