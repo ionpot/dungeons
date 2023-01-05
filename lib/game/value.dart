@@ -1,3 +1,5 @@
+import 'package:dungeons/game/effect.dart';
+import 'package:dungeons/game/effects.dart';
 import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
@@ -5,13 +7,19 @@ import 'package:dungeons/utility/range.dart';
 
 class IntValue implements Comparable<IntValue> {
   final int base;
-  final int bonus;
+  final IntEffects bonuses;
 
-  const IntValue({this.base = 0, this.bonus = 0});
+  const IntValue({
+    this.base = 0,
+    this.bonuses = const IntEffects(),
+  });
 
+  int get bonus => bonuses.total;
   int get total => base + bonus;
 
-  IntValue addBonus(int b) => IntValue(base: base, bonus: bonus + b);
+  void addBonus(Effect effect, int b) {
+    bonuses.add(effect, b);
+  }
 
   bool operator >(IntValue other) => total > other.total;
 
@@ -24,14 +32,20 @@ class IntValue implements Comparable<IntValue> {
 
 class PercentValue {
   final Percent base;
-  final Percent bonus;
+  final PercentEffects bonuses;
+  final PercentEffects scaling;
 
   const PercentValue({
     this.base = const Percent(),
-    this.bonus = const Percent(),
+    this.bonuses = const PercentEffects(),
+    this.scaling = const PercentEffects(),
   });
 
-  Percent get total => base + bonus;
+  Percent get bonus => bonuses.total;
+  Percent get unscaled => base + bonus;
+  Percent get scaleBonus =>
+      scaling.isEmpty ? const Percent() : scaling.total.of(unscaled);
+  Percent get total => unscaled + scaleBonus;
 
   PercentRoll roll() => total.roll();
 
@@ -65,7 +79,7 @@ class DiceRollValue {
   IntValue get value {
     return IntValue(
       base: base.total + bonus.base,
-      bonus: bonus.bonus,
+      bonuses: bonus.bonuses,
     );
   }
 

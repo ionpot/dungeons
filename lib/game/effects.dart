@@ -1,39 +1,11 @@
 import 'package:dungeons/game/armor.dart';
+import 'package:dungeons/game/effect.dart';
 import 'package:dungeons/game/effect_bonus.dart';
 import 'package:dungeons/game/skill.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
-
-class Effect {
-  final Weapon? weapon;
-  final Armor? armor;
-  final Skill? skill;
-  final Spell? spell;
-
-  const Effect({this.weapon, this.armor, this.skill, this.spell});
-
-  EffectBonus? get bonus {
-    return weapon?.bonus ?? armor?.bonus ?? skill?.bonus ?? spell?.effect;
-  }
-
-  int? get reservedStress => skill?.reserveStress ?? spell?.reserveStress;
-
-  bool get stacks => spell?.stacks == true;
-
-  @override
-  bool operator ==(dynamic other) {
-    return other is Effect &&
-        weapon == other.weapon &&
-        armor == other.armor &&
-        skill == other.skill &&
-        spell == other.spell;
-  }
-
-  @override
-  int get hashCode => Object.hash(weapon, armor, skill, spell);
-}
 
 typedef GetEffectBonus<T extends Object> = T? Function(EffectBonus);
 
@@ -92,19 +64,50 @@ class Effects {
     return false;
   }
 
-  int sumInt(GetEffectBonus<int> f) {
-    int sum = 0;
-    for (final bonus in contents.values) {
-      sum += f(bonus) ?? 0;
+  IntEffects toIntEffects(GetEffectBonus<int> f) {
+    final EffectMap<int> map = {};
+    for (final entry in contents.entries) {
+      ifdef(f(entry.value), (value) {
+        map[entry.key] = value;
+      });
     }
-    return sum;
+    return IntEffects(map);
   }
 
-  Percent sumPercent(GetEffectBonus<Percent> f) {
-    var sum = const Percent();
-    for (final bonus in contents.values) {
-      ifdef(f(bonus), (p) => sum += p);
+  PercentEffects toPercentEffects(GetEffectBonus<Percent> f) {
+    final EffectMap<Percent> map = {};
+    for (final entry in contents.entries) {
+      ifdef(f(entry.value), (value) {
+        map[entry.key] = value;
+      });
     }
-    return sum;
+    return PercentEffects(map);
+  }
+}
+
+class IntEffects {
+  final EffectMap<int> contents;
+
+  const IntEffects([this.contents = const {}]);
+
+  int get total => contents.values.fold(0, (sum, value) => sum + value);
+
+  void add(Effect effect, int value) {
+    contents[effect] = value;
+  }
+}
+
+class PercentEffects {
+  final EffectMap<Percent> contents;
+
+  const PercentEffects([this.contents = const {}]);
+
+  bool get isEmpty => contents.isEmpty;
+
+  Percent get total {
+    return contents.values.fold(
+      const Percent(),
+      (sum, value) => sum + value,
+    );
   }
 }

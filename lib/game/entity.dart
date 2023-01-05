@@ -33,7 +33,7 @@ class Entity extends _Base
     final bonus = agility ~/ 4;
     return PercentValue(
       base: Percent(target.totalArmor - bonus).invert(),
-      bonus: _effects.sumPercent((e) => e.hitChance),
+      bonuses: _effects.toPercentEffects((e) => e.hitChance),
     );
   }
 
@@ -128,20 +128,21 @@ mixin _Attributes on _Base, _Effects {
   IntValue get initiative {
     return IntValue(
       base: (agility + intellect) ~/ 2,
-      bonus: _effects.sumInt((e) => e.initiative),
+      bonuses: _effects.toIntEffects((e) => e.initiative),
     );
   }
 
   PercentValue get dodge {
-    final base = Percent(agility);
-    final scale = _effects.sumPercent((e) => e.dodgeScale);
-    return PercentValue(base: base, bonus: scale.of(base));
+    return PercentValue(
+      base: Percent(agility),
+      scaling: _effects.toPercentEffects((e) => e.dodgeScale),
+    );
   }
 
   PercentValue get resist {
     return PercentValue(
       base: Percent(intellect),
-      bonus: _effects.sumPercent((e) => e.resistChance),
+      bonuses: _effects.toPercentEffects((e) => e.resistChance),
     );
   }
 }
@@ -177,7 +178,7 @@ mixin _Stress on _Effects, _Attributes, _Levels {
   IntValue get stressCapValue {
     return IntValue(
       base: intellect + level,
-      bonus: _effects.sumInt((e) => e.stressCap),
+      bonuses: _effects.toIntEffects((e) => e.stressCap),
     );
   }
 
@@ -250,7 +251,7 @@ mixin _Weapon on _Effects, _Attributes {
   IntValue get weaponDamageBonus {
     return IntValue(
       base: strength ~/ 2,
-      bonus: _effects.sumInt((e) => e.damage),
+      bonuses: _effects.toIntEffects((e) => e.damage),
     );
   }
 

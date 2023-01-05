@@ -23,7 +23,8 @@ Color? intColor(int i) {
 
 Color? percentColor(Percent percent) => intColor(percent.value);
 Color? intValueColor(IntValue value) => intColor(value.bonus);
-Color? percentValueColor(PercentValue value) => percentColor(value.bonus);
+Color? percentValueColor(PercentValue value) =>
+    percentColor(value.scaleBonus) ?? percentColor(value.bonus);
 Color? diceValueColor(DiceValue value) => intValueColor(value.bonus);
 
 Color? hpColor(Entity e) => e.alive ? null : red;
