@@ -3,10 +3,10 @@ import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/pick_random.dart';
 
 enum Weapon {
-  dagger(text: 'Dagger', dice: Dice.sides(4), initiative: 2),
-  mace(text: 'Mace', dice: Dice.sides(6)),
-  longsword(text: 'Longsword', dice: Dice.sides(8)),
-  halberd(text: 'Halberd', dice: Dice.sides(10), initiative: -2);
+  dagger(text: 'Dagger', dice: Dice(1, 4), initiative: 2),
+  mace(text: 'Mace', dice: Dice(1, 6)),
+  longsword(text: 'Longsword', dice: Dice(1, 8)),
+  halberd(text: 'Halberd', dice: Dice(1, 10), initiative: -2);
 
   final Dice dice;
   final int initiative;

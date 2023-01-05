@@ -9,7 +9,6 @@ class Dice implements Comparable<Dice> {
   final int bonus;
 
   const Dice(this.count, this.sides, {this.bonus = 0});
-  const Dice.sides(int sides) : this(1, sides);
 
   int get min => count + bonus;
   int get max => count * sides + bonus;

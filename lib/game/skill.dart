@@ -8,7 +8,7 @@ enum Skill {
     bonus: EffectBonus(hitChance: Percent(2), damage: 1),
     reserveStress: 1,
   ),
-  sneakAttack(text: 'Sneak Attack', dice: Dice.sides(6));
+  sneakAttack(text: 'Sneak Attack', dice: Dice(1, 6));
 
   final String text;
   final EffectBonus? bonus;
