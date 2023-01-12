@@ -3,7 +3,7 @@ import 'package:dungeons/game/effects.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
-import 'package:dungeons/game/skill.dart';
+import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
@@ -38,7 +38,7 @@ class Entity extends _Base
   }
 
   Dice? sneakDamage(Entity target) {
-    return canSneakAttack(target) ? Skill.sneakAttack.dice : null;
+    return canSneakAttack(target) ? Feat.sneakAttack.dice : null;
   }
 
   bool fasterThan(Entity other) {
@@ -97,7 +97,7 @@ mixin _Effects on _Base {
   Effects get _allEffects {
     final effects = Effects.copy(_temporaryEffects);
     if (klass == EntityClass.warrior) {
-      effects.addSkill(Skill.weaponFocus);
+      effects.addFeat(Feat.weaponFocus);
     }
     ifdef(weapon, effects.addWeapon);
     ifdef(armor, effects.addArmor);

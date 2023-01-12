@@ -1,6 +1,6 @@
 import 'package:dungeons/game/effect.dart';
 import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/skill.dart';
+import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
@@ -58,7 +58,7 @@ class WeaponAttackResult {
   IntValue? get damage {
     return ifdef(weaponDamage?.value, (value) {
       ifdef(sneakDamage?.total, (sneak) {
-        value.addBonus(const Effect(skill: Skill.sneakAttack), sneak);
+        value.addBonus(const Effect(feat: Feat.sneakAttack), sneak);
       });
       return value;
     });

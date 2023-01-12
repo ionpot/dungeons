@@ -1,7 +1,7 @@
 import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/effect.dart';
 import 'package:dungeons/game/effect_bonus.dart';
-import 'package:dungeons/game/skill.dart';
+import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/if.dart';
@@ -50,8 +50,8 @@ class Effects {
   void addArmor(Armor armor) => add(Effect(armor: armor));
   void removeArmor(Armor armor) => remove(Effect(armor: armor));
 
-  void addSkill(Skill skill) => add(Effect(skill: skill));
-  bool hasSkill(Skill skill) => has(Effect(skill: skill));
+  void addFeat(Feat feat) => add(Effect(feat: feat));
+  bool hasFeat(Feat feat) => has(Effect(feat: feat));
 
   void addSpell(Spell spell) => add(Effect(spell: spell));
   bool hasSpell(Spell spell) => has(Effect(spell: spell));
