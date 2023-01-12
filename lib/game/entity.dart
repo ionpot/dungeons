@@ -96,6 +96,9 @@ mixin _Effects on _Base {
 
   Effects get _allEffects {
     final effects = Effects.copy(_temporaryEffects);
+    if (klass == EntityClass.warrior) {
+      effects.addSkill(Skill.weaponFocus);
+    }
     ifdef(weapon, effects.addWeapon);
     ifdef(armor, effects.addArmor);
     return effects;
@@ -109,12 +112,6 @@ mixin _Effects on _Base {
     if (spell.effect == null) return false;
     if (spell.stacks) return true;
     return !hasSpellEffect(spell);
-  }
-
-  void activateSkill() {
-    if (klass == EntityClass.warrior) {
-      _temporaryEffects.addSkill(Skill.weaponFocus);
-    }
   }
 
   bool hasMaxWeaponDamage() =>

@@ -98,11 +98,6 @@ class Combat {
     }
   }
 
-  void activateSkills() {
-    player.activateSkill();
-    enemy.activateSkill();
-  }
-
   int get xpGain => player.xpGain(enemy);
 
   bool canGainXp() => player.alive && enemy.dead;

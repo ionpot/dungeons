@@ -78,9 +78,6 @@ class _CombatScreenState extends State<CombatScreen> {
       ..entity(_combat.player)
       ..ln()
       ..entity(_combat.enemy);
-    setState(() {
-      _combat.activateSkills();
-    });
   }
 
   void _onAction(CombatAction? action) {
