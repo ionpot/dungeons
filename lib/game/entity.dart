@@ -33,7 +33,7 @@ class Entity extends _Base
     final bonus = agility ~/ 4;
     return PercentValue(
       base: Percent(target.totalArmor - bonus).invert(),
-      bonuses: _effects.toPercentEffects((e) => e.hitChance),
+      bonuses: _temporaryEffects.toPercentEffects((e) => e.hitChance),
     );
   }
 
@@ -80,6 +80,8 @@ class _Base {
   final bool player;
   final EntityRace race;
   final EntityClass klass;
+  Weapon? weapon;
+  Armor? armor;
 
   _Base(
     this.name, {
@@ -90,25 +92,33 @@ class _Base {
 }
 
 mixin _Effects on _Base {
-  final _effects = Effects();
+  final _temporaryEffects = Effects();
 
-  void clearSpellEffects() => _effects.clearSpells();
-  bool hasSpellEffect(Spell spell) => _effects.hasSpell(spell);
-  void addSpellEffect(Spell spell) => _effects.addSpell(spell);
+  Effects get _allEffects {
+    final effects = Effects.copy(_temporaryEffects);
+    ifdef(weapon, effects.addWeapon);
+    ifdef(armor, effects.addArmor);
+    return effects;
+  }
+
+  void clearSpellEffects() => _temporaryEffects.clearSpells();
+  void addSpellEffect(Spell spell) => _temporaryEffects.addSpell(spell);
+
+  bool hasSpellEffect(Spell spell) => _allEffects.hasSpell(spell);
   bool canSpellEffect(Spell spell) {
     if (spell.effect == null) return false;
     if (spell.stacks) return true;
-    return !_effects.hasSpell(spell);
+    return !hasSpellEffect(spell);
   }
 
   void activateSkill() {
     if (klass == EntityClass.warrior) {
-      _effects.addSkill(Skill.weaponFocus);
+      _temporaryEffects.addSkill(Skill.weaponFocus);
     }
   }
 
   bool hasMaxWeaponDamage() =>
-      _effects.findEffect((e) => e.maxWeaponDamage) != null;
+      _allEffects.findEffect((e) => e.maxWeaponDamage) != null;
 }
 
 mixin _Attributes on _Base, _Effects {
@@ -129,21 +139,21 @@ mixin _Attributes on _Base, _Effects {
   IntValue get initiative {
     return IntValue(
       base: (agility + intellect) ~/ 2,
-      bonuses: _effects.toIntEffects((e) => e.initiative),
+      bonuses: _allEffects.toIntEffects((e) => e.initiative),
     );
   }
 
   PercentValue get dodge {
     return PercentValue(
       base: Percent(agility),
-      scaling: _effects.toPercentEffects((e) => e.dodgeScale),
+      scaling: _allEffects.toPercentEffects((e) => e.dodgeScale),
     );
   }
 
   PercentValue get resist {
     return PercentValue(
       base: Percent(intellect),
-      bonuses: _effects.toPercentEffects((e) => e.resistChance),
+      bonuses: _allEffects.toPercentEffects((e) => e.resistChance),
     );
   }
 }
@@ -174,12 +184,12 @@ mixin _Stress on _Effects, _Attributes, _Levels {
   int _stress = 0;
 
   int get stress => _stress;
-  int get reservedStress => _effects.reservedStress;
+  int get reservedStress => _allEffects.reservedStress;
   int get stressCap => stressCapValue.total - reservedStress;
   IntValue get stressCapValue {
     return IntValue(
       base: intellect + level,
-      bonuses: _effects.toIntEffects((e) => e.stressCap),
+      bonuses: _allEffects.toIntEffects((e) => e.stressCap),
     );
   }
 
@@ -238,21 +248,11 @@ mixin _Levels on _Base, _Attributes {
   String toXpString() => '$xp/$_xpForLevelUp';
 }
 
-mixin _Weapon on _Effects, _Attributes {
-  Weapon? _weapon;
-
-  Weapon? get weapon => _weapon;
-
-  set weapon(Weapon? w) {
-    ifdef(weapon, _effects.removeWeapon);
-    _weapon = w;
-    ifdef(w, _effects.addWeapon);
-  }
-
+mixin _Weapon on _Base, _Effects, _Attributes {
   IntValue get weaponDamageBonus {
     return IntValue(
       base: strength ~/ 2,
-      bonuses: _effects.toIntEffects((e) => e.damage),
+      bonuses: _allEffects.toIntEffects((e) => e.damage),
     );
   }
 
@@ -262,17 +262,7 @@ mixin _Weapon on _Effects, _Attributes {
   }
 }
 
-mixin _Armor on _Effects {
-  Armor? _armor;
-
-  Armor? get armor => _armor;
-
-  set armor(Armor? a) {
-    ifdef(armor, _effects.removeArmor);
-    _armor = a;
-    ifdef(a, _effects.addArmor);
-  }
-
+mixin _Armor on _Base {
   int get totalArmor => armor?.value ?? 0;
 }
 

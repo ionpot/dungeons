@@ -7,12 +7,17 @@ import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
 
+typedef EffectBonusMap = Map<Effect, EffectBonus>;
 typedef GetEffectBonus<T extends Object> = T? Function(EffectBonus);
 
 class Effects {
-  final Map<Effect, EffectBonus> contents = {};
+  final EffectBonusMap contents;
 
-  Effects();
+  Effects([EffectBonusMap? m]) : contents = m ?? {};
+
+  factory Effects.copy(Effects other) {
+    return Effects(Map.of(other.contents));
+  }
 
   int get reservedStress {
     int sum = 0;
