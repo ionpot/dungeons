@@ -33,7 +33,7 @@ class Entity extends _Base
     final bonus = agility ~/ 4;
     return PercentValue(
       base: Percent(target.totalArmor - bonus).invert(),
-      bonuses: _temporaryEffects.toPercentEffects((e) => e.hitChance),
+      bonuses: _allEffects.toPercentEffects((e) => e.hitChance),
     );
   }
 
