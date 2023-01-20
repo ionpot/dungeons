@@ -7,6 +7,7 @@ class Percent implements Comparable<Percent> {
 
   bool get always => value >= 100;
   bool get never => value <= 0;
+  bool get maybe => !always && !never;
 
   Percent invert() => Percent(100 - value);
 
@@ -14,12 +15,9 @@ class Percent implements Comparable<Percent> {
   int ofInt(int i) => (value / 100 * i).floor();
 
   PercentRoll roll() {
-    if (always) return PercentRoll(success: true);
-    if (never) return PercentRoll(success: false);
-    final result = const Dice(1, 100).roll().total;
     return PercentRoll(
-      success: result <= value,
-      result: result,
+      chance: this,
+      roll: const Dice(1, 100).roll().total,
     );
   }
 
@@ -35,18 +33,18 @@ class Percent implements Comparable<Percent> {
 }
 
 class PercentRoll {
-  final bool success;
-  final int? result;
+  final Percent chance;
+  final int roll;
 
-  PercentRoll({required this.success, this.result});
+  const PercentRoll({required this.chance, required this.roll});
 
-  bool get fail => !success;
+  bool get success => chance.always || roll <= chance.value;
+  bool get fail => chance.never || roll > chance.value;
 
   @override
   String toString() {
-    if (result != null) {
-      return '$result: ${success ? 'Success' : 'Fail'}';
-    }
-    return success ? 'Auto-success' : 'Auto-fail';
+    if (chance.always) return 'Auto-success';
+    if (chance.never) return 'Auto-fail';
+    return '$roll: ${success ? 'Success' : 'Fail'}';
   }
 }

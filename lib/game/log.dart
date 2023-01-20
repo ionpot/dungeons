@@ -8,6 +8,7 @@ import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
+import 'package:dungeons/utility/percent.dart';
 
 class Log {
   final IOSink file;
@@ -50,13 +51,13 @@ class Log {
       ..writeln(
         '${from.name} attacks ${target.name} with ${from.weapon}.',
       )
-      ..writeln('Attack roll (${attack.hitChance}) ${result.hit}');
+      ..writeln('Attack roll ${_percentRoll(result.hit)}');
     if (result.hit.fail) {
       file.writeln('${target.name} deflects the attack.');
       return;
     }
     if (result.dodge != null) {
-      file.writeln('Dodge roll (${attack.dodgeChance}) ${result.dodge}');
+      file.writeln('Dodge roll ${_percentRoll(result.dodge!)}');
       if (result.dodge!.success) {
         file.writeln('${target.name} dodges the attack.');
         return;
@@ -84,7 +85,7 @@ class Log {
       ..write('${from.name} casts $spell ')
       ..writeln(attack.self ? 'to self.' : 'at ${target.name}.');
     if (result.resist != null) {
-      file.writeln('Resist (${attack.resistChance}) ${result.resist}');
+      file.writeln('Resist ${_percentRoll(result.resist!)}');
     }
     if (result.heal != null) {
       file.writeln('Heal roll (${spell.heals}) ${result.healDice}');
@@ -104,6 +105,10 @@ class Log {
   void xpGain(Combat combat) {
     file.writeln('${combat.player.name} gains ${combat.xpGain} XP'
         '${combat.canLevelUp() ? ', and levels up' : ''}.');
+  }
+
+  String _percentRoll(PercentRoll roll) {
+    return '(${roll.chance}) $roll';
   }
 
   void _writeDamage(Entity target, IntValue damage, Source source) {
