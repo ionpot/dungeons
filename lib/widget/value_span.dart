@@ -32,6 +32,17 @@ class PercentValueSpan extends TextSpan {
         );
 }
 
+class PercentValueRollSpan extends TextSpan {
+  PercentValueRollSpan(PercentValueRoll value)
+      : super(
+          children: [
+            const TextSpan(text: '('),
+            PercentValueSpan(value.input),
+            TextSpan(text: ') ${value.result}'),
+          ],
+        );
+}
+
 class RangeSpan extends TextSpan {
   RangeSpan(Range range, {bool max = false})
       : super(

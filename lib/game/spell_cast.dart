@@ -4,7 +4,6 @@ import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
-import 'package:dungeons/utility/percent.dart';
 
 class SpellCast {
   final Spell spell;
@@ -51,7 +50,7 @@ class SpellCast {
 
 class SpellCastResult {
   final bool affected;
-  final PercentRoll? resist;
+  final PercentValueRoll? resist;
   final DiceRoll? damageDice;
   final DiceRoll? healDice;
 

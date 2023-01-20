@@ -4,7 +4,6 @@ import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
-import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/widget/text_lines.dart';
 import 'package:dungeons/widget/titled_text_lines.dart';
 import 'package:dungeons/widget/value_span.dart';
@@ -50,22 +49,14 @@ class CombatDisplay extends StatelessWidget {
     final result = turn.result;
     final from = attack.from;
     final target = attack.target;
-    final dodge = ifdef(result.dodge, (d) => d.success);
     return TextLines([
       Text('${from.name} attacks ${target.name} with ${from.weapon?.text}.'),
-      _richText(
-        'Attack roll (',
-        PercentValueSpan(attack.hitChance),
-        ') ${result.hit}',
-      ),
+      _richText('Attack roll ', PercentValueRollSpan(result.hit)),
       if (result.hit.fail) Text('${target.name} deflects the attack.'),
-      if (dodge != null)
-        _richText(
-          'Dodge roll (',
-          PercentValueSpan(attack.dodgeChance),
-          ') ${result.dodge}',
-        ),
-      if (dodge == true) Text('${target.name} dodges the attack.'),
+      if (result.dodge != null)
+        _richText('Dodge roll ', PercentValueRollSpan(result.dodge!)),
+      if (result.dodge?.success == true)
+        Text('${target.name} dodges the attack.'),
       if (result.sneakDamage != null)
         Text('Sneak attack (${attack.sneakDamage}) ${result.sneakDamage}'),
       if (result.damage != null)
@@ -86,11 +77,7 @@ class CombatDisplay extends StatelessWidget {
         attack.self ? ' to self.' : ' at ${target.name}.',
       ),
       if (result.resist != null)
-        _richText(
-          'Resist (',
-          PercentValueSpan(attack.resistChance),
-          ') ${result.resist}',
-        ),
+        _richText('Resist roll ', PercentValueRollSpan(result.resist!)),
       if (result.damageDice != null)
         Text('Damage roll (${spell.damage}) ${result.damageDice}'),
       if (result.healDice != null)
@@ -141,10 +128,14 @@ class CombatDisplay extends StatelessWidget {
     );
   }
 
-  Widget _richText(String prefix, TextSpan span, String suffix) {
+  Widget _richText(String prefix, TextSpan span, [String suffix = '']) {
     return Text.rich(
       TextSpan(
-        children: [TextSpan(text: prefix), span, TextSpan(text: suffix)],
+        children: [
+          TextSpan(text: prefix),
+          span,
+          if (suffix != '') TextSpan(text: suffix),
+        ],
       ),
     );
   }

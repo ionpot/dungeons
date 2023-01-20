@@ -47,10 +47,22 @@ class PercentValue {
       scaling.isEmpty ? const Percent() : scaling.total.of(unscaled);
   Percent get total => unscaled + scaleBonus;
 
-  PercentRoll roll() => total.roll();
+  PercentValueRoll roll() {
+    return PercentValueRoll(input: this, result: total.roll());
+  }
 
   @override
   String toString() => total.toString();
+}
+
+class PercentValueRoll {
+  final PercentValue input;
+  final PercentRoll result;
+
+  const PercentValueRoll({required this.input, required this.result});
+
+  bool get success => result.success;
+  bool get fail => result.fail;
 }
 
 class DiceValue {

@@ -8,7 +8,6 @@ import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/if.dart';
-import 'package:dungeons/utility/percent.dart';
 
 class Log {
   final IOSink file;
@@ -107,8 +106,8 @@ class Log {
         '${combat.canLevelUp() ? ', and levels up' : ''}.');
   }
 
-  String _percentRoll(PercentRoll roll) {
-    return '(${roll.chance}) $roll';
+  String _percentRoll(PercentValueRoll roll) {
+    return '(${roll.input}) ${roll.result}';
   }
 
   void _writeDamage(Entity target, IntValue damage, Source source) {

@@ -5,7 +5,6 @@ import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
-import 'package:dungeons/utility/percent.dart';
 
 class WeaponAttack {
   final Entity from;
@@ -42,8 +41,8 @@ class WeaponAttack {
 }
 
 class WeaponAttackResult {
-  final PercentRoll hit;
-  final PercentRoll? dodge;
+  final PercentValueRoll hit;
+  final PercentValueRoll? dodge;
   final DiceRollValue? weaponDamage;
   final DiceRoll? sneakDamage;
 
