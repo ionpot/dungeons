@@ -24,7 +24,7 @@ class IntValue implements Comparable<IntValue> {
   bool operator >(IntValue other) => total > other.total;
 
   @override
-  String toString() => total.toString();
+  String toString() => '$total';
 
   @override
   int compareTo(IntValue other) => total - other.total;
@@ -52,7 +52,7 @@ class PercentValue {
   }
 
   @override
-  String toString() => total.toString();
+  String toString() => '$total';
 }
 
 class PercentValueRoll {
@@ -123,5 +123,5 @@ class DiceRollValue {
   int get total => base.total + bonusTotal;
 
   @override
-  String toString() => total.toString();
+  String toString() => '$total';
 }
