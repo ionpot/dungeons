@@ -67,12 +67,9 @@ class Combat {
   }
 
   CombatAction get _mageAction {
-    final spells = current.knownSpells;
-    final len = spells.length;
-    final i = Random().nextInt(len + 1);
     return CombatAction(
       target: _other,
-      castSpell: i < len ? spells[i] : null,
+      castSpell: current.spellbook?.maybeRandomSpell(),
     );
   }
 

@@ -5,6 +5,7 @@ import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/spell.dart';
+import 'package:dungeons/game/spellbook.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
@@ -255,15 +256,7 @@ mixin _Armor on _Base {
 mixin _Spells on _Base, _Stress {
   bool canCast(Spell spell) => hasStress(spell.stress);
 
-  List<Spell> get knownSpells {
-    switch (klass) {
-      case EntityClass.cleric:
-        return [Spell.bless, Spell.heal];
-      case EntityClass.mage:
-        return [Spell.magicMissile, Spell.rayOfFrost];
-      case EntityClass.warrior:
-      case EntityClass.trickster:
-        return [];
-    }
-  }
+  SpellBook? get spellbook => ifdef(klass.spells, SpellBook.new);
+
+  Set<Spell> get knownSpells => spellbook?.spells ?? {};
 }
