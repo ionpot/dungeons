@@ -31,6 +31,11 @@ class Effect {
 
   @override
   int get hashCode => Object.hash(weapon, armor, feat, spell);
+
+  @override
+  String toString() {
+    return weapon?.text ?? armor?.text ?? feat?.text ?? spell?.text ?? '';
+  }
 }
 
 typedef EffectMap<T extends Object> = Map<Effect, T>;
