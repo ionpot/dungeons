@@ -50,14 +50,15 @@ class CombatDisplay extends StatelessWidget {
     final result = turn.result;
     final from = attack.from;
     final target = attack.target;
+    final weapon = from.weapon!.text;
     return TextLines([
-      Text('${from.name} attacks ${target.name} with ${from.weapon?.text}.'),
+      Text('${from.name} attacks ${target.name} with $weapon.'),
       _percentRoll('Attack', result.hit),
       if (result.hit.fail) Text('${target.name} deflects the attack.'),
       if (result.dodge != null) _percentRoll('Dodge', result.dodge!),
       if (result.dodge?.success == true)
         Text('${target.name} dodges the attack.'),
-      if (result.damage != null) ..._diceRolls('Damage', result.damage!),
+      if (result.damage != null) ..._diceRolls(weapon, result.damage!),
       if (result.damage != null)
         _damageAndStatus(result.damage!, weaponTurn: turn),
     ]);
@@ -76,8 +77,8 @@ class CombatDisplay extends StatelessWidget {
         attack.self ? ' to self.' : ' at ${target.name}.',
       ),
       if (result.resist != null) _percentRoll('Resist', result.resist!),
-      if (result.damage != null) ..._diceRolls('Damage', result.damage!),
-      if (result.heal != null) ..._diceRolls('Heal', result.heal!),
+      if (result.damage != null) ..._diceRolls(spell.text, result.damage!),
+      if (result.heal != null) ..._diceRolls(spell.text, result.heal!),
       if (result.heal != null)
         Text('${target.name} is healed by ${result.heal!.total}.'),
       if (result.damage != null)

@@ -47,9 +47,10 @@ class Log {
     final result = turn.result;
     final from = attack.from;
     final target = attack.target;
+    final weapon = from.weapon!.text;
     file
       ..writeln(
-        '${from.name} attacks ${target.name} with ${from.weapon}.',
+        '${from.name} attacks ${target.name} with $weapon.',
       )
       ..writeln('Attack roll ${_percentRoll(result.hit)}');
     if (result.hit.fail) {
@@ -66,7 +67,7 @@ class Log {
     if (result.damage == null) {
       return;
     }
-    _writeDiceRolls('Damage', result.damage!);
+    _writeDiceRolls(weapon, result.damage!);
     _writeDamage(target, result.damage!, attack.source);
     _writeStatus(target);
   }
@@ -84,11 +85,11 @@ class Log {
       file.writeln('Resist ${_percentRoll(result.resist!)}');
     }
     if (result.heal != null) {
-      _writeDiceRolls('Heal', result.heal!);
+      _writeDiceRolls(spell.text, result.heal!);
       file.writeln('${target.name} is healed by ${result.heal}.');
     }
     if (result.damage != null) {
-      _writeDiceRolls('Damage', result.damage!);
+      _writeDiceRolls(spell.text, result.damage!);
       _writeDamage(target, result.damage!, spell.source);
       _writeStatus(target, turn);
     }
