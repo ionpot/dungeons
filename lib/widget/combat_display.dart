@@ -4,6 +4,7 @@ import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
+import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/widget/text_lines.dart';
 import 'package:dungeons/widget/titled_text_lines.dart';
 import 'package:dungeons/widget/value_span.dart';
@@ -57,8 +58,7 @@ class CombatDisplay extends StatelessWidget {
         _richText('Dodge roll ', PercentValueRollSpan(result.dodge!)),
       if (result.dodge?.success == true)
         Text('${target.name} dodges the attack.'),
-      if (result.sneakDamage != null)
-        Text('Sneak attack (${attack.sneakDamage}) ${result.sneakDamage}'),
+      if (result.damage != null) ..._diceRolls('Damage', result.damage!),
       if (result.damage != null)
         _damageAndStatus(result.damage!, weaponTurn: turn),
     ]);
@@ -78,19 +78,17 @@ class CombatDisplay extends StatelessWidget {
       ),
       if (result.resist != null)
         _richText('Resist roll ', PercentValueRollSpan(result.resist!)),
-      if (result.damageDice != null)
-        Text('Damage roll (${spell.damage}) ${result.damageDice}'),
-      if (result.healDice != null)
-        Text('Heal roll (${spell.heals}) ${result.healDice}'),
-      if (result.healDice != null)
-        Text('${target.name} is healed by ${result.healDice!.total}.'),
+      if (result.damage != null) ..._diceRolls('Damage', result.damage!),
+      if (result.heal != null) ..._diceRolls('Heal', result.heal!),
+      if (result.heal != null)
+        Text('${target.name} is healed by ${result.heal!.total}.'),
       if (result.damage != null)
         _damageAndStatus(result.damage!, spellTurn: turn),
     ]);
   }
 
   Widget _damageAndStatus(
-    IntValue damage, {
+    DiceRollValue damage, {
     WeaponAttackTurn? weaponTurn,
     SpellCastTurn? spellTurn,
   }) {
@@ -101,6 +99,18 @@ class CombatDisplay extends StatelessWidget {
       DamageSpan(damage, source),
       ' damage${_status(target, spellTurn)}.',
     );
+  }
+
+  Widget _diceRoll(String name, DiceRoll roll) {
+    return _richText('$name roll ', DiceRollSpan(roll));
+  }
+
+  List<Widget> _diceRolls(String name, DiceRollValue value) {
+    return [
+      _diceRoll(name, value.base),
+      for (final entry in value.diceBonuses.contents.entries)
+        _diceRoll('${entry.key}', entry.value),
+    ];
   }
 
   String _status(Entity target, [SpellCastTurn? spellTurn]) {

@@ -4,8 +4,11 @@ import 'package:dungeons/game/effect_bonus.dart';
 import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/weapon.dart';
+import 'package:dungeons/utility/bonus_text.dart';
+import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
+import 'package:dungeons/utility/range.dart';
 
 typedef EffectBonusMap = Map<Effect, EffectBonus>;
 typedef GetEffectBonus<T extends Object> = T? Function(EffectBonus);
@@ -93,13 +96,18 @@ class Effects {
 class IntEffects {
   final EffectMap<int> contents;
 
-  const IntEffects([this.contents = const {}]);
+  IntEffects([EffectMap<int>? contents]) : contents = contents ?? {};
+
+  bool get isEmpty => contents.isEmpty;
 
   int get total => contents.values.fold(0, (sum, value) => sum + value);
 
   void add(Effect effect, int value) {
     contents[effect] = value;
   }
+
+  @override
+  String toString() => isEmpty ? "" : bonusText(total);
 }
 
 class PercentEffects {
@@ -114,5 +122,44 @@ class PercentEffects {
       const Percent(),
       (sum, value) => sum + value,
     );
+  }
+}
+
+class DiceEffects {
+  final EffectMap<Dice> contents;
+
+  DiceEffects([EffectMap<Dice>? contents]) : contents = contents ?? {};
+
+  bool get isEmpty => contents.isEmpty;
+
+  int get maxTotal => Dice.maxTotal(contents.values);
+  Range get range => Dice.totalRange(contents.values);
+
+  void add(Effect effect, Dice dice) {
+    contents[effect] = dice;
+  }
+
+  DiceRollEffects roll() => _map((dice) => dice.roll());
+  DiceRollEffects rollMax() => _map((dice) => dice.rollMax());
+
+  DiceRollEffects _map(DiceRoll Function(Dice) fn) {
+    return DiceRollEffects(contents.map((key, value) {
+      return MapEntry(key, fn(value));
+    }));
+  }
+
+  @override
+  String toString() => contents.values.fold("", (str, dice) => "$str+$dice");
+}
+
+class DiceRollEffects {
+  final EffectMap<DiceRoll> contents;
+
+  const DiceRollEffects([this.contents = const {}]);
+
+  IntEffects get totals {
+    return IntEffects(contents.map((key, value) {
+      return MapEntry(key, value.total);
+    }));
   }
 }

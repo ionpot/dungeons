@@ -2,7 +2,6 @@ import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/value.dart';
-import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/range.dart';
 import 'package:dungeons/widget/colors.dart';
@@ -51,32 +50,42 @@ class RangeSpan extends TextSpan {
         );
 }
 
-class DiceSpan extends TextSpan {
-  DiceSpan(Dice dice, {bool max = false})
-      : super(
-          text: '${max ? dice.max : dice}',
-          style: TextStyle(color: max ? green : null),
-        );
+class DiceRollSpan extends TextSpan {
+  DiceRollSpan(DiceRoll value) : super(text: '(${value.dice.base}) $value');
 }
 
 class DiceValueSpan extends TextSpan {
-  DiceValueSpan(DiceValue value, {bool max = false})
+  DiceValueSpan(DiceValue value)
       : super(
           children: [
-            DiceSpan(value.base, max: max),
+            TextSpan(text: '${value.base.base}'),
             TextSpan(
-              text: bonusText(value.bonus.total),
-              style: TextStyle(color: diceValueColor(value)),
+              text: '${value.diceBonuses}',
+              style: TextStyle(color: diceEffectsColor(value.diceBonuses)),
+            ),
+            TextSpan(
+              text: value.intBonusString,
+              style: TextStyle(color: intEffectsColor(value.intBonuses)),
             ),
           ],
         );
 }
 
+class DiceRollValueSpan extends TextSpan {
+  DiceRollValueSpan(DiceRollValue value)
+      : super(
+          text: '${value.total}',
+          style: TextStyle(
+            color: intColor(value.bonusTotal) ?? (value.max ? green : null),
+          ),
+        );
+}
+
 class DamageSpan extends TextSpan {
-  DamageSpan(IntValue damage, Source source)
+  DamageSpan(DiceRollValue damage, Source source)
       : super(
           children: [
-            IntValueSpan(damage),
+            DiceRollValueSpan(damage),
             TextSpan(
               text: ' ${source.name}',
               style: TextStyle(color: sourceColor(source)),

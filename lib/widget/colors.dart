@@ -1,3 +1,4 @@
+import 'package:dungeons/game/effects.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
@@ -23,9 +24,10 @@ Color? intColor(int i) {
 
 Color? percentColor(Percent percent) => intColor(percent.value);
 Color? intValueColor(IntValue value) => intColor(value.bonus);
+Color? intEffectsColor(IntEffects value) => intColor(value.total);
 Color? percentValueColor(PercentValue value) =>
     percentColor(value.scaleBonus) ?? percentColor(value.bonus);
-Color? diceValueColor(DiceValue value) => intValueColor(value.bonus);
+Color? diceEffectsColor(DiceEffects value) => value.isEmpty ? null : green;
 
 Color? hpColor(Entity e) => e.alive ? null : red;
 

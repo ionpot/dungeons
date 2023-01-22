@@ -7,6 +7,7 @@ import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
+import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
 
 class Log {
@@ -62,16 +63,12 @@ class Log {
         return;
       }
     }
-    if (result.sneakDamage != null) {
-      file.writeln(
-        'Sneak attack (${attack.sneakDamage}) ${result.sneakDamage}',
-      );
-    }
-    if (result.damage != null) {
-      _writeDamage(target, result.damage!, attack.source);
-      _writeStatus(target);
+    if (result.damage == null) {
       return;
     }
+    _writeDiceRolls('Damage', result.damage!);
+    _writeDamage(target, result.damage!, attack.source);
+    _writeStatus(target);
   }
 
   void spellTurn(SpellCastTurn turn) {
@@ -87,11 +84,11 @@ class Log {
       file.writeln('Resist ${_percentRoll(result.resist!)}');
     }
     if (result.heal != null) {
-      file.writeln('Heal roll (${spell.heals}) ${result.healDice}');
+      _writeDiceRolls('Heal', result.heal!);
       file.writeln('${target.name} is healed by ${result.heal}.');
     }
     if (result.damage != null) {
-      file.writeln('Damage roll (${spell.damage}) ${result.damageDice}');
+      _writeDiceRolls('Damage', result.damage!);
       _writeDamage(target, result.damage!, spell.source);
       _writeStatus(target, turn);
     }
@@ -110,8 +107,19 @@ class Log {
     return '(${roll.input}) ${roll.result}';
   }
 
-  void _writeDamage(Entity target, IntValue damage, Source source) {
+  void _writeDamage(Entity target, DiceRollValue damage, Source source) {
     file.write('${target.name} takes $damage ${source.name} damage');
+  }
+
+  void _writeDiceRoll(String name, DiceRoll value) {
+    file.writeln('$name roll (${value.dice.base}) $value');
+  }
+
+  void _writeDiceRolls(String rollName, DiceRollValue value) {
+    _writeDiceRoll(rollName, value.base);
+    for (final entry in value.diceBonuses.contents.entries) {
+      _writeDiceRoll('${entry.key}', entry.value);
+    }
   }
 
   void _writeStatus(Entity target, [SpellCastTurn? spellTurn]) {

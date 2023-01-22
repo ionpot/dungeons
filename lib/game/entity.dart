@@ -8,7 +8,6 @@ import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
-import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
 
@@ -35,10 +34,6 @@ class Entity extends _Base
       base: Percent(target.totalArmor - bonus).invert(),
       bonuses: _allEffects.toPercentEffects((e) => e.hitChance),
     );
-  }
-
-  Dice? sneakDamage(Entity target) {
-    return canSneakAttack(target) ? Feat.sneakAttack.dice : null;
   }
 
   bool fasterThan(Entity other) {
@@ -113,9 +108,6 @@ mixin _Effects on _Base {
     if (spell.stacks) return true;
     return !hasSpellEffect(spell);
   }
-
-  bool hasMaxWeaponDamage() =>
-      _allEffects.findEffect((e) => e.maxWeaponDamage) != null;
 }
 
 mixin _Attributes on _Base, _Effects {
@@ -246,16 +238,13 @@ mixin _Levels on _Base, _Attributes {
 }
 
 mixin _Weapon on _Base, _Effects, _Attributes {
-  IntValue get weaponDamageBonus {
-    return IntValue(
-      base: strength ~/ 2,
-      bonuses: _allEffects.toIntEffects((e) => e.damage),
-    );
-  }
-
   DiceValue? get weaponDamage {
     if (weapon == null) return null;
-    return DiceValue(base: weapon!.dice, bonus: weaponDamageBonus);
+    return DiceValue(
+      base: weapon!.dice.addBonus(strength ~/ 2),
+      intBonuses: _allEffects.toIntEffects((e) => e.damage),
+      max: _allEffects.findEffect((e) => e.maxWeaponDamage) != null,
+    );
   }
 }
 

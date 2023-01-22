@@ -24,14 +24,14 @@ class SpellCast {
     if (self) {
       return SpellCastResult(
         affected: affected,
-        healDice: spell.heals?.roll(),
+        heal: _roll(spell.heals),
       );
     }
     final resist = ifnot(spell.autoHit, resistChance.roll);
     final hit = resist?.success != true;
     return SpellCastResult(
       resist: resist,
-      damageDice: ifyes(hit, spell.damage?.roll),
+      damage: ifyes(hit, () => _roll(spell.damage)),
       affected: hit && affected,
     );
   }
@@ -40,31 +40,30 @@ class SpellCast {
     if (from.player) {
       from.addStress(spell.stress);
     }
-    target.heal(result.healDice?.total ?? 0);
-    target.takeDamage(result.damageDice?.total ?? 0);
+    ifdef(result.heal?.total, target.heal);
+    ifdef(result.damage?.total, target.takeDamage);
     if (result.affected) {
       target.addSpellEffect(spell);
     }
+  }
+
+  DiceRollValue? _roll(Dice? dice) {
+    return ifdef(dice, DiceRollValue.roll);
   }
 }
 
 class SpellCastResult {
   final bool affected;
   final PercentValueRoll? resist;
-  final DiceRoll? damageDice;
-  final DiceRoll? healDice;
+  final DiceRollValue? damage;
+  final DiceRollValue? heal;
 
   const SpellCastResult({
     required this.affected,
     this.resist,
-    this.damageDice,
-    this.healDice,
+    this.damage,
+    this.heal,
   });
-
-  IntValue? get damage =>
-      ifdef(damageDice, (dice) => IntValue(base: dice.total));
-
-  IntValue? get heal => ifdef(healDice, (dice) => IntValue(base: dice.total));
 }
 
 class SpellCastTurn {

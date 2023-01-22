@@ -14,24 +14,25 @@ class WeaponAttack {
 
   PercentValue get hitChance => from.hitChance(target);
   PercentValue get dodgeChance => target.dodge;
-  DiceValue? get damage => from.weaponDamage;
-  Dice? get sneakDamage => from.sneakDamage(target);
+  bool get sneakAttack => from.canSneakAttack(target);
   Source get source => Source.physical;
+
+  DiceValue? get damage {
+    return ifdef(from.weaponDamage, (value) {
+      return sneakAttack
+          ? (value..addDice(_SneakAttack.effect, _SneakAttack.dice))
+          : value;
+    });
+  }
 
   WeaponAttackResult roll() {
     final hit = hitChance.roll();
     final dodge = ifyes(hit.success, dodgeChance.roll);
-    final weapon = ifyes(dodge?.fail, () {
-      return ifdef(damage, (d) {
-        return from.hasMaxWeaponDamage() ? d.rollMax() : d.roll();
-      });
-    });
-    final sneak = ifok(weapon, sneakDamage?.roll);
+    final damage = ifyes(dodge?.fail, this.damage?.roll);
     return WeaponAttackResult(
       hit: hit,
       dodge: dodge,
-      weaponDamage: weapon,
-      sneakDamage: sneak,
+      damage: damage,
     );
   }
 
@@ -43,25 +44,13 @@ class WeaponAttack {
 class WeaponAttackResult {
   final PercentValueRoll hit;
   final PercentValueRoll? dodge;
-  final DiceRollValue? weaponDamage;
-  final DiceRoll? sneakDamage;
+  final DiceRollValue? damage;
 
   const WeaponAttackResult({
     required this.hit,
     this.dodge,
-    this.weaponDamage,
-    this.sneakDamage,
+    this.damage,
   });
-
-  // TODO refactor
-  IntValue? get damage {
-    return ifdef(weaponDamage?.value, (value) {
-      ifdef(sneakDamage?.total, (sneak) {
-        value.addBonus(const Effect(feat: Feat.sneakAttack), sneak);
-      });
-      return value;
-    });
-  }
 }
 
 class WeaponAttackTurn {
@@ -72,5 +61,13 @@ class WeaponAttackTurn {
 
   void apply() {
     attack.apply(result);
+  }
+}
+
+class _SneakAttack {
+  static const effect = Effect(feat: Feat.sneakAttack);
+  static Dice get dice {
+    return Feat.sneakAttack.dice ??
+        (throw Exception("Feat.sneakAttack.dice is null"));
   }
 }

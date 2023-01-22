@@ -9,10 +9,10 @@ class IntValue implements Comparable<IntValue> {
   final int base;
   final IntEffects bonuses;
 
-  const IntValue({
+  IntValue({
     this.base = 0,
-    this.bonuses = const IntEffects(),
-  });
+    IntEffects? bonuses,
+  }) : bonuses = bonuses ?? IntEffects();
 
   int get bonus => bonuses.total;
   int get total => base + bonus;
@@ -67,33 +67,60 @@ class PercentValueRoll {
 
 class DiceValue {
   final Dice base;
-  final IntValue bonus;
+  final DiceEffects diceBonuses;
+  final IntEffects intBonuses;
+  final bool max;
 
-  const DiceValue({required this.base, this.bonus = const IntValue()});
+  DiceValue({
+    required this.base,
+    DiceEffects? diceBonuses,
+    IntEffects? intBonuses,
+    this.max = false,
+  })  : diceBonuses = diceBonuses ?? DiceEffects(),
+        intBonuses = intBonuses ?? IntEffects();
 
-  Range get range => base.range + bonus.total;
+  void addDice(Effect effect, Dice dice) {
+    diceBonuses.add(effect, dice);
+  }
 
-  DiceRollValue roll() => DiceRollValue(base.roll(), bonus);
-  DiceRollValue rollMax() => DiceRollValue(base.rollMax(), bonus);
+  Range get range => base.range + diceBonuses.range + intBonuses.total;
+
+  int get intBonusTotal => base.bonus + intBonuses.total;
+  String get intBonusString => bonusText(intBonusTotal);
+  int get maxTotal => base.max + diceBonuses.maxTotal + intBonuses.total;
+
+  DiceRollValue roll() {
+    return DiceRollValue(
+      input: this,
+      base: max ? base.rollMax() : base.roll(),
+      diceBonuses: max ? diceBonuses.rollMax() : diceBonuses.roll(),
+    );
+  }
 
   @override
-  String toString() => '$base${bonusText(bonus.total)}';
+  String toString() => '${base.base}$intBonusString$diceBonuses';
 }
 
 class DiceRollValue {
+  final DiceValue input;
   final DiceRoll base;
-  final IntValue bonus;
+  final DiceRollEffects diceBonuses;
 
-  const DiceRollValue(this.base, this.bonus);
+  const DiceRollValue({
+    required this.input,
+    required this.base,
+    this.diceBonuses = const DiceRollEffects(),
+  });
 
-  int get total => base.total + bonus.total;
-
-  IntValue get value {
-    return IntValue(
-      base: base.total + bonus.base,
-      bonuses: bonus.bonuses,
-    );
+  factory DiceRollValue.roll(Dice dice) {
+    return DiceValue(base: dice).roll();
   }
+
+  IntEffects get intBonuses => input.intBonuses;
+  bool get max => input.max;
+
+  int get bonusTotal => intBonuses.total + diceBonuses.totals.total;
+  int get total => base.total + bonusTotal;
 
   @override
   String toString() => total.toString();

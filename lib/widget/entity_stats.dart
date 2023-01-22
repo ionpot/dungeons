@@ -1,4 +1,5 @@
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/value.dart';
 import 'package:dungeons/widget/text_lines.dart';
 import 'package:dungeons/widget/value_span.dart';
 import 'package:flutter/widgets.dart';
@@ -63,17 +64,22 @@ class EntityStats extends StatelessWidget {
 
   Widget get _weapon {
     final damage = entity.weaponDamage;
-    final max = entity.hasMaxWeaponDamage();
     return Text.rich(
       TextSpan(
         children: [
           TextSpan(text: 'Weapon: ${entity.weapon}'),
-          if (damage != null) const TextSpan(text: ' ('),
-          if (damage != null) DiceValueSpan(damage, max: max),
-          if (damage != null) const TextSpan(text: ') '),
-          if (damage != null) RangeSpan(damage.range, max: max),
+          if (damage != null) ..._weaponDamage(damage),
         ],
       ),
     );
+  }
+
+  List<TextSpan> _weaponDamage(DiceValue damage) {
+    return [
+      const TextSpan(text: ' ('),
+      DiceValueSpan(damage),
+      const TextSpan(text: ') '),
+      RangeSpan(damage.range, max: damage.max),
+    ];
   }
 }

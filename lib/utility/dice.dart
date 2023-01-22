@@ -10,10 +10,14 @@ class Dice implements Comparable<Dice> {
 
   const Dice(this.count, this.sides, {this.bonus = 0});
 
+  Dice get base => Dice(count, sides);
+
   int get min => count + bonus;
   int get max => count * sides + bonus;
 
   Range get range => Range(min, max);
+
+  Dice addBonus(int value) => Dice(count, sides, bonus: bonus + value);
 
   DiceRoll roll() {
     final random = Random();
@@ -22,12 +26,12 @@ class Dice implements Comparable<Dice> {
       (_) => random.nextInt(sides) + 1,
       growable: false,
     );
-    return DiceRoll(rolls, bonus);
+    return DiceRoll(this, rolls);
   }
 
   DiceRoll rollMax() {
     final rolls = List.filled(count, sides);
-    return DiceRoll(rolls, bonus);
+    return DiceRoll(this, rolls);
   }
 
   @override
@@ -35,15 +39,23 @@ class Dice implements Comparable<Dice> {
 
   @override
   String toString() => '${count}d$sides${bonusText(bonus)}';
+
+  static int maxTotal(Iterable<Dice> list) {
+    return list.fold(0, (sum, dice) => sum + dice.max);
+  }
+
+  static Range totalRange(Iterable<Dice> list) {
+    return list.fold(const Range(0, 0), (range, dice) => range + dice.range);
+  }
 }
 
 class DiceRoll {
+  final Dice dice;
   final List<int> rolls;
-  final int bonus;
 
-  const DiceRoll(this.rolls, this.bonus);
+  const DiceRoll(this.dice, this.rolls);
 
-  int get total => rolls.fold(bonus, (previous, current) => previous + current);
+  int get total => rolls.fold(dice.bonus, (sum, roll) => sum + roll);
 
   @override
   String toString() => rolls.join(" ");

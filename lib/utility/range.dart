@@ -12,7 +12,15 @@ class Range {
 
   Range withMin(int x) => Range(min < x ? x : min, max).sanitize();
 
-  Range operator +(int i) => Range(min + i, max + i);
+  Range operator +(dynamic other) {
+    if (other is int) {
+      return Range(min + other, max + other);
+    }
+    if (other is Range) {
+      return Range(min + other.min, max + other.max);
+    }
+    throw ArgumentError.value(other, "other");
+  }
 
   @override
   String toString() => (min == max) ? '$min' : '$min - $max';
