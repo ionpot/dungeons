@@ -21,8 +21,8 @@ class Entity extends _Base
         _Weapon,
         _Armor,
         _Spells {
-  Entity(
-    super.name, {
+  Entity({
+    required super.name,
     required super.race,
     required super.klass,
     super.player = false,
@@ -50,7 +50,7 @@ class Entity extends _Base
 
   Entity rollEnemy() {
     return Entity(
-      'Enemy',
+      name: 'Enemy',
       race: EntityRace.orc,
       klass: EntityClass.random(),
     )
@@ -78,8 +78,8 @@ class _Base {
   Weapon? weapon;
   Armor? armor;
 
-  _Base(
-    this.name, {
+  _Base({
+    required this.name,
     required this.race,
     required this.klass,
     required this.player,

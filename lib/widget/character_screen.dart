@@ -31,7 +31,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
   Entity? get _entity {
     if (_attributes == null || _class == null) return null;
     return Entity(
-      'Player',
+      name: 'Player',
       player: true,
       klass: _class!,
       race: EntityRace.human,
