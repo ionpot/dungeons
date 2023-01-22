@@ -52,10 +52,9 @@ class CombatDisplay extends StatelessWidget {
     final target = attack.target;
     return TextLines([
       Text('${from.name} attacks ${target.name} with ${from.weapon?.text}.'),
-      _richText('Attack roll ', PercentValueRollSpan(result.hit)),
+      _percentRoll('Attack', result.hit),
       if (result.hit.fail) Text('${target.name} deflects the attack.'),
-      if (result.dodge != null)
-        _richText('Dodge roll ', PercentValueRollSpan(result.dodge!)),
+      if (result.dodge != null) _percentRoll('Dodge', result.dodge!),
       if (result.dodge?.success == true)
         Text('${target.name} dodges the attack.'),
       if (result.damage != null) ..._diceRolls('Damage', result.damage!),
@@ -76,8 +75,7 @@ class CombatDisplay extends StatelessWidget {
         SpellNameSpan(spell),
         attack.self ? ' to self.' : ' at ${target.name}.',
       ),
-      if (result.resist != null)
-        _richText('Resist roll ', PercentValueRollSpan(result.resist!)),
+      if (result.resist != null) _percentRoll('Resist', result.resist!),
       if (result.damage != null) ..._diceRolls('Damage', result.damage!),
       if (result.heal != null) ..._diceRolls('Heal', result.heal!),
       if (result.heal != null)
@@ -111,6 +109,10 @@ class CombatDisplay extends StatelessWidget {
       for (final entry in value.diceBonuses.contents.entries)
         _diceRoll('${entry.key}', entry.value),
     ];
+  }
+
+  Widget _percentRoll(String name, PercentValueRoll roll) {
+    return _richText('$name roll ', PercentValueRollSpan(roll));
   }
 
   String _status(Entity target, [SpellCastTurn? spellTurn]) {
