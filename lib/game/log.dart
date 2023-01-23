@@ -66,14 +66,14 @@ class Log {
   }
 
   void spellTurn(SpellCastTurn turn) {
-    final attack = turn.attack;
+    final cast = turn.cast;
     final result = turn.result;
-    final caster = attack.from;
-    final target = attack.target;
-    final spell = attack.spell;
+    final caster = cast.from;
+    final target = cast.target;
+    final spell = cast.spell;
     file
       ..write('${caster.name} casts $spell ')
-      ..writeln(attack.self ? 'to self.' : 'at ${target.name}.');
+      ..writeln(cast.self ? 'to self.' : 'at ${target.name}.');
     if (result.canResist) {
       file.writeln('Resist ${_percentRoll(result.resistRoll)}');
     }
@@ -124,7 +124,7 @@ class Log {
     if (target.dead) {
       file.write(', and dies');
     } else if (spellTurn?.result.didEffect == true) {
-      if (spellTurn?.attack.spell == Spell.rayOfFrost) {
+      if (spellTurn?.cast.spell == Spell.rayOfFrost) {
         file.write(', and is slowed');
       }
     }

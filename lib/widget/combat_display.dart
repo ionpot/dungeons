@@ -65,28 +65,28 @@ class CombatDisplay extends StatelessWidget {
   }
 
   Widget _spellTurn(SpellCastTurn turn) {
-    final attack = turn.attack;
+    final cast = turn.cast;
     final result = turn.result;
-    final caster = attack.from.name;
-    final target = attack.target.name;
+    final caster = cast.from.name;
+    final target = cast.target.name;
     return TextLines([
       _richText(
         '$caster casts ',
-        SpellNameSpan(attack.spell),
-        attack.self ? ' to self.' : ' at $target.',
+        SpellNameSpan(cast.spell),
+        cast.self ? ' to self.' : ' at $target.',
       ),
       if (result.canResist) _percentRoll('Resist', result.resistRoll),
       if (result.resisted) Text('$target resists the spell.'),
       if (result.didHit && result.damageRoll != null)
         ..._spellDamage(result.damageRoll!, turn),
       if (result.didHit && result.healRoll != null)
-        ..._spellHeal(result.healRoll!, attack),
+        ..._spellHeal(result.healRoll!, cast),
     ]);
   }
 
   List<Widget> _spellDamage(DiceRollValue roll, SpellCastTurn turn) {
     return [
-      ..._diceRolls(turn.attack.spell.text, roll),
+      ..._diceRolls(turn.cast.spell.text, roll),
       _damageAndStatus(roll, spellTurn: turn),
     ];
   }
@@ -107,8 +107,8 @@ class CombatDisplay extends StatelessWidget {
     WeaponAttackTurn? weaponTurn,
     SpellCastTurn? spellTurn,
   }) {
-    final target = weaponTurn?.attack.target ?? spellTurn!.attack.target;
-    final source = weaponTurn?.attack.source ?? spellTurn!.attack.source;
+    final target = weaponTurn?.attack.target ?? spellTurn!.cast.target;
+    final source = weaponTurn?.attack.source ?? spellTurn!.cast.source;
     return _richText(
       '${target.name} takes ',
       DamageSpan(damage, source),
@@ -137,7 +137,7 @@ class CombatDisplay extends StatelessWidget {
       return ', and dies';
     }
     if (spellTurn?.result.didEffect == true) {
-      if (spellTurn?.attack.spell == Spell.rayOfFrost) {
+      if (spellTurn?.cast.spell == Spell.rayOfFrost) {
         return ', and is slowed';
       }
     }

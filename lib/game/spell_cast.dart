@@ -73,12 +73,12 @@ class SpellCastResult {
 }
 
 class SpellCastTurn {
-  final SpellCast attack;
+  final SpellCast cast;
   final SpellCastResult result;
 
-  const SpellCastTurn(this.attack, this.result);
+  const SpellCastTurn(this.cast, this.result);
 
   void apply() {
-    attack.apply(result);
+    cast.apply(result);
   }
 }
