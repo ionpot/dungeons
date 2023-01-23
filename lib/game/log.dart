@@ -45,11 +45,11 @@ class Log {
   void weaponTurn(WeaponAttackTurn turn) {
     final attack = turn.attack;
     final result = turn.result;
-    final from = attack.from;
+    final attacker = attack.attacker;
     final target = attack.target;
-    final weapon = from.weapon!.text;
+    final weapon = attacker.weapon!.text;
     file
-      ..writeln('${from.name} attacks ${target.name} with $weapon.')
+      ..writeln('${attacker.name} attacks ${target.name} with $weapon.')
       ..writeln('Attack roll ${_percentRoll(result.attackRoll)}');
     if (result.deflected) {
       file.writeln('${target.name} deflects the attack.');

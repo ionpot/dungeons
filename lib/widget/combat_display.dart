@@ -48,11 +48,11 @@ class CombatDisplay extends StatelessWidget {
   Widget _weaponTurn(WeaponAttackTurn turn) {
     final attack = turn.attack;
     final result = turn.result;
-    final from = attack.from;
+    final attacker = attack.attacker;
     final target = attack.target;
-    final weapon = from.weapon!.text;
+    final weapon = attacker.weapon!.text;
     return TextLines([
-      Text('${from.name} attacks ${target.name} with $weapon.'),
+      Text('${attacker.name} attacks ${target.name} with $weapon.'),
       _percentRoll('Attack', result.attackRoll),
       if (result.deflected) Text('${target.name} deflects the attack.'),
       if (result.triedDodging) _percentRoll('Dodge', result.dodgeRoll),

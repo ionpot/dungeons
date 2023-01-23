@@ -84,7 +84,7 @@ class Combat {
         );
       }) ??
       CombatTurn.weapon(
-        WeaponAttack(from: current, target: action.target),
+        WeaponAttack(attacker: current, target: action.target),
       );
 
   void nextTurn() {

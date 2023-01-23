@@ -6,20 +6,20 @@ import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
 
 class WeaponAttack {
-  final Entity from;
+  final Entity attacker;
   final Entity target;
 
-  const WeaponAttack({required this.from, required this.target});
+  const WeaponAttack({required this.attacker, required this.target});
 
-  PercentValue get hitChance => from.hitChance(target);
+  PercentValue get hitChance => attacker.hitChance(target);
   PercentValue get dodgeChance => target.dodge;
-  bool get sneakAttack => from.canSneakAttack(target);
+  bool get sneakAttack => attacker.canSneakAttack(target);
   Source get source => Source.physical;
 
   DiceValue get damage {
-    final value = from.weaponDamage;
+    final value = attacker.weaponDamage;
     if (value == null) {
-      throw Exception('${from.name}.weaponDamage is null');
+      throw Exception('${attacker.name}.weaponDamage is null');
     }
     return sneakAttack
         ? (value..addDice(_SneakAttack.effect, _SneakAttack.dice))
