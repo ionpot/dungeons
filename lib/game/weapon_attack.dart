@@ -4,7 +4,6 @@ import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/if.dart';
 
 class WeaponAttack {
   final Entity from;
@@ -17,40 +16,47 @@ class WeaponAttack {
   bool get sneakAttack => from.canSneakAttack(target);
   Source get source => Source.physical;
 
-  DiceValue? get damage {
-    return ifdef(from.weaponDamage, (value) {
-      return sneakAttack
-          ? (value..addDice(_SneakAttack.effect, _SneakAttack.dice))
-          : value;
-    });
+  DiceValue get damage {
+    final value = from.weaponDamage;
+    if (value == null) {
+      throw Exception('${from.name}.weaponDamage is null');
+    }
+    return sneakAttack
+        ? (value..addDice(_SneakAttack.effect, _SneakAttack.dice))
+        : value;
   }
 
   WeaponAttackResult roll() {
-    final hit = hitChance.roll();
-    final dodge = ifyes(hit.success, dodgeChance.roll);
-    final damage = ifyes(dodge?.fail, this.damage?.roll);
     return WeaponAttackResult(
-      hit: hit,
-      dodge: dodge,
-      damage: damage,
+      attackRoll: hitChance.roll(),
+      dodgeRoll: dodgeChance.roll(),
+      damageRoll: damage.roll(),
     );
   }
 
   void apply(WeaponAttackResult result) {
-    target.takeDamage(result.damage?.total ?? 0);
+    if (result.didHit) {
+      target.takeDamage(result.damageDone);
+    }
   }
 }
 
 class WeaponAttackResult {
-  final PercentValueRoll hit;
-  final PercentValueRoll? dodge;
-  final DiceRollValue? damage;
+  final PercentValueRoll attackRoll;
+  final PercentValueRoll dodgeRoll;
+  final DiceRollValue damageRoll;
 
   const WeaponAttackResult({
-    required this.hit,
-    this.dodge,
-    this.damage,
+    required this.attackRoll,
+    required this.dodgeRoll,
+    required this.damageRoll,
   });
+
+  bool get deflected => attackRoll.fail;
+  bool get triedDodging => attackRoll.success;
+  bool get dodged => triedDodging && dodgeRoll.success;
+  bool get didHit => triedDodging && dodgeRoll.fail;
+  int get damageDone => damageRoll.total;
 }
 
 class WeaponAttackTurn {

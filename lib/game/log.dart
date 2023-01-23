@@ -50,23 +50,18 @@ class Log {
     final weapon = from.weapon!.text;
     file
       ..writeln('${from.name} attacks ${target.name} with $weapon.')
-      ..writeln('Attack roll ${_percentRoll(result.hit)}');
-    if (result.hit.fail) {
+      ..writeln('Attack roll ${_percentRoll(result.attackRoll)}');
+    if (result.deflected) {
       file.writeln('${target.name} deflects the attack.');
       return;
     }
-    if (result.dodge != null) {
-      file.writeln('Dodge roll ${_percentRoll(result.dodge!)}');
-      if (result.dodge!.success) {
-        file.writeln('${target.name} dodges the attack.');
-        return;
-      }
-    }
-    if (result.damage == null) {
+    file.writeln('Dodge roll ${_percentRoll(result.dodgeRoll)}');
+    if (result.dodged) {
+      file.writeln('${target.name} dodges the attack.');
       return;
     }
-    _writeDiceRolls(weapon, result.damage!);
-    _writeDamage(target, result.damage!, attack.source);
+    _writeDiceRolls(weapon, result.damageRoll);
+    _writeDamage(target, result.damageRoll, attack.source);
     _writeStatus(target);
   }
 
