@@ -1,4 +1,4 @@
-import 'package:dungeons/game/effect_bonus.dart';
+import 'package:dungeons/game/effect.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
@@ -9,7 +9,7 @@ enum Spell {
     source: Source.radiant,
     reserveStress: 2,
     selfCast: true,
-    effect: EffectBonus(
+    effect: Effect(
       stressCap: 1,
       maxWeaponDamage: true,
       resistChance: Percent(4),
@@ -34,7 +34,7 @@ enum Spell {
     source: Source.cold,
     stress: 1,
     damage: Dice(2, 8),
-    effect: EffectBonus(initiative: -2),
+    effect: Effect(initiative: -2),
     effectText: 'is slowed',
     stacks: true,
   );
@@ -48,7 +48,7 @@ enum Spell {
   final bool stacks;
   final Dice? damage;
   final Dice? heals;
-  final EffectBonus? effect;
+  final Effect? effect;
   final String? effectText;
 
   const Spell({

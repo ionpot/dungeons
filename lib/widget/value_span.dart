@@ -61,11 +61,11 @@ class DiceValueSpan extends TextSpan {
             TextSpan(text: '${value.base.base}'),
             TextSpan(
               text: '${value.diceBonuses}',
-              style: TextStyle(color: diceEffectsColor(value.diceBonuses)),
+              style: TextStyle(color: diceBonusesColor(value.diceBonuses)),
             ),
             TextSpan(
               text: value.intBonusString,
-              style: TextStyle(color: intEffectsColor(value.intBonuses)),
+              style: TextStyle(color: intBonusesColor(value.intBonuses)),
             ),
           ],
         );

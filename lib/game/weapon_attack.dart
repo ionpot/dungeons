@@ -1,4 +1,4 @@
-import 'package:dungeons/game/effect.dart';
+import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/source.dart';
@@ -22,7 +22,7 @@ class WeaponAttack {
       throw Exception('$attacker.weaponDamage is null');
     }
     return sneakAttack
-        ? (value..addDice(_SneakAttack.effect, _SneakAttack.dice))
+        ? (value..addDice(_SneakAttack.bonus, _SneakAttack.dice))
         : value;
   }
 
@@ -71,7 +71,7 @@ class WeaponAttackTurn {
 }
 
 class _SneakAttack {
-  static const effect = Effect(feat: Feat.sneakAttack);
+  static const bonus = Bonus(feat: Feat.sneakAttack);
   static Dice get dice {
     return Feat.sneakAttack.dice ??
         (throw Exception("Feat.sneakAttack.dice is null"));

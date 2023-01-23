@@ -1,5 +1,5 @@
-import 'package:dungeons/game/effect.dart';
-import 'package:dungeons/game/effects.dart';
+import 'package:dungeons/game/bonus.dart';
+import 'package:dungeons/game/bonuses.dart';
 import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
@@ -7,18 +7,18 @@ import 'package:dungeons/utility/range.dart';
 
 class IntValue implements Comparable<IntValue> {
   final int base;
-  final IntEffects bonuses;
+  final IntBonuses bonuses;
 
   IntValue({
     this.base = 0,
-    IntEffects? bonuses,
-  }) : bonuses = bonuses ?? IntEffects();
+    IntBonuses? bonuses,
+  }) : bonuses = bonuses ?? IntBonuses();
 
   int get bonus => bonuses.total;
   int get total => base + bonus;
 
-  void addBonus(Effect effect, int b) {
-    bonuses.add(effect, b);
+  void addBonus(Bonus bonus, int b) {
+    bonuses.add(bonus, b);
   }
 
   bool operator >(IntValue other) => total > other.total;
@@ -32,13 +32,13 @@ class IntValue implements Comparable<IntValue> {
 
 class PercentValue {
   final Percent base;
-  final PercentEffects bonuses;
-  final PercentEffects scaling;
+  final PercentBonuses bonuses;
+  final PercentBonuses scaling;
 
   const PercentValue({
     this.base = const Percent(),
-    this.bonuses = const PercentEffects(),
-    this.scaling = const PercentEffects(),
+    this.bonuses = const PercentBonuses(),
+    this.scaling = const PercentBonuses(),
   });
 
   Percent get bonus => bonuses.total;
@@ -67,20 +67,20 @@ class PercentValueRoll {
 
 class DiceValue {
   final Dice base;
-  final DiceEffects diceBonuses;
-  final IntEffects intBonuses;
+  final DiceBonuses diceBonuses;
+  final IntBonuses intBonuses;
   final bool max;
 
   DiceValue({
     required this.base,
-    DiceEffects? diceBonuses,
-    IntEffects? intBonuses,
+    DiceBonuses? diceBonuses,
+    IntBonuses? intBonuses,
     this.max = false,
-  })  : diceBonuses = diceBonuses ?? DiceEffects(),
-        intBonuses = intBonuses ?? IntEffects();
+  })  : diceBonuses = diceBonuses ?? DiceBonuses(),
+        intBonuses = intBonuses ?? IntBonuses();
 
-  void addDice(Effect effect, Dice dice) {
-    diceBonuses.add(effect, dice);
+  void addDice(Bonus bonus, Dice dice) {
+    diceBonuses.add(bonus, dice);
   }
 
   Range get range => base.range + diceBonuses.range + intBonuses.total;
@@ -104,19 +104,19 @@ class DiceValue {
 class DiceRollValue {
   final DiceValue input;
   final DiceRoll base;
-  final DiceRollEffects diceBonuses;
+  final DiceRollBonuses diceBonuses;
 
   const DiceRollValue({
     required this.input,
     required this.base,
-    this.diceBonuses = const DiceRollEffects(),
+    this.diceBonuses = const DiceRollBonuses(),
   });
 
   factory DiceRollValue.roll(Dice dice) {
     return DiceValue(base: dice).roll();
   }
 
-  IntEffects get intBonuses => input.intBonuses;
+  IntBonuses get intBonuses => input.intBonuses;
   bool get max => input.max;
 
   int get bonusTotal => intBonuses.total + diceBonuses.totals.total;

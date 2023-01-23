@@ -1,41 +1,45 @@
-import 'package:dungeons/game/armor.dart';
-import 'package:dungeons/game/effect_bonus.dart';
-import 'package:dungeons/game/feat.dart';
-import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/weapon.dart';
+import 'package:dungeons/utility/percent.dart';
 
 class Effect {
-  final Weapon? weapon;
-  final Armor? armor;
-  final Feat? feat;
-  final Spell? spell;
+  final int? damage;
+  final int? initiative;
+  final int? stressCap;
+  final Percent? dodgeScale;
+  final Percent? hitChance;
+  final Percent? resistChance;
+  final bool maxWeaponDamage;
 
-  const Effect({this.weapon, this.armor, this.feat, this.spell});
+  const Effect({
+    this.damage,
+    this.initiative,
+    this.stressCap,
+    this.dodgeScale,
+    this.hitChance,
+    this.resistChance,
+    this.maxWeaponDamage = false,
+  });
 
-  EffectBonus? get bonus {
-    return weapon?.bonus ?? armor?.bonus ?? feat?.bonus ?? spell?.effect;
+  Effect operator +(Effect other) {
+    return Effect(
+      damage: _addInt(damage, other.damage),
+      initiative: _addInt(initiative, other.initiative),
+      stressCap: _addInt(stressCap, other.stressCap),
+      dodgeScale: _addPercent(dodgeScale, other.dodgeScale),
+      hitChance: _addPercent(hitChance, other.hitChance),
+      resistChance: _addPercent(resistChance, other.resistChance),
+      maxWeaponDamage: maxWeaponDamage || other.maxWeaponDamage,
+    );
   }
 
-  int? get reservedStress => feat?.reserveStress ?? spell?.reserveStress;
-
-  bool get stacks => spell?.stacks == true;
-
-  @override
-  bool operator ==(dynamic other) {
-    return other is Effect &&
-        weapon == other.weapon &&
-        armor == other.armor &&
-        feat == other.feat &&
-        spell == other.spell;
+  int? _addInt(int? a, int? b) {
+    if (a == null) return b;
+    if (b == null) return a;
+    return a + b;
   }
 
-  @override
-  int get hashCode => Object.hash(weapon, armor, feat, spell);
-
-  @override
-  String toString() {
-    return weapon?.text ?? armor?.text ?? feat?.text ?? spell?.text ?? '';
+  Percent? _addPercent(Percent? a, Percent? b) {
+    if (a == null) return b;
+    if (b == null) return a;
+    return a + b;
   }
 }
-
-typedef EffectMap<T extends Object> = Map<Effect, T>;

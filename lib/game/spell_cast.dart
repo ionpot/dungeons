@@ -37,7 +37,7 @@ class SpellCast {
     ifdef(result.healDone, target.heal);
     ifdef(result.damageDone, target.takeDamage);
     if (result.didEffect) {
-      target.addSpellEffect(spell);
+      target.addSpellBonus(spell);
     }
   }
 

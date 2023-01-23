@@ -1,5 +1,5 @@
 import 'package:dungeons/game/armor.dart';
-import 'package:dungeons/game/effects.dart';
+import 'package:dungeons/game/bonuses.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
@@ -14,7 +14,7 @@ import 'package:dungeons/utility/percent.dart';
 
 class Entity extends _Base
     with
-        _Effects,
+        _Bonuses,
         _Attributes,
         _Levels,
         _Health,
@@ -33,7 +33,7 @@ class Entity extends _Base
     final bonus = agility ~/ 4;
     return PercentValue(
       base: Percent(target.totalArmor - bonus).invert(),
-      bonuses: _allEffects.toPercentEffects((e) => e.hitChance),
+      bonuses: _allBonuses.toPercentBonuses((e) => e.hitChance),
     );
   }
 
@@ -90,31 +90,31 @@ class _Base {
   });
 }
 
-mixin _Effects on _Base {
-  final _temporaryEffects = Effects();
+mixin _Bonuses on _Base {
+  final _extraBonuses = Bonuses();
 
-  Effects get _allEffects {
-    final effects = Effects.copy(_temporaryEffects);
+  Bonuses get _allBonuses {
+    final bonuses = Bonuses.copy(_extraBonuses);
     if (klass == EntityClass.warrior) {
-      effects.addFeat(Feat.weaponFocus);
+      bonuses.addFeat(Feat.weaponFocus);
     }
-    ifdef(weapon, effects.addWeapon);
-    ifdef(armor, effects.addArmor);
-    return effects;
+    ifdef(weapon, bonuses.addWeapon);
+    ifdef(armor, bonuses.addArmor);
+    return bonuses;
   }
 
-  void clearSpellEffects() => _temporaryEffects.clearSpells();
-  void addSpellEffect(Spell spell) => _temporaryEffects.addSpell(spell);
+  void clearSpellBonuses() => _extraBonuses.clearSpells();
+  void addSpellBonus(Spell spell) => _extraBonuses.addSpell(spell);
 
-  bool hasSpellEffect(Spell spell) => _allEffects.hasSpell(spell);
+  bool hasSpellBonus(Spell spell) => _allBonuses.hasSpell(spell);
   bool canSpellEffect(Spell spell) {
     if (spell.effect == null) return false;
     if (spell.stacks) return true;
-    return !hasSpellEffect(spell);
+    return !hasSpellBonus(spell);
   }
 }
 
-mixin _Attributes on _Base, _Effects {
+mixin _Attributes on _Base, _Bonuses {
   var base = EntityAttributes();
 
   int get strength => base.strength + race.strength;
@@ -132,21 +132,21 @@ mixin _Attributes on _Base, _Effects {
   IntValue get initiative {
     return IntValue(
       base: (agility + intellect) ~/ 2,
-      bonuses: _allEffects.toIntEffects((e) => e.initiative),
+      bonuses: _allBonuses.toIntBonuses((e) => e.initiative),
     );
   }
 
   PercentValue get dodge {
     return PercentValue(
       base: Percent(agility),
-      scaling: _allEffects.toPercentEffects((e) => e.dodgeScale),
+      scaling: _allBonuses.toPercentBonuses((e) => e.dodgeScale),
     );
   }
 
   PercentValue get resist {
     return PercentValue(
       base: Percent(intellect),
-      bonuses: _allEffects.toPercentEffects((e) => e.resistChance),
+      bonuses: _allBonuses.toPercentBonuses((e) => e.resistChance),
     );
   }
 }
@@ -173,16 +173,16 @@ mixin _Health on _Base, _Attributes, _Levels {
   }
 }
 
-mixin _Stress on _Effects, _Attributes, _Levels {
+mixin _Stress on _Bonuses, _Attributes, _Levels {
   int _stress = 0;
 
   int get stress => _stress;
-  int get reservedStress => _allEffects.reservedStress;
+  int get reservedStress => _allBonuses.reservedStress;
   int get stressCap => stressCapValue.total - reservedStress;
   IntValue get stressCapValue {
     return IntValue(
       base: intellect + level,
-      bonuses: _allEffects.toIntEffects((e) => e.stressCap),
+      bonuses: _allBonuses.toIntBonuses((e) => e.stressCap),
     );
   }
 
@@ -241,13 +241,13 @@ mixin _Levels on _Base, _Attributes {
   String toXpString() => '$xp/$_xpForLevelUp';
 }
 
-mixin _Weapon on _Base, _Effects, _Attributes {
+mixin _Weapon on _Base, _Bonuses, _Attributes {
   DiceValue? get weaponDamage {
     if (weapon == null) return null;
     return DiceValue(
       base: weapon!.dice.addBonus(strength ~/ 2),
-      intBonuses: _allEffects.toIntEffects((e) => e.damage),
-      max: _allEffects.findEffect((e) => e.maxWeaponDamage) != null,
+      intBonuses: _allBonuses.toIntBonuses((e) => e.damage),
+      max: _allBonuses.findBonus((e) => e.maxWeaponDamage) != null,
     );
   }
 }

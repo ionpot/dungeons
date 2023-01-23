@@ -1,19 +1,19 @@
-import 'package:dungeons/game/effect_bonus.dart';
+import 'package:dungeons/game/effect.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
 
 enum Feat {
   weaponFocus(
     text: 'Weapon Focus',
-    bonus: EffectBonus(hitChance: Percent(2), damage: 1),
+    effect: Effect(hitChance: Percent(2), damage: 1),
     reserveStress: 1,
   ),
   sneakAttack(text: 'Sneak Attack', dice: Dice(1, 6));
 
   final String text;
-  final EffectBonus? bonus;
+  final Effect? effect;
   final int? reserveStress;
   final Dice? dice;
 
-  const Feat({required this.text, this.bonus, this.reserveStress, this.dice});
+  const Feat({required this.text, this.effect, this.reserveStress, this.dice});
 }

@@ -1,4 +1,4 @@
-import 'package:dungeons/game/effect_bonus.dart';
+import 'package:dungeons/game/effect.dart';
 import 'package:dungeons/utility/percent.dart';
 import 'package:dungeons/utility/pick_random.dart';
 
@@ -20,8 +20,8 @@ enum Armor {
 
   factory Armor.random() => pickRandom(Armor.values);
 
-  EffectBonus get bonus {
-    return EffectBonus(
+  Effect get effect {
+    return Effect(
       dodgeScale: dodge,
       initiative: initiative,
     );
