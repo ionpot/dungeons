@@ -20,19 +20,13 @@ class SpellCast {
   Source get source => spell.source;
 
   SpellCastResult roll() {
-    final affected = target.canSpellEffect(spell);
-    if (self) {
-      return SpellCastResult(
-        affected: affected,
-        heal: _roll(spell.heals),
-      );
-    }
-    final resist = ifnot(spell.autoHit, resistChance.roll);
-    final hit = resist?.success != true;
     return SpellCastResult(
-      resist: resist,
-      damage: ifyes(hit, () => _roll(spell.damage)),
-      affected: hit && affected,
+      autoHit: spell.autoHit,
+      canEffect: target.canSpellEffect(spell),
+      resistRoll: resistChance.roll(),
+      targetSelf: self,
+      damageRoll: _roll(spell.damage),
+      healRoll: _roll(spell.heals),
     );
   }
 
@@ -40,9 +34,9 @@ class SpellCast {
     if (from.player) {
       from.addStress(spell.stress);
     }
-    ifdef(result.heal?.total, target.heal);
-    ifdef(result.damage?.total, target.takeDamage);
-    if (result.affected) {
+    ifdef(result.healDone, target.heal);
+    ifdef(result.damageDone, target.takeDamage);
+    if (result.didEffect) {
       target.addSpellEffect(spell);
     }
   }
@@ -53,17 +47,29 @@ class SpellCast {
 }
 
 class SpellCastResult {
-  final bool affected;
-  final PercentValueRoll? resist;
-  final DiceRollValue? damage;
-  final DiceRollValue? heal;
+  final bool autoHit;
+  final bool canEffect;
+  final PercentValueRoll resistRoll;
+  final bool targetSelf;
+  final DiceRollValue? damageRoll;
+  final DiceRollValue? healRoll;
 
   const SpellCastResult({
-    required this.affected,
-    this.resist,
-    this.damage,
-    this.heal,
+    required this.autoHit,
+    required this.canEffect,
+    required this.resistRoll,
+    required this.targetSelf,
+    this.damageRoll,
+    this.healRoll,
   });
+
+  bool get canResist => !targetSelf && !autoHit;
+  bool get didEffect => targetSelf ? canEffect : didHit && canEffect;
+  bool get didHit => !canResist || resistRoll.fail;
+  bool get resisted => !didHit;
+
+  int? get damageDone => didHit ? damageRoll?.total : null;
+  int? get healDone => didHit ? healRoll?.total : null;
 }
 
 class SpellCastTurn {

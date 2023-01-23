@@ -67,23 +67,39 @@ class CombatDisplay extends StatelessWidget {
   Widget _spellTurn(SpellCastTurn turn) {
     final attack = turn.attack;
     final result = turn.result;
-    final from = attack.from;
-    final target = attack.target;
-    final spell = attack.spell;
+    final caster = attack.from.name;
+    final target = attack.target.name;
     return TextLines([
       _richText(
-        '${from.name} casts ',
-        SpellNameSpan(spell),
-        attack.self ? ' to self.' : ' at ${target.name}.',
+        '$caster casts ',
+        SpellNameSpan(attack.spell),
+        attack.self ? ' to self.' : ' at $target.',
       ),
-      if (result.resist != null) _percentRoll('Resist', result.resist!),
-      if (result.damage != null) ..._diceRolls(spell.text, result.damage!),
-      if (result.heal != null) ..._diceRolls(spell.text, result.heal!),
-      if (result.heal != null)
-        Text('${target.name} is healed by ${result.heal!.total}.'),
-      if (result.damage != null)
-        _damageAndStatus(result.damage!, spellTurn: turn),
+      if (result.canResist) _percentRoll('Resist', result.resistRoll),
+      if (result.resisted) Text('$target resists the spell.'),
+      if (result.didHit && result.damageRoll != null)
+        ..._spellDamage(result.damageRoll!, turn),
+      if (result.didHit && result.healRoll != null)
+        ..._spellHeal(result.healRoll!, attack),
     ]);
+  }
+
+  List<Widget> _spellDamage(DiceRollValue roll, SpellCastTurn turn) {
+    return [
+      ..._diceRolls(turn.attack.spell.text, roll),
+      _damageAndStatus(roll, spellTurn: turn),
+    ];
+  }
+
+  List<Widget> _spellHeal(DiceRollValue roll, SpellCast cast) {
+    return [
+      ..._diceRolls(cast.spell.text, roll),
+      _richText(
+        '${cast.target.name} is healed by ',
+        DiceRollValueSpan(roll),
+        '.',
+      ),
+    ];
   }
 
   Widget _damageAndStatus(
@@ -120,7 +136,7 @@ class CombatDisplay extends StatelessWidget {
     if (target.dead) {
       return ', and dies';
     }
-    if (spellTurn?.result.affected == true) {
+    if (spellTurn?.result.didEffect == true) {
       if (spellTurn?.attack.spell == Spell.rayOfFrost) {
         return ', and is slowed';
       }

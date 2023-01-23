@@ -68,24 +68,28 @@ class Log {
   void spellTurn(SpellCastTurn turn) {
     final attack = turn.attack;
     final result = turn.result;
-    final from = attack.from;
+    final caster = attack.from;
     final target = attack.target;
     final spell = attack.spell;
     file
-      ..write('${from.name} casts $spell ')
+      ..write('${caster.name} casts $spell ')
       ..writeln(attack.self ? 'to self.' : 'at ${target.name}.');
-    if (result.resist != null) {
-      file.writeln('Resist ${_percentRoll(result.resist!)}');
+    if (result.canResist) {
+      file.writeln('Resist ${_percentRoll(result.resistRoll)}');
     }
-    if (result.heal != null) {
-      _writeDiceRolls(spell.text, result.heal!);
-      file.writeln('${target.name} is healed by ${result.heal}.');
+    if (result.resisted) {
+      file.writeln('${target.name} resists the spell.');
+      return;
     }
-    if (result.damage != null) {
-      _writeDiceRolls(spell.text, result.damage!);
-      _writeDamage(target, result.damage!, spell.source);
+    ifdef(result.healRoll, (healRoll) {
+      _writeDiceRolls(spell.text, healRoll);
+      file.writeln('${target.name} is healed by $healRoll.');
+    });
+    ifdef(result.damageRoll, (damageRoll) {
+      _writeDiceRolls(spell.text, damageRoll);
+      _writeDamage(target, damageRoll, spell.source);
       _writeStatus(target, turn);
-    }
+    });
   }
 
   void newRound(int round) {
@@ -119,7 +123,7 @@ class Log {
   void _writeStatus(Entity target, [SpellCastTurn? spellTurn]) {
     if (target.dead) {
       file.write(', and dies');
-    } else if (spellTurn?.result.affected == true) {
+    } else if (spellTurn?.result.didEffect == true) {
       if (spellTurn?.attack.spell == Spell.rayOfFrost) {
         file.write(', and is slowed');
       }
