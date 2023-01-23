@@ -49,15 +49,15 @@ class Log {
     final target = attack.target;
     final weapon = attacker.weapon!.text;
     file
-      ..writeln('${attacker.name} attacks ${target.name} with $weapon.')
+      ..writeln('$attacker attacks $target with $weapon.')
       ..writeln('Attack roll ${_percentRoll(result.attackRoll)}');
     if (result.deflected) {
-      file.writeln('${target.name} deflects the attack.');
+      file.writeln('$target deflects the attack.');
       return;
     }
     file.writeln('Dodge roll ${_percentRoll(result.dodgeRoll)}');
     if (result.dodged) {
-      file.writeln('${target.name} dodges the attack.');
+      file.writeln('$target dodges the attack.');
       return;
     }
     _writeDiceRolls(weapon, result.damageRoll);
@@ -72,18 +72,18 @@ class Log {
     final target = cast.target;
     final spell = cast.spell;
     file
-      ..write('${caster.name} casts $spell ')
-      ..writeln(cast.self ? 'to self.' : 'at ${target.name}.');
+      ..write('$caster casts $spell ')
+      ..writeln(cast.self ? 'to self.' : 'at $target.');
     if (result.canResist) {
       file.writeln('Resist ${_percentRoll(result.resistRoll)}');
     }
     if (result.resisted) {
-      file.writeln('${target.name} resists the spell.');
+      file.writeln('$target resists the spell.');
       return;
     }
     ifdef(result.healRoll, (healRoll) {
       _writeDiceRolls(spell.text, healRoll);
-      file.writeln('${target.name} is healed by $healRoll.');
+      file.writeln('$target is healed by $healRoll.');
     });
     ifdef(result.damageRoll, (damageRoll) {
       _writeDiceRolls(spell.text, damageRoll);
@@ -97,7 +97,7 @@ class Log {
   }
 
   void xpGain(Combat combat) {
-    file.writeln('${combat.player.name} gains ${combat.xpGain} XP'
+    file.writeln('${combat.player} gains ${combat.xpGain} XP'
         '${combat.canLevelUp() ? ', and levels up' : ''}.');
   }
 
@@ -106,7 +106,7 @@ class Log {
   }
 
   void _writeDamage(Entity target, DiceRollValue damage, Source source) {
-    file.write('${target.name} takes $damage ${source.name} damage');
+    file.write('$target takes $damage ${source.name} damage');
   }
 
   void _writeDiceRoll(String name, DiceRoll value) {

@@ -69,6 +69,9 @@ class Entity extends _Base
     if (level - 1 == e.level) return 2;
     return 1;
   }
+
+  @override
+  String toString() => name;
 }
 
 class _Base {

@@ -29,7 +29,7 @@ class CombatDisplay extends StatelessWidget {
     if (turn != null) {
       return _combatTurn(turn!);
     }
-    return Text('${_current.name} goes first.');
+    return Text('$_current goes first.');
   }
 
   Entity get _current => combat.current;
@@ -52,11 +52,11 @@ class CombatDisplay extends StatelessWidget {
     final target = attack.target;
     final weapon = attacker.weapon!.text;
     return TextLines([
-      Text('${attacker.name} attacks ${target.name} with $weapon.'),
+      Text('$attacker attacks $target with $weapon.'),
       _percentRoll('Attack', result.attackRoll),
-      if (result.deflected) Text('${target.name} deflects the attack.'),
+      if (result.deflected) Text('$target deflects the attack.'),
       if (result.triedDodging) _percentRoll('Dodge', result.dodgeRoll),
-      if (result.dodged) Text('${target.name} dodges the attack.'),
+      if (result.dodged) Text('$target dodges the attack.'),
       if (result.didHit) ...[
         ..._diceRolls(weapon, result.damageRoll),
         _damageAndStatus(result.damageRoll, weaponTurn: turn),
@@ -67,8 +67,8 @@ class CombatDisplay extends StatelessWidget {
   Widget _spellTurn(SpellCastTurn turn) {
     final cast = turn.cast;
     final result = turn.result;
-    final caster = cast.caster.name;
-    final target = cast.target.name;
+    final caster = cast.caster;
+    final target = cast.target;
     return TextLines([
       _richText(
         '$caster casts ',
@@ -95,7 +95,7 @@ class CombatDisplay extends StatelessWidget {
     return [
       ..._diceRolls(cast.spell.text, roll),
       _richText(
-        '${cast.target.name} is healed by ',
+        '${cast.target} is healed by ',
         DiceRollValueSpan(roll),
         '.',
       ),
@@ -110,7 +110,7 @@ class CombatDisplay extends StatelessWidget {
     final target = weaponTurn?.attack.target ?? spellTurn!.cast.target;
     final source = weaponTurn?.attack.source ?? spellTurn!.cast.source;
     return _richText(
-      '${target.name} takes ',
+      '$target takes ',
       DamageSpan(damage, source),
       ' damage${_status(target, spellTurn)}.',
     );
@@ -146,7 +146,7 @@ class CombatDisplay extends StatelessWidget {
 
   Widget _xpText(int xp) {
     final player = combat.player;
-    return Text('${player.name} gains $xp XP'
+    return Text('$player gains $xp XP'
         '${player.canLevelUpWith(xp) ? ', and levels up' : ''}.');
   }
 

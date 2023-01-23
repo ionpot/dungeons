@@ -19,7 +19,7 @@ class WeaponAttack {
   DiceValue get damage {
     final value = attacker.weaponDamage;
     if (value == null) {
-      throw Exception('${attacker.name}.weaponDamage is null');
+      throw Exception('$attacker.weaponDamage is null');
     }
     return sneakAttack
         ? (value..addDice(_SneakAttack.effect, _SneakAttack.dice))
