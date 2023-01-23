@@ -49,9 +49,7 @@ class Log {
     final target = attack.target;
     final weapon = from.weapon!.text;
     file
-      ..writeln(
-        '${from.name} attacks ${target.name} with $weapon.',
-      )
+      ..writeln('${from.name} attacks ${target.name} with $weapon.')
       ..writeln('Attack roll ${_percentRoll(result.hit)}');
     if (result.hit.fail) {
       file.writeln('${target.name} deflects the attack.');
