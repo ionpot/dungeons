@@ -124,11 +124,16 @@ class StressSpan extends TextSpan {
       : super(
           children: [
             TextSpan(text: '${entity.stress}/'),
-            TextSpan(
-              text: '${entity.stressCap}',
-              style: TextStyle(color: stressColor(entity)),
-            ),
+            StressCapSpan(entity),
           ],
+        );
+}
+
+class StressCapSpan extends TextSpan {
+  StressCapSpan(Entity entity)
+      : super(
+          text: '${entity.stressCap}',
+          style: TextStyle(color: stressCapColor(entity)),
         );
 }
 

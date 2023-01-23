@@ -106,7 +106,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
       valueWidth: 128,
       content: {
         'Total Hp': BoldText('${entity.totalHp}'),
-        'Stress Cap': BoldText('${entity.stressCap}'),
+        'Stress Cap': BoldText.fromSpan(StressCapSpan(entity)),
         'Armor': BoldText('${entity.totalArmor}'),
         'Initiative': BoldText.fromSpan(IntValueSpan(entity.initiative)),
         'Dodge': BoldText.fromSpan(PercentValueSpan(entity.dodge)),

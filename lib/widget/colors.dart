@@ -31,7 +31,7 @@ Color? diceEffectsColor(DiceEffects value) => value.isEmpty ? null : green;
 
 Color? hpColor(Entity e) => e.alive ? null : red;
 
-Color? stressColor(Entity e) =>
+Color? stressCapColor(Entity e) =>
     e.reservedStress > 0 ? yellow : intValueColor(e.stressCapValue);
 
 Color? sourceColor(Source source) {
