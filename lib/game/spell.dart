@@ -35,6 +35,7 @@ enum Spell {
     stress: 1,
     damage: Dice(2, 8),
     effect: EffectBonus(initiative: -2),
+    effectText: 'is slowed',
     stacks: true,
   );
 
@@ -48,6 +49,7 @@ enum Spell {
   final Dice? damage;
   final Dice? heals;
   final EffectBonus? effect;
+  final String? effectText;
 
   const Spell({
     required this.text,
@@ -60,6 +62,7 @@ enum Spell {
     this.damage,
     this.heals,
     this.effect,
+    this.effectText,
   });
 
   @override

@@ -1,6 +1,5 @@
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
@@ -137,8 +136,9 @@ class CombatDisplay extends StatelessWidget {
       return ', and dies';
     }
     if (spellTurn?.result.didEffect == true) {
-      if (spellTurn?.cast.spell == Spell.rayOfFrost) {
-        return ', and is slowed';
+      final text = spellTurn?.cast.spell.effectText;
+      if (text != null) {
+        return ', and $text';
       }
     }
     return '';

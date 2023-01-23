@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
-import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
@@ -124,9 +123,9 @@ class Log {
     if (target.dead) {
       file.write(', and dies');
     } else if (spellTurn?.result.didEffect == true) {
-      if (spellTurn?.cast.spell == Spell.rayOfFrost) {
-        file.write(', and is slowed');
-      }
+      ifdef(spellTurn?.cast.spell.effectText, (text) {
+        file.write(', and $text');
+      });
     }
     file.writeln('.');
   }
