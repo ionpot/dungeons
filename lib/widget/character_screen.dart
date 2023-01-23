@@ -112,7 +112,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
         'Dodge': BoldText.fromSpan(PercentValueSpan(entity.dodge)),
         'Resist': BoldText('${entity.resist}'),
         'Damage': damage != null
-            ? BoldText('($damage) ${damage.range}')
+            ? BoldText.fromSpan(DiceValueWithRangeSpan(damage))
             : const Empty(),
       },
     );

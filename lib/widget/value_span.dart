@@ -71,6 +71,18 @@ class DiceValueSpan extends TextSpan {
         );
 }
 
+class DiceValueWithRangeSpan extends TextSpan {
+  DiceValueWithRangeSpan(DiceValue value)
+      : super(
+          children: [
+            const TextSpan(text: '('),
+            DiceValueSpan(value),
+            const TextSpan(text: ') '),
+            RangeSpan(value.range, max: value.max),
+          ],
+        );
+}
+
 class DiceRollValueSpan extends TextSpan {
   DiceRollValueSpan(DiceRollValue value)
       : super(
