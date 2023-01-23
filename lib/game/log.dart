@@ -68,7 +68,7 @@ class Log {
   void spellTurn(SpellCastTurn turn) {
     final cast = turn.cast;
     final result = turn.result;
-    final caster = cast.from;
+    final caster = cast.caster;
     final target = cast.target;
     final spell = cast.spell;
     file

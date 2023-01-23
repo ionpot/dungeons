@@ -7,12 +7,12 @@ import 'package:dungeons/utility/if.dart';
 
 class SpellCast {
   final Spell spell;
-  final Entity from;
+  final Entity caster;
   final Entity target;
 
-  const SpellCast(this.spell, {required this.from, required this.target});
+  const SpellCast(this.spell, {required this.caster, required this.target});
 
-  bool get self => from == target;
+  bool get self => caster == target;
 
   PercentValue get resistChance =>
       spell.autoHit ? const PercentValue() : target.resist;
@@ -31,8 +31,8 @@ class SpellCast {
   }
 
   void apply(SpellCastResult result) {
-    if (from.player) {
-      from.addStress(spell.stress);
+    if (caster.player) {
+      caster.addStress(spell.stress);
     }
     ifdef(result.healDone, target.heal);
     ifdef(result.damageDone, target.takeDamage);

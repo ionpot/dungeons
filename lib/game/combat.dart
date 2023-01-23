@@ -78,7 +78,7 @@ class Combat {
         return CombatTurn.spell(
           SpellCast(
             spell,
-            from: current,
+            caster: current,
             target: action.target,
           ),
         );

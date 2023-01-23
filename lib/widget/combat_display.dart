@@ -67,7 +67,7 @@ class CombatDisplay extends StatelessWidget {
   Widget _spellTurn(SpellCastTurn turn) {
     final cast = turn.cast;
     final result = turn.result;
-    final caster = cast.from.name;
+    final caster = cast.caster.name;
     final target = cast.target.name;
     return TextLines([
       _richText(
