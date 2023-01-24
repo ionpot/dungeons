@@ -12,8 +12,10 @@ import 'package:dungeons/utility/if.dart';
 class Log {
   final IOSink file;
 
-  Log(this.file);
-  Log.toFile(String name) : this(File(name).openWrite());
+  const Log(this.file);
+
+  Log.toFile(String name, {required String title})
+      : this(File(name).openWrite()..writeln(title));
 
   void ln() => file.writeln();
 

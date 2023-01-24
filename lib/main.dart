@@ -21,7 +21,7 @@ class TheAppState extends State<TheApp> {
   void initState() {
     super.initState();
     _screen = Screens(
-      log: Log.toFile('dungeons.log')..file.writeln('Dungeons'),
+      log: Log.toFile('dungeons.log', title: 'Dungeons'),
       onNext: _onNext,
     ).first;
   }
