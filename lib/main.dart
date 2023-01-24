@@ -4,14 +4,11 @@ import 'package:dungeons/widget/screens.dart';
 import 'package:flutter/widgets.dart';
 
 void main() {
-  final log = Log.toFile('dungeons.log')..file.writeln('Dungeons');
-  runApp(TheApp(log));
+  runApp(const TheApp());
 }
 
 class TheApp extends StatefulWidget {
-  final Log log;
-
-  const TheApp(this.log, {super.key});
+  const TheApp({super.key});
 
   @override
   State<TheApp> createState() => TheAppState();
@@ -23,7 +20,10 @@ class TheAppState extends State<TheApp> {
   @override
   void initState() {
     super.initState();
-    _screen = Screens(log: widget.log, onNext: _onNext).first;
+    _screen = Screens(
+      log: Log.toFile('dungeons.log')..file.writeln('Dungeons'),
+      onNext: _onNext,
+    ).first;
   }
 
   @override
