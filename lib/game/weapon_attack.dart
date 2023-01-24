@@ -31,6 +31,7 @@ class WeaponAttack {
       attackRoll: hitChance.roll(),
       dodgeRoll: dodgeChance.roll(),
       damageRoll: damage.roll(),
+      targetCanDodge: target.canDodge,
     );
   }
 
@@ -45,17 +46,20 @@ class WeaponAttackResult {
   final PercentValueRoll attackRoll;
   final PercentValueRoll dodgeRoll;
   final DiceRollValue damageRoll;
+  final bool targetCanDodge;
 
   const WeaponAttackResult({
     required this.attackRoll,
     required this.dodgeRoll,
     required this.damageRoll,
+    required this.targetCanDodge,
   });
 
   bool get deflected => attackRoll.fail;
-  bool get triedDodging => attackRoll.success;
+  bool get triedDodging => targetCanDodge && attackRoll.success;
+  bool get cantDodge => !targetCanDodge && attackRoll.success;
   bool get dodged => triedDodging && dodgeRoll.success;
-  bool get didHit => triedDodging && dodgeRoll.fail;
+  bool get didHit => !deflected && !dodged;
   int get damageDone => damageRoll.total;
 }
 

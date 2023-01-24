@@ -149,6 +149,8 @@ mixin _Attributes on _Base, _Bonuses {
       bonuses: _allBonuses.toPercentBonuses((e) => e.resistChance),
     );
   }
+
+  bool get canDodge => initiative.total > 0;
 }
 
 mixin _Health on _Base, _Attributes, _Levels {

@@ -56,7 +56,12 @@ class Log {
       file.writeln('$target deflects the attack.');
       return;
     }
-    file.writeln('Dodge roll ${_percentRoll(result.dodgeRoll)}');
+    if (result.triedDodging) {
+      file.writeln('Dodge roll ${_percentRoll(result.dodgeRoll)}');
+    }
+    if (result.cantDodge) {
+      file.writeln('$target cannot dodge.');
+    }
     if (result.dodged) {
       file.writeln('$target dodges the attack.');
       return;
