@@ -28,12 +28,9 @@ class TheAppState extends State<TheApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: black,
-      child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: _screen,
-      ),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Container(color: black, child: _screen),
     );
   }
 }
