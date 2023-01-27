@@ -22,7 +22,7 @@ class TheAppState extends State<TheApp> {
     super.initState();
     _screen = Screens(
       log: Log.toFile('dungeons.log', title: 'Dungeons'),
-      onNext: _onNext,
+      onNext: (Widget screen) => setState(() => _screen = screen),
     ).first;
   }
 
@@ -35,11 +35,5 @@ class TheAppState extends State<TheApp> {
         child: _screen,
       ),
     );
-  }
-
-  void _onNext(Widget screen) {
-    setState(() {
-      _screen = screen;
-    });
   }
 }
