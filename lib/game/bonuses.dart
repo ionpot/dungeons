@@ -96,15 +96,11 @@ class Bonuses {
 class IntBonuses {
   final BonusMap<int> contents;
 
-  IntBonuses([BonusMap<int>? contents]) : contents = contents ?? {};
+  const IntBonuses([this.contents = const {}]);
 
   bool get isEmpty => contents.isEmpty;
 
   int get total => contents.values.fold(0, (sum, value) => sum + value);
-
-  void add(Bonus effect, int value) {
-    contents[effect] = value;
-  }
 
   @override
   String toString() => isEmpty ? "" : bonusText(total);

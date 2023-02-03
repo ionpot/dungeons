@@ -9,17 +9,13 @@ class IntValue implements Comparable<IntValue> {
   final int base;
   final IntBonuses bonuses;
 
-  IntValue({
+  const IntValue({
     this.base = 0,
-    IntBonuses? bonuses,
-  }) : bonuses = bonuses ?? IntBonuses();
+    this.bonuses = const IntBonuses(),
+  });
 
   int get bonus => bonuses.total;
   int get total => base + bonus;
-
-  void addBonus(Bonus bonus, int b) {
-    bonuses.add(bonus, b);
-  }
 
   bool operator >(IntValue other) => total > other.total;
 
@@ -74,10 +70,9 @@ class DiceValue {
   DiceValue({
     required this.base,
     DiceBonuses? diceBonuses,
-    IntBonuses? intBonuses,
+    this.intBonuses = const IntBonuses(),
     this.max = false,
-  })  : diceBonuses = diceBonuses ?? DiceBonuses(),
-        intBonuses = intBonuses ?? IntBonuses();
+  }) : diceBonuses = diceBonuses ?? DiceBonuses();
 
   void addDice(Bonus bonus, Dice dice) {
     diceBonuses.add(bonus, dice);
