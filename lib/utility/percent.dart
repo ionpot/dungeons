@@ -8,6 +8,7 @@ class Percent implements Comparable<Percent> {
   bool get always => value >= 100;
   bool get never => value <= 0;
   bool get maybe => !always && !never;
+  bool get zero => value == 0;
 
   Percent invert() => Percent(100 - value);
 

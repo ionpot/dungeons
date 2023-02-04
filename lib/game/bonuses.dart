@@ -76,7 +76,9 @@ class Bonuses {
     final BonusMap<int> map = {};
     for (final entry in contents.entries) {
       ifdef(f(entry.value), (value) {
-        map[entry.key] = value;
+        if (value != 0) {
+          map[entry.key] = value;
+        }
       });
     }
     return IntBonuses(map);
@@ -86,7 +88,9 @@ class Bonuses {
     final BonusMap<Percent> map = {};
     for (final entry in contents.entries) {
       ifdef(f(entry.value), (value) {
-        map[entry.key] = value;
+        if (!value.zero) {
+          map[entry.key] = value;
+        }
       });
     }
     return PercentBonuses(map);
