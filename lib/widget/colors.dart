@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 const black = Color(0xFF000000);
 const white = Color(0xFFFFFFFF);
 const yellow = Color(0xFFFFFF00);
+const gold = Color(0xFFFFC000);
 const green = Color(0xFF00FF00);
 const red = Color(0xFFFF0000);
 

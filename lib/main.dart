@@ -1,5 +1,6 @@
 import 'package:dungeons/game/log.dart';
 import 'package:dungeons/widget/colors.dart';
+import 'package:dungeons/widget/screen_overlay.dart';
 import 'package:dungeons/widget/screens.dart';
 import 'package:flutter/widgets.dart';
 
@@ -30,7 +31,10 @@ class TheAppState extends State<TheApp> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.ltr,
-      child: Container(color: black, child: _screen),
+      child: Container(
+        color: black,
+        child: ScreenOverlay(child: _screen),
+      ),
     );
   }
 }
