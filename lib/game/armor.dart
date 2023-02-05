@@ -1,14 +1,14 @@
 import 'package:dungeons/game/effect.dart';
-import 'package:dungeons/utility/percent.dart';
+import 'package:dungeons/utility/multiplier.dart';
 import 'package:dungeons/utility/pick_random.dart';
 
 enum Armor {
-  leather(text: 'Leather', value: 15, dodge: Percent(50)),
+  leather(text: 'Leather', value: 15, dodge: Multiplier(0.5)),
   scalemail(text: 'Scale Mail', value: 25, initiative: -5);
 
   final int value;
   final int? initiative;
-  final Percent? dodge;
+  final Multiplier? dodge;
   final String text;
 
   const Armor({
@@ -22,7 +22,7 @@ enum Armor {
 
   Effect get effect {
     return Effect(
-      dodgeScale: dodge,
+      dodgeMultiplier: dodge,
       initiative: initiative,
     );
   }

@@ -7,6 +7,7 @@ import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
+import 'package:dungeons/utility/multiplier.dart';
 import 'package:dungeons/utility/percent.dart';
 import 'package:dungeons/utility/range.dart';
 
@@ -95,6 +96,18 @@ class Bonuses {
     }
     return PercentBonuses(map);
   }
+
+  MultiplierBonuses toMultiplierBonuses(GetEffect<Multiplier> f) {
+    final BonusMap<Multiplier> map = {};
+    for (final entry in contents.entries) {
+      ifdef(f(entry.value), (value) {
+        if (!value.zero) {
+          map[entry.key] = value;
+        }
+      });
+    }
+    return MultiplierBonuses(map);
+  }
 }
 
 class IntBonuses {
@@ -120,6 +133,21 @@ class PercentBonuses {
   Percent get total {
     return contents.values.fold(
       const Percent(),
+      (sum, value) => sum + value,
+    );
+  }
+}
+
+class MultiplierBonuses {
+  final BonusMap<Multiplier> contents;
+
+  const MultiplierBonuses([this.contents = const {}]);
+
+  bool get isEmpty => contents.isEmpty;
+
+  Multiplier get total {
+    return contents.values.fold(
+      const Multiplier(0),
       (sum, value) => sum + value,
     );
   }

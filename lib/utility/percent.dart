@@ -1,4 +1,5 @@
 import 'package:dungeons/utility/dice.dart';
+import 'package:dungeons/utility/multiplier.dart';
 
 class Percent implements Comparable<Percent> {
   final int value;
@@ -12,8 +13,7 @@ class Percent implements Comparable<Percent> {
 
   Percent invert() => Percent(100 - value);
 
-  Percent of(Percent p) => Percent(ofInt(p.value));
-  int ofInt(int i) => (value / 100 * i).floor();
+  Percent multiply(Multiplier m) => Percent((value * m.value).floor());
 
   PercentRoll roll() {
     return PercentRoll(

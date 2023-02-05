@@ -29,19 +29,18 @@ class IntValue implements Comparable<IntValue> {
 class PercentValue {
   final Percent base;
   final PercentBonuses bonuses;
-  final PercentBonuses scaling;
+  final MultiplierBonuses multipliers;
 
   const PercentValue({
     this.base = const Percent(),
     this.bonuses = const PercentBonuses(),
-    this.scaling = const PercentBonuses(),
+    this.multipliers = const MultiplierBonuses(),
   });
 
   Percent get bonus => bonuses.total;
   Percent get unscaled => base + bonus;
-  Percent get scaleBonus =>
-      scaling.isEmpty ? const Percent() : scaling.total.of(unscaled);
-  Percent get total => unscaled + scaleBonus;
+  Percent get multiplierBonus => unscaled.multiply(multipliers.total);
+  Percent get total => unscaled + multiplierBonus;
 
   PercentValueRoll roll() {
     return PercentValueRoll(input: this, result: total.roll());

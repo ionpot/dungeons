@@ -139,7 +139,7 @@ mixin _Attributes on _Base, _Bonuses {
   PercentValue get dodge {
     return PercentValue(
       base: Percent(agility),
-      scaling: _allBonuses.toPercentBonuses((e) => e.dodgeScale),
+      multipliers: _allBonuses.toMultiplierBonuses((e) => e.dodgeMultiplier),
     );
   }
 
