@@ -1,5 +1,6 @@
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/widget/int_value.dart';
+import 'package:dungeons/widget/percent_value.dart';
 import 'package:dungeons/widget/text_lines.dart';
 import 'package:dungeons/widget/value_span.dart';
 import 'package:flutter/widgets.dart';

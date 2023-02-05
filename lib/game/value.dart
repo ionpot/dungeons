@@ -42,6 +42,8 @@ class PercentValue {
   Percent get multiplierBonus => unscaled.multiply(multipliers.total);
   Percent get total => unscaled + multiplierBonus;
 
+  bool get hasNoBonuses => bonuses.isEmpty && multipliers.isEmpty;
+
   PercentValueRoll roll() {
     return PercentValueRoll(input: this, result: total.roll());
   }

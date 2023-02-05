@@ -23,6 +23,8 @@ Color? intColor(int i) {
   }
 }
 
+Color? doubleColor(double x) => intColor(x.sign.round());
+
 Color? percentColor(Percent percent) => intColor(percent.value);
 Color? intValueColor(IntValue value) => intColor(value.bonus);
 Color? intBonusesColor(IntBonuses value) => intColor(value.total);

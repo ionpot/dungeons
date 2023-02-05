@@ -7,25 +7,6 @@ import 'package:dungeons/utility/range.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:flutter/widgets.dart';
 
-class PercentValueSpan extends TextSpan {
-  PercentValueSpan(PercentValue value)
-      : super(
-          text: '$value',
-          style: TextStyle(color: percentValueColor(value)),
-        );
-}
-
-class PercentValueRollSpan extends TextSpan {
-  PercentValueRollSpan(PercentValueRoll value)
-      : super(
-          children: [
-            const TextSpan(text: '('),
-            PercentValueSpan(value.input),
-            TextSpan(text: ') ${value.result}'),
-          ],
-        );
-}
-
 class RangeSpan extends TextSpan {
   RangeSpan(Range range, {bool max = false})
       : super(
