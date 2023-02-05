@@ -1,4 +1,4 @@
-import 'package:dungeons/utility/double.dart';
+import 'package:dungeons/utility/fixed_string.dart';
 
 class Multiplier {
   final double value;

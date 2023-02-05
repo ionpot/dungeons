@@ -1,6 +1,6 @@
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/bonus_text.dart';
-import 'package:dungeons/utility/double.dart';
+import 'package:dungeons/utility/fixed_string.dart';
 import 'package:dungeons/utility/percent.dart';
 import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/colors.dart';
