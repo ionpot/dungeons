@@ -7,14 +7,6 @@ import 'package:dungeons/utility/range.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:flutter/widgets.dart';
 
-class IntValueSpan extends TextSpan {
-  IntValueSpan(IntValue value)
-      : super(
-          text: '$value',
-          style: TextStyle(color: intValueColor(value)),
-        );
-}
-
 class PercentValueSpan extends TextSpan {
   PercentValueSpan(PercentValue value)
       : super(

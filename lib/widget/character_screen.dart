@@ -7,6 +7,7 @@ import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/empty.dart';
+import 'package:dungeons/widget/int_value.dart';
 import 'package:dungeons/widget/label_value.dart';
 import 'package:dungeons/widget/radio_group.dart';
 import 'package:dungeons/widget/spaced.dart';
@@ -108,7 +109,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
         'Total Hp': BoldText('${entity.totalHp}'),
         'Stress Cap': BoldText.fromSpan(StressCapSpan(entity)),
         'Armor': BoldText('${entity.totalArmor}'),
-        'Initiative': BoldText.fromSpan(IntValueSpan(entity.initiative)),
+        'Initiative': Text.rich(IntValueSpan.bold(entity.initiative)),
         'Dodge': BoldText.fromSpan(PercentValueSpan(entity.dodge)),
         'Resist': BoldText('${entity.resist}'),
         'Damage': damage != null
