@@ -3,7 +3,6 @@ import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
-import 'package:dungeons/utility/dice.dart';
 
 class WeaponAttack {
   final Entity attacker;
@@ -21,9 +20,11 @@ class WeaponAttack {
     if (value == null) {
       throw Exception('$attacker.weaponDamage is null');
     }
-    return sneakAttack
-        ? (value..addDice(_SneakAttack.bonus, _SneakAttack.dice))
-        : value;
+    if (sneakAttack) {
+      const bonus = Bonus(feat: Feat.sneakAttack);
+      value.addDice(bonus, Feat.sneakAttack.dice!);
+    }
+    return value;
   }
 
   WeaponAttackResult roll() {
@@ -71,13 +72,5 @@ class WeaponAttackTurn {
 
   void apply() {
     attack.apply(result);
-  }
-}
-
-class _SneakAttack {
-  static const bonus = Bonus(feat: Feat.sneakAttack);
-  static Dice get dice {
-    return Feat.sneakAttack.dice ??
-        (throw Exception("Feat.sneakAttack.dice is null"));
   }
 }
