@@ -1,4 +1,5 @@
 import 'package:dungeons/game/armor.dart';
+import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/bonuses.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
@@ -30,11 +31,17 @@ class Entity extends _Base
   });
 
   PercentValue hitChance(Entity target) {
-    final bonus = agility ~/ 4;
     return PercentValue(
-      base: Percent(target.totalArmor - bonus).invert(),
-      bonuses: _allBonuses.toPercentBonuses((e) => e.hitChance),
+      base: Percent(target.totalArmor).invert(),
+      bonuses: PercentBonuses(hitChanceBonusMap),
     );
+  }
+
+  BonusMap<Percent> get hitChanceBonusMap {
+    return {
+      Bonus.agility(): Percent(agility ~/ 4),
+      ..._allBonuses.toPercentBonusMap((e) => e.hitChance)
+    };
   }
 
   bool fasterThan(Entity other) {

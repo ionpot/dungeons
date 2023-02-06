@@ -85,7 +85,7 @@ class Bonuses {
     return IntBonuses(map);
   }
 
-  PercentBonuses toPercentBonuses(GetEffect<Percent> f) {
+  BonusMap<Percent> toPercentBonusMap(GetEffect<Percent> f) {
     final BonusMap<Percent> map = {};
     for (final entry in contents.entries) {
       ifdef(f(entry.value), (value) {
@@ -94,7 +94,11 @@ class Bonuses {
         }
       });
     }
-    return PercentBonuses(map);
+    return map;
+  }
+
+  PercentBonuses toPercentBonuses(GetEffect<Percent> f) {
+    return PercentBonuses(toPercentBonusMap(f));
   }
 
   MultiplierBonuses toMultiplierBonuses(GetEffect<Multiplier> f) {
