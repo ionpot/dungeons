@@ -5,6 +5,7 @@ import 'package:dungeons/utility/percent.dart';
 import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/tooltip_region.dart';
+import 'package:dungeons/widget/value_table.dart';
 import 'package:flutter/widgets.dart';
 
 class PercentBonusText extends Text {
@@ -30,32 +31,16 @@ class PercentValueTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Table(
-      defaultColumnWidth: const IntrinsicColumnWidth(),
-      children: [
-        _row(const Text('Base'), Text('${value.base}')),
-        for (final entry in value.bonuses.contents.entries)
-          _row(Text('${entry.key}'), PercentBonusText(entry.value)),
-        for (final entry in value.multipliers.contents.entries)
-          _row(
-            Text('${entry.key} (${entry.value})'),
-            _DoubleBonusText(value.unscaled.value * entry.value.value),
-          ),
-      ],
-    );
-  }
-
-  static TableRow _row(Widget label, Widget value) {
-    return TableRow(children: [_cell(label), _cell(value)]);
-  }
-
-  static TableCell _cell(Widget child) {
-    return TableCell(
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: child,
-      ),
-    );
+    return ValueTable([
+      ValueRow(const Text('Base'), Text('${value.base}')),
+      for (final entry in value.bonuses.contents.entries)
+        ValueRow(Text('${entry.key}'), PercentBonusText(entry.value)),
+      for (final entry in value.multipliers.contents.entries)
+        ValueRow(
+          Text('${entry.key} (${entry.value})'),
+          _DoubleBonusText(value.unscaled.value * entry.value.value),
+        ),
+    ]);
   }
 }
 
