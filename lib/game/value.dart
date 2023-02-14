@@ -81,8 +81,19 @@ class DiceValue {
 
   Range get range => base.range + diceBonuses.range + intBonuses.total;
 
-  int get intBonusTotal => base.bonus + intBonuses.total;
-  String get intBonusString => bonusText(intBonusTotal);
+  IntValue get diceCountValue {
+    return IntValue(
+      base: base.count,
+      bonuses: IntBonuses(
+        diceBonuses
+            .findWithSides(base.sides)
+            .map((key, value) => MapEntry(key, value.count)),
+      ),
+    );
+  }
+
+  IntValue get intBonusValue => IntValue(base: base.bonus, bonuses: intBonuses);
+  String get intBonusString => bonusText(intBonusValue.total);
   int get maxTotal => base.max + diceBonuses.maxTotal + intBonuses.total;
 
   DiceRollValue roll() {
@@ -117,6 +128,13 @@ class DiceRollValue {
 
   int get bonusTotal => intBonuses.total + diceBonuses.totals.total;
   int get total => base.total + bonusTotal;
+
+  IntValue get intValue {
+    return IntValue(
+      base: base.total,
+      bonuses: diceBonuses.totals + intBonuses,
+    );
+  }
 
   @override
   String toString() => '$total';

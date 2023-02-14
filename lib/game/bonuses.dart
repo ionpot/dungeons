@@ -123,6 +123,18 @@ class IntBonuses {
 
   int get total => contents.values.fold(0, (sum, value) => sum + value);
 
+  IntBonuses operator +(IntBonuses other) {
+    final map = Map.of(contents);
+    for (final entry in other.contents.entries) {
+      map.update(
+        entry.key,
+        (value) => value + entry.value,
+        ifAbsent: () => entry.value,
+      );
+    }
+    return IntBonuses(map);
+  }
+
   @override
   String toString() => isEmpty ? "" : bonusText(total);
 }
@@ -166,6 +178,13 @@ class DiceBonuses {
 
   int get maxTotal => Dice.maxTotal(contents.values);
   Range get range => Dice.totalRange(contents.values);
+
+  BonusMap<Dice> findWithSides(int sides) {
+    return Map.fromEntries([
+      for (final entry in contents.entries)
+        if (entry.value.sides == sides) entry
+    ]);
+  }
 
   void add(Bonus bonus, Dice dice) {
     contents[bonus] = dice;

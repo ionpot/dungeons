@@ -1,4 +1,5 @@
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/widget/dice_span.dart';
 import 'package:dungeons/widget/int_value.dart';
 import 'package:dungeons/widget/percent_value.dart';
 import 'package:dungeons/widget/text_lines.dart';

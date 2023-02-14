@@ -34,11 +34,13 @@ class Dice implements Comparable<Dice> {
     return DiceRoll(this, rolls);
   }
 
+  String get sideText => 'd$sides';
+
   @override
   int compareTo(Dice other) => max - other.max;
 
   @override
-  String toString() => '${count}d$sides${bonusText(bonus)}';
+  String toString() => '$count$sideText${bonusText(bonus)}';
 
   static int maxTotal(Iterable<Dice> list) {
     return list.fold(0, (sum, dice) => sum + dice.max);

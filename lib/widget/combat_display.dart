@@ -4,6 +4,7 @@ import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/dice.dart';
+import 'package:dungeons/widget/dice_span.dart';
 import 'package:dungeons/widget/percent_value.dart';
 import 'package:dungeons/widget/text_lines.dart';
 import 'package:dungeons/widget/titled_text_lines.dart';
@@ -159,7 +160,7 @@ class CombatDisplay extends StatelessWidget {
     );
   }
 
-  Widget _richText(String prefix, TextSpan span, [String suffix = '']) {
+  Widget _richText(String prefix, InlineSpan span, [String suffix = '']) {
     return Text.rich(
       TextSpan(
         children: [

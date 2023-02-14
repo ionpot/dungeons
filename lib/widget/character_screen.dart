@@ -6,6 +6,7 @@ import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/button.dart';
+import 'package:dungeons/widget/dice_span.dart';
 import 'package:dungeons/widget/empty.dart';
 import 'package:dungeons/widget/int_value.dart';
 import 'package:dungeons/widget/label_value.dart';
@@ -114,7 +115,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
         'Dodge': Text.rich(PercentValueSpan.bold(entity.dodge)),
         'Resist': BoldText('${entity.resist}'),
         'Damage': damage != null
-            ? BoldText.fromSpan(DiceValueWithRangeSpan(damage))
+            ? Text.rich(DiceValueWithRangeSpan.bold(damage))
             : const Empty(),
       },
     );
