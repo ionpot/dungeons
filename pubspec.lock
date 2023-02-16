@@ -37,10 +37,10 @@ packages:
     dependency: transitive
     description:
       name: args
-      sha256: "139d809800a412ebb26a3892da228b2d0ba36f0ef5d9a82166e5e52ec8d61611"
+      sha256: "4cab82a83ffef80b262ddedf47a0a8e56ee6fbf7fe21e6e768b02792034dd440"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.4.0"
   async:
     dependency: transitive
     description:
@@ -109,18 +109,18 @@ packages:
     dependency: "direct dev"
     description:
       name: dart_code_metrics
-      sha256: bb4ec5e729788dde5f7e8e9df4c05ec3b78532a5763e635337153ce40085514b
+      sha256: "026e28da197a03caeccccc0b174ec98ef03da3c81c4543314d7add121aab4375"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.1"
+    version: "5.6.0"
   dart_code_metrics_presets:
     dependency: transitive
     description:
       name: dart_code_metrics_presets
-      sha256: "43dc1fdcb424fc3aa79964304d09eeda4f199351c52cdc854f8228a9d0296b60"
+      sha256: "9c51724f836aebc4465228954cb5757e5a99737af26a452b5dec0a2d5d0b4d66"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.0"
   dart_style:
     dependency: transitive
     description:
