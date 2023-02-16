@@ -182,7 +182,7 @@ class DiceBonuses {
   BonusMap<Dice> findWithSides(int sides) {
     return Map.fromEntries([
       for (final entry in contents.entries)
-        if (entry.value.sides == sides) entry
+        if (entry.value.sides == sides) entry,
     ]);
   }
 

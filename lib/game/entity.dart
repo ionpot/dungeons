@@ -40,7 +40,7 @@ class Entity extends _Base
   BonusMap<Percent> get hitChanceBonusMap {
     return {
       Bonus.agility(): Percent(agility ~/ 4),
-      ..._allBonuses.toPercentBonusMap((e) => e.hitChance)
+      ..._allBonuses.toPercentBonusMap((e) => e.hitChance),
     };
   }
 
