@@ -1,7 +1,6 @@
 import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/int_bonus.dart';
 import 'package:dungeons/widget/int_value.dart';
@@ -53,10 +52,6 @@ class DiceValueWithRangeSpan extends TextSpan {
             RangeSpan(value.range, max: value.max, style: style),
           ],
         );
-
-  factory DiceValueWithRangeSpan.bold(DiceValue value, {TextStyle? style}) {
-    return DiceValueWithRangeSpan(value, style: BoldText.style.merge(style));
-  }
 }
 
 class DiceRollValueSpan extends WidgetSpan {

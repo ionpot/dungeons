@@ -1,7 +1,6 @@
 import 'package:dungeons/game/bonuses.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/bonus_text.dart';
-import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/empty.dart';
 import 'package:dungeons/widget/tooltip_region.dart';
@@ -66,8 +65,4 @@ class IntBonusWidget extends StatelessWidget {
 class IntBonusSpan extends WidgetSpan {
   IntBonusSpan(IntValue value, {TextStyle? style})
       : super(child: IntBonusWidget(value, style: style));
-
-  factory IntBonusSpan.bold(IntValue value) {
-    return IntBonusSpan(value, style: BoldText.style);
-  }
 }

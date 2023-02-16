@@ -2,7 +2,6 @@ import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/utility/fixed_string.dart';
 import 'package:dungeons/utility/percent.dart';
-import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/tooltip_region.dart';
 import 'package:dungeons/widget/value_table.dart';
@@ -67,10 +66,6 @@ class PercentValueWidget extends StatelessWidget {
 class PercentValueSpan extends WidgetSpan {
   PercentValueSpan(PercentValue value, {TextStyle? style})
       : super(child: PercentValueWidget(value, style: style));
-
-  factory PercentValueSpan.bold(PercentValue value) {
-    return PercentValueSpan(value, style: BoldText.style);
-  }
 }
 
 class PercentValueRollSpan extends TextSpan {

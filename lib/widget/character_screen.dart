@@ -104,6 +104,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
 
   Widget _stats(Entity entity) {
     final damage = entity.weaponDamage;
+    const bold = BoldText.style;
     return LabelValueTable(
       labelWidth: 86,
       valueWidth: 128,
@@ -111,11 +112,11 @@ class _CharacterScreenState extends State<CharacterScreen> {
         'Total Hp': BoldText('${entity.totalHp}'),
         'Stress Cap': BoldText.fromSpan(StressCapSpan(entity)),
         'Armor': BoldText('${entity.totalArmor}'),
-        'Initiative': Text.rich(IntValueSpan.bold(entity.initiative)),
-        'Dodge': Text.rich(PercentValueSpan.bold(entity.dodge)),
+        'Initiative': Text.rich(IntValueSpan(entity.initiative, style: bold)),
+        'Dodge': Text.rich(PercentValueSpan(entity.dodge, style: bold)),
         'Resist': BoldText('${entity.resist}'),
         'Damage': damage != null
-            ? Text.rich(DiceValueWithRangeSpan.bold(damage))
+            ? Text.rich(DiceValueWithRangeSpan(damage, style: bold))
             : const Empty(),
       },
     );
