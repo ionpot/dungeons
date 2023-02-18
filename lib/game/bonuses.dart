@@ -6,13 +6,22 @@ import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/multiplier.dart';
 import 'package:dungeons/utility/percent.dart';
 import 'package:dungeons/utility/range.dart';
 
 typedef EffectMap = BonusMap<Effect>;
-typedef GetEffect<T extends Object> = T? Function(Effect);
+
+class BonusEntry {
+  final Bonus bonus;
+  final Effect effect;
+
+  BonusEntry(MapEntry<Bonus, Effect> entry)
+      : bonus = entry.key,
+        effect = entry.value;
+}
+
+typedef GetValue<T extends Object> = T? Function(BonusEntry);
 
 class Bonuses {
   final EffectMap contents;
@@ -64,49 +73,24 @@ class Bonuses {
     contents.removeWhere((key, value) => key.spell != null);
   }
 
-  Bonus? findBonus(GetEffect<bool> f) {
+  Bonus? findBonus(GetValue<bool> toBool) {
     for (final entry in contents.entries) {
-      if (f(entry.value) == true) {
+      if (toBool(BonusEntry(entry)) == true) {
         return entry.key;
       }
     }
     return null;
   }
 
-  IntBonuses toIntBonuses(GetEffect<int> f) {
-    final BonusMap<int> map = {};
+  BonusMap<T> toMap<T extends Object>(GetValue<T> toValue) {
+    final BonusMap<T> output = {};
     for (final entry in contents.entries) {
-      ifdef(f(entry.value), (value) {
-        map[entry.key] = value;
-      });
+      final value = toValue(BonusEntry(entry));
+      if (value != null) {
+        output[entry.key] = value;
+      }
     }
-    return IntBonuses(map);
-  }
-
-  BonusMap<Percent> toPercentBonusMap(GetEffect<Percent> f) {
-    final BonusMap<Percent> map = {};
-    for (final entry in contents.entries) {
-      ifdef(f(entry.value), (value) {
-        map[entry.key] = value;
-      });
-    }
-    return map;
-  }
-
-  PercentBonuses toPercentBonuses(GetEffect<Percent> f) {
-    return PercentBonuses(toPercentBonusMap(f));
-  }
-
-  MultiplierBonuses toMultiplierBonuses(GetEffect<Multiplier> f) {
-    final BonusMap<Multiplier> map = {};
-    for (final entry in contents.entries) {
-      ifdef(f(entry.value), (value) {
-        if (!value.zero) {
-          map[entry.key] = value;
-        }
-      });
-    }
-    return MultiplierBonuses(map);
+    return output;
   }
 }
 
