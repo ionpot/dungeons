@@ -9,13 +9,13 @@ enum Weapon {
   halberd(text: 'Halberd', dice: Dice(1, 10), initiative: -2);
 
   final Dice dice;
-  final int initiative;
+  final int? initiative;
   final String text;
 
   const Weapon({
     required this.text,
     required this.dice,
-    this.initiative = 0,
+    this.initiative,
   });
 
   factory Weapon.random() => pickRandom(Weapon.values);
