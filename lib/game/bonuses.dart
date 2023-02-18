@@ -28,10 +28,6 @@ class Bonuses {
 
   Bonuses([EffectMap? m]) : contents = m ?? {};
 
-  factory Bonuses.copy(Bonuses other) {
-    return Bonuses(Map.of(other.contents));
-  }
-
   bool has(Bonus bonus) => contents.containsKey(bonus);
 
   void add(Bonus bonus) {
@@ -45,6 +41,10 @@ class Bonuses {
     } else {
       contents[bonus] = effect;
     }
+  }
+
+  void addAll(Bonuses other) {
+    contents.addAll(other.contents);
   }
 
   void remove(Bonus bonus) => contents.remove(bonus);

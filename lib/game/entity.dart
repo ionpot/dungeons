@@ -101,13 +101,13 @@ mixin _Bonuses on _Base {
   final _extraBonuses = Bonuses();
 
   Bonuses get _allBonuses {
-    final bonuses = Bonuses.copy(_extraBonuses);
+    final bonuses = Bonuses();
+    ifdef(weapon, bonuses.addWeapon);
+    ifdef(armor, bonuses.addArmor);
     if (klass == EntityClass.warrior) {
       bonuses.addFeat(Feat.weaponFocus);
     }
-    ifdef(weapon, bonuses.addWeapon);
-    ifdef(armor, bonuses.addArmor);
-    return bonuses;
+    return bonuses..addAll(_extraBonuses);
   }
 
   void clearSpellBonuses() => _extraBonuses.clearSpells();
