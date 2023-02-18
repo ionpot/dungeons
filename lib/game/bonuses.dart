@@ -32,14 +32,6 @@ class Bonuses {
     return Bonuses(Map.of(other.contents));
   }
 
-  int get reservedStress {
-    int sum = 0;
-    for (final bonus in contents.keys) {
-      sum += bonus.reservedStress ?? 0;
-    }
-    return sum;
-  }
-
   bool has(Bonus bonus) => contents.containsKey(bonus);
 
   void add(Bonus bonus) {

@@ -192,8 +192,12 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
   int _stress = 0;
 
   int get stress => _stress;
-  int get reservedStress => _allBonuses.reservedStress;
-  int get stressCap => stressCapValue.total - reservedStress;
+
+  IntBonuses get reservedStress =>
+      IntBonuses(_allBonuses.toMap((e) => e.bonus.reservedStress));
+
+  int get stressCap => stressCapValue.total - reservedStress.total;
+
   IntValue get stressCapValue {
     return IntValue(
       base: intellect + level,
