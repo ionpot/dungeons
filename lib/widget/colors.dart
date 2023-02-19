@@ -34,9 +34,6 @@ Color? diceBonusesColor(DiceBonuses value) => value.isEmpty ? null : green;
 
 Color? hpColor(Entity e) => e.alive ? null : red;
 
-Color? stressCapColor(Entity e) =>
-    e.reservedStress.total > 0 ? yellow : intValueColor(e.stressCapValue);
-
 Color? sourceColor(Source source) {
   switch (source) {
     case Source.physical:

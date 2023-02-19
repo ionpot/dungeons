@@ -32,24 +32,6 @@ class HpSpan extends TextSpan {
         );
 }
 
-class StressSpan extends TextSpan {
-  StressSpan(Entity entity)
-      : super(
-          children: [
-            TextSpan(text: '${entity.stress}/'),
-            StressCapSpan(entity),
-          ],
-        );
-}
-
-class StressCapSpan extends TextSpan {
-  StressCapSpan(Entity entity)
-      : super(
-          text: '${entity.stressCap}',
-          style: TextStyle(color: stressCapColor(entity)),
-        );
-}
-
 class SpellNameSpan extends TextSpan {
   SpellNameSpan(Spell spell)
       : super(

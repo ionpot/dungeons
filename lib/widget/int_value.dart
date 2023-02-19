@@ -20,10 +20,14 @@ class IntValueTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueTable([
+    return ValueTable(rows(value));
+  }
+
+  static List<ValueRow> rows(IntValue value) {
+    return [
       ValueRow(const Text('Base'), Text('${value.base}')),
       ...IntBonusTable.bonusRows(value.bonuses),
-    ]);
+    ];
   }
 }
 
