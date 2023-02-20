@@ -31,9 +31,9 @@ class DiceValueSpan extends TextSpan {
           children: [
             IntValueSpan(value.diceCountValue, style: style),
             TextSpan(text: value.base.base.sideText, style: style),
-            for (final entry in value.diceBonuses.contents.entries)
+            for (final entry in value.diceBonuses)
               DiceBonusSpan(
-                bonus: entry.key,
+                bonus: entry.bonus,
                 dice: entry.value,
                 style: style,
               ),

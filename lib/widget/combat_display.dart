@@ -125,8 +125,8 @@ class CombatDisplay extends StatelessWidget {
   List<Widget> _diceRolls(String name, DiceRollValue value) {
     return [
       _diceRoll(name, value.base),
-      for (final entry in value.diceBonuses.contents.entries)
-        _diceRoll('${entry.key}', entry.value),
+      for (final entry in value.diceBonuses)
+        _diceRoll('${entry.bonus}', entry.value),
     ];
   }
 

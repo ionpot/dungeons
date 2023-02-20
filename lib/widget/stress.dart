@@ -43,9 +43,9 @@ class StressCapWidget extends StatelessWidget {
 
   static List<ValueRow> reservedRows(IntBonuses bonuses) {
     return [
-      for (final entry in bonuses.contents.entries)
+      for (final entry in bonuses)
         ValueRow(
-          Text('${entry.key}'),
+          Text('${entry.bonus}'),
           reservedText(-entry.value),
         ),
     ];

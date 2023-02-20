@@ -32,11 +32,11 @@ class PercentValueTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueTable([
       ValueRow(const Text('Base'), Text('${value.base}')),
-      for (final entry in value.bonuses.contents.entries)
-        ValueRow(Text('${entry.key}'), PercentBonusText(entry.value)),
-      for (final entry in value.multipliers.contents.entries)
+      for (final entry in value.bonuses)
+        ValueRow(Text('${entry.bonus}'), PercentBonusText(entry.value)),
+      for (final entry in value.multipliers)
         ValueRow(
-          Text('${entry.key} (${entry.value})'),
+          Text('${entry.bonus} (${entry.value})'),
           _DoubleBonusText(value.unscaled.value * entry.value.value),
         ),
     ]);

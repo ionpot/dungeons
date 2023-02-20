@@ -40,7 +40,7 @@ class Entity extends _Base
   BonusMap<Percent> get hitChanceBonusMap {
     return {
       Bonus.agility(): Percent(agility ~/ 4),
-      ..._allBonuses.toMap((e) => e.effect.hitChance),
+      ..._allBonuses.toMap((e) => e.value.hitChance),
     };
   }
 
@@ -140,7 +140,7 @@ mixin _Attributes on _Base, _Bonuses {
     return IntValue(
       base: (agility + intellect) ~/ 2,
       bonuses: IntBonuses(
-        _allBonuses.toMap((e) => e.effect.initiative),
+        _allBonuses.toMap((e) => e.value.initiative),
       ),
     );
   }
@@ -149,7 +149,7 @@ mixin _Attributes on _Base, _Bonuses {
     return PercentValue(
       base: Percent(agility),
       multipliers: MultiplierBonuses(
-        _allBonuses.toMap((e) => e.effect.dodgeMultiplier),
+        _allBonuses.toMap((e) => e.value.dodgeMultiplier),
       ),
     );
   }
@@ -158,7 +158,7 @@ mixin _Attributes on _Base, _Bonuses {
     return PercentValue(
       base: Percent(intellect),
       bonuses: PercentBonuses(
-        _allBonuses.toMap((e) => e.effect.resistChance),
+        _allBonuses.toMap((e) => e.value.resistChance),
       ),
     );
   }
@@ -201,7 +201,7 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
   IntValue get stressCapValue {
     return IntValue(
       base: intellect + level,
-      bonuses: IntBonuses(_allBonuses.toMap((e) => e.effect.stressCap)),
+      bonuses: IntBonuses(_allBonuses.toMap((e) => e.value.stressCap)),
     );
   }
 
@@ -265,8 +265,8 @@ mixin _Weapon on _Base, _Bonuses, _Attributes {
     if (weapon == null) return null;
     return DiceValue(
       base: weapon!.dice.addBonus(strength ~/ 2),
-      intBonuses: IntBonuses(_allBonuses.toMap((e) => e.effect.damage)),
-      max: _allBonuses.findBonus((e) => e.effect.maxWeaponDamage) != null,
+      intBonuses: IntBonuses(_allBonuses.toMap((e) => e.value.damage)),
+      max: _allBonuses.findBonus((e) => e.value.maxWeaponDamage) != null,
     );
   }
 }

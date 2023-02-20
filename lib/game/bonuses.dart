@@ -12,18 +12,30 @@ import 'package:dungeons/utility/range.dart';
 
 typedef EffectMap = BonusMap<Effect>;
 
-class BonusEntry {
+class BonusEntry<T extends Object> {
   final Bonus bonus;
-  final Effect effect;
+  final T value;
 
-  BonusEntry(MapEntry<Bonus, Effect> entry)
+  BonusEntry(MapEntry<Bonus, T> entry)
       : bonus = entry.key,
-        effect = entry.value;
+        value = entry.value;
 }
 
-typedef GetValue<T extends Object> = T? Function(BonusEntry);
+class BonusEntryIterator<T extends Object> implements Iterator<BonusEntry<T>> {
+  final Iterator<MapEntry<Bonus, T>> iterator;
 
-class Bonuses {
+  BonusEntryIterator(this.iterator);
+
+  @override
+  BonusEntry<T> get current => BonusEntry(iterator.current);
+
+  @override
+  bool moveNext() => iterator.moveNext();
+}
+
+typedef GetValue<T extends Object> = T? Function(BonusEntry<Effect>);
+
+class Bonuses extends Iterable<BonusEntry<Effect>> {
   final EffectMap contents;
 
   Bonuses([EffectMap? m]) : contents = m ?? {};
@@ -66,9 +78,9 @@ class Bonuses {
   }
 
   Bonus? findBonus(GetValue<bool> toBool) {
-    for (final entry in contents.entries) {
-      if (toBool(BonusEntry(entry)) == true) {
-        return entry.key;
+    for (final entry in this) {
+      if (toBool(entry) == true) {
+        return entry.bonus;
       }
     }
     return null;
@@ -76,30 +88,32 @@ class Bonuses {
 
   BonusMap<T> toMap<T extends Object>(GetValue<T> toValue) {
     final BonusMap<T> output = {};
-    for (final entry in contents.entries) {
-      final value = toValue(BonusEntry(entry));
+    for (final entry in this) {
+      final value = toValue(entry);
       if (value != null) {
-        output[entry.key] = value;
+        output[entry.bonus] = value;
       }
     }
     return output;
   }
+
+  @override
+  Iterator<BonusEntry<Effect>> get iterator =>
+      BonusEntryIterator(contents.entries.iterator);
 }
 
-class IntBonuses {
+class IntBonuses extends Iterable<BonusEntry<int>> {
   final BonusMap<int> contents;
 
   const IntBonuses([this.contents = const {}]);
-
-  bool get isEmpty => contents.isEmpty;
 
   int get total => contents.values.fold(0, (sum, value) => sum + value);
 
   IntBonuses operator +(IntBonuses other) {
     final map = Map.of(contents);
-    for (final entry in other.contents.entries) {
+    for (final entry in other) {
       map.update(
-        entry.key,
+        entry.bonus,
         (value) => value + entry.value,
         ifAbsent: () => entry.value,
       );
@@ -108,15 +122,17 @@ class IntBonuses {
   }
 
   @override
+  Iterator<BonusEntry<int>> get iterator =>
+      BonusEntryIterator(contents.entries.iterator);
+
+  @override
   String toString() => isEmpty ? "" : bonusText(total);
 }
 
-class PercentBonuses {
+class PercentBonuses extends Iterable<BonusEntry<Percent>> {
   final BonusMap<Percent> contents;
 
   const PercentBonuses([this.contents = const {}]);
-
-  bool get isEmpty => contents.isEmpty;
 
   Percent get total {
     return contents.values.fold(
@@ -124,14 +140,16 @@ class PercentBonuses {
       (sum, value) => sum + value,
     );
   }
+
+  @override
+  Iterator<BonusEntry<Percent>> get iterator =>
+      BonusEntryIterator(contents.entries.iterator);
 }
 
-class MultiplierBonuses {
+class MultiplierBonuses extends Iterable<BonusEntry<Multiplier>> {
   final BonusMap<Multiplier> contents;
 
   const MultiplierBonuses([this.contents = const {}]);
-
-  bool get isEmpty => contents.isEmpty;
 
   Multiplier get total {
     return contents.values.fold(
@@ -139,14 +157,16 @@ class MultiplierBonuses {
       (sum, value) => sum + value,
     );
   }
+
+  @override
+  Iterator<BonusEntry<Multiplier>> get iterator =>
+      BonusEntryIterator(contents.entries.iterator);
 }
 
-class DiceBonuses {
+class DiceBonuses extends Iterable<BonusEntry<Dice>> {
   final BonusMap<Dice> contents;
 
   DiceBonuses([BonusMap<Dice>? contents]) : contents = contents ?? {};
-
-  bool get isEmpty => contents.isEmpty;
 
   int get maxTotal => Dice.maxTotal(contents.values);
   Range get range => Dice.totalRange(contents.values);
@@ -172,10 +192,14 @@ class DiceBonuses {
   }
 
   @override
+  Iterator<BonusEntry<Dice>> get iterator =>
+      BonusEntryIterator(contents.entries.iterator);
+
+  @override
   String toString() => contents.values.fold("", (str, dice) => "$str+$dice");
 }
 
-class DiceRollBonuses {
+class DiceRollBonuses extends Iterable<BonusEntry<DiceRoll>> {
   final BonusMap<DiceRoll> contents;
 
   const DiceRollBonuses([this.contents = const {}]);
@@ -185,4 +209,8 @@ class DiceRollBonuses {
       return MapEntry(key, value.total);
     }));
   }
+
+  @override
+  Iterator<BonusEntry<DiceRoll>> get iterator =>
+      BonusEntryIterator(contents.entries.iterator);
 }

@@ -36,8 +36,8 @@ class IntBonusTable extends StatelessWidget {
 
   static List<ValueRow> bonusRows(IntBonuses bonuses) {
     return [
-      for (final entry in bonuses.contents.entries)
-        ValueRow(Text('${entry.key}'), IntBonusText(entry.value)),
+      for (final entry in bonuses)
+        ValueRow(Text('${entry.bonus}'), IntBonusText(entry.value)),
     ];
   }
 }

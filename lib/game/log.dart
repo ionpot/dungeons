@@ -121,8 +121,8 @@ class Log {
 
   void _writeDiceRolls(String rollName, DiceRollValue value) {
     _writeDiceRoll(rollName, value.base);
-    for (final entry in value.diceBonuses.contents.entries) {
-      _writeDiceRoll('${entry.key}', entry.value);
+    for (final entry in value.diceBonuses) {
+      _writeDiceRoll('${entry.bonus}', entry.value);
     }
   }
 
