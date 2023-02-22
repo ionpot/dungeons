@@ -2,6 +2,7 @@ import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
+import 'package:dungeons/game/gear.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/widget/bold_text.dart';
 import 'package:dungeons/widget/button.dart';
@@ -120,7 +121,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
       values: Armor.values,
       onChange: (armor) {
         setState(() {
-          _entity.armor = armor;
+          _entity.equip(Gear(body: armor));
         });
       },
     );
@@ -131,7 +132,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
       values: Weapon.values,
       onChange: (weapon) {
         setState(() {
-          _entity.weapon = weapon;
+          _entity.equip(Gear(mainHand: weapon));
         });
       },
     );

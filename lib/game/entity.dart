@@ -5,6 +5,7 @@ import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/feat.dart';
+import 'package:dungeons/game/gear.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spellbook.dart';
 import 'package:dungeons/game/value.dart';
@@ -14,15 +15,7 @@ import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
 
 class Entity extends _Base
-    with
-        _Bonuses,
-        _Attributes,
-        _Levels,
-        _Health,
-        _Stress,
-        _Weapon,
-        _Armor,
-        _Spells {
+    with _Gear, _Bonuses, _Attributes, _Levels, _Health, _Stress, _Spells {
   Entity({
     required super.name,
     required super.race,
@@ -64,8 +57,7 @@ class Entity extends _Base
       ..base.roll()
       ..levelUpTo(rollEnemyLevel())
       ..spendAllPoints()
-      ..weapon = Weapon.random()
-      ..armor = Armor.random();
+      ..gear.roll();
   }
 
   int rollEnemyLevel() => const Deviate(2, 0).from(level).withMin(1).roll();
@@ -85,8 +77,6 @@ class _Base {
   final bool player;
   final EntityRace race;
   EntityClass? klass;
-  Weapon? weapon;
-  Armor? armor;
 
   _Base({
     required this.name,
@@ -95,13 +85,23 @@ class _Base {
   });
 }
 
-mixin _Bonuses on _Base {
+mixin _Gear on _Base {
+  var gear = Gear();
+
+  Weapon? get weapon => gear.mainHand;
+  Armor? get armor => gear.body;
+  int get totalArmor => gear.armor;
+
+  void equip(Gear gear) {
+    this.gear += gear;
+  }
+}
+
+mixin _Bonuses on _Base, _Gear {
   final _extraBonuses = Bonuses();
 
   Bonuses get _allBonuses {
-    final bonuses = Bonuses();
-    ifdef(weapon, bonuses.addWeapon);
-    ifdef(armor, bonuses.addArmor);
+    final bonuses = gear.bonuses;
     if (klass == EntityClass.warrior) {
       bonuses.addFeat(Feat.weaponFocus);
     }
@@ -119,7 +119,7 @@ mixin _Bonuses on _Base {
   }
 }
 
-mixin _Attributes on _Base, _Bonuses {
+mixin _Attributes on _Base, _Gear, _Bonuses {
   final base = EntityAttributes();
 
   int get strength => base.strength + race.strength;
@@ -158,6 +158,15 @@ mixin _Attributes on _Base, _Bonuses {
       bonuses: PercentBonuses(
         _allBonuses.toMap((e) => e.value.resistChance),
       ),
+    );
+  }
+
+  DiceValue? get weaponDamage {
+    if (weapon == null) return null;
+    return DiceValue(
+      base: weapon!.dice.addBonus(strength ~/ 2),
+      intBonuses: IntBonuses(_allBonuses.toMap((e) => e.value.damage)),
+      max: _allBonuses.findBonus((e) => e.value.maxWeaponDamage) != null,
     );
   }
 
@@ -256,21 +265,6 @@ mixin _Levels on _Base, _Attributes {
   }
 
   String toXpString() => '$xp/$_xpForLevelUp';
-}
-
-mixin _Weapon on _Base, _Bonuses, _Attributes {
-  DiceValue? get weaponDamage {
-    if (weapon == null) return null;
-    return DiceValue(
-      base: weapon!.dice.addBonus(strength ~/ 2),
-      intBonuses: IntBonuses(_allBonuses.toMap((e) => e.value.damage)),
-      max: _allBonuses.findBonus((e) => e.value.maxWeaponDamage) != null,
-    );
-  }
-}
-
-mixin _Armor on _Base {
-  int get totalArmor => armor?.value ?? 0;
 }
 
 mixin _Spells on _Base, _Stress {
