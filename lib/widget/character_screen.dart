@@ -1,6 +1,5 @@
 import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/weapon.dart';
@@ -26,63 +25,57 @@ class CharacterScreen extends StatefulWidget {
 }
 
 class _CharacterScreenState extends State<CharacterScreen> {
-  EntityAttributes? _attributes;
-  EntityClass? _class;
-  Weapon? _weapon;
-  Armor? _armor;
+  late Entity _entity;
 
-  Entity? get _entity {
-    if (_attributes == null || _class == null) return null;
-    return Entity(
+  @override
+  void initState() {
+    super.initState();
+    _entity = Entity(
       name: 'Player',
       player: true,
-      klass: _class!,
       race: EntityRace.human,
-    )
-      ..base = _attributes!
-      ..weapon = _weapon
-      ..armor = _armor;
+    )..base.roll();
   }
 
   @override
   Widget build(BuildContext context) {
-    final entity = _entity;
     return Container(
       padding: const EdgeInsets.all(30),
       child: buildSpacedColumn(
         children: [
           const Text('New character'),
-          _classSelect(),
-          if (entity != null) _attrAndStats(entity),
-          if (entity != null) _armorSelect(),
-          if (entity != null) _weaponSelect(),
-          if (entity != null && _weapon != null && _armor != null)
-            Button('Done', onClick: () => widget.onDone(entity)),
+          _classSelect,
+          if (_entity.klass != null) _attrAndStats,
+          if (_entity.klass != null) _armorSelect,
+          if (_entity.klass != null) _weaponSelect,
+          if (_entity.klass != null &&
+              _entity.weapon != null &&
+              _entity.armor != null)
+            Button('Done', onClick: () => widget.onDone(_entity)),
         ],
       ),
     );
   }
 
-  Widget _classSelect() {
+  Widget get _classSelect {
     return RadioGroup(
       values: EntityClass.values,
       onChange: (klass) {
         setState(() {
-          _class = klass;
-          _attributes ??= EntityAttributes.random();
+          _entity.klass = klass;
         });
       },
     );
   }
 
-  Widget _attrAndStats(Entity entity) {
+  Widget get _attrAndStats {
     return buildSpacedRow(
-      children: [_attrRoll(entity), _stats(entity)],
+      children: [_attrRoll, _stats],
       spacing: 0,
     );
   }
 
-  Widget _attrRoll(Entity entity) {
+  Widget get _attrRoll {
     return buildSpacedColumn(
       spacing: 20,
       children: [
@@ -90,31 +83,31 @@ class _CharacterScreenState extends State<CharacterScreen> {
           labelWidth: 72,
           valueWidth: 48,
           content: {
-            'Strength': BoldText('${entity.strength}'),
-            'Agility': BoldText('${entity.agility}'),
-            'Intellect': BoldText('${entity.intellect}'),
+            'Strength': BoldText('${_entity.strength}'),
+            'Agility': BoldText('${_entity.agility}'),
+            'Intellect': BoldText('${_entity.intellect}'),
           },
         ),
         Button('Reroll', onClick: () {
-          setState(() => _attributes?.roll());
+          setState(_entity.base.roll);
         }),
       ],
     );
   }
 
-  Widget _stats(Entity entity) {
-    final damage = entity.weaponDamage;
+  Widget get _stats {
+    final damage = _entity.weaponDamage;
     const bold = BoldText.style;
     return LabelValueTable(
       labelWidth: 86,
       valueWidth: 128,
       content: {
-        'Total Hp': BoldText('${entity.totalHp}'),
-        'Stress Cap': Text.rich(StressCapSpan(entity, style: bold)),
-        'Armor': BoldText('${entity.totalArmor}'),
-        'Initiative': Text.rich(IntValueSpan(entity.initiative, style: bold)),
-        'Dodge': Text.rich(PercentValueSpan(entity.dodge, style: bold)),
-        'Resist': BoldText('${entity.resist}'),
+        'Total Hp': BoldText('${_entity.totalHp}'),
+        'Stress Cap': Text.rich(StressCapSpan(_entity, style: bold)),
+        'Armor': BoldText('${_entity.totalArmor}'),
+        'Initiative': Text.rich(IntValueSpan(_entity.initiative, style: bold)),
+        'Dodge': Text.rich(PercentValueSpan(_entity.dodge, style: bold)),
+        'Resist': BoldText('${_entity.resist}'),
         'Damage': damage != null
             ? Text.rich(DiceValueWithRangeSpan(damage, style: bold))
             : const Empty(),
@@ -122,20 +115,24 @@ class _CharacterScreenState extends State<CharacterScreen> {
     );
   }
 
-  Widget _armorSelect() {
+  Widget get _armorSelect {
     return RadioGroup(
       values: Armor.values,
       onChange: (armor) {
-        setState(() => _armor = armor);
+        setState(() {
+          _entity.armor = armor;
+        });
       },
     );
   }
 
-  Widget _weaponSelect() {
+  Widget get _weaponSelect {
     return RadioGroup(
       values: Weapon.values,
       onChange: (weapon) {
-        setState(() => _weapon = weapon);
+        setState(() {
+          _entity.weapon = weapon;
+        });
       },
     );
   }

@@ -26,7 +26,6 @@ class Entity extends _Base
   Entity({
     required super.name,
     required super.race,
-    required super.klass,
     super.player = false,
   });
 
@@ -60,8 +59,8 @@ class Entity extends _Base
     return Entity(
       name: 'Enemy',
       race: EntityRace.orc,
-      klass: EntityClass.random(),
     )
+      ..klass = EntityClass.random()
       ..base.roll()
       ..levelUpTo(rollEnemyLevel())
       ..spendAllPoints()
@@ -85,14 +84,13 @@ class _Base {
   final String name;
   final bool player;
   final EntityRace race;
-  final EntityClass klass;
+  EntityClass? klass;
   Weapon? weapon;
   Armor? armor;
 
   _Base({
     required this.name,
     required this.race,
-    required this.klass,
     required this.player,
   });
 }
@@ -122,7 +120,7 @@ mixin _Bonuses on _Base {
 }
 
 mixin _Attributes on _Base, _Bonuses {
-  var base = EntityAttributes();
+  final base = EntityAttributes();
 
   int get strength => base.strength + race.strength;
   int get agility => base.agility;
@@ -169,7 +167,7 @@ mixin _Attributes on _Base, _Bonuses {
 mixin _Health on _Base, _Attributes, _Levels {
   int _damageTaken = 0;
 
-  int get totalHp => strength + level * (klass.hpBonus);
+  int get totalHp => strength + level * (klass?.hpBonus ?? 0);
   int get hp => totalHp - _damageTaken;
   bool get injured => _damageTaken > 0;
   bool get alive => hp > 0;
@@ -278,7 +276,7 @@ mixin _Armor on _Base {
 mixin _Spells on _Base, _Stress {
   bool canCast(Spell spell) => hasStress(spell.stress);
 
-  SpellBook? get spellbook => ifdef(klass.spells, SpellBook.new);
+  SpellBook? get spellbook => ifdef(klass?.spells, SpellBook.new);
 
   Set<Spell> get knownSpells => spellbook?.spells ?? {};
 }
