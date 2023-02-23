@@ -90,7 +90,8 @@ mixin _Gear on _Base {
 
   Weapon? get weapon => gear.mainHand;
   Armor? get armor => gear.body;
-  int get totalArmor => gear.armor;
+  int get baseArmor => 5;
+  int get totalArmor => baseArmor + gear.armor;
 
   void equip(Gear gear) {
     this.gear += gear;

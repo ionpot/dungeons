@@ -3,8 +3,8 @@ import 'package:dungeons/utility/multiplier.dart';
 import 'package:dungeons/utility/pick_random.dart';
 
 enum Armor {
-  leather(text: 'Leather', value: 15, dodge: Multiplier(0.5)),
-  scalemail(text: 'Scale Mail', value: 25, initiative: -5);
+  leather(text: 'Leather', value: 10, dodge: Multiplier(0.5)),
+  scalemail(text: 'Scale Mail', value: 20, initiative: -5);
 
   final int value;
   final int? initiative;
