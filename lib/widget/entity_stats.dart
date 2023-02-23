@@ -21,9 +21,17 @@ class EntityStats extends StatelessWidget {
       _hpStressXp,
       _initiative,
       _dodgeResist,
-      Text('Armor: ${e.armor} (${e.totalArmor})'),
+      _armor,
       _weapon,
     ]);
+  }
+
+  Widget get _armor {
+    return Text.rich(TextSpan(children: [
+      TextSpan(text: 'Armor: ${entity.armor} ('),
+      TotalArmorSpan(entity),
+      const TextSpan(text: ')'),
+    ]));
   }
 
   Widget get _hpStressXp {

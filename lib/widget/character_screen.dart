@@ -14,6 +14,7 @@ import 'package:dungeons/widget/percent_value.dart';
 import 'package:dungeons/widget/radio_group.dart';
 import 'package:dungeons/widget/spaced.dart';
 import 'package:dungeons/widget/stress.dart';
+import 'package:dungeons/widget/value_span.dart';
 import 'package:flutter/widgets.dart';
 
 class CharacterScreen extends StatefulWidget {
@@ -105,7 +106,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
       content: {
         'Total Hp': BoldText('${_entity.totalHp}'),
         'Stress Cap': Text.rich(StressCapSpan(_entity, style: bold)),
-        'Armor': BoldText('${_entity.totalArmor}'),
+        'Armor': Text.rich(TotalArmorSpan(_entity, style: bold)),
         'Initiative': Text.rich(IntValueSpan(_entity.initiative, style: bold)),
         'Dodge': Text.rich(PercentValueSpan(_entity.dodge, style: bold)),
         'Resist': BoldText('${_entity.resist}'),
