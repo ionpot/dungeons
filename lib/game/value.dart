@@ -66,13 +66,13 @@ class DiceValue {
   final Dice base;
   final DiceBonuses diceBonuses;
   final IntBonuses intBonuses;
-  final bool max;
+  final Bonus? max;
 
   DiceValue({
     required this.base,
     DiceBonuses? diceBonuses,
     this.intBonuses = const IntBonuses(),
-    this.max = false,
+    this.max,
   }) : diceBonuses = diceBonuses ?? DiceBonuses();
 
   void addDice(Bonus bonus, Dice dice) {
@@ -99,8 +99,8 @@ class DiceValue {
   DiceRollValue roll() {
     return DiceRollValue(
       input: this,
-      base: max ? base.rollMax() : base.roll(),
-      diceBonuses: max ? diceBonuses.rollMax() : diceBonuses.roll(),
+      base: max != null ? base.rollMax() : base.roll(),
+      diceBonuses: max != null ? diceBonuses.rollMax() : diceBonuses.roll(),
     );
   }
 
@@ -124,7 +124,7 @@ class DiceRollValue {
   }
 
   IntBonuses get intBonuses => input.intBonuses;
-  bool get max => input.max;
+  Bonus? get max => input.max;
 
   int get bonusTotal => intBonuses.total + diceBonuses.totals.total;
   int get total => base.total + bonusTotal;

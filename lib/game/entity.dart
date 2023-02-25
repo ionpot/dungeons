@@ -167,7 +167,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
     return DiceValue(
       base: weapon!.dice.addBonus(strength ~/ 2),
       intBonuses: IntBonuses(_allBonuses.toMap((e) => e.value.damage)),
-      max: _allBonuses.findBonus((e) => e.value.maxWeaponDamage) != null,
+      max: _allBonuses.findBonus((e) => e.value.maxWeaponDamage),
     );
   }
 
