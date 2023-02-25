@@ -56,7 +56,7 @@ class IntBonusWidget extends StatelessWidget {
           : IntBonusPlainText(value.base, style: style);
     }
     return TooltipRegion(
-      content: IntBonusTable(value),
+      tooltip: IntBonusTable(value),
       child: IntBonusText(value.total, style: style),
     );
   }

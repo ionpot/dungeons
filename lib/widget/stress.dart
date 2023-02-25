@@ -33,7 +33,7 @@ class StressCapWidget extends StatelessWidget {
       return IntValueWidget(entity.stressCapValue, style: style);
     }
     return TooltipRegion(
-      content: ValueTable(
+      tooltip: ValueTable(
         IntValueTable.rows(entity.stressCapValue)
           ..addAll(reservedRows(entity.reservedStress)),
       ),

@@ -57,7 +57,7 @@ class PercentValueWidget extends StatelessWidget {
       return text;
     }
     return TooltipRegion(
-      content: PercentValueTable(value),
+      tooltip: PercentValueTable(value),
       child: text,
     );
   }

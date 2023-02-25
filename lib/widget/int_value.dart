@@ -45,7 +45,7 @@ class IntValueWidget extends StatelessWidget {
       return text;
     }
     return TooltipRegion(
-      content: IntValueTable(value),
+      tooltip: IntValueTable(value),
       child: text,
     );
   }

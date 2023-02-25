@@ -32,7 +32,7 @@ class RangeWidget extends StatelessWidget {
       return text;
     }
     return TooltipRegion(
-      content: ValueTable([
+      tooltip: ValueTable([
         ValueRow(const Text('Range'), Text('$range')),
         ValueRow(Text('$max'), Text('${range.max}', style: baseStyle)),
       ]),

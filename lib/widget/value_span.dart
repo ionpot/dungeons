@@ -62,7 +62,7 @@ class TotalArmorWidget extends StatelessWidget {
       return text;
     }
     return TooltipRegion(
-      content: ValueTable([
+      tooltip: ValueTable([
         ValueRow(const Text('Base'), Text('${entity.baseArmor}')),
         ValueRow(Text('$armor'), Text('+${armor.value}')),
       ]),

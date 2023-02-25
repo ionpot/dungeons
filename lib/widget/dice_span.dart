@@ -16,7 +16,7 @@ class DiceBonusSpan extends WidgetSpan {
   DiceBonusSpan({required Bonus bonus, required Dice dice, TextStyle? style})
       : super(
           child: TooltipRegion(
-            content: Text('$bonus'),
+            tooltip: Text('$bonus'),
             child: Text(
               '+$dice',
               style: const TextStyle(color: green).merge(style),
