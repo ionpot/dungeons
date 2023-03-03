@@ -1,8 +1,8 @@
 import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
+import 'package:dungeons/utility/if.dart';
 
 class WeaponAttack {
   final Entity attacker;
@@ -12,7 +12,6 @@ class WeaponAttack {
 
   PercentValue get hitChance => attacker.hitChance(target);
   PercentValue get dodgeChance => target.dodge;
-  bool get sneakAttack => attacker.canSneakAttack(target);
   Source get source => Source.physical;
 
   DiceValue get damage {
@@ -20,10 +19,9 @@ class WeaponAttack {
     if (value == null) {
       throw Exception('$attacker.weaponDamage is null');
     }
-    if (sneakAttack) {
-      const bonus = Bonus(feat: Feat.sneakAttack);
-      value.addDice(bonus, Feat.sneakAttack.dice!);
-    }
+    ifdef(attacker.sneakAttack(target), (feat) {
+      value.addDice(Bonus(feat: feat), feat.value.dice!);
+    });
     return value;
   }
 

@@ -5,15 +5,82 @@ import 'package:dungeons/utility/percent.dart';
 enum Feat {
   weaponFocus(
     text: 'Weapon Focus',
-    effect: Effect(hitChance: Percent(2), damage: 1),
-    reserveStress: 1,
+    trained: FeatValue(
+      effect: Effect(hitChance: Percent(2), damage: 1),
+      reserveStress: 1,
+    ),
+    expert: FeatValue(
+      effect: Effect(hitChance: Percent(4), damage: 2),
+      reserveStress: 2,
+    ),
   ),
-  sneakAttack(text: 'Sneak Attack', dice: Dice(1, 6));
+  sneakAttack(
+    text: 'Sneak Attack',
+    trained: FeatValue(dice: Dice(1, 6)),
+    expert: FeatValue(dice: Dice(2, 6)),
+  );
 
   final String text;
+  final FeatValue trained;
+  final FeatValue expert;
+
+  const Feat({
+    required this.text,
+    required this.trained,
+    required this.expert,
+  });
+
+  FeatValue valueFor(FeatTier tier) {
+    switch (tier) {
+      case FeatTier.trained:
+        return trained;
+      case FeatTier.expert:
+        return expert;
+    }
+  }
+
+  @override
+  String toString() => text;
+}
+
+enum FeatTier {
+  trained('Trained'),
+  expert('Expert');
+
+  final String text;
+
+  const FeatTier(this.text);
+
+  @override
+  String toString() => text;
+
+  static FeatTier forLevel(int level) => level < 5 ? trained : expert;
+}
+
+class FeatValue {
   final Effect? effect;
   final int? reserveStress;
   final Dice? dice;
 
-  const Feat({required this.text, this.effect, this.reserveStress, this.dice});
+  const FeatValue({this.effect, this.reserveStress, this.dice});
+}
+
+class FeatSlot {
+  final Feat feat;
+  final FeatTier tier;
+
+  const FeatSlot(this.feat, this.tier);
+
+  FeatValue get value => feat.valueFor(tier);
+
+  @override
+  bool operator ==(dynamic other) {
+    return other is FeatSlot && feat == other.feat && tier == other.tier;
+  }
+
+  @override
+  int get hashCode => Object.hash(feat, tier);
+
+  @override
+  String toString() => tier == FeatTier.trained ? '$feat' : '$tier $feat';
 }

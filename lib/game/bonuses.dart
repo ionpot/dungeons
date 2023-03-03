@@ -67,8 +67,7 @@ class Bonuses extends Iterable<BonusEntry<Effect>> {
   void addArmor(Armor armor) => add(Bonus(armor: armor));
   void removeArmor(Armor armor) => remove(Bonus(armor: armor));
 
-  void addFeat(Feat feat) => add(Bonus(feat: feat));
-  bool hasFeat(Feat feat) => has(Bonus(feat: feat));
+  void addFeat(FeatSlot feat) => add(Bonus(feat: feat));
 
   void addSpell(Spell spell) => add(Bonus(spell: spell));
   bool hasSpell(Spell spell) => has(Bonus(spell: spell));
@@ -95,6 +94,10 @@ class Bonuses extends Iterable<BonusEntry<Effect>> {
       }
     }
     return output;
+  }
+
+  Bonuses operator +(Bonuses other) {
+    return Bonuses(Map.of(contents))..addAll(other);
   }
 
   @override

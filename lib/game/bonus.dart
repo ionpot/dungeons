@@ -9,7 +9,7 @@ class Bonus {
   final EntityAttributeId? attribute;
   final Weapon? weapon;
   final Armor? armor;
-  final Feat? feat;
+  final FeatSlot? feat;
   final Spell? spell;
 
   const Bonus({this.attribute, this.weapon, this.armor, this.feat, this.spell});
@@ -17,10 +17,13 @@ class Bonus {
   factory Bonus.agility() => const Bonus(attribute: EntityAttributeId.agility);
 
   Effect? get effect {
-    return weapon?.effect ?? armor?.effect ?? feat?.effect ?? spell?.effect;
+    return weapon?.effect ??
+        armor?.effect ??
+        feat?.value.effect ??
+        spell?.effect;
   }
 
-  int? get reservedStress => feat?.reserveStress ?? spell?.reserveStress;
+  int? get reservedStress => feat?.value.reserveStress ?? spell?.reserveStress;
 
   bool get stacks => spell?.stacks == true;
 
@@ -42,7 +45,7 @@ class Bonus {
     return attribute?.text ??
         weapon?.text ??
         armor?.text ??
-        feat?.text ??
+        feat?.toString() ??
         spell?.text ??
         '';
   }

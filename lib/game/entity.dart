@@ -3,6 +3,7 @@ import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/bonuses.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
+import 'package:dungeons/game/entity_feats.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/gear.dart';
@@ -15,7 +16,15 @@ import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
 
 class Entity extends _Base
-    with _Gear, _Bonuses, _Attributes, _Levels, _Health, _Stress, _Spells {
+    with
+        _Gear,
+        _Feats,
+        _Bonuses,
+        _Attributes,
+        _Levels,
+        _Health,
+        _Stress,
+        _Spells {
   Entity({
     required super.name,
     required super.race,
@@ -44,8 +53,8 @@ class Entity extends _Base
     return player;
   }
 
-  bool canSneakAttack(Entity target) {
-    return klass == EntityClass.trickster && initiative > target.initiative;
+  FeatSlot? sneakAttack(Entity target) {
+    return initiative > target.initiative ? feats.find(Feat.sneakAttack) : null;
   }
 
   Entity rollEnemy() {
@@ -77,6 +86,7 @@ class _Base {
   final bool player;
   final EntityRace race;
   EntityClass? klass;
+  int level = 1;
 
   _Base({
     required this.name,
@@ -98,15 +108,21 @@ mixin _Gear on _Base {
   }
 }
 
-mixin _Bonuses on _Base, _Gear {
+mixin _Feats on _Base {
+  EntityFeats get feats {
+    final tier = FeatTier.forLevel(level);
+    return EntityFeats({
+      if (klass == EntityClass.warrior) Feat.weaponFocus: tier,
+      if (klass == EntityClass.trickster) Feat.sneakAttack: tier,
+    });
+  }
+}
+
+mixin _Bonuses on _Base, _Gear, _Feats {
   final _extraBonuses = Bonuses();
 
   Bonuses get _allBonuses {
-    final bonuses = gear.bonuses;
-    if (klass == EntityClass.warrior) {
-      bonuses.addFeat(Feat.weaponFocus);
-    }
-    return bonuses..addAll(_extraBonuses);
+    return gear.bonuses + feats.bonuses + _extraBonuses;
   }
 
   void clearSpellBonuses() => _extraBonuses.clearSpells();
@@ -230,9 +246,7 @@ mixin _Levels on _Base, _Attributes {
   int xp = 0;
 
   int _extraPoints = 0;
-  int _level = 1;
 
-  int get level => _level;
   int get extraPoints => _extraPoints;
 
   bool canLevelUp() => canLevelUpWith(0);
@@ -240,7 +254,7 @@ mixin _Levels on _Base, _Attributes {
 
   void levelUp() {
     xp -= _xpForLevelUp;
-    ++_level;
+    ++level;
     _extraPoints += 2;
   }
 
