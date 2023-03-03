@@ -1,4 +1,3 @@
-import 'package:dungeons/game/bonuses.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
@@ -27,10 +26,8 @@ Color? doubleColor(double x) => intColor(x.sign.round());
 
 Color? percentColor(Percent percent) => intColor(percent.value);
 Color? intValueColor(IntValue value) => intColor(value.bonus);
-Color? intBonusesColor(IntBonuses value) => intColor(value.total);
 Color? percentValueColor(PercentValue value) =>
     percentColor(value.multiplierBonus) ?? percentColor(value.bonus);
-Color? diceBonusesColor(DiceBonuses value) => value.isEmpty ? null : green;
 
 Color? hpColor(Entity e) => e.alive ? null : red;
 
