@@ -14,6 +14,7 @@ import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
 import 'package:dungeons/utility/percent.dart';
+import 'package:dungeons/utility/pick_random.dart';
 
 class Entity extends _Base
     with
@@ -301,4 +302,8 @@ mixin _Spells on _Base, _Stress {
   SpellBook get spellbook => SpellBook(klass?.spells ?? {});
 
   Set<Spell> get knownSpells => spellbook.spellsForLevel(level);
+
+  Spell? maybeRandomSpell() {
+    return pickRandomMaybe(knownSpells.toList(growable: false));
+  }
 }

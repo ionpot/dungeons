@@ -71,7 +71,7 @@ class Combat {
   CombatAction get _mageAction {
     return CombatAction(
       target: _other,
-      castSpell: current.spellbook.maybeRandomSpell(),
+      castSpell: current.maybeRandomSpell(),
     );
   }
 
