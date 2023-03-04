@@ -1,4 +1,5 @@
 import 'package:dungeons/game/armor.dart';
+import 'package:dungeons/game/critical_hit.dart';
 import 'package:dungeons/game/effect.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/feat.dart';
@@ -7,12 +8,20 @@ import 'package:dungeons/game/weapon.dart';
 
 class Bonus {
   final EntityAttributeId? attribute;
+  final CriticalHit? criticalHit;
   final Weapon? weapon;
   final Armor? armor;
   final FeatSlot? feat;
   final Spell? spell;
 
-  const Bonus({this.attribute, this.weapon, this.armor, this.feat, this.spell});
+  const Bonus({
+    this.attribute,
+    this.criticalHit,
+    this.weapon,
+    this.armor,
+    this.feat,
+    this.spell,
+  });
 
   factory Bonus.agility() => const Bonus(attribute: EntityAttributeId.agility);
 
@@ -31,11 +40,21 @@ class Bonus {
   bool operator ==(dynamic other) => hashCode == other.hashCode;
 
   @override
-  int get hashCode => Object.hash(attribute, weapon, armor, feat, spell);
+  int get hashCode {
+    return Object.hash(
+      attribute,
+      criticalHit,
+      weapon,
+      armor,
+      feat,
+      spell,
+    );
+  }
 
   @override
   String toString() {
     return attribute?.text ??
+        criticalHit?.toString() ??
         weapon?.text ??
         armor?.text ??
         feat?.toString() ??

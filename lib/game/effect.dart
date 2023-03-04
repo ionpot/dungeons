@@ -7,6 +7,7 @@ class Effect {
   final int? stressCap;
   final Multiplier? dodgeMultiplier;
   final Percent? hitChance;
+  final Percent? criticalHitChance;
   final Percent? resistChance;
   final bool maxWeaponDamage;
 
@@ -16,6 +17,7 @@ class Effect {
     this.stressCap,
     this.dodgeMultiplier,
     this.hitChance,
+    this.criticalHitChance,
     this.resistChance,
     this.maxWeaponDamage = false,
   });
@@ -27,6 +29,8 @@ class Effect {
       stressCap: _addInt(stressCap, other.stressCap),
       dodgeMultiplier: _addMultiplier(dodgeMultiplier, other.dodgeMultiplier),
       hitChance: _addPercent(hitChance, other.hitChance),
+      criticalHitChance:
+          _addPercent(criticalHitChance, other.criticalHitChance),
       resistChance: _addPercent(resistChance, other.resistChance),
       maxWeaponDamage: maxWeaponDamage || other.maxWeaponDamage,
     );

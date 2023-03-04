@@ -39,6 +39,10 @@ class PercentRoll {
 
   const PercentRoll({required this.chance, required this.roll});
 
+  PercentRoll forChance(Percent percent) {
+    return PercentRoll(chance: percent, roll: roll);
+  }
+
   bool get success => chance.always || roll <= chance.value;
   bool get fail => chance.never || roll > chance.value;
 

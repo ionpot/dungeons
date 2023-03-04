@@ -10,7 +10,11 @@ enum Feat {
       reserveStress: 1,
     ),
     expert: FeatValue(
-      effect: Effect(hitChance: Percent(4), damage: 2),
+      effect: Effect(
+        hitChance: Percent(4),
+        criticalHitChance: Percent(5),
+        damage: 2,
+      ),
       reserveStress: 2,
     ),
   ),

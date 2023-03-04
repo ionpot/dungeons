@@ -1,6 +1,7 @@
 import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/bonuses.dart';
+import 'package:dungeons/game/critical_hit.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_feats.dart';
@@ -38,6 +39,15 @@ class Entity extends _Base
     );
   }
 
+  PercentValue get criticalHitChance {
+    return PercentValue(
+      base: const Percent(0),
+      bonuses: PercentBonuses(
+        _allBonuses.toMap((e) => e.value.criticalHitChance),
+      ),
+    );
+  }
+
   BonusMap<Percent> get hitChanceBonusMap {
     return {
       Bonus.agility(): Percent(agility ~/ 4),
@@ -51,6 +61,10 @@ class Entity extends _Base
     final a = totalArmor.compareTo(other.totalArmor);
     if (a != 0) return a < 0;
     return player;
+  }
+
+  CriticalHit get criticalHit {
+    return CriticalHit(chance: criticalHitChance, weapon: weapon!);
   }
 
   FeatSlot? sneakAttack(Entity target) {

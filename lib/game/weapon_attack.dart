@@ -1,4 +1,5 @@
 import 'package:dungeons/game/bonus.dart';
+import 'package:dungeons/game/critical_hit.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/source.dart';
@@ -21,6 +22,7 @@ class WeaponAttack {
       dodgeRoll: dodgeChance.roll(),
       damageRoll: weaponDamage.roll(),
       targetCanDodge: target.canDodge,
+      criticalHit: attacker.criticalHit,
       sneakAttack: attacker.sneakAttack(target),
     );
   }
@@ -36,6 +38,7 @@ class WeaponAttackResult {
   final PercentValueRoll attackRoll;
   final PercentValueRoll dodgeRoll;
   final DiceRollValue damageRoll;
+  final CriticalHit criticalHit;
   final bool targetCanDodge;
 
   WeaponAttackResult({
@@ -43,8 +46,15 @@ class WeaponAttackResult {
     required this.dodgeRoll,
     required this.damageRoll,
     required this.targetCanDodge,
+    required this.criticalHit,
     FeatSlot? sneakAttack,
   }) {
+    if (isCriticalHit) {
+      damageRoll.diceBonuses.add(
+        Bonus(criticalHit: criticalHit),
+        criticalHit.dice.roll(),
+      );
+    }
     if (sneakAttack != null) {
       damageRoll.diceBonuses.add(
         Bonus(feat: sneakAttack),
@@ -54,6 +64,7 @@ class WeaponAttackResult {
   }
 
   bool get deflected => attackRoll.fail;
+  bool get isCriticalHit => attackRoll.meets(criticalHit.chance.total);
   bool get triedDodging => targetCanDodge && attackRoll.success;
   bool get cantDodge => !targetCanDodge && attackRoll.success;
   bool get dodged => triedDodging && dodgeRoll.success;

@@ -60,6 +60,8 @@ class PercentValueRoll {
 
   bool get success => result.success;
   bool get fail => result.fail;
+
+  bool meets(Percent chance) => result.forChance(chance).success;
 }
 
 class DiceValue {
