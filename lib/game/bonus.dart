@@ -28,14 +28,7 @@ class Bonus {
   bool get stacks => spell?.stacks == true;
 
   @override
-  bool operator ==(dynamic other) {
-    return other is Bonus &&
-        attribute == other.attribute &&
-        weapon == other.weapon &&
-        armor == other.armor &&
-        feat == other.feat &&
-        spell == other.spell;
-  }
+  bool operator ==(dynamic other) => hashCode == other.hashCode;
 
   @override
   int get hashCode => Object.hash(attribute, weapon, armor, feat, spell);
