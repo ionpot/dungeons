@@ -18,7 +18,7 @@ enum Spell {
   heal(
     text: 'Heal',
     source: Source.radiant,
-    stress: 1,
+    stress: 2,
     heals: Dice(1, 6, bonus: 4),
     selfCast: true,
   ),
@@ -32,14 +32,14 @@ enum Spell {
   magicMissile(
     text: 'Magic Missile',
     source: Source.astral,
-    stress: 1,
+    stress: 2,
     autoHit: true,
     damage: Dice(3, 4),
   ),
   rayOfFrost(
     text: 'Ray of Frost',
     source: Source.cold,
-    stress: 1,
+    stress: 2,
     damage: Dice(2, 8),
     effect: Effect(initiative: -2),
     effectText: 'is slowed',
