@@ -22,6 +22,13 @@ enum Spell {
     heals: Dice(1, 6, bonus: 4),
     selfCast: true,
   ),
+  lightningBolt(
+    text: 'Lightning Bolt',
+    source: Source.lightning,
+    stress: 3,
+    damage: Dice(3, 10),
+    requiresLevel: 5,
+  ),
   magicMissile(
     text: 'Magic Missile',
     source: Source.astral,
@@ -43,6 +50,7 @@ enum Spell {
   final Source source;
   final int stress;
   final int reserveStress;
+  final int requiresLevel;
   final bool autoHit;
   final bool selfCast;
   final bool stacks;
@@ -56,6 +64,7 @@ enum Spell {
     required this.source,
     this.stress = 0,
     this.reserveStress = 0,
+    this.requiresLevel = 1,
     this.autoHit = false,
     this.selfCast = false,
     this.stacks = false,

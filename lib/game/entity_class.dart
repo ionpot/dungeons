@@ -8,7 +8,7 @@ enum EntityClass {
   mage(
     text: 'Mage',
     hpBonus: 2,
-    spells: {Spell.magicMissile, Spell.rayOfFrost},
+    spells: {Spell.magicMissile, Spell.rayOfFrost, Spell.lightningBolt},
   );
 
   final int hpBonus;

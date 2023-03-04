@@ -9,7 +9,7 @@ T pickRandom<T>(List<T> input) {
 
 T? pickRandomMaybe<T>(List<T> input) {
   if (input.isEmpty) {
-    throw ArgumentError.value(input, 'input');
+    return null;
   }
   final i = pickRandomIndex(input.length + 1);
   return i == input.length ? null : input[i];

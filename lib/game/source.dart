@@ -1,1 +1,1 @@
-enum Source { physical, astral, cold, radiant }
+enum Source { physical, astral, cold, lightning, radiant }

@@ -9,4 +9,11 @@ class SpellBook {
   List<Spell> get spellList => spells.toList(growable: false);
 
   Spell? maybeRandomSpell() => pickRandomMaybe(spellList);
+
+  Set<Spell> spellsForLevel(int level) {
+    return {
+      for (final spell in spells)
+        if (spell.requiresLevel <= level) spell
+    };
+  }
 }

@@ -13,7 +13,6 @@ import 'package:dungeons/game/spellbook.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/deviate.dart';
-import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/utility/percent.dart';
 
 class Entity extends _Base
@@ -299,7 +298,7 @@ mixin _Levels on _Base, _Attributes {
 mixin _Spells on _Base, _Stress {
   bool canCast(Spell spell) => hasStress(spell.stress);
 
-  SpellBook? get spellbook => ifdef(klass?.spells, SpellBook.new);
+  SpellBook get spellbook => SpellBook(klass?.spells ?? {});
 
-  Set<Spell> get knownSpells => spellbook?.spells ?? {};
+  Set<Spell> get knownSpells => spellbook.spellsForLevel(level);
 }

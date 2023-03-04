@@ -39,6 +39,8 @@ Color? sourceColor(Source source) {
       return const Color(0xFFFF00FF);
     case Source.cold:
       return const Color(0xFF00F2FF);
+    case Source.lightning:
+      return const Color(0xFF8484FF);
     case Source.radiant:
       return yellow;
   }
