@@ -1,8 +1,8 @@
 import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
-import 'package:dungeons/utility/if.dart';
 
 class WeaponAttack {
   final Entity attacker;
@@ -12,25 +12,16 @@ class WeaponAttack {
 
   PercentValue get hitChance => attacker.hitChance(target);
   PercentValue get dodgeChance => target.dodge;
+  DiceValue get weaponDamage => attacker.weaponDamage!;
   Source get source => Source.physical;
-
-  DiceValue get damage {
-    final value = attacker.weaponDamage;
-    if (value == null) {
-      throw Exception('$attacker.weaponDamage is null');
-    }
-    ifdef(attacker.sneakAttack(target), (feat) {
-      value.addDice(Bonus(feat: feat), feat.value.dice!);
-    });
-    return value;
-  }
 
   WeaponAttackResult roll() {
     return WeaponAttackResult(
       attackRoll: hitChance.roll(),
       dodgeRoll: dodgeChance.roll(),
-      damageRoll: damage.roll(),
+      damageRoll: weaponDamage.roll(),
       targetCanDodge: target.canDodge,
+      sneakAttack: attacker.sneakAttack(target),
     );
   }
 
@@ -47,12 +38,20 @@ class WeaponAttackResult {
   final DiceRollValue damageRoll;
   final bool targetCanDodge;
 
-  const WeaponAttackResult({
+  WeaponAttackResult({
     required this.attackRoll,
     required this.dodgeRoll,
     required this.damageRoll,
     required this.targetCanDodge,
-  });
+    FeatSlot? sneakAttack,
+  }) {
+    if (sneakAttack != null) {
+      damageRoll.diceBonuses.add(
+        Bonus(feat: sneakAttack),
+        sneakAttack.value.dice!.roll(),
+      );
+    }
+  }
 
   bool get deflected => attackRoll.fail;
   bool get triedDodging => targetCanDodge && attackRoll.success;

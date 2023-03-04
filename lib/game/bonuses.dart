@@ -207,6 +207,10 @@ class DiceRollBonuses extends Iterable<BonusEntry<DiceRoll>> {
 
   const DiceRollBonuses([this.contents = const {}]);
 
+  void add(Bonus bonus, DiceRoll dice) {
+    contents[bonus] = dice;
+  }
+
   IntBonuses get totals {
     return IntBonuses(contents.map((key, value) {
       return MapEntry(key, value.total);
