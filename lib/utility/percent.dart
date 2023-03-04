@@ -50,6 +50,6 @@ class PercentRoll {
   String toString() {
     if (chance.always) return 'Auto-success';
     if (chance.never) return 'Auto-fail';
-    return '$roll: ${success ? 'Success' : 'Fail'}';
+    return '$roll -> ${success ? 'Success' : 'Fail'}';
   }
 }
