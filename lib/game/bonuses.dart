@@ -35,7 +35,7 @@ class BonusEntryIterator<T extends Object> implements Iterator<BonusEntry<T>> {
   bool moveNext() => iterator.moveNext();
 }
 
-typedef GetValue<T extends Object> = T? Function(BonusEntry<Effect>);
+typedef GetValue<T extends Object> = T? Function(Effect);
 
 class Bonuses extends Iterable<BonusEntry<Effect>> {
   final EffectMap contents;
@@ -87,7 +87,7 @@ class Bonuses extends Iterable<BonusEntry<Effect>> {
 
   Bonus? findBonus(GetValue<bool> toBool) {
     for (final entry in this) {
-      if (toBool(entry) == true) {
+      if (toBool(entry.value) == true) {
         return entry.bonus;
       }
     }
@@ -97,7 +97,7 @@ class Bonuses extends Iterable<BonusEntry<Effect>> {
   BonusMap<T> toMap<T extends Object>(GetValue<T> toValue) {
     final BonusMap<T> output = {};
     for (final entry in this) {
-      final value = toValue(entry);
+      final value = toValue(entry.value);
       if (value != null) {
         output[entry.bonus] = value;
       }

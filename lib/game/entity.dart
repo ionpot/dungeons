@@ -43,7 +43,7 @@ class Entity extends _Base
     return PercentValue(
       base: const Percent(0),
       bonuses: PercentBonuses(
-        _allBonuses.toMap((e) => e.value.criticalHitChance),
+        _allBonuses.toMap((e) => e.criticalHitChance),
       ),
     );
   }
@@ -51,7 +51,7 @@ class Entity extends _Base
   BonusMap<Percent> get hitChanceBonusMap {
     return {
       Bonus.agility(): Percent(agility ~/ 4),
-      ..._allBonuses.toMap((e) => e.value.hitChance),
+      ..._allBonuses.toMap((e) => e.hitChance),
     };
   }
 
@@ -169,7 +169,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
     return IntValue(
       base: (agility + intellect) ~/ 2,
       bonuses: IntBonuses(
-        _allBonuses.toMap((e) => e.value.initiative),
+        _allBonuses.toMap((e) => e.initiative),
       ),
     );
   }
@@ -178,7 +178,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
     return PercentValue(
       base: Percent(agility),
       multipliers: MultiplierBonuses(
-        _allBonuses.toMap((e) => e.value.dodgeMultiplier),
+        _allBonuses.toMap((e) => e.dodgeMultiplier),
       ),
     );
   }
@@ -187,7 +187,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
     return PercentValue(
       base: Percent(intellect),
       bonuses: PercentBonuses(
-        _allBonuses.toMap((e) => e.value.resistChance),
+        _allBonuses.toMap((e) => e.resistChance),
       ),
     );
   }
@@ -196,8 +196,8 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
     if (weapon == null) return null;
     return DiceValue(
       base: weapon!.dice.addBonus(strength ~/ 2),
-      intBonuses: IntBonuses(_allBonuses.toMap((e) => e.value.damage)),
-      max: _allBonuses.findBonus((e) => e.value.maxWeaponDamage),
+      intBonuses: IntBonuses(_allBonuses.toMap((e) => e.damage)),
+      max: _allBonuses.findBonus((e) => e.maxWeaponDamage),
     );
   }
 
@@ -239,7 +239,7 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
   IntValue get stressCapValue {
     return IntValue(
       base: intellect + level,
-      bonuses: IntBonuses(_allBonuses.toMap((e) => e.value.stressCap)),
+      bonuses: IntBonuses(_allBonuses.toMap((e) => e.stressCap)),
     );
   }
 
