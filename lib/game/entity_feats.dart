@@ -14,6 +14,14 @@ class EntityFeats extends Iterable<FeatSlot> {
     return Bonuses.of({for (final slot in this) Bonus(feat: slot)});
   }
 
+  IntBonuses get reserveStress {
+    return IntBonuses({
+      for (final slot in this)
+        if (slot.value.reserveStress != null)
+          Bonus(feat: slot): slot.value.reserveStress!,
+    });
+  }
+
   bool has(Feat feat) => contents.containsKey(feat);
 
   FeatSlot? find(Feat feat) {

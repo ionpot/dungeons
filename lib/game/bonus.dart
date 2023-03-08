@@ -32,8 +32,6 @@ class Bonus {
         spell?.effect;
   }
 
-  int? get reservedStress => feat?.value.reserveStress ?? spell?.reserveStress;
-
   bool get stacks => spell?.stacks == true;
 
   @override

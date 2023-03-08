@@ -1,3 +1,4 @@
+import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell.dart';
@@ -33,6 +34,9 @@ class SpellCast {
   void apply(SpellCastResult result) {
     if (caster.player) {
       caster.addStress(spell.stress);
+      if (spell.reserveStress != 0) {
+        caster.reserveStressFor(Bonus(spell: spell), spell.reserveStress);
+      }
     }
     ifdef(result.healDone, target.heal);
     ifdef(result.damageDone, target.takeDamage);

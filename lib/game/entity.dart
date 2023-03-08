@@ -227,12 +227,12 @@ mixin _Health on _Base, _Attributes, _Levels {
 }
 
 mixin _Stress on _Bonuses, _Attributes, _Levels {
+  final BonusMap<int> _reserved = {};
   int _stress = 0;
 
   int get stress => _stress;
 
-  IntBonuses get reservedStress =>
-      IntBonuses(_allBonuses.toMap((e) => e.bonus.reservedStress));
+  IntBonuses get reservedStress => feats.reserveStress + IntBonuses(_reserved);
 
   int get stressCap => stressCapValue.total - reservedStress.total;
 
@@ -251,6 +251,11 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
 
   void clearStress() {
     _stress = 0;
+    _reserved.clear();
+  }
+
+  void reserveStressFor(Bonus bonus, int amount) {
+    _reserved[bonus] = amount;
   }
 }
 
