@@ -42,6 +42,12 @@ class Bonuses extends Iterable<BonusEntry<Effect>> {
 
   Bonuses([EffectMap? m]) : contents = m ?? {};
 
+  factory Bonuses.of(Iterable<Bonus> input) {
+    return Bonuses({
+      for (final bonus in input) bonus: bonus.effect ?? const Effect(),
+    });
+  }
+
   bool has(Bonus bonus) => contents.containsKey(bonus);
 
   void add(Bonus bonus) {

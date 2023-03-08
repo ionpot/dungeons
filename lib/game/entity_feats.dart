@@ -5,22 +5,37 @@ import 'package:dungeons/utility/if.dart';
 
 typedef FeatMap = Map<Feat, FeatTier>;
 
-class EntityFeats {
-  final FeatMap map;
+class EntityFeats extends Iterable<FeatSlot> {
+  final FeatMap contents;
 
-  const EntityFeats(this.map);
+  const EntityFeats(this.contents);
 
   Bonuses get bonuses {
-    final bonuses = Bonuses();
-    for (final entry in map.entries) {
-      bonuses.add(Bonus(feat: FeatSlot(entry.key, entry.value)));
-    }
-    return bonuses;
+    return Bonuses.of({for (final slot in this) Bonus(feat: slot)});
   }
 
-  bool has(Feat feat) => map.containsKey(feat);
+  bool has(Feat feat) => contents.containsKey(feat);
 
   FeatSlot? find(Feat feat) {
-    return ifdef(map[feat], (tier) => FeatSlot(feat, tier));
+    return ifdef(contents[feat], (tier) => FeatSlot(feat, tier));
   }
+
+  @override
+  Iterator<FeatSlot> get iterator =>
+      EntityFeatsIterator(contents.entries.iterator);
+}
+
+class EntityFeatsIterator implements Iterator<FeatSlot> {
+  final Iterator<MapEntry<Feat, FeatTier>> iterator;
+
+  EntityFeatsIterator(this.iterator);
+
+  @override
+  FeatSlot get current {
+    final entry = iterator.current;
+    return FeatSlot(entry.key, entry.value);
+  }
+
+  @override
+  bool moveNext() => iterator.moveNext();
 }
