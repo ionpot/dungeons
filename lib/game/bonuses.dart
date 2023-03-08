@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/effect.dart';
@@ -116,9 +118,10 @@ class IntBonuses extends Iterable<BonusEntry<int>> {
   IntBonuses operator +(IntBonuses other) {
     final map = Map.of(contents);
     for (final entry in other) {
+      final stacks = entry.bonus.stacks;
       map.update(
         entry.bonus,
-        (value) => value + entry.value,
+        (value) => stacks ? value + entry.value : max(value, entry.value),
         ifAbsent: () => entry.value,
       );
     }
