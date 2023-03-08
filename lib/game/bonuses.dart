@@ -43,20 +43,21 @@ class Bonuses extends Iterable<BonusEntry<Effect>> {
   bool has(Bonus bonus) => contents.containsKey(bonus);
 
   void add(Bonus bonus) {
-    final effect = bonus.effect ?? const Effect();
-    if (bonus.stacks) {
-      contents.update(
-        bonus,
-        (b) => b + effect,
-        ifAbsent: () => effect,
-      );
-    } else {
-      contents[bonus] = effect;
-    }
+    addEntry(bonus, bonus.effect ?? const Effect());
+  }
+
+  void addEntry(Bonus bonus, Effect effect) {
+    contents.update(
+      bonus,
+      (value) => bonus.stacks ? value + effect : effect,
+      ifAbsent: () => effect,
+    );
   }
 
   void addAll(Bonuses other) {
-    contents.addAll(other.contents);
+    for (final entry in other) {
+      addEntry(entry.bonus, entry.value);
+    }
   }
 
   void remove(Bonus bonus) => contents.remove(bonus);
