@@ -279,6 +279,7 @@ mixin _Levels on _Base, _Attributes {
 
   void levelUpTo(int max) {
     while (level < max) {
+      xp += _xpForLevelUp;
       levelUp();
     }
   }
