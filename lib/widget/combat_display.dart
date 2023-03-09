@@ -56,10 +56,10 @@ class CombatDisplay extends StatelessWidget {
       Text('$attacker attacks $target with $weapon.'),
       _percentRoll('Attack', result.attackRoll),
       if (result.deflected) Text('$target deflects the attack.'),
-      if (result.triedDodging) _percentRoll('Dodge', result.dodgeRoll),
-      if (result.cantDodge) Text('$target cannot dodge.'),
+      if (result.rolledDodge) _percentRoll('Dodge', result.dodgeRoll),
+      if (!result.canDodge) Text('$target cannot dodge.'),
       if (result.dodged) Text('$target dodges the attack.'),
-      if (result.didHit) ...[
+      if (result.didDamage) ...[
         ..._diceRolls(weapon, result.damageRoll),
         _damageAndStatus(result.damageRoll, weaponTurn: turn),
       ],

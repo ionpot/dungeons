@@ -28,7 +28,7 @@ class WeaponAttack {
   }
 
   void apply(WeaponAttackResult result) {
-    if (result.didHit) {
+    if (result.didDamage) {
       target.takeDamage(result.damageDone);
     }
   }
@@ -63,12 +63,13 @@ class WeaponAttackResult {
     }
   }
 
-  bool get deflected => attackRoll.fail;
   bool get isCriticalHit => attackRoll.meets(criticalHit.chance.total);
-  bool get triedDodging => targetCanDodge && attackRoll.success;
-  bool get cantDodge => !targetCanDodge && attackRoll.success;
-  bool get dodged => triedDodging && dodgeRoll.success;
-  bool get didHit => !deflected && !dodged;
+
+  bool get canDodge => targetCanDodge;
+  bool get deflected => attackRoll.fail;
+  bool get rolledDodge => !deflected && canDodge;
+  bool get dodged => rolledDodge && dodgeRoll.success;
+  bool get didDamage => !deflected && !dodged;
   int get damageDone => damageRoll.total;
 }
 
