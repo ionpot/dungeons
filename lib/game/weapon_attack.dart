@@ -65,8 +65,9 @@ class WeaponAttackResult {
 
   bool get isCriticalHit => attackRoll.meets(criticalHit.chance.total);
 
-  bool get canDodge => targetCanDodge;
-  bool get deflected => attackRoll.fail;
+  bool get autoHit => isCriticalHit;
+  bool get canDodge => !autoHit && targetCanDodge;
+  bool get deflected => !autoHit && attackRoll.fail;
   bool get rolledDodge => !deflected && canDodge;
   bool get dodged => rolledDodge && dodgeRoll.success;
   bool get didDamage => !deflected && !dodged;
