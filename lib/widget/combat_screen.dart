@@ -100,7 +100,7 @@ class _CombatScreenState extends State<CombatScreen> {
     setState(() {
       _player.spendPointTo(id);
     });
-    if (_player.extraPoints == 0) {
+    if (_player.extraPoints == 0 && _combat.won) {
       return widget.onWin();
     }
   }
