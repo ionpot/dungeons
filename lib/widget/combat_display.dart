@@ -54,7 +54,7 @@ class CombatDisplay extends StatelessWidget {
     final weapon = attacker.weapon!.text;
     return TextLines([
       Text('$attacker attacks $target with $weapon.'),
-      _percentRoll('Attack', result.attackRoll),
+      _percentRoll('Attack', result.attackRoll, critical: result.isCriticalHit),
       if (result.deflected) Text('$target deflects the attack.'),
       if (result.rolledDodge) _percentRoll('Dodge', result.dodgeRoll),
       if (!result.canDodge) Text('$target cannot dodge.'),
@@ -130,8 +130,15 @@ class CombatDisplay extends StatelessWidget {
     ];
   }
 
-  Widget _percentRoll(String name, PercentValueRoll roll) {
-    return _richText('$name roll ', PercentValueRollSpan(roll));
+  Widget _percentRoll(
+    String name,
+    PercentValueRoll roll, {
+    bool critical = false,
+  }) {
+    return _richText(
+      '$name roll ',
+      PercentValueRollSpan(roll, critical: critical),
+    );
   }
 
   String _status(Entity target, [SpellCastTurn? spellTurn]) {

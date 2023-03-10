@@ -49,9 +49,13 @@ class Log {
     final attacker = attack.attacker;
     final target = attack.target;
     final weapon = attacker.weapon!.text;
+    final attackRoll = _percentRoll(
+      result.attackRoll,
+      critical: result.isCriticalHit,
+    );
     file
       ..writeln('$attacker attacks $target with $weapon.')
-      ..writeln('Attack roll ${_percentRoll(result.attackRoll)}');
+      ..writeln('Attack roll $attackRoll');
     if (result.deflected) {
       file.writeln('$target deflects the attack.');
       return;
@@ -107,8 +111,8 @@ class Log {
         '${combat.canLevelUp() ? ', and levels up' : ''}.');
   }
 
-  String _percentRoll(PercentValueRoll roll) {
-    return '(${roll.input}) ${roll.result}';
+  String _percentRoll(PercentValueRoll roll, {bool critical = false}) {
+    return '(${roll.input}) ${roll.result.text(critical)}';
   }
 
   void _writeDamage(Entity target, DiceRollValue damage, Source source) {

@@ -46,10 +46,12 @@ class PercentRoll {
   bool get success => chance.always || roll <= chance.value;
   bool get fail => chance.never || roll > chance.value;
 
-  @override
-  String toString() {
+  String text(bool critical) {
     if (chance.always) return 'Auto-success';
     if (chance.never) return 'Auto-fail';
-    return '$roll -> ${success ? 'Success' : 'Fail'}';
+    return '$roll -> ${success ? critical ? 'Critical!' : 'Success' : 'Fail'}';
   }
+
+  @override
+  String toString() => text(false);
 }

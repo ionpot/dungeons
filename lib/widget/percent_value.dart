@@ -69,12 +69,12 @@ class PercentValueSpan extends WidgetSpan {
 }
 
 class PercentValueRollSpan extends TextSpan {
-  PercentValueRollSpan(PercentValueRoll value)
+  PercentValueRollSpan(PercentValueRoll value, {bool critical = false})
       : super(
           children: [
             const TextSpan(text: '('),
             PercentValueSpan(value.input),
-            TextSpan(text: ') ${value.result}'),
+            TextSpan(text: ') ${value.result.text(critical)}'),
           ],
         );
 }
