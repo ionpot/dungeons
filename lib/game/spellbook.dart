@@ -8,7 +8,7 @@ class SpellBook {
   Set<Spell> spellsForLevel(int level) {
     return {
       for (final spell in spells)
-        if (spell.requiresLevel <= level) spell
+        if (spell.requiresLevel <= level) spell,
     };
   }
 }
