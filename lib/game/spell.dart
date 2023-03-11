@@ -11,7 +11,6 @@ enum Spell {
     reserveStress: true,
     selfCast: true,
     effect: Effect(
-      stressCap: 1,
       maxWeaponDamage: true,
       resistChance: Percent(4),
     ),
