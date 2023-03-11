@@ -243,10 +243,12 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
     );
   }
 
-  bool hasStress(int x) => (stress + x) <= stressCap;
+  bool hasStress(int x) => !player || (stress + x) <= stressCap;
 
   void addStress(int x) {
-    _stress += x;
+    if (player) {
+      _stress += x;
+    }
   }
 
   void clearStress() {
@@ -255,7 +257,9 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
   }
 
   void reserveStressFor(Bonus bonus, int amount) {
-    _reserved[bonus] = amount;
+    if (player) {
+      _reserved[bonus] = amount;
+    }
   }
 }
 
