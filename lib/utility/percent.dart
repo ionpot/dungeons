@@ -15,10 +15,10 @@ class Percent implements Comparable<Percent> {
 
   Percent multiply(Multiplier m) => Percent((value * m.value).floor());
 
-  PercentRoll roll() {
+  PercentRoll roll([int count = 1]) {
     return PercentRoll(
       chance: this,
-      roll: const Dice(1, 100).roll().total,
+      roll: Dice(count, 100).roll(),
     );
   }
 
@@ -35,7 +35,7 @@ class Percent implements Comparable<Percent> {
 
 class PercentRoll {
   final Percent chance;
-  final int roll;
+  final DiceRoll roll;
 
   const PercentRoll({required this.chance, required this.roll});
 
@@ -43,8 +43,11 @@ class PercentRoll {
     return PercentRoll(chance: percent, roll: roll);
   }
 
-  bool get success => chance.always || roll <= chance.value;
-  bool get fail => chance.never || roll > chance.value;
+  bool get rollSuccess => roll.any((result) => result <= chance.value);
+  bool get rollFail => !rollSuccess;
+
+  bool get success => chance.always || rollSuccess;
+  bool get fail => chance.never || rollFail;
 
   String text(bool critical) {
     if (chance.always) return 'Auto-success';

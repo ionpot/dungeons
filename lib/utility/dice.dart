@@ -51,13 +51,16 @@ class Dice implements Comparable<Dice> {
   }
 }
 
-class DiceRoll {
+class DiceRoll extends Iterable<int> {
   final Dice dice;
   final List<int> rolls;
 
   const DiceRoll(this.dice, this.rolls);
 
   int get total => rolls.fold(dice.bonus, (sum, roll) => sum + roll);
+
+  @override
+  Iterator<int> get iterator => rolls.iterator;
 
   @override
   String toString() => rolls.join(" ");

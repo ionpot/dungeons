@@ -44,8 +44,8 @@ class PercentValue {
 
   bool get hasNoBonuses => bonuses.isEmpty && multipliers.isEmpty;
 
-  PercentValueRoll roll() {
-    return PercentValueRoll(input: this, result: total.roll());
+  PercentValueRoll roll([int count = 1]) {
+    return PercentValueRoll(input: this, result: total.roll(count));
   }
 
   @override
