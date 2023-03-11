@@ -53,8 +53,9 @@ class Log {
       result.attackRoll,
       critical: result.isCriticalHit,
     );
+    final attacks = attack.smite ? 'smites' : 'attacks';
     file
-      ..writeln('$attacker attacks $target with $weapon.')
+      ..writeln('$attacker $attacks $target with $weapon.')
       ..writeln('Attack roll $attackRoll');
     if (result.deflected) {
       file.writeln('$target deflects the attack.');

@@ -3,10 +3,10 @@ import 'dart:math';
 
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_class.dart';
+import 'package:dungeons/game/smite.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/weapon_attack.dart';
-import 'package:dungeons/utility/if.dart';
 
 class Combat {
   final Entity player;
@@ -65,7 +65,10 @@ class Combat {
     if (current.injured && Random().nextBool()) {
       return CombatAction(target: current, castSpell: Spell.heal);
     }
-    return CombatAction(target: _other);
+    return CombatAction(
+      target: _other,
+      smite: Smite.possible(current) && Random().nextBool(),
+    );
   }
 
   CombatAction get _mageAction {
@@ -75,19 +78,24 @@ class Combat {
     );
   }
 
-  CombatTurn toTurn(CombatAction action) =>
-      ifdef(action.castSpell, (spell) {
-        return CombatTurn.spell(
-          SpellCast(
-            spell,
-            caster: current,
-            target: action.target,
-          ),
-        );
-      }) ??
-      CombatTurn.weapon(
-        WeaponAttack(attacker: current, target: action.target),
+  CombatTurn toTurn(CombatAction action) {
+    if (action.castSpell != null) {
+      return CombatTurn.spell(
+        SpellCast(
+          action.castSpell!,
+          caster: current,
+          target: action.target,
+        ),
       );
+    }
+    return CombatTurn.weapon(
+      WeaponAttack(
+        attacker: current,
+        target: action.target,
+        smite: action.smite,
+      ),
+    );
+  }
 
   void nextTurn() {
     _queue.removeFirst();
@@ -111,8 +119,13 @@ class Combat {
 class CombatAction {
   final Entity target;
   final Spell? castSpell;
+  final bool smite;
 
-  const CombatAction({required this.target, this.castSpell});
+  const CombatAction({
+    required this.target,
+    this.castSpell,
+    this.smite = false,
+  });
 }
 
 class CombatTurn {

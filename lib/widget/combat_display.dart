@@ -4,6 +4,7 @@ import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/dice.dart';
+import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/dice_span.dart';
 import 'package:dungeons/widget/percent_value.dart';
 import 'package:dungeons/widget/text_lines.dart';
@@ -51,19 +52,31 @@ class CombatDisplay extends StatelessWidget {
     final result = turn.result;
     final attacker = attack.attacker;
     final target = attack.target;
-    final weapon = attacker.weapon!.text;
     return TextLines([
-      Text('$attacker attacks $target with $weapon.'),
+      _attacks(attack),
       _percentRoll('Attack', result.attackRoll, critical: result.isCriticalHit),
       if (result.deflected) Text('$target deflects the attack.'),
       if (result.rolledDodge) _percentRoll('Dodge', result.dodgeRoll),
       if (!result.canDodge) Text('$target cannot dodge.'),
       if (result.dodged) Text('$target dodges the attack.'),
       if (result.didDamage) ...[
-        ..._diceRolls(weapon, result.damageRoll),
+        ..._diceRolls('${attacker.weapon}', result.damageRoll),
         _damageAndStatus(result.damageRoll, weaponTurn: turn),
       ],
     ]);
+  }
+
+  Widget _attacks(WeaponAttack attack) {
+    final attacker = attack.attacker;
+    final target = attack.target;
+    return _richText(
+      '$attacker ',
+      TextSpan(
+        text: attack.smite ? 'smites' : 'attacks',
+        style: TextStyle(color: sourceColor(attack.source)),
+      ),
+      ' $target with ${attacker.weapon}.',
+    );
   }
 
   Widget _spellTurn(SpellCastTurn turn) {

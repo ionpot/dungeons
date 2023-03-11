@@ -2,23 +2,29 @@ import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/critical_hit.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/feat.dart';
+import 'package:dungeons/game/smite.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
 
 class WeaponAttack {
   final Entity attacker;
   final Entity target;
+  final bool smite;
 
-  const WeaponAttack({required this.attacker, required this.target});
+  const WeaponAttack({
+    required this.attacker,
+    required this.target,
+    this.smite = false,
+  });
 
   PercentValue get hitChance => attacker.hitChance(target);
   PercentValue get dodgeChance => target.dodge;
   DiceValue get weaponDamage => attacker.weaponDamage!;
-  Source get source => Source.physical;
+  Source get source => smite ? Smite.source : Source.physical;
 
   WeaponAttackResult roll() {
     return WeaponAttackResult(
-      attackRoll: hitChance.roll(),
+      attackRoll: hitChance.roll(smite ? Smite.rolls : 1),
       dodgeRoll: dodgeChance.roll(),
       damageRoll: weaponDamage.roll(),
       targetCanDodge: target.canDodge,
@@ -28,6 +34,9 @@ class WeaponAttack {
   }
 
   void apply(WeaponAttackResult result) {
+    if (smite) {
+      attacker.addStress(Smite.stressCost);
+    }
     if (result.didDamage) {
       target.takeDamage(result.damageDone);
     }

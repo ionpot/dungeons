@@ -1,5 +1,6 @@
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/smite.dart';
 import 'package:dungeons/utility/value_callback.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/colors.dart';
@@ -27,6 +28,15 @@ class ActionSelect extends StatelessWidget {
           text: 'Attack',
           onClick: () => onChosen(CombatAction(target: enemy)),
         ),
+        if (Smite.possible(player))
+          Button(
+            text: 'Smite Attack',
+            color: sourceColor(Smite.source),
+            enabled: Smite.hasStress(player),
+            onClick: () {
+              onChosen(CombatAction(target: enemy, smite: true));
+            },
+          ),
         for (final spell in player.knownSpells)
           Button(
             text: spell.text,
