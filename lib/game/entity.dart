@@ -244,6 +244,7 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
   }
 
   bool hasStress(int x) => !player || (stress + x) <= stressCap;
+  bool alreadyReserved(Bonus bonus) => _reserved.keys.contains(bonus);
 
   void addStress(int x) {
     if (player) {
@@ -307,7 +308,9 @@ mixin _Levels on _Base, _Attributes {
 }
 
 mixin _Spells on _Base, _Stress {
-  bool canCast(Spell spell) => hasStress(spell.stress);
+  bool canCast(Spell spell) {
+    return hasStress(spell.stress) && !alreadyReserved(Bonus(spell: spell));
+  }
 
   SpellBook get spellbook => SpellBook(klass?.spells ?? {});
 
