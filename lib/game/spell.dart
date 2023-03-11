@@ -7,7 +7,8 @@ enum Spell {
   bless(
     text: 'Bless',
     source: Source.radiant,
-    reserveStress: 2,
+    stress: 2,
+    reserveStress: true,
     selfCast: true,
     effect: Effect(
       stressCap: 1,
@@ -49,7 +50,7 @@ enum Spell {
   final String text;
   final Source source;
   final int stress;
-  final int reserveStress;
+  final bool reserveStress;
   final int requiresLevel;
   final bool autoHit;
   final bool selfCast;
@@ -63,7 +64,7 @@ enum Spell {
     required this.text,
     required this.source,
     this.stress = 0,
-    this.reserveStress = 0,
+    this.reserveStress = false,
     this.requiresLevel = 1,
     this.autoHit = false,
     this.selfCast = false,
