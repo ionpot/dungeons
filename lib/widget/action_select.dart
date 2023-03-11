@@ -23,10 +23,13 @@ class ActionSelect extends StatelessWidget {
     return buildSpacedColumn(
       spacing: 12,
       children: [
-        Button('Attack', onClick: () => onChosen(CombatAction(target: enemy))),
+        Button(
+          text: 'Attack',
+          onClick: () => onChosen(CombatAction(target: enemy)),
+        ),
         for (final spell in player.knownSpells)
           Button(
-            spell.text,
+            text: spell.text,
             enabled: player.canCast(spell),
             onClick: () {
               onChosen(CombatAction(

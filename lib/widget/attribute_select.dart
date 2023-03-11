@@ -15,7 +15,7 @@ class AttributeSelect extends StatelessWidget {
       spacing: 12,
       children: [
         for (final id in EntityAttributeId.values)
-          Button(id.text, onClick: () => onChosen(id)),
+          Button(text: id.text, onClick: () => onChosen(id)),
       ],
     );
   }

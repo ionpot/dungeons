@@ -33,15 +33,17 @@ class CombatButtons extends StatelessWidget {
       return AttributeSelect(onChosen: onAttributePoint);
     }
     if (combat.won) {
-      final text = combat.canLevelUp() ? 'Level Up' : 'Next';
-      return Button(text, onClick: onWin);
+      return Button(
+        text: combat.canLevelUp() ? 'Level Up' : 'Next',
+        onClick: onWin,
+      );
     }
     if (combat.lost) {
-      return Button('End', onClick: onLose);
+      return Button(text: 'End', onClick: onLose);
     }
     if (turn.player) {
       return ActionSelect(turn, combat.enemy, onChosen: onPlayerAction);
     }
-    return Button('Next', onClick: onEnemyAction);
+    return Button(text: 'Next', onClick: onEnemyAction);
   }
 }

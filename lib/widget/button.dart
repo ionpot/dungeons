@@ -11,9 +11,9 @@ class Button extends StatelessWidget {
   final bool enabled;
   final Color? color;
 
-  const Button(
-    this.text, {
+  const Button({
     super.key,
+    required this.text,
     required this.onClick,
     this.clickable = true,
     this.active = false,

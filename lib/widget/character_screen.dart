@@ -53,7 +53,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
           if (_entity.klass != null &&
               _entity.weapon != null &&
               _entity.armor != null)
-            Button('Done', onClick: () => widget.onDone(_entity)),
+            Button(text: 'Done', onClick: () => widget.onDone(_entity)),
         ],
       ),
     );
@@ -90,9 +90,12 @@ class _CharacterScreenState extends State<CharacterScreen> {
             'Intellect': BoldText('${_entity.intellect}'),
           },
         ),
-        Button('Reroll', onClick: () {
-          setState(_entity.base.roll);
-        }),
+        Button(
+          text: 'Reroll',
+          onClick: () {
+            setState(_entity.base.roll);
+          },
+        ),
       ],
     );
   }
