@@ -27,7 +27,7 @@ class ActionSelect extends StatelessWidget {
         for (final spell in player.knownSpells)
           Button(
             spell.text,
-            disabled: !player.canCast(spell),
+            enabled: player.canCast(spell),
             onClick: () {
               onChosen(CombatAction(
                 castSpell: spell,

@@ -8,7 +8,7 @@ class Button extends StatelessWidget {
   final VoidCallback onClick;
   final bool clickable;
   final bool active;
-  final bool disabled;
+  final bool enabled;
   final Color? color;
 
   const Button(
@@ -17,13 +17,13 @@ class Button extends StatelessWidget {
     required this.onClick,
     this.clickable = true,
     this.active = false,
-    this.disabled = false,
+    this.enabled = true,
     this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    final clickable_ = disabled ? false : clickable;
+    final clickable_ = enabled ? clickable : false;
     return ClickDent(
       enabled: clickable_,
       child: GestureDetector(
@@ -31,7 +31,7 @@ class Button extends StatelessWidget {
           if (clickable_) onClick();
         },
         child: Opacity(
-          opacity: disabled ? 0.5 : 1.0,
+          opacity: enabled ? 1.0 : 0.5,
           child: TextBox(
             text: text,
             color: active ? green : color,
