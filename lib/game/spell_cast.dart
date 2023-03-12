@@ -32,9 +32,10 @@ class SpellCast {
   }
 
   void apply(SpellCastResult result) {
-    caster.addStress(spell.stress);
     if (spell.reserveStress) {
       caster.reserveStressFor(Bonus(spell: spell), spell.stress);
+    } else {
+      caster.addStress(spell.stress);
     }
     ifdef(result.healDone, target.heal);
     ifdef(result.damageDone, target.takeDamage);
