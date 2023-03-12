@@ -11,6 +11,7 @@ import 'package:dungeons/widget/empty.dart';
 import 'package:dungeons/widget/int_value.dart';
 import 'package:dungeons/widget/label_value.dart';
 import 'package:dungeons/widget/percent_value.dart';
+import 'package:dungeons/widget/radio_button.dart';
 import 'package:dungeons/widget/radio_group.dart';
 import 'package:dungeons/widget/spaced.dart';
 import 'package:dungeons/widget/stress.dart';
@@ -60,14 +61,18 @@ class _CharacterScreenState extends State<CharacterScreen> {
   }
 
   Widget get _classSelect {
-    return RadioGroup(
-      values: EntityClass.values,
-      onChange: (klass) {
-        setState(() {
-          _entity.klass = klass;
-        });
-      },
-    );
+    return RadioGroup([
+      for (final klass in EntityClass.values)
+        RadioButton(
+          text: '$klass',
+          chosen: klass == _entity.klass,
+          onChosen: () {
+            setState(() {
+              _entity.klass = klass;
+            });
+          },
+        ),
+    ]);
   }
 
   Widget get _attrAndStats {
@@ -121,24 +126,32 @@ class _CharacterScreenState extends State<CharacterScreen> {
   }
 
   Widget get _armorSelect {
-    return RadioGroup(
-      values: Armor.values,
-      onChange: (armor) {
-        setState(() {
-          _entity.equip(Gear(body: armor));
-        });
-      },
-    );
+    return RadioGroup([
+      for (final armor in Armor.values)
+        RadioButton(
+          text: '$armor',
+          chosen: armor == _entity.gear.body,
+          onChosen: () {
+            setState(() {
+              _entity.equip(Gear(body: armor));
+            });
+          },
+        ),
+    ]);
   }
 
   Widget get _weaponSelect {
-    return RadioGroup(
-      values: Weapon.values,
-      onChange: (weapon) {
-        setState(() {
-          _entity.equip(Gear(mainHand: weapon));
-        });
-      },
-    );
+    return RadioGroup([
+      for (final weapon in Weapon.values)
+        RadioButton(
+          text: '$weapon',
+          chosen: weapon == _entity.gear.mainHand,
+          onChosen: () {
+            setState(() {
+              _entity.equip(Gear(mainHand: weapon));
+            });
+          },
+        ),
+    ]);
   }
 }
