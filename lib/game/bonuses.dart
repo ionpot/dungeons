@@ -70,7 +70,10 @@ class Bonuses extends Iterable<BonusEntry<Effect>> {
 
   void remove(Bonus bonus) => contents.remove(bonus);
 
-  void addWeapon(Weapon weapon) => add(Bonus(weapon: weapon));
+  void addWeapon(Weapon weapon, WeaponValue value) {
+    addEntry(Bonus(weapon: weapon), value.effect ?? const Effect());
+  }
+
   void removeWeapon(Weapon weapon) => remove(Bonus(weapon: weapon));
 
   void addArmor(Armor armor) => add(Bonus(armor: armor));

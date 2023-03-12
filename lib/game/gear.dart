@@ -6,16 +6,30 @@ import 'package:dungeons/utility/if.dart';
 class Gear {
   Armor? body;
   Weapon? mainHand;
+  Weapon? offHand;
 
-  Gear({this.body, this.mainHand});
+  Gear({this.body, this.mainHand, this.offHand});
 
   int get armor => body?.value ?? 0;
 
   Bonuses get bonuses {
     final bonuses = Bonuses();
     ifdef(body, bonuses.addArmor);
-    ifdef(mainHand, bonuses.addWeapon);
+    ifdef(weaponValue, (value) {
+      bonuses.addWeapon(mainHand!, value);
+    });
     return bonuses;
+  }
+
+  WeaponValue? get weaponValue {
+    final group = mainHand?.group;
+    if (group == null) {
+      return null;
+    }
+    if (offHand == null) {
+      return group.twoHanded ?? group.oneHanded;
+    }
+    return group.oneHanded;
   }
 
   void roll() {

@@ -26,10 +26,7 @@ class Bonus {
   factory Bonus.agility() => const Bonus(attribute: EntityAttributeId.agility);
 
   Effect? get effect {
-    return weapon?.effect ??
-        armor?.effect ??
-        feat?.value.effect ??
-        spell?.effect;
+    return armor?.effect ?? feat?.value.effect ?? spell?.effect;
   }
 
   bool get stacks => spell?.stacks == true;

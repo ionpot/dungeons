@@ -64,7 +64,7 @@ class Entity extends _Base
   }
 
   CriticalHit get criticalHit {
-    return CriticalHit(chance: criticalHitChance, weapon: weapon!);
+    return CriticalHit(chance: criticalHitChance, dice: gear.weaponValue!.dice);
   }
 
   FeatSlot? sneakAttack(Entity target) {
@@ -193,9 +193,10 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
   }
 
   DiceValue? get weaponDamage {
+    final weapon = gear.weaponValue;
     if (weapon == null) return null;
     return DiceValue(
-      base: weapon!.dice.addBonus(strength ~/ 2),
+      base: weapon.dice.addBonus(strength ~/ 2),
       intBonuses: IntBonuses(_allBonuses.toMap((e) => e.damage)),
       max: _allBonuses.findBonus((e) => e.maxWeaponDamage),
     );
