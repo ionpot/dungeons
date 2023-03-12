@@ -1,11 +1,7 @@
 import 'dart:math';
 
-import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/effect.dart';
-import 'package:dungeons/game/feat.dart';
-import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/multiplier.dart';
@@ -42,16 +38,12 @@ class Bonuses extends Iterable<BonusEntry<Effect>> {
 
   Bonuses([EffectMap? m]) : contents = m ?? {};
 
-  factory Bonuses.of(Iterable<Bonus> input) {
-    return Bonuses({
-      for (final bonus in input) bonus: bonus.effect ?? const Effect(),
-    });
-  }
-
   bool has(Bonus bonus) => contents.containsKey(bonus);
 
-  void add(Bonus bonus) {
-    addEntry(bonus, bonus.effect ?? const Effect());
+  void add(Bonus bonus, Effect? effect) {
+    if (effect != null) {
+      addEntry(bonus, effect);
+    }
   }
 
   void addEntry(Bonus bonus, Effect effect) {
@@ -68,24 +60,8 @@ class Bonuses extends Iterable<BonusEntry<Effect>> {
     }
   }
 
-  void remove(Bonus bonus) => contents.remove(bonus);
-
-  void addWeapon(Weapon weapon, WeaponValue value) {
-    addEntry(Bonus(weapon: weapon), value.effect ?? const Effect());
-  }
-
-  void removeWeapon(Weapon weapon) => remove(Bonus(weapon: weapon));
-
-  void addArmor(Armor armor) => add(Bonus(armor: armor));
-  void removeArmor(Armor armor) => remove(Bonus(armor: armor));
-
-  void addFeat(FeatSlot feat) => add(Bonus(feat: feat));
-
-  void addSpell(Spell spell) => add(Bonus(spell: spell));
-  bool hasSpell(Spell spell) => has(Bonus(spell: spell));
-
-  void clearSpells() {
-    contents.removeWhere((key, value) => key.spell != null);
+  void clear() {
+    contents.clear();
   }
 
   Bonus? findBonus(GetValue<bool> toBool) {

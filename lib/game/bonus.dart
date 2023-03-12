@@ -1,6 +1,5 @@
 import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/critical_hit.dart';
-import 'package:dungeons/game/effect.dart';
 import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/spell.dart';
@@ -24,10 +23,6 @@ class Bonus {
   });
 
   factory Bonus.agility() => const Bonus(attribute: EntityAttributeId.agility);
-
-  Effect? get effect {
-    return armor?.effect ?? feat?.value.effect ?? spell?.effect;
-  }
 
   bool get stacks => spell?.stacks == true;
 

@@ -1,7 +1,7 @@
 import 'package:dungeons/game/armor.dart';
+import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/bonuses.dart';
 import 'package:dungeons/game/weapon.dart';
-import 'package:dungeons/utility/if.dart';
 
 class Gear {
   Armor? body;
@@ -13,12 +13,11 @@ class Gear {
   int get armor => body?.value ?? 0;
 
   Bonuses get bonuses {
-    final bonuses = Bonuses();
-    ifdef(body, bonuses.addArmor);
-    ifdef(weaponValue, (value) {
-      bonuses.addWeapon(mainHand!, value);
+    return Bonuses({
+      if (body != null) Bonus(armor: body): body!.effect,
+      if (mainHand != null && weaponValue!.effect != null)
+        Bonus(weapon: mainHand): weaponValue!.effect!,
     });
-    return bonuses;
   }
 
   WeaponValue? get weaponValue {

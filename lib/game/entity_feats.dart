@@ -11,7 +11,10 @@ class EntityFeats extends Iterable<FeatSlot> {
   const EntityFeats(this.contents);
 
   Bonuses get bonuses {
-    return Bonuses.of({for (final slot in this) Bonus(feat: slot)});
+    return Bonuses({
+      for (final slot in this)
+        if (slot.value.effect != null) Bonus(feat: slot): slot.value.effect!,
+    });
   }
 
   IntBonuses get reserveStress {
