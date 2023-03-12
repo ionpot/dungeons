@@ -17,7 +17,22 @@ class Gear {
       if (body != null) Bonus(armor: body): body!.effect,
       if (mainHand != null && weaponValue!.effect != null)
         Bonus(weapon: mainHand): weaponValue!.effect!,
+      if (offHand != null) Bonus(offHand: offHand): Weapon.offHandPenalty,
     });
+  }
+
+  bool canEquip(Gear gear) {
+    if (gear.mainHand != null) {
+      if (gear.mainHand!.twoHandOnly) {
+        return offHand == null;
+      }
+    }
+    if (gear.offHand != null) {
+      if (mainHand != null) {
+        return mainHand!.canOneHand;
+      }
+    }
+    return true;
   }
 
   WeaponValue? get weaponValue {
@@ -31,6 +46,8 @@ class Gear {
     return group.oneHanded;
   }
 
+  WeaponValue? get offHandValue => offHand?.group.oneHanded;
+
   void roll() {
     body = Armor.random();
     mainHand = Weapon.random();
@@ -40,6 +57,7 @@ class Gear {
     return Gear(
       body: other.body ?? body,
       mainHand: other.mainHand ?? mainHand,
+      offHand: other.offHand ?? offHand,
     );
   }
 }

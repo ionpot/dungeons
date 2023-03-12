@@ -1,4 +1,5 @@
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/widget/dice_span.dart';
 import 'package:dungeons/widget/int_value.dart';
 import 'package:dungeons/widget/percent_value.dart';
@@ -23,6 +24,7 @@ class EntityStats extends StatelessWidget {
       _dodgeResist,
       _armor,
       _weapon,
+      _offHand,
     ]);
   }
 
@@ -83,5 +85,12 @@ class EntityStats extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget get _offHand {
+    final weapon = ifdef(entity.gear.offHandValue?.dice, (dice) {
+      return '${entity.gear.offHand} ($dice)';
+    });
+    return Text('Off-hand: ${weapon ?? 'None'}');
   }
 }

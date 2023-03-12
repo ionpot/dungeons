@@ -18,8 +18,14 @@ enum Weapon {
 
   factory Weapon.random() => pickRandom(Weapon.values);
 
+  bool get canOneHand => !twoHandOnly;
+  bool get offHandOnly => group == WeaponGroup.small;
+  bool get twoHandOnly => group == WeaponGroup.large;
+
   @override
   String toString() => text;
+
+  static Effect offHandPenalty = const Effect(initiative: -2);
 }
 
 enum WeaponGroup {

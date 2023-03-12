@@ -26,6 +26,9 @@ class Log {
 
   void entity(Entity e) {
     final damage = e.weaponDamage;
+    final offHand = ifdef(e.gear.offHandValue?.dice, (dice) {
+      return '${e.gear.offHand} ($dice)';
+    });
     file
       ..writeln('${e.name}, ${e.race} ${e.klass} Lv${e.level}')
       ..writeln('${e.attributes}')
@@ -35,7 +38,8 @@ class Log {
       ..writeln('Initiative ${e.initiative}')
       ..writeln('Dodge ${e.dodge}, Resist ${e.resist}')
       ..writeln('Armor: ${e.armor} (${e.totalArmor})')
-      ..writeln('Weapon: ${e.weapon} ($damage) ${damage?.range}');
+      ..writeln('Weapon: ${e.weapon} ($damage) ${damage?.range}')
+      ..writeln('Off-hand: ${offHand ?? 'None'}');
   }
 
   void combatTurn(CombatTurn turn) {

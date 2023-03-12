@@ -117,6 +117,17 @@ mixin _Gear on _Base {
   int get baseArmor => 5;
   int get totalArmor => baseArmor + gear.armor;
 
+  bool canEquip(Gear gear) {
+    if (klass == null) {
+      return false;
+    }
+    if (gear.offHand != null) {
+      if (klass == EntityClass.cleric) return false;
+      if (klass == EntityClass.mage) return false;
+    }
+    return this.gear.canEquip(gear);
+  }
+
   void equip(Gear gear) {
     this.gear += gear;
   }

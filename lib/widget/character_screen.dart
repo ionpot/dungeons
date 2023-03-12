@@ -51,6 +51,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
           if (_entity.klass != null) _attrAndStats,
           if (_entity.klass != null) _armorSelect,
           if (_entity.klass != null) _weaponSelect,
+          if (_entity.klass != null) _offHandSelect,
           if (_entity.klass != null &&
               _entity.weapon != null &&
               _entity.armor != null)
@@ -146,12 +147,39 @@ class _CharacterScreenState extends State<CharacterScreen> {
         RadioButton(
           text: '$weapon',
           chosen: weapon == _entity.gear.mainHand,
+          enabled: _entity.canEquip(Gear(mainHand: weapon)),
           onChosen: () {
             setState(() {
               _entity.equip(Gear(mainHand: weapon));
             });
           },
         ),
+    ]);
+  }
+
+  Widget get _offHandSelect {
+    return RadioGroup([
+      for (final weapon in Weapon.values)
+        if (weapon.offHandOnly)
+          RadioButton(
+            text: '$weapon',
+            chosen: weapon == _entity.gear.offHand,
+            enabled: _entity.canEquip(Gear(offHand: weapon)),
+            onChosen: () {
+              setState(() {
+                _entity.equip(Gear(offHand: weapon));
+              });
+            },
+          ),
+      RadioButton(
+        text: 'None',
+        chosen: _entity.gear.offHand == null,
+        onChosen: () {
+          setState(() {
+            _entity.gear.offHand = null;
+          });
+        },
+      ),
     ]);
   }
 }

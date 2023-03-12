@@ -9,6 +9,7 @@ class Bonus {
   final EntityAttributeId? attribute;
   final CriticalHit? criticalHit;
   final Weapon? weapon;
+  final Weapon? offHand;
   final Armor? armor;
   final FeatSlot? feat;
   final Spell? spell;
@@ -17,6 +18,7 @@ class Bonus {
     this.attribute,
     this.criticalHit,
     this.weapon,
+    this.offHand,
     this.armor,
     this.feat,
     this.spell,
@@ -35,6 +37,7 @@ class Bonus {
       attribute,
       criticalHit,
       weapon,
+      offHand,
       armor,
       feat,
       spell,
@@ -43,6 +46,9 @@ class Bonus {
 
   @override
   String toString() {
+    if (offHand != null) {
+      return '$offHand (off-hand)';
+    }
     return attribute?.text ??
         criticalHit?.toString() ??
         weapon?.text ??
