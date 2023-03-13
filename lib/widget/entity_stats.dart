@@ -30,9 +30,9 @@ class EntityStats extends StatelessWidget {
 
   Widget get _armor {
     return Text.rich(TextSpan(children: [
-      TextSpan(text: 'Armor: ${entity.armor} ('),
+      const TextSpan(text: 'Armor: '),
       TotalArmorSpan(entity),
-      const TextSpan(text: ')'),
+      TextSpan(text: ' (${entity.armor})'),
     ]));
   }
 
@@ -88,8 +88,10 @@ class EntityStats extends StatelessWidget {
   }
 
   Widget get _offHand {
-    final weapon = ifdef(entity.gear.offHandValue?.dice, (dice) {
-      return '${entity.gear.offHand} ($dice)';
+    final weapon = ifdef(entity.gear.offHand, (offHand) {
+      final armor = entity.gear.shield?.armor;
+      final dice = entity.gear.offHandValue?.dice;
+      return '$offHand (${armor ?? dice})';
     });
     return Text('Off-hand: ${weapon ?? 'None'}');
   }

@@ -143,7 +143,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
 
   Widget get _weaponSelect {
     return RadioGroup([
-      for (final weapon in Weapon.values)
+      for (final weapon in Weapon.forMainHand)
         RadioButton(
           text: '$weapon',
           chosen: weapon == _entity.gear.mainHand,
@@ -159,18 +159,17 @@ class _CharacterScreenState extends State<CharacterScreen> {
 
   Widget get _offHandSelect {
     return RadioGroup([
-      for (final weapon in Weapon.values)
-        if (weapon.offHandOnly)
-          RadioButton(
-            text: '$weapon',
-            chosen: weapon == _entity.gear.offHand,
-            enabled: _entity.canEquip(Gear(offHand: weapon)),
-            onChosen: () {
-              setState(() {
-                _entity.equip(Gear(offHand: weapon));
-              });
-            },
-          ),
+      for (final weapon in Weapon.forOffHand)
+        RadioButton(
+          text: '$weapon',
+          chosen: weapon == _entity.gear.offHand,
+          enabled: _entity.canEquip(Gear(offHand: weapon)),
+          onChosen: () {
+            setState(() {
+              _entity.equip(Gear(offHand: weapon));
+            });
+          },
+        ),
       RadioButton(
         text: 'None',
         chosen: _entity.gear.offHand == null,

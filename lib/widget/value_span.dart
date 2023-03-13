@@ -58,13 +58,15 @@ class TotalArmorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final armor = entity.armor;
-    if (armor == null) {
+    final shield = entity.shield;
+    if (armor == null && shield == null) {
       return text;
     }
     return TooltipRegion(
       tooltip: ValueTable([
         ValueRow(const Text('Base'), Text('${entity.baseArmor}')),
-        ValueRow(Text('$armor'), Text('+${armor.value}')),
+        if (armor != null) ValueRow(Text('$armor'), Text('+${armor.value}')),
+        if (shield != null) ValueRow(Text('$shield'), Text('+${shield.armor}')),
       ]),
       child: text,
     );

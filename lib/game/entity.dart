@@ -118,6 +118,7 @@ mixin _Gear on _Base {
 
   Weapon? get weapon => gear.mainHand;
   Weapon? get offHandWeapon => gear.offHand;
+  Weapon? get shield => gear.shield;
   Armor? get armor => gear.body;
   int get baseArmor => 5;
   int get totalArmor => baseArmor + gear.armor;
@@ -127,8 +128,12 @@ mixin _Gear on _Base {
       return false;
     }
     if (gear.offHand != null) {
-      if (klass == EntityClass.cleric) return false;
       if (klass == EntityClass.mage) return false;
+      if (gear.shield != null) {
+        if (klass == EntityClass.trickster) return false;
+      } else {
+        if (klass == EntityClass.cleric) return false;
+      }
     }
     return this.gear.canEquip(gear);
   }

@@ -1,6 +1,7 @@
 import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/bonuses.dart';
+import 'package:dungeons/game/effect.dart';
 import 'package:dungeons/game/weapon.dart';
 
 class Gear {
@@ -10,11 +11,14 @@ class Gear {
 
   Gear({this.body, this.mainHand, this.offHand});
 
-  int get armor => body?.value ?? 0;
+  int get armor => (body?.value ?? 0) + (shield?.armor ?? 0);
+
+  Weapon? get shield => offHand == Weapon.shield ? offHand : null;
 
   Bonuses get bonuses {
     return Bonuses({
       if (body != null) Bonus(armor: body): body!.effect,
+      if (shield != null) Bonus(offHand: shield): Effect(armor: shield!.armor),
       if (mainHand != null && weaponValue!.effect != null)
         Bonus(weapon: mainHand): weaponValue!.effect!,
       if (offHand != null) Bonus(offHand: offHand): Weapon.offHandPenalty,
@@ -35,7 +39,7 @@ class Gear {
     return true;
   }
 
-  bool get hasTwoWeapons => mainHand != null && offHand != null;
+  bool get hasTwoWeapons => mainHand != null && offHand?.canAttack == true;
 
   WeaponValue? get weaponValue {
     final group = mainHand?.group;
@@ -52,7 +56,10 @@ class Gear {
 
   void roll() {
     body = Armor.random();
-    mainHand = Weapon.random();
+    mainHand = Weapon.randomMainHand();
+    if (mainHand!.canOneHand) {
+      offHand = Weapon.maybeRandomOffHand();
+    }
   }
 
   Gear operator +(Gear other) {
