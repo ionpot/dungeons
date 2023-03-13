@@ -58,6 +58,7 @@ class PercentValueRoll {
 
   const PercentValueRoll({required this.input, required this.result});
 
+  bool get allSuccess => result.allSuccess;
   bool get success => result.success;
   bool get fail => result.fail;
 

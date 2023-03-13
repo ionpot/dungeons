@@ -93,6 +93,7 @@ class Combat {
         attacker: current,
         target: action.target,
         smite: action.smite,
+        useOffHand: action.useOffHand,
       ),
     );
   }
@@ -120,11 +121,13 @@ class CombatAction {
   final Entity target;
   final Spell? castSpell;
   final bool smite;
+  final bool useOffHand;
 
   const CombatAction({
     required this.target,
     this.castSpell,
     this.smite = false,
+    this.useOffHand = false,
   });
 }
 

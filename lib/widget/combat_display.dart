@@ -4,6 +4,7 @@ import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/dice.dart';
+import 'package:dungeons/utility/if.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/dice_span.dart';
 import 'package:dungeons/widget/percent_value.dart';
@@ -69,13 +70,16 @@ class CombatDisplay extends StatelessWidget {
   Widget _attacks(WeaponAttack attack) {
     final attacker = attack.attacker;
     final target = attack.target;
+    final offHand = ifdef(attack.twoWeaponAttack?.offHand, (offHand) {
+      return ' and $offHand';
+    });
     return _richText(
       '$attacker ',
       TextSpan(
         text: attack.smite ? 'smites' : 'attacks',
         style: TextStyle(color: sourceColor(attack.source)),
       ),
-      ' $target with ${attacker.weapon}.',
+      ' $target with ${attacker.weapon}${offHand ?? ''}.',
     );
   }
 

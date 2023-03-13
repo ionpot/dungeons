@@ -48,7 +48,7 @@ class _CombatScreenState extends State<CombatScreen> {
           Wrap(
             children: [
               SizedWrap(
-                width: 160,
+                width: 180,
                 child: CombatButtons(
                   _combat,
                   turn: _turn == null ? _combat.current : _combat.next,

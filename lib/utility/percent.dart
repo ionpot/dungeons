@@ -43,9 +43,13 @@ class PercentRoll {
     return PercentRoll(chance: percent, roll: roll);
   }
 
-  bool get rollSuccess => roll.any((result) => result <= chance.value);
+  bool check(int result) => result <= chance.value;
+
+  bool get allRollsSuccess => roll.every(check);
+  bool get rollSuccess => roll.any(check);
   bool get rollFail => !rollSuccess;
 
+  bool get allSuccess => chance.always || allRollsSuccess;
   bool get success => chance.always || rollSuccess;
   bool get fail => chance.never || rollFail;
 

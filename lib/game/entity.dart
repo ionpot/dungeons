@@ -34,9 +34,13 @@ class Entity extends _Base
 
   PercentValue hitChance(Entity target) {
     return PercentValue(
-      base: Percent(target.totalArmor).invert(),
+      base: hitChanceBase(target),
       bonuses: PercentBonuses(hitChanceBonusMap),
     );
+  }
+
+  Percent hitChanceBase(Entity target) {
+    return Percent(target.totalArmor).invert();
   }
 
   PercentValue get criticalHitChance {
@@ -113,6 +117,7 @@ mixin _Gear on _Base {
   var gear = Gear();
 
   Weapon? get weapon => gear.mainHand;
+  Weapon? get offHandWeapon => gear.offHand;
   Armor? get armor => gear.body;
   int get baseArmor => 5;
   int get totalArmor => baseArmor + gear.armor;

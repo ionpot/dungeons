@@ -58,8 +58,11 @@ class Log {
       critical: result.isCriticalHit,
     );
     final attacks = attack.smite ? 'smites' : 'attacks';
+    final offHand = ifdef(attack.twoWeaponAttack?.offHand, (offHand) {
+      return ' and $offHand';
+    });
     file
-      ..writeln('$attacker $attacks $target with $weapon.')
+      ..writeln('$attacker $attacks $target with $weapon${offHand ?? ''}.')
       ..writeln('Attack roll $attackRoll');
     if (result.deflected) {
       file.writeln('$target deflects the attack.');

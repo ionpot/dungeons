@@ -35,6 +35,8 @@ class Gear {
     return true;
   }
 
+  bool get hasTwoWeapons => mainHand != null && offHand != null;
+
   WeaponValue? get weaponValue {
     final group = mainHand?.group;
     if (group == null) {

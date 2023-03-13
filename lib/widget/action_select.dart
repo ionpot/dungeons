@@ -1,6 +1,7 @@
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/smite.dart';
+import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/value_callback.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/colors.dart';
@@ -28,6 +29,14 @@ class ActionSelect extends StatelessWidget {
           text: 'Attack',
           onClick: () => onChosen(CombatAction(target: enemy)),
         ),
+        if (player.gear.hasTwoWeapons)
+          Button(
+            text: 'Two-Weapon Attack',
+            enabled: TwoWeaponAttack.hasStress(player),
+            onClick: () {
+              onChosen(CombatAction(target: enemy, useOffHand: true));
+            },
+          ),
         if (Smite.possible(player))
           Button(
             text: 'Smite Attack',
