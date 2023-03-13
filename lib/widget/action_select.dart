@@ -29,7 +29,7 @@ class ActionSelect extends StatelessWidget {
           text: 'Attack',
           onClick: () => onChosen(CombatAction(target: enemy)),
         ),
-        if (player.gear.hasTwoWeapons)
+        if (TwoWeaponAttack.possible(player))
           Button(
             text: 'Two-Weapon Attack',
             enabled: TwoWeaponAttack.hasStress(player),

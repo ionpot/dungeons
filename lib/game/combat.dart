@@ -44,11 +44,16 @@ class Combat {
   Entity get _other => _otherOf(current);
   Entity _otherOf(Entity e) => e == player ? enemy : player;
 
+  bool maybe() => Random().nextBool();
+
   CombatAction randomAction() {
     switch (current.klass) {
       case EntityClass.warrior:
       case EntityClass.trickster:
-        return CombatAction(target: _other);
+        return CombatAction(
+          target: _other,
+          useOffHand: TwoWeaponAttack.possible(current) && maybe(),
+        );
       case EntityClass.cleric:
         return _clericAction;
       case EntityClass.mage:
@@ -62,12 +67,12 @@ class Combat {
     if (!current.hasSpellBonus(Spell.bless)) {
       return CombatAction(target: current, castSpell: Spell.bless);
     }
-    if (current.injured && Random().nextBool()) {
+    if (current.injured && maybe()) {
       return CombatAction(target: current, castSpell: Spell.heal);
     }
     return CombatAction(
       target: _other,
-      smite: Smite.possible(current) && Random().nextBool(),
+      smite: Smite.possible(current) && maybe(),
     );
   }
 

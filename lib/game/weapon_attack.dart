@@ -128,6 +128,7 @@ class TwoWeaponAttack {
   static const Percent hitBonus = Percent(-10);
 
   static bool hasStress(Entity entity) => entity.hasStress(stressCost);
+  static bool possible(Entity entity) => entity.gear.hasTwoWeapons;
 
   const TwoWeaponAttack(this.attacker, this.target);
 
