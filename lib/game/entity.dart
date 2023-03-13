@@ -339,6 +339,6 @@ mixin _Spells on _Base, _Stress {
   Set<Spell> get knownSpells => spellbook.spellsForLevel(level);
 
   Spell? maybeRandomSpell() {
-    return pickRandomMaybe(knownSpells.toList(growable: false));
+    return pickRandomMaybe(knownSpells);
   }
 }
