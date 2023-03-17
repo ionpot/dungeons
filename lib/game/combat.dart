@@ -47,7 +47,7 @@ class Combat {
   bool maybe() => Random().nextBool();
 
   CombatAction randomAction() {
-    switch (current.klass) {
+    switch (current.klass!) {
       case EntityClass.warrior:
       case EntityClass.trickster:
         return CombatAction(
@@ -58,8 +58,6 @@ class Combat {
         return _clericAction;
       case EntityClass.mage:
         return _mageAction;
-      case null:
-        throw ArgumentError.notNull('current.klass');
     }
   }
 
