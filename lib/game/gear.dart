@@ -54,14 +54,6 @@ class Gear {
 
   WeaponValue? get offHandValue => offHand?.group.oneHanded;
 
-  void roll() {
-    body = Armor.random();
-    mainHand = Weapon.randomMainHand();
-    if (mainHand!.canOneHand) {
-      offHand = Weapon.maybeRandomOffHand();
-    }
-  }
-
   Gear operator +(Gear other) {
     return Gear(
       body: other.body ?? body,

@@ -84,10 +84,26 @@ class Entity extends _Base
       ..base.roll()
       ..levelUpTo(rollEnemyLevel())
       ..spendAllPoints()
-      ..gear.roll();
+      ..rollGear();
   }
 
   int rollEnemyLevel() => const Deviate(2, 0).from(level).withMin(1).roll();
+
+  Gear rollGear() {
+    final mainHand = Weapon.randomMainHand();
+    return Gear(
+      body: Armor.random(),
+      mainHand: mainHand,
+      offHand: mainHand.canOneHand ? rollOffHand() : null,
+    );
+  }
+
+  Weapon? rollOffHand() {
+    if (klass == null) {
+      return null;
+    }
+    return pickRandomMaybe(Weapon.forOffHand.where(klass!.canOffHand));
+  }
 
   int xpGain(Entity e) {
     if (level <= e.level) return 3;
@@ -128,11 +144,8 @@ mixin _Gear on _Base {
       return false;
     }
     if (gear.offHand != null) {
-      if (klass == EntityClass.mage) return false;
-      if (gear.shield != null) {
-        if (klass == EntityClass.trickster) return false;
-      } else {
-        if (klass == EntityClass.cleric) return false;
+      if (!klass!.canOffHand(gear.offHand!)) {
+        return false;
       }
     }
     return this.gear.canEquip(gear);

@@ -35,7 +35,6 @@ enum Weapon {
   static Effect offHandPenalty = const Effect(initiative: -2);
 
   static Weapon randomMainHand() => pickRandom(forMainHand);
-  static Weapon? maybeRandomOffHand() => pickRandomMaybe(forOffHand);
 }
 
 enum WeaponGroup {
