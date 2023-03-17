@@ -45,7 +45,7 @@ enum WeaponGroup {
     twoHanded: WeaponValue(dice: Dice(1, 8)),
   ),
   large(twoHanded: WeaponValue(dice: Dice(1, 10), initiative: -2)),
-  shield(armor: 3);
+  shield(armor: 5);
 
   final WeaponValue? oneHanded;
   final WeaponValue? twoHanded;
