@@ -125,7 +125,7 @@ class TwoWeaponAttack {
 
   static const int stressCost = 1;
   static const int hitRolls = 2;
-  static const Percent hitBonus = Percent(-10);
+  static const Percent hitBonus = Percent(-15);
 
   static bool hasStress(Entity entity) => entity.hasStress(stressCost);
   static bool possible(Entity entity) => entity.gear.hasTwoWeapons;
