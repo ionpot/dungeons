@@ -40,9 +40,11 @@ class Combat {
   Entity get current => _queue.first;
   Entity get next => _queue.length == 2 ? _queue.last : _faster;
 
-  Entity get _faster => player.fasterThan(enemy) ? player : enemy;
+  bool isPlayer(Entity e) => e == player;
+
+  Entity get _faster => (player.compareSpeed(enemy) > 0) ? enemy : player;
   Entity get _other => _otherOf(current);
-  Entity _otherOf(Entity e) => e == player ? enemy : player;
+  Entity _otherOf(Entity e) => isPlayer(e) ? enemy : player;
 
   bool maybe() => Random().nextBool();
 

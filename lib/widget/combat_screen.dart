@@ -40,9 +40,9 @@ class _CombatScreenState extends State<CombatScreen> {
             children: [
               SizedBox(
                 width: 300,
-                child: EntityStats(_combat.player),
+                child: EntityStats(_combat.player, player: true),
               ),
-              EntityStats(_combat.enemy),
+              EntityStats(_combat.enemy, player: false),
             ],
           ),
           Wrap(
@@ -75,9 +75,9 @@ class _CombatScreenState extends State<CombatScreen> {
     _log
       ..file.writeln('New combat')
       ..ln()
-      ..entity(_combat.player)
+      ..entity(_combat.player, player: true)
       ..ln()
-      ..entity(_combat.enemy);
+      ..entity(_combat.enemy, player: false);
   }
 
   void _onAction(CombatAction? action) {

@@ -35,7 +35,6 @@ class _CharacterScreenState extends State<CharacterScreen> {
     super.initState();
     _entity = Entity(
       name: 'Player',
-      player: true,
       race: EntityRace.human,
     )..base.roll();
   }

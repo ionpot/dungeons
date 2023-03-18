@@ -24,7 +24,7 @@ class Log {
     await file.close();
   }
 
-  void entity(Entity e) {
+  void entity(Entity e, {required bool player}) {
     final damage = e.weaponDamage;
     final offHand = ifdef(e.gear.offHand, (offHand) {
       final armor = e.gear.shield?.armor;
@@ -35,8 +35,8 @@ class Log {
       ..writeln('${e.name}, ${e.race} ${e.klass} Lv${e.level}')
       ..writeln('${e.attributes}')
       ..writeln('Hp ${e.totalHp}'
-          '${e.player ? ', Stress Cap ${e.stressCap}' : ''}'
-          '${e.player ? ', XP ${e.toXpString()}' : ''}')
+          '${player ? ', Stress Cap ${e.stressCap}' : ''}'
+          '${player ? ', XP ${e.toXpString()}' : ''}')
       ..writeln('Initiative ${e.initiative}')
       ..writeln('Dodge ${e.dodge}, Resist ${e.resist}')
       ..writeln('Armor: ${e.totalArmor} (${e.armor})')

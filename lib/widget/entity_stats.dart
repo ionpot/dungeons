@@ -10,8 +10,9 @@ import 'package:flutter/widgets.dart';
 
 class EntityStats extends StatelessWidget {
   final Entity entity;
+  final bool player;
 
-  const EntityStats(this.entity, {super.key});
+  const EntityStats(this.entity, {super.key, required this.player});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class EntityStats extends StatelessWidget {
       TextSpan(children: [
         const TextSpan(text: 'Hp '),
         HpSpan(e),
-        if (e.player)
+        if (player)
           TextSpan(children: [
             const TextSpan(text: ', Stress '),
             StressSpan(e),

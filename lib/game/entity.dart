@@ -29,7 +29,7 @@ class Entity extends _Base
   Entity({
     required super.name,
     required super.race,
-    super.player = false,
+    super.infiniteStress = false,
   });
 
   PercentValue hitChance(Entity target) {
@@ -59,12 +59,12 @@ class Entity extends _Base
     };
   }
 
-  bool fasterThan(Entity other) {
+  // -1 if this is faster
+  // 1 if other is faster
+  int compareSpeed(Entity other) {
     final i = initiative.compareTo(other.initiative);
-    if (i != 0) return i > 0;
-    final a = totalArmor.compareTo(other.totalArmor);
-    if (a != 0) return a < 0;
-    return player;
+    if (i != 0) return i * -1;
+    return totalArmor.compareTo(other.totalArmor);
   }
 
   CriticalHit get criticalHit {
@@ -79,6 +79,7 @@ class Entity extends _Base
     return Entity(
       name: 'Enemy',
       race: EntityRace.orc,
+      infiniteStress: true,
     )
       ..klass = EntityClass.random()
       ..base.roll()
@@ -117,15 +118,15 @@ class Entity extends _Base
 
 class _Base {
   final String name;
-  final bool player;
   final EntityRace race;
+  final bool infiniteStress;
   EntityClass? klass;
   int level = 1;
 
   _Base({
     required this.name,
     required this.race,
-    required this.player,
+    required this.infiniteStress,
   });
 }
 
@@ -283,11 +284,11 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
     );
   }
 
-  bool hasStress(int x) => !player || (stress + x) <= stressCap;
+  bool hasStress(int x) => infiniteStress || (stress + x) <= stressCap;
   bool alreadyReserved(Bonus bonus) => _reserved.keys.contains(bonus);
 
   void addStress(int x) {
-    if (player) {
+    if (!infiniteStress) {
       _stress += x;
     }
   }
@@ -298,9 +299,7 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
   }
 
   void reserveStressFor(Bonus bonus, int amount) {
-    if (player) {
-      _reserved[bonus] = amount;
-    }
+    _reserved[bonus] = amount;
   }
 }
 
