@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:math';
 
 import 'package:dungeons/game/entity.dart';
@@ -11,12 +10,10 @@ import 'package:dungeons/game/weapon_attack.dart';
 class Combat {
   final Entity player;
   final Entity enemy;
-  Queue<Entity> _queue = Queue();
+  final Set<Entity> _played = {};
   int _round = 1;
 
-  Combat(this.player, this.enemy) {
-    resetQueue();
-  }
+  Combat(this.player, this.enemy);
 
   factory Combat.withPlayer(Entity player) {
     player
@@ -26,23 +23,34 @@ class Combat {
     return Combat(player, player.rollEnemy());
   }
 
-  void resetQueue() {
-    _queue = Queue.from([_faster, _otherOf(_faster)]);
+  int compareSpeed(Entity a, Entity b) {
+    final i = a.compareSpeed(b);
+    if (i == 0) {
+      return isPlayer(a) ? -1 : 1;
+    }
+    return i;
+  }
+
+  List<Entity> get turnOrder {
+    return <Entity>[player, enemy]..sort(compareSpeed);
+  }
+
+  List<Entity> get notPlayed {
+    return turnOrder..removeWhere(_played.contains);
   }
 
   bool get ended => player.dead || enemy.dead;
   bool get won => ended && enemy.dead;
   bool get lost => ended && player.dead;
 
-  bool get newRound => _queue.isEmpty;
+  bool get newRound => _played.isEmpty;
   int get round => _round;
 
-  Entity get current => _queue.first;
-  Entity get next => _queue.length == 2 ? _queue.last : _faster;
+  Entity get current => notPlayed.first;
+  Entity get next => notPlayed.length == 2 ? notPlayed.last : turnOrder.first;
 
   bool isPlayer(Entity e) => e == player;
 
-  Entity get _faster => (player.compareSpeed(enemy) > 0) ? enemy : player;
   Entity get _other => _otherOf(current);
   Entity _otherOf(Entity e) => isPlayer(e) ? enemy : player;
 
@@ -104,10 +112,10 @@ class Combat {
   }
 
   void nextTurn() {
-    _queue.removeFirst();
-    if (newRound) {
+    _played.add(notPlayed.first);
+    if (notPlayed.isEmpty) {
+      _played.clear();
       ++_round;
-      resetQueue();
     }
   }
 
