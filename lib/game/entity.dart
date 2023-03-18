@@ -85,7 +85,7 @@ class Entity extends _Base
       ..base.roll()
       ..levelUpTo(rollEnemyLevel())
       ..spendAllPoints()
-      ..rollGear();
+      ..gear = rollGear();
   }
 
   int rollEnemyLevel() => const Deviate(2, 0).from(level).withMin(1).roll();
