@@ -2,14 +2,15 @@ import 'dart:math';
 
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_class.dart';
+import 'package:dungeons/game/party.dart';
 import 'package:dungeons/game/smite.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 
 class Combat {
-  final Entity player;
-  final Entity enemy;
+  final Party player;
+  final Party enemy;
   final Set<Entity> _played = {};
   int _round = 1;
 
@@ -20,7 +21,10 @@ class Combat {
       ..resetHp()
       ..clearStress()
       ..clearSpellBonuses();
-    return Combat(player, player.rollEnemy());
+    return Combat(
+      Party.single(player),
+      Party.single(player.rollEnemy()),
+    );
   }
 
   int compareSpeed(Entity a, Entity b) {
@@ -31,17 +35,22 @@ class Combat {
     return i;
   }
 
-  List<Entity> get turnOrder {
-    return <Entity>[player, enemy]..sort(compareSpeed);
+  List<Entity> get participants {
+    return <Entity>[...player.list, ...enemy.list];
   }
 
-  List<Entity> get notPlayed {
-    return turnOrder..removeWhere(_played.contains);
+  List<Entity> get alive {
+    return <Entity>[
+      for (final entity in participants)
+        if (entity.alive) entity,
+    ];
   }
 
-  bool get ended => player.dead || enemy.dead;
-  bool get won => ended && enemy.dead;
-  bool get lost => ended && player.dead;
+  List<Entity> get turnOrder => alive..sort(compareSpeed);
+  List<Entity> get notPlayed => turnOrder..removeWhere(_played.contains);
+
+  bool get won => player.isAlive && enemy.isDead;
+  bool get lost => player.isDead;
 
   bool get newRound => _played.isEmpty;
   int get round => _round;
@@ -49,10 +58,12 @@ class Combat {
   Entity get current => notPlayed.first;
   Entity get next => notPlayed.length == 2 ? notPlayed.last : turnOrder.first;
 
-  bool isPlayer(Entity e) => e == player;
+  PartyXpGain get xpGain => player.xpGain(enemy);
+  Entity? get hasExtraPoints => player.hasExtraPoints;
 
-  Entity get _other => _otherOf(current);
-  Entity _otherOf(Entity e) => isPlayer(e) ? enemy : player;
+  Entity enemyOf(Entity entity) => alive.firstWhere((e) => e != entity);
+
+  bool isPlayer(Entity entity) => player.hasEntity(entity);
 
   bool maybe() => Random().nextBool();
 
@@ -70,6 +81,8 @@ class Combat {
         return _mageAction;
     }
   }
+
+  Entity get _other => enemyOf(current);
 
   CombatAction get _clericAction {
     if (!current.hasSpellBonus(Spell.bless)) {
@@ -118,16 +131,6 @@ class Combat {
       ++_round;
     }
   }
-
-  int get xpGain => player.xpGain(enemy);
-
-  bool canGainXp() => player.alive && enemy.dead;
-
-  void addXp() {
-    player.xp += xpGain;
-  }
-
-  bool canLevelUp() => player.canLevelUpWith(xpGain);
 }
 
 class CombatAction {

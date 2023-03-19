@@ -14,7 +14,7 @@ class CombatButtons extends StatelessWidget {
   final VoidCallback onEnemyAction;
   final VoidCallback onWin;
   final VoidCallback onLose;
-  final ValueCallback<EntityAttributeId> onAttributePoint;
+  final void Function(EntityAttributeId, Entity) onAttributePoint;
 
   const CombatButtons(
     this.combat, {
@@ -29,12 +29,14 @@ class CombatButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (combat.player.extraPoints > 0) {
-      return AttributeSelect(onChosen: onAttributePoint);
+    if (combat.hasExtraPoints != null) {
+      return AttributeSelect(
+        onChosen: (id) => onAttributePoint(id, combat.hasExtraPoints!),
+      );
     }
     if (combat.won) {
       return Button(
-        text: combat.canLevelUp() ? 'Level Up' : 'Next',
+        text: combat.xpGain.canLevelUp ? 'Level Up' : 'Next',
         onClick: onWin,
       );
     }
@@ -42,7 +44,7 @@ class CombatButtons extends StatelessWidget {
       return Button(text: 'End', onClick: onLose);
     }
     if (combat.isPlayer(turn)) {
-      return ActionSelect(turn, combat.enemy, onChosen: onPlayerAction);
+      return ActionSelect(turn, combat.enemyOf(turn), onChosen: onPlayerAction);
     }
     return Button(text: 'Next', onClick: onEnemyAction);
   }

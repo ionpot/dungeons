@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/party.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell_cast.dart';
+import 'package:dungeons/game/text.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/dice.dart';
@@ -116,9 +118,10 @@ class Log {
     file.writeln('Round $round');
   }
 
-  void xpGain(Combat combat) {
-    file.writeln('${combat.player} gains ${combat.xpGain} XP'
-        '${combat.canLevelUp() ? ', and levels up' : ''}.');
+  void xpGain(PartyXpGain xpGain) {
+    for (final entry in xpGain.map.entries) {
+      file.writeln(xpGainText(entry.key, entry.value));
+    }
   }
 
   String _percentRoll(PercentValueRoll roll, {bool critical = false}) {

@@ -38,11 +38,11 @@ class _CombatScreenState extends State<CombatScreen> {
         children: [
           Row(
             children: [
-              SizedBox(
-                width: 300,
-                child: EntityStats(_combat.player, player: true),
-              ),
-              EntityStats(_combat.enemy, player: false),
+              for (final entity in _combat.participants)
+                SizedBox(
+                  width: 300,
+                  child: EntityStats(entity, player: _combat.isPlayer(entity)),
+                ),
             ],
           ),
           Wrap(
@@ -68,16 +68,15 @@ class _CombatScreenState extends State<CombatScreen> {
   }
 
   Combat get _combat => widget.combat;
-  Entity get _player => _combat.player;
   Log get _log => widget.log..ln();
 
   void _onStart() {
-    _log
-      ..file.writeln('New combat')
-      ..ln()
-      ..entity(_combat.player, player: true)
-      ..ln()
-      ..entity(_combat.enemy, player: false);
+    _log.file.writeln('New combat');
+    for (final entity in _combat.participants) {
+      _log
+        ..ln()
+        ..entity(entity, player: _combat.isPlayer(entity));
+    }
   }
 
   void _onAction(CombatAction? action) {
@@ -96,22 +95,22 @@ class _CombatScreenState extends State<CombatScreen> {
     _log.combatTurn(_turn!);
   }
 
-  void _onAttributePoint(EntityAttributeId id) {
+  void _onAttributePoint(EntityAttributeId id, Entity entity) {
     setState(() {
-      _player.spendPointTo(id);
+      entity.spendPointTo(id);
     });
-    if (_player.extraPoints == 0 && _combat.won) {
+    if (_combat.hasExtraPoints == null && _combat.won) {
       return widget.onWin();
     }
   }
 
   void _onWin() {
-    widget.log.xpGain(_combat);
+    final xpGain = _combat.xpGain;
+    widget.log.xpGain(xpGain);
     setState(() {
-      _combat.addXp();
-      _player.tryLevelUp();
+      xpGain.apply();
     });
-    if (_player.extraPoints == 0) {
+    if (_combat.hasExtraPoints == null) {
       return widget.onWin();
     }
   }

@@ -1,6 +1,8 @@
 import 'package:dungeons/game/combat.dart';
 import 'package:dungeons/game/entity.dart';
+import 'package:dungeons/game/party.dart';
 import 'package:dungeons/game/spell_cast.dart';
+import 'package:dungeons/game/text.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
 import 'package:dungeons/utility/dice.dart';
@@ -25,9 +27,8 @@ class CombatDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final points = combat.player.extraPoints;
-    if (points > 0) {
-      return _points(points);
+    if (combat.hasExtraPoints != null) {
+      return _points(combat.hasExtraPoints!.extraPoints);
     }
     if (turn != null) {
       return _combatTurn(turn!);
@@ -43,7 +44,7 @@ class CombatDisplay extends StatelessWidget {
       lines: TextLines([
         if (turn.weaponTurn != null) _weaponTurn(turn.weaponTurn!),
         if (turn.spellTurn != null) _spellTurn(turn.spellTurn!),
-        if (combat.canGainXp()) _xpText(combat.xpGain),
+        if (combat.won) _xpText(combat.xpGain),
       ]),
     );
   }
@@ -171,10 +172,11 @@ class CombatDisplay extends StatelessWidget {
     return '';
   }
 
-  Widget _xpText(int xp) {
-    final player = combat.player;
-    return Text('$player gains $xp XP'
-        '${player.canLevelUpWith(xp) ? ', and levels up' : ''}.');
+  Widget _xpText(PartyXpGain xpGain) {
+    return TextLines([
+      for (final entry in xpGain.map.entries)
+        Text(xpGainText(entry.key, entry.value)),
+    ]);
   }
 
   Widget _points(int points) {
