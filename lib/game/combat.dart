@@ -56,7 +56,7 @@ class Combat {
   int get round => _round;
 
   Entity get current => notPlayed.first;
-  Entity get next => notPlayed.length == 2 ? notPlayed.last : turnOrder.first;
+  Entity get next => notPlayed.length > 1 ? notPlayed[1] : turnOrder.first;
 
   PartyXpGain get xpGain => player.xpGain(enemy);
   Entity? get hasExtraPoints => player.hasExtraPoints;
