@@ -1,6 +1,6 @@
 import 'package:dungeons/game/effect.dart';
 import 'package:dungeons/utility/multiplier.dart';
-import 'package:dungeons/utility/pick_random.dart';
+import 'package:dungeons/utility/random.dart';
 
 enum Armor {
   leather(text: 'Leather', value: 10, dodge: Multiplier(0.5)),

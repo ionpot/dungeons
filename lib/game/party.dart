@@ -12,14 +12,49 @@ class PartyPosition {
 
   const PartyPosition(this.line, this.slot);
 
+  bool get isCenter => slot == PartySlot.center;
+
   @override
   int get hashCode => Object.hash(line, slot);
 
   @override
-  bool operator ==(Object other) => hashCode == other.hashCode;
+  bool operator ==(Object other) {
+    return hashCode == other.hashCode;
+  }
 }
 
-class Party {
+class PartyMember {
+  final PartyPosition position;
+  final Entity entity;
+
+  const PartyMember(this.position, this.entity);
+
+  @override
+  int get hashCode => Object.hash(position, entity);
+
+  @override
+  bool operator ==(Object other) {
+    return hashCode == other.hashCode;
+  }
+
+  @override
+  String toString() => entity.toString();
+}
+
+class PartyMemberIterator implements Iterator<PartyMember> {
+  final Iterator<MapEntry<PartyPosition, Entity>> iterator;
+
+  PartyMemberIterator(this.iterator);
+
+  @override
+  PartyMember get current =>
+      PartyMember(iterator.current.key, iterator.current.value);
+
+  @override
+  bool moveNext() => iterator.moveNext();
+}
+
+class Party extends Iterable<PartyMember> {
   final Map<PartyPosition, Entity> members;
 
   const Party(this.members);
@@ -30,48 +65,117 @@ class Party {
     });
   }
 
-  Iterable<Entity> get list => members.values;
+  Iterable<PartyMember> get aliveMembers {
+    return where((member) => member.entity.alive);
+  }
 
-  bool get isAlive => list.any((entity) => entity.alive);
-  bool get isDead => list.every((entity) => entity.dead);
+  bool get isAlive => aliveMembers.isNotEmpty;
+  bool get isDead => aliveMembers.isEmpty;
 
-  bool hasEntity(Entity entity) => list.contains(entity);
-
-  int get highestLevel =>
-      list.fold(0, (highest, entity) => max(highest, entity.level));
-
-  Entity get highestLeveled =>
-      list.firstWhere((entity) => entity.level == highestLevel);
-
-  Entity? get hasExtraPoints {
-    for (final entity in list) {
-      if (entity.extraPoints > 0) {
-        return entity;
+  PartyMember? findMember(Entity entity) {
+    for (final member in this) {
+      if (member.entity == entity) {
+        return member;
       }
     }
     return null;
   }
 
-  PartyXpGain xpGain(Party other) {
-    return PartyXpGain({
-      for (final entity in list)
-        if (entity.alive) entity: entity.xpGain(other.highestLeveled),
-    });
+  int get highestLevel =>
+      fold(0, (highest, member) => max(highest, member.entity.level));
+
+  PartyMember get highestLevelMember =>
+      firstWhere((member) => member.entity.level == highestLevel);
+
+  bool lineOccupied(PartyLine line) {
+    for (final member in this) {
+      if (member.position.line == line) {
+        if (member.entity.alive) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
+
+  PartyLine? get meleeLine {
+    for (final line in PartyLine.values) {
+      if (lineOccupied(line)) {
+        return line;
+      }
+    }
+    return null;
+  }
+
+  bool canMeleeEnemy(PartyPosition position) {
+    if (position.line == PartyLine.back) {
+      if (lineOccupied(PartyLine.front)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  List<PartyMember> membersInLine(PartyLine line) {
+    return [
+      for (final member in this)
+        if (member.position.line == line) member,
+    ];
+  }
+
+  List<PartyMember> adjacentAllies(PartyPosition position) {
+    return [];
+  }
+
+  List<PartyMember> adjacentEnemies(PartyPosition position) {
+    final line = meleeLine;
+    if (line == null) {
+      return [];
+    }
+    final members = membersInLine(line);
+    if (position.isCenter) {
+      return members;
+    }
+    if (members.length > 1) {
+      members.removeWhere(
+        (member) => member.position.slot == position.slot,
+      );
+    }
+    return members;
+  }
+
+  @override
+  Iterator<PartyMember> get iterator =>
+      PartyMemberIterator(members.entries.iterator);
 }
 
-class PartyXpGain {
-  final Map<Entity, int> map;
+class PartyXpGain extends Iterable<PartyMember> {
+  final Party won;
+  final Party lost;
 
-  const PartyXpGain(this.map);
+  const PartyXpGain({required this.won, required this.lost});
 
-  bool get canLevelUp =>
-      map.entries.any((entry) => entry.key.canLevelUpWith(entry.value));
+  bool get canLevelUp {
+    return any((member) {
+      return member.entity.canLevelUpWith(amount(member));
+    });
+  }
+
+  int amount(PartyMember member) {
+    return lost.fold(
+      0,
+      (total, other) => total + member.entity.xpGain(other.entity),
+    );
+  }
 
   void apply() {
-    for (final entry in map.entries) {
-      entry.key.xp += entry.value;
-      entry.key.tryLevelUp();
+    for (final member in this) {
+      member.entity.addXp(amount(member));
     }
+  }
+
+  @override
+  Iterator<PartyMember> get iterator {
+    return won.aliveMembers.iterator;
   }
 }

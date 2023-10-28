@@ -1,6 +1,6 @@
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/weapon.dart';
-import 'package:dungeons/utility/pick_random.dart';
+import 'package:dungeons/utility/random.dart';
 
 enum EntityClass {
   warrior(

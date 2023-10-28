@@ -1,4 +1,5 @@
 import 'package:dungeons/widget/button.dart';
+import 'package:dungeons/widget/clickable.dart';
 import 'package:flutter/widgets.dart';
 
 class RadioButton extends StatelessWidget {
@@ -19,12 +20,17 @@ class RadioButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Button(
       text: text,
-      active: chosen,
-      clickable: !chosen,
-      enabled: enabled,
+      state: _state,
       onClick: () {
         if (!chosen) onChosen();
       },
     );
+  }
+
+  ClickableState get _state {
+    if (chosen) {
+      return ClickableState.active;
+    }
+    return enabled ? ClickableState.enabled : ClickableState.disabled;
   }
 }

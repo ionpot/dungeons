@@ -13,11 +13,8 @@ class IntBonusPlainText extends Text {
 }
 
 class IntBonusText extends IntBonusPlainText {
-  IntBonusText(value, {super.key, TextStyle? style})
-      : super(
-          value,
-          style: TextStyle(color: intColor(value)).merge(style),
-        );
+  IntBonusText(super.value, {super.key, TextStyle? style})
+      : super(style: TextStyle(color: intColor(value)).merge(style));
 }
 
 class IntBonusTable extends StatelessWidget {

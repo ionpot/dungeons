@@ -1,4 +1,5 @@
 import 'package:dungeons/game/effect.dart';
+import 'package:dungeons/game/grid_range.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
@@ -9,7 +10,7 @@ enum Spell {
     source: Source.radiant,
     stress: 2,
     reserveStress: true,
-    selfCast: true,
+    range: GridRange.ally,
     effect: Effect(
       maxWeaponDamage: true,
       resistChance: Percent(4),
@@ -19,13 +20,14 @@ enum Spell {
     text: 'Heal',
     source: Source.radiant,
     stress: 2,
+    range: GridRange.ally,
     heals: Dice(1, 6, bonus: 4),
-    selfCast: true,
   ),
   lightningBolt(
     text: 'Lightning Bolt',
     source: Source.lightning,
     stress: 3,
+    range: GridRange.any,
     damage: Dice(3, 10),
     requiresLevel: 5,
   ),
@@ -33,6 +35,7 @@ enum Spell {
     text: 'Magic Missile',
     source: Source.astral,
     stress: 2,
+    range: GridRange.any,
     autoHit: true,
     damage: Dice(3, 4),
   ),
@@ -40,9 +43,10 @@ enum Spell {
     text: 'Ray of Frost',
     source: Source.cold,
     stress: 2,
+    range: GridRange.any,
     damage: Dice(2, 8),
     effect: Effect(initiative: -2),
-    effectText: 'is slowed',
+    slows: true,
     stacks: true,
   );
 
@@ -52,12 +56,12 @@ enum Spell {
   final bool reserveStress;
   final int requiresLevel;
   final bool autoHit;
-  final bool selfCast;
   final bool stacks;
   final Dice? damage;
   final Dice? heals;
   final Effect? effect;
-  final String? effectText;
+  final bool slows;
+  final GridRange? range;
 
   const Spell({
     required this.text,
@@ -66,12 +70,12 @@ enum Spell {
     this.reserveStress = false,
     this.requiresLevel = 1,
     this.autoHit = false,
-    this.selfCast = false,
+    this.slows = false,
     this.stacks = false,
     this.damage,
     this.heals,
     this.effect,
-    this.effectText,
+    this.range,
   });
 
   @override

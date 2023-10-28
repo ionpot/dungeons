@@ -1,5 +1,6 @@
 import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/bonuses.dart';
+import 'package:dungeons/game/combat_action.dart';
 import 'package:dungeons/game/critical_hit.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/feat.dart';
@@ -10,8 +11,9 @@ import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
 
-class WeaponAttack {
+class WeaponAttack implements ActionParameters {
   final Entity attacker;
+  @override
   final Entity target;
   final bool smite;
   final bool useOffHand;
@@ -22,6 +24,9 @@ class WeaponAttack {
     this.smite = false,
     this.useOffHand = false,
   });
+
+  @override
+  Entity get actor => attacker;
 
   TwoWeaponAttack? get twoWeaponAttack =>
       useOffHand ? TwoWeaponAttack(attacker, target) : null;
@@ -35,7 +40,8 @@ class WeaponAttack {
   DiceValue get weaponDamage => attacker.weaponDamage!;
   Source get source => smite ? Smite.source : Source.physical;
 
-  WeaponAttackResult roll() {
+  @override
+  WeaponAttackResult toResult() {
     return WeaponAttackResult(
       attackRoll: rollHitChance(),
       dodgeRoll: dodgeChance.roll(),
@@ -47,6 +53,7 @@ class WeaponAttack {
     );
   }
 
+  @override
   void apply(WeaponAttackResult result) {
     if (smite) {
       attacker.addStress(Smite.stressCost);
@@ -58,9 +65,17 @@ class WeaponAttack {
       target.takeDamage(result.damageDone);
     }
   }
+
+  @override
+  WeaponAttackResult downcast(ActionResult result) {
+    if (result is WeaponAttackResult) {
+      return result;
+    }
+    throw ArgumentError.value(result, "result");
+  }
 }
 
-class WeaponAttackResult {
+class WeaponAttackResult implements ActionResult {
   final PercentValueRoll attackRoll;
   final PercentValueRoll dodgeRoll;
   final DiceRollValue damageRoll;
@@ -106,17 +121,9 @@ class WeaponAttackResult {
   bool get dodged => rolledDodge && dodgeRoll.success;
   bool get didDamage => !deflected && !dodged;
   int get damageDone => damageRoll.total;
-}
 
-class WeaponAttackTurn {
-  final WeaponAttack attack;
-  final WeaponAttackResult result;
-
-  const WeaponAttackTurn(this.attack, this.result);
-
-  void apply() {
-    attack.apply(result);
-  }
+  @override
+  bool get isSlowed => false;
 }
 
 class TwoWeaponAttack {
@@ -126,9 +133,6 @@ class TwoWeaponAttack {
   static const int stressCost = 1;
   static const int hitRolls = 2;
   static const Percent hitBonus = Percent(-15);
-
-  static bool hasStress(Entity entity) => entity.hasStress(stressCost);
-  static bool possible(Entity entity) => entity.gear.hasTwoWeapons;
 
   const TwoWeaponAttack(this.attacker, this.target);
 

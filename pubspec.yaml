@@ -50,9 +50,16 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - image/combat_bg.png
+    - image/portrait_cleric.png
+    - image/portrait_current.png
+    - image/portrait_mage.png
+    - image/portrait_orc.png
+    - image/portrait_target_enemy.png
+    - image/portrait_target_friendly.png
+    - image/portrait_trickster.png
+    - image/portrait_warrior.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

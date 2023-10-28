@@ -1,22 +1,20 @@
-import 'package:dungeons/game/combat.dart';
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/smite.dart';
-import 'package:dungeons/game/weapon_attack.dart';
+import 'package:dungeons/game/combat_action.dart';
+import 'package:dungeons/game/combat_grid.dart';
 import 'package:dungeons/utility/value_callback.dart';
 import 'package:dungeons/widget/button.dart';
 import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/spaced.dart';
 import 'package:flutter/widgets.dart';
 
-class ActionSelect extends StatelessWidget {
-  final Entity player;
-  final Entity enemy;
-  final ValueCallback<CombatAction> onChosen;
+typedef OnChosen = ValueCallback<CombatAction>;
 
-  const ActionSelect(
-    this.player,
-    this.enemy, {
+class ActionSelect extends StatelessWidget {
+  final GridMember actor;
+  final OnChosen onChosen;
+
+  const ActionSelect({
     super.key,
+    required this.actor,
     required this.onChosen,
   });
 
@@ -25,40 +23,37 @@ class ActionSelect extends StatelessWidget {
     return buildSpacedColumn(
       spacing: 12,
       children: [
-        Button(
-          text: 'Attack',
-          onClick: () => onChosen(CombatAction(target: enemy)),
-        ),
-        if (TwoWeaponAttack.possible(player))
-          Button(
-            text: 'Two-Weapon Attack',
-            enabled: TwoWeaponAttack.hasStress(player),
-            onClick: () {
-              onChosen(CombatAction(target: enemy, useOffHand: true));
-            },
-          ),
-        if (Smite.possible(player))
-          Button(
-            text: 'Smite Attack',
-            color: sourceColor(Smite.source),
-            enabled: Smite.hasStress(player),
-            onClick: () {
-              onChosen(CombatAction(target: enemy, smite: true));
-            },
-          ),
-        for (final spell in player.knownSpells)
-          Button(
-            text: spell.text,
-            enabled: player.canCast(spell),
-            onClick: () {
-              onChosen(CombatAction(
-                castSpell: spell,
-                target: spell.selfCast ? player : enemy,
-              ));
-            },
-            color: sourceColor(spell.source),
-          ),
+        for (final action in _actions)
+          if (action.visible) action.toButton(onChosen),
+        for (final spell in actor.entity.knownSpells)
+          _Action(spell.text, CastSpell(actor, spell)).toButton(onChosen),
       ],
+    );
+  }
+
+  List<_Action> get _actions {
+    return [
+      _Action('Attack', UseWeapon(actor)),
+      _Action('Two-Weapon Attack', UseTwoWeapons(actor)),
+      _Action('Smite Attack', UseSmite(actor)),
+    ];
+  }
+}
+
+class _Action {
+  final String name;
+  final CombatAction action;
+
+  const _Action(this.name, this.action);
+
+  bool get visible => action.canUse;
+
+  Button toButton(OnChosen onChosen) {
+    return Button(
+      text: name,
+      enabled: action.hasResources,
+      color: sourceColor(action.source),
+      onClick: () => onChosen(action),
     );
   }
 }

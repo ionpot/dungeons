@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dungeons/game/combat.dart';
+import 'package:dungeons/game/combat_action.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/party.dart';
 import 'package:dungeons/game/source.dart';
@@ -46,14 +46,23 @@ class Log {
       ..writeln('Off-hand: ${offHand ?? 'None'}');
   }
 
-  void combatTurn(CombatTurn turn) {
-    ifdef(turn.weaponTurn, weaponTurn);
-    ifdef(turn.spellTurn, spellTurn);
+  void party(Party party, {bool player = false}) {
+    for (final member in party) {
+      entity(member.entity, player: player);
+      ln();
+    }
   }
 
-  void weaponTurn(WeaponAttackTurn turn) {
-    final attack = turn.attack;
-    final result = turn.result;
+  void actionResult(ActionParameters parameters, ActionResult result) {
+    if (parameters is WeaponAttack) {
+      return weaponAttack(parameters, parameters.downcast(result));
+    }
+    if (parameters is SpellCast) {
+      return spellCast(parameters, parameters.downcast(result));
+    }
+  }
+
+  void weaponAttack(WeaponAttack attack, WeaponAttackResult result) {
     final attacker = attack.attacker;
     final target = attack.target;
     final weapon = attacker.weapon!.text;
@@ -84,12 +93,10 @@ class Log {
     }
     _writeDiceRolls(weapon, result.damageRoll);
     _writeDamage(target, result.damageRoll, attack.source);
-    _writeStatus(target);
+    _writeStatus(target, result);
   }
 
-  void spellTurn(SpellCastTurn turn) {
-    final cast = turn.cast;
-    final result = turn.result;
+  void spellCast(SpellCast cast, SpellCastResult result) {
     final caster = cast.caster;
     final target = cast.target;
     final spell = cast.spell;
@@ -110,7 +117,7 @@ class Log {
     ifdef(result.damageRoll, (damageRoll) {
       _writeDiceRolls(spell.text, damageRoll);
       _writeDamage(target, damageRoll, spell.source);
-      _writeStatus(target, turn);
+      _writeStatus(target, result);
     });
   }
 
@@ -119,8 +126,9 @@ class Log {
   }
 
   void xpGain(PartyXpGain xpGain) {
-    for (final entry in xpGain.map.entries) {
-      file.writeln(xpGainText(entry.key, entry.value));
+    for (final member in xpGain) {
+      final xp = xpGain.amount(member);
+      file.writeln(xpGainText(member.entity, xp));
     }
   }
 
@@ -143,14 +151,11 @@ class Log {
     }
   }
 
-  void _writeStatus(Entity target, [SpellCastTurn? spellTurn]) {
+  void _writeStatus(Entity target, ActionResult result) {
     if (target.dead) {
-      file.write(', and dies');
-    } else if (spellTurn?.result.didEffect == true) {
-      ifdef(spellTurn?.cast.spell.effectText, (text) {
-        file.write(', and $text');
-      });
+      file.writeln(', and dies.');
+    } else if (result.isSlowed) {
+      file.writeln(', and is slowed.');
     }
-    file.writeln('.');
   }
 }

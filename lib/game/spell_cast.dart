@@ -1,4 +1,5 @@
 import 'package:dungeons/game/bonus.dart';
+import 'package:dungeons/game/combat_action.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/spell.dart';
@@ -6,12 +7,16 @@ import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/if.dart';
 
-class SpellCast {
+class SpellCast implements ActionParameters {
   final Spell spell;
   final Entity caster;
+  @override
   final Entity target;
 
   const SpellCast(this.spell, {required this.caster, required this.target});
+
+  @override
+  Entity get actor => caster;
 
   bool get self => caster == target;
 
@@ -20,17 +25,28 @@ class SpellCast {
 
   Source get source => spell.source;
 
-  SpellCastResult roll() {
+  @override
+  SpellCastResult toResult() {
     return SpellCastResult(
       autoHit: spell.autoHit,
       canEffect: target.canSpellEffect(spell),
       resistRoll: resistChance.roll(),
       targetSelf: self,
+      slows: spell.slows,
       damageRoll: _roll(spell.damage),
       healRoll: _roll(spell.heals),
     );
   }
 
+  @override
+  SpellCastResult downcast(ActionResult result) {
+    if (result is SpellCastResult) {
+      return result;
+    }
+    throw ArgumentError.value(result, "result");
+  }
+
+  @override
   void apply(SpellCastResult result) {
     if (spell.reserveStress) {
       caster.reserveStressFor(Bonus(spell: spell), spell.stress);
@@ -49,11 +65,12 @@ class SpellCast {
   }
 }
 
-class SpellCastResult {
+class SpellCastResult implements ActionResult {
   final bool autoHit;
   final bool canEffect;
   final PercentValueRoll resistRoll;
   final bool targetSelf;
+  final bool slows;
   final DiceRollValue? damageRoll;
   final DiceRollValue? healRoll;
 
@@ -62,6 +79,7 @@ class SpellCastResult {
     required this.canEffect,
     required this.resistRoll,
     required this.targetSelf,
+    required this.slows,
     this.damageRoll,
     this.healRoll,
   });
@@ -73,15 +91,7 @@ class SpellCastResult {
 
   int? get damageDone => didHit ? damageRoll?.total : null;
   int? get healDone => didHit ? healRoll?.total : null;
-}
 
-class SpellCastTurn {
-  final SpellCast cast;
-  final SpellCastResult result;
-
-  const SpellCastTurn(this.cast, this.result);
-
-  void apply() {
-    cast.apply(result);
-  }
+  @override
+  bool get isSlowed => didEffect && slows;
 }

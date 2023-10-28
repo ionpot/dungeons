@@ -1,5 +1,5 @@
 import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/pick_random.dart';
+import 'package:dungeons/utility/random.dart';
 
 enum EntityAttributeId {
   strength(text: 'Strength'),

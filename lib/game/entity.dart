@@ -12,9 +12,8 @@ import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spellbook.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon.dart';
-import 'package:dungeons/utility/deviate.dart';
 import 'package:dungeons/utility/percent.dart';
-import 'package:dungeons/utility/pick_random.dart';
+import 'package:dungeons/utility/random.dart';
 
 class Entity extends _Base
     with
@@ -73,37 +72,6 @@ class Entity extends _Base
 
   FeatSlot? sneakAttack(Entity target) {
     return initiative > target.initiative ? feats.find(Feat.sneakAttack) : null;
-  }
-
-  Entity rollEnemy() {
-    return Entity(
-      name: 'Enemy',
-      race: EntityRace.orc,
-      infiniteStress: true,
-    )
-      ..klass = EntityClass.random()
-      ..base.roll()
-      ..levelUpTo(rollEnemyLevel())
-      ..spendAllPoints()
-      ..gear = rollGear();
-  }
-
-  int rollEnemyLevel() => const Deviate(2, 0).from(level).withMin(1).roll();
-
-  Gear rollGear() {
-    final mainHand = Weapon.randomMainHand();
-    return Gear(
-      body: Armor.random(),
-      mainHand: mainHand,
-      offHand: mainHand.canOneHand ? rollOffHand() : null,
-    );
-  }
-
-  Weapon? rollOffHand() {
-    if (klass == null) {
-      return null;
-    }
-    return pickRandomMaybe(Weapon.forOffHand.where(klass!.canOffHand));
   }
 
   int xpGain(Entity e) {
@@ -314,22 +282,25 @@ mixin _Levels on _Base, _Attributes {
 
   bool canLevelUp() => canLevelUpWith(0);
   bool canLevelUpWith(int x) => (xp + x) >= _xpForLevelUp;
+  bool get hasPointsToSpend => _extraPoints > 0;
+
+  void addXp(int amount) {
+    xp += amount;
+    while (canLevelUp()) {
+      xp -= _xpForLevelUp;
+      levelUp();
+    }
+  }
 
   void levelUp() {
-    xp -= _xpForLevelUp;
     ++level;
     _extraPoints += 2;
   }
 
   void levelUpTo(int max) {
     while (level < max) {
-      xp += _xpForLevelUp;
       levelUp();
     }
-  }
-
-  void tryLevelUp() {
-    if (canLevelUp()) levelUp();
   }
 
   void spendPointTo(EntityAttributeId id) {
@@ -338,7 +309,7 @@ mixin _Levels on _Base, _Attributes {
   }
 
   void spendAllPoints() {
-    while (extraPoints > 0) {
+    while (hasPointsToSpend) {
       spendPointTo(EntityAttributeId.random());
     }
   }
