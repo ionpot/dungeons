@@ -14,18 +14,20 @@ class BonusEntry<T extends Object> {
   final Bonus bonus;
   final T value;
 
-  BonusEntry(MapEntry<Bonus, T> entry)
-      : bonus = entry.key,
-        value = entry.value;
+  const BonusEntry(this.bonus, this.value);
+
+  factory BonusEntry.fromMapEntry(MapEntry<Bonus, T> entry) {
+    return BonusEntry(entry.key, entry.value);
+  }
 }
 
 class BonusEntryIterator<T extends Object> implements Iterator<BonusEntry<T>> {
   final Iterator<MapEntry<Bonus, T>> iterator;
 
-  BonusEntryIterator(this.iterator);
+  const BonusEntryIterator(this.iterator);
 
   @override
-  BonusEntry<T> get current => BonusEntry(iterator.current);
+  BonusEntry<T> get current => BonusEntry.fromMapEntry(iterator.current);
 
   @override
   bool moveNext() => iterator.moveNext();
