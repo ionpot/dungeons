@@ -34,6 +34,14 @@ class BonusEntryIterator<T extends Object> implements Iterator<BonusEntry<T>> {
 }
 
 typedef GetValue<T extends Object> = T? Function(Effect);
+typedef FilterBonus = bool Function(Bonus);
+
+BonusMap<T> _filterBonus<T extends Object>(FilterBonus allow, BonusMap<T> map) {
+  return Map.fromEntries([
+    for (final entry in map.entries)
+      if (allow(entry.key)) entry,
+  ]);
+}
 
 class Bonuses extends Iterable<BonusEntry<Effect>> {
   final EffectMap contents;
@@ -102,6 +110,10 @@ class IntBonuses extends Iterable<BonusEntry<int>> {
 
   int get total => contents.values.fold(0, (sum, value) => sum + value);
 
+  IntBonuses filter(FilterBonus allow) {
+    return IntBonuses(_filterBonus(allow, contents));
+  }
+
   IntBonuses operator +(IntBonuses other) {
     final map = Map.of(contents);
     for (final entry in other) {
@@ -135,6 +147,10 @@ class PercentBonuses extends Iterable<BonusEntry<Percent>> {
     );
   }
 
+  PercentBonuses filter(FilterBonus allow) {
+    return PercentBonuses(_filterBonus(allow, contents));
+  }
+
   @override
   Iterator<BonusEntry<Percent>> get iterator =>
       BonusEntryIterator(contents.entries.iterator);
@@ -150,6 +166,10 @@ class MultiplierBonuses extends Iterable<BonusEntry<Multiplier>> {
       const Multiplier(0),
       (sum, value) => sum + value,
     );
+  }
+
+  MultiplierBonuses filter(FilterBonus allow) {
+    return MultiplierBonuses(_filterBonus(allow, contents));
   }
 
   @override

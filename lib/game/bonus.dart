@@ -1,12 +1,19 @@
 import 'package:dungeons/game/armor.dart';
 import 'package:dungeons/game/critical_hit.dart';
 import 'package:dungeons/game/entity_attr.dart';
+import 'package:dungeons/game/entity_class.dart';
+import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/feat.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/weapon.dart';
 
 class Bonus {
-  final EntityAttributeId? attribute;
+  final bool attributes;
+  final int level;
+  final EntityAttributeId? baseAttribute;
+  final EntityAttributeId? bonusAttribute;
+  final EntityRace? race;
+  final EntityClass? klass;
   final CriticalHit? criticalHit;
   final Weapon? weapon;
   final Weapon? offHand;
@@ -15,7 +22,12 @@ class Bonus {
   final Spell? spell;
 
   const Bonus({
-    this.attribute,
+    this.attributes = false,
+    this.level = 0,
+    this.baseAttribute,
+    this.bonusAttribute,
+    this.race,
+    this.klass,
     this.criticalHit,
     this.weapon,
     this.offHand,
@@ -24,7 +36,17 @@ class Bonus {
     this.spell,
   });
 
-  factory Bonus.agility() => const Bonus(attribute: EntityAttributeId.agility);
+  static const baseStrength = Bonus(baseAttribute: EntityAttributeId.strength);
+  static const bonusStrength =
+      Bonus(bonusAttribute: EntityAttributeId.strength);
+  static const baseAgility = Bonus(baseAttribute: EntityAttributeId.agility);
+  static const bonusAgility = Bonus(bonusAttribute: EntityAttributeId.agility);
+  static const bonusIntellect =
+      Bonus(bonusAttribute: EntityAttributeId.intellect);
+
+  factory Bonus.attributes() {
+    return const Bonus(attributes: true);
+  }
 
   bool get stacks => spell?.stacks == true;
 
@@ -34,7 +56,12 @@ class Bonus {
   @override
   int get hashCode {
     return Object.hash(
-      attribute,
+      attributes,
+      level,
+      baseAttribute,
+      bonusAttribute,
+      race,
+      klass,
       criticalHit,
       weapon,
       offHand,
@@ -46,10 +73,26 @@ class Bonus {
 
   @override
   String toString() {
+    if (attributes) {
+      return 'Attributes';
+    }
+    if (baseAttribute != null) {
+      return 'Base ${baseAttribute!.text}';
+    }
+    if (bonusAttribute != null) {
+      return '${bonusAttribute!.text} Bonus';
+    }
+    if (level > 0 && klass != null) {
+      return '$klass Lv$level';
+    }
+    if (level > 0) {
+      return 'Level $level';
+    }
     if (offHand != null) {
       return '$offHand (off-hand)';
     }
-    return attribute?.text ??
+    return race?.text ??
+        klass?.text ??
         criticalHit?.toString() ??
         weapon?.text ??
         armor?.text ??

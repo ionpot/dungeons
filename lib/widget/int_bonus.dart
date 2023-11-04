@@ -2,6 +2,7 @@ import 'package:dungeons/game/bonuses.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/widget/colors.dart';
+import 'package:dungeons/widget/compare_bonus.dart';
 import 'package:dungeons/widget/empty.dart';
 import 'package:dungeons/widget/tooltip_region.dart';
 import 'package:dungeons/widget/value_table.dart';
@@ -32,9 +33,15 @@ class IntBonusTable extends StatelessWidget {
   }
 
   static List<ValueRow> bonusRows(IntBonuses bonuses) {
+    final ls = bonuses.toList()..sort((a, b) => compareBonus(a.bonus, b.bonus));
     return [
-      for (final entry in bonuses)
-        ValueRow(Text('${entry.bonus}'), IntBonusText(entry.value)),
+      for (final entry in ls)
+        ValueRow(
+          Text('${entry.bonus}'),
+          ignoreBonusColor(entry.bonus)
+              ? IntBonusPlainText(entry.value)
+              : IntBonusText(entry.value),
+        ),
     ];
   }
 }
@@ -54,7 +61,10 @@ class IntBonusWidget extends StatelessWidget {
     }
     return TooltipRegion(
       tooltip: IntBonusTable(value),
-      child: IntBonusText(value.total, style: style),
+      child: IntBonusPlainText(
+        value.total,
+        style: TextStyle(color: intValueColor(value)).merge(style),
+      ),
     );
   }
 }

@@ -2,6 +2,9 @@ import 'package:dungeons/utility/multiplier.dart';
 import 'package:dungeons/utility/percent.dart';
 
 class Effect {
+  final int? strength;
+  final int? agility;
+  final int? intellect;
   final int? armor;
   final int? damage;
   final int? initiative;
@@ -13,6 +16,9 @@ class Effect {
   final bool maxWeaponDamage;
 
   const Effect({
+    this.strength,
+    this.agility,
+    this.intellect,
     this.armor,
     this.damage,
     this.initiative,
@@ -26,6 +32,9 @@ class Effect {
 
   Effect operator +(Effect other) {
     return Effect(
+      strength: _addInt(strength, other.strength),
+      agility: _addInt(agility, other.agility),
+      intellect: _addInt(intellect, other.intellect),
       armor: _addInt(armor, other.armor),
       damage: _addInt(damage, other.damage),
       initiative: _addInt(initiative, other.initiative),

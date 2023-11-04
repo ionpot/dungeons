@@ -1,3 +1,4 @@
+import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/source.dart';
 import 'package:dungeons/game/value.dart';
@@ -25,9 +26,18 @@ Color? intColor(int i) {
 Color? doubleColor(double x) => intColor(x.sign.round());
 
 Color? percentColor(Percent percent) => intColor(percent.value);
-Color? intValueColor(IntValue value) => intColor(value.bonus);
-Color? percentValueColor(PercentValue value) =>
-    percentColor(value.multiplierBonus) ?? percentColor(value.bonus);
+Color? intValueColor(IntValue value) {
+  return intColor(value.bonuses.filter(bonusHasColor).total);
+}
+
+Color? percentValueColor(PercentValue value) {
+  value = PercentValue(
+    base: value.base,
+    bonuses: value.bonuses.filter(bonusHasColor),
+    multipliers: value.multipliers.filter(bonusHasColor),
+  );
+  return percentColor(value.multiplierBonus) ?? percentColor(value.bonus);
+}
 
 Color? hpColor(Entity e) => e.alive ? null : red;
 
@@ -44,4 +54,12 @@ Color? sourceColor(Source source) {
     case Source.radiant:
       return yellow;
   }
+}
+
+bool bonusHasColor(Bonus bonus) => !ignoreBonusColor(bonus);
+
+bool ignoreBonusColor(Bonus bonus) {
+  return bonus.baseAttribute != null ||
+      bonus.level > 0 ||
+      bonus.klass != null;
 }

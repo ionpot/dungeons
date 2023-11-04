@@ -15,17 +15,18 @@ class IntValueText extends Text {
 
 class IntValueTable extends StatelessWidget {
   final IntValue value;
+  final String? baseText;
 
-  const IntValueTable(this.value, {super.key});
+  const IntValueTable(this.value, {super.key, this.baseText});
 
   @override
   Widget build(BuildContext context) {
-    return ValueTable(rows(value));
+    return ValueTable(rows(value, base: baseText));
   }
 
-  static List<ValueRow> rows(IntValue value) {
+  static List<ValueRow> rows(IntValue value, {String? base}) {
     return [
-      ValueRow(const Text('Base'), Text('${value.base}')),
+      ValueRow(Text(base ?? 'Base'), Text('${value.base}')),
       ...IntBonusTable.bonusRows(value.bonuses),
     ];
   }
@@ -33,9 +34,10 @@ class IntValueTable extends StatelessWidget {
 
 class IntValueWidget extends StatelessWidget {
   final IntValue value;
+  final String? baseText;
   final TextStyle? style;
 
-  const IntValueWidget(this.value, {super.key, this.style});
+  const IntValueWidget(this.value, {super.key, this.baseText, this.style});
 
   Widget get text => IntValueText(value, style: style);
 
@@ -45,7 +47,7 @@ class IntValueWidget extends StatelessWidget {
       return text;
     }
     return TooltipRegion(
-      tooltip: IntValueTable(value),
+      tooltip: IntValueTable(value, baseText: baseText),
       child: text,
     );
   }

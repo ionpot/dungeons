@@ -18,7 +18,7 @@ class EntityStats extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextLines([
       Text('${entity.name}, ${entity.race} ${entity.klass} Lv${entity.level}'),
-      Text('${entity.attributes}'),
+      _attributes,
       _hpStressXp,
       _initiative,
       _dodgeResist,
@@ -27,6 +27,19 @@ class EntityStats extends StatelessWidget {
       _damage,
       _offHand,
     ]);
+  }
+
+  Widget get _attributes {
+    return Text.rich(
+      TextSpan(children: [
+        const TextSpan(text: 'Str '),
+        IntValueSpan(entity.strength),
+        const TextSpan(text: ', Agi '),
+        IntValueSpan(entity.agility),
+        const TextSpan(text: ', Int '),
+        IntValueSpan(entity.intellect),
+      ]),
+    );
   }
 
   Widget get _armor {
