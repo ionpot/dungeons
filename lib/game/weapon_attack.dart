@@ -94,19 +94,19 @@ class WeaponAttackResult implements ActionResult {
   }) {
     if (twoWeaponAttack != null && attackRoll.allSuccess) {
       damageRoll.diceBonuses.add(
-        Bonus(offHand: twoWeaponAttack!.offHand),
+        GearBonus.offHand(twoWeaponAttack!.offHand),
         twoWeaponAttack!.damageDice.roll(),
       );
     }
     if (isCriticalHit) {
       damageRoll.diceBonuses.add(
-        Bonus(criticalHit: criticalHit),
+        CriticalHitBonus(criticalHit),
         criticalHit.dice.roll(),
       );
     }
     if (sneakAttack != null) {
       damageRoll.diceBonuses.add(
-        Bonus(feat: sneakAttack),
+        FeatBonus(sneakAttack),
         sneakAttack.value.dice!.roll(),
       );
     }
@@ -143,7 +143,7 @@ class TwoWeaponAttack {
   PercentValue get hitChance {
     final base = attacker.hitChanceBase(target);
     final map = attacker.hitChanceBonusMap;
-    map[Bonus(offHand: offHand)] = hitBonus;
+    map[GearBonus.offHand(offHand)] = hitBonus;
     return PercentValue(base: base, bonuses: PercentBonuses(map));
   }
 

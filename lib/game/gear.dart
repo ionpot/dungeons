@@ -17,11 +17,11 @@ class Gear {
 
   Bonuses get bonuses {
     return Bonuses({
-      if (body != null) Bonus(armor: body): body!.effect,
-      if (shield != null) Bonus(offHand: shield): Effect(armor: shield!.armor),
+      if (body != null) GearBonus.armor(body!): body!.effect,
+      if (shield != null) GearBonus.offHand(shield!): Effect(armor: shield!.armor),
       if (mainHand != null && weaponValue!.effect != null)
-        Bonus(weapon: mainHand): weaponValue!.effect!,
-      if (offHand != null) Bonus(offHand: offHand): Weapon.offHandPenalty,
+        GearBonus.mainHand(mainHand!): weaponValue!.effect!,
+      if (offHand != null) GearBonus.offHand(offHand!): Weapon.offHandPenalty,
     });
   }
 
@@ -61,4 +61,10 @@ class Gear {
       offHand: other.offHand ?? offHand,
     );
   }
+
+  @override
+  int get hashCode => Object.hash(mainHand, offHand, body);
+
+  @override
+  bool operator ==(Object other) => hashCode == other.hashCode;
 }

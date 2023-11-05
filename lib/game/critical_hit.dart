@@ -8,5 +8,11 @@ class CriticalHit {
   const CriticalHit({required this.chance, required this.dice});
 
   @override
+  int get hashCode => Object.hash(chance, dice);
+
+  @override
+  bool operator ==(Object other) => hashCode == other.hashCode;
+
+  @override
   String toString() => 'Critical hit';
 }

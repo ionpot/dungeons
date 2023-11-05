@@ -59,7 +59,8 @@ Color? sourceColor(Source source) {
 bool bonusHasColor(Bonus bonus) => !ignoreBonusColor(bonus);
 
 bool ignoreBonusColor(Bonus bonus) {
-  return bonus.baseAttribute != null ||
-      bonus.level > 0 ||
-      bonus.klass != null;
+  if (bonus is AttributeBonus) {
+    return bonus.base;
+  }
+  return bonus is ClassBonus;
 }

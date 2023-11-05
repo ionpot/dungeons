@@ -49,7 +49,7 @@ class SpellCast implements ActionParameters {
   @override
   void apply(SpellCastResult result) {
     if (spell.reserveStress) {
-      caster.reserveStressFor(Bonus(spell: spell), spell.stress);
+      caster.reserveStressFor(SpellBonus(spell), spell.stress);
     } else {
       caster.addStress(spell.stress);
     }

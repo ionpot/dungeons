@@ -13,7 +13,7 @@ class EntityFeats extends Iterable<FeatSlot> {
   Bonuses get bonuses {
     return Bonuses({
       for (final slot in this)
-        if (slot.value.effect != null) Bonus(feat: slot): slot.value.effect!,
+        if (slot.value.effect != null) FeatBonus(slot): slot.value.effect!,
     });
   }
 
@@ -21,7 +21,7 @@ class EntityFeats extends Iterable<FeatSlot> {
     return IntBonuses({
       for (final slot in this)
         if (slot.value.reserveStress != null)
-          Bonus(feat: slot): slot.value.reserveStress!,
+          FeatBonus(slot): slot.value.reserveStress!,
     });
   }
 

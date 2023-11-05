@@ -53,8 +53,8 @@ class Entity extends _Base
 
   BonusMap<Percent> get hitChanceBonusMap {
     return {
-      Bonus.baseAgility: Percent(agility.base ~/ 4),
-      Bonus.bonusAgility: Percent(agility.bonus ~/ 4),
+      AttributeBonus.baseAgility: Percent(agility.base ~/ 4),
+      AttributeBonus.bonusAgility: Percent(agility.bonus ~/ 4),
       ..._allBonuses.toMap((e) => e.hitChance),
     };
   }
@@ -141,7 +141,7 @@ mixin _Bonuses on _Base, _Gear, _Feats {
 
   Bonuses get _raceBonuses {
     return Bonuses({
-      if (race.effect != null) Bonus(race: race): race.effect!,
+      if (race.effect != null) RaceBonus(race): race.effect!,
     });
   }
 
@@ -154,10 +154,10 @@ mixin _Bonuses on _Base, _Gear, _Feats {
   }
 
   void addSpellBonus(Spell spell) {
-    _extraBonuses.add(Bonus(spell: spell), spell.effect);
+    _extraBonuses.add(SpellBonus(spell), spell.effect);
   }
 
-  bool hasSpellBonus(Spell spell) => _allBonuses.has(Bonus(spell: spell));
+  bool hasSpellBonus(Spell spell) => _allBonuses.has(SpellBonus(spell));
   bool canSpellEffect(Spell spell) {
     if (spell.effect == null) return false;
     if (spell.stacks) return true;
@@ -202,7 +202,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
     return IntValue(
       base: (agility.base + intellect.base) ~/ 2,
       bonuses: IntBonuses({
-        if (bonus != 0) Bonus.attributes(): bonus,
+        if (bonus != 0) AttributeBonus.baseAttributes: bonus,
         ..._allBonuses.toMap((e) => e.initiative),
       }),
     );
@@ -212,7 +212,8 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
     return PercentValue(
       base: Percent(agility.base),
       bonuses: PercentBonuses({
-        if (agility.bonus != 0) Bonus.bonusAgility: Percent(agility.bonus),
+        if (agility.bonus != 0)
+          AttributeBonus.bonusAgility: Percent(agility.bonus),
       }),
       multipliers: MultiplierBonuses(
         _allBonuses.toMap((e) => e.dodgeMultiplier),
@@ -225,7 +226,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
       base: Percent(intellect.base),
       bonuses: PercentBonuses({
         if (intellect.bonus != 0)
-          Bonus.bonusIntellect: Percent(intellect.bonus),
+          AttributeBonus.bonusIntellect: Percent(intellect.bonus),
         ..._allBonuses.toMap((e) => e.resistChance),
       }),
     );
@@ -238,8 +239,8 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
     return DiceValue(
       base: weapon.dice,
       intBonuses: IntBonuses({
-        Bonus.baseStrength: strength.base ~/ 2,
-        if (bonus != 0) Bonus.bonusStrength: bonus,
+        AttributeBonus.baseStrength: strength.base ~/ 2,
+        if (bonus != 0) AttributeBonus.bonusStrength: bonus,
         ..._allBonuses.toMap((e) => e.damage),
       }),
       max: _allBonuses.findBonus((e) => e.maxWeaponDamage),
@@ -257,8 +258,8 @@ mixin _Health on _Base, _Attributes, _Levels {
     return IntValue(
       base: strength.base,
       bonuses: IntBonuses({
-        if (classBonus != 0) Bonus(klass: klass, level: level): classBonus,
-        if (strength.bonus != 0) Bonus.bonusStrength: strength.bonus,
+        if (classBonus != 0) ClassBonus(klass, level): classBonus,
+        if (strength.bonus != 0) AttributeBonus.bonusStrength: strength.bonus,
       }),
     );
   }
@@ -295,8 +296,8 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
     return IntValue(
       base: intellect.base + level,
       bonuses: IntBonuses({
-        Bonus(level: level): level,
-        if (intellect.bonus != 0) Bonus.bonusIntellect: intellect.bonus,
+        ClassBonus.level(level): level,
+        if (intellect.bonus != 0) AttributeBonus.bonusIntellect: intellect.bonus,
         ..._allBonuses.toMap((e) => e.stressCap),
       }),
     );
@@ -369,7 +370,7 @@ mixin _Levels on _Base, _Attributes {
 
 mixin _Spells on _Base, _Stress {
   bool canCast(Spell spell) {
-    return hasStress(spell.stress) && !alreadyReserved(Bonus(spell: spell));
+    return hasStress(spell.stress) && !alreadyReserved(SpellBonus(spell));
   }
 
   SpellBook get spellbook => SpellBook(klass?.spells ?? {});

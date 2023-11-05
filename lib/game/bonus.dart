@@ -4,102 +4,148 @@ import 'package:dungeons/game/entity_attr.dart';
 import 'package:dungeons/game/entity_class.dart';
 import 'package:dungeons/game/entity_race.dart';
 import 'package:dungeons/game/feat.dart';
+import 'package:dungeons/game/gear.dart';
 import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/weapon.dart';
 
-class Bonus {
-  final bool attributes;
-  final int level;
-  final EntityAttributeId? baseAttribute;
-  final EntityAttributeId? bonusAttribute;
-  final EntityRace? race;
-  final EntityClass? klass;
-  final CriticalHit? criticalHit;
-  final Weapon? weapon;
-  final Weapon? offHand;
-  final Armor? armor;
-  final FeatSlot? feat;
-  final Spell? spell;
+abstract class Bonus {
+  const Bonus();
 
-  const Bonus({
-    this.attributes = false,
-    this.level = 0,
-    this.baseAttribute,
-    this.bonusAttribute,
-    this.race,
-    this.klass,
-    this.criticalHit,
-    this.weapon,
-    this.offHand,
-    this.armor,
-    this.feat,
-    this.spell,
-  });
+  bool get stacks => false;
 
-  static const baseStrength = Bonus(baseAttribute: EntityAttributeId.strength);
-  static const bonusStrength =
-      Bonus(bonusAttribute: EntityAttributeId.strength);
-  static const baseAgility = Bonus(baseAttribute: EntityAttributeId.agility);
-  static const bonusAgility = Bonus(bonusAttribute: EntityAttributeId.agility);
-  static const bonusIntellect =
-      Bonus(bonusAttribute: EntityAttributeId.intellect);
-
-  factory Bonus.attributes() {
-    return const Bonus(attributes: true);
-  }
-
-  bool get stacks => spell?.stacks == true;
+  int get hash;
+  String get text;
 
   @override
-  bool operator ==(dynamic other) => hashCode == other.hashCode;
+  int get hashCode => hash;
 
   @override
-  int get hashCode {
-    return Object.hash(
-      attributes,
-      level,
-      baseAttribute,
-      bonusAttribute,
-      race,
-      klass,
-      criticalHit,
-      weapon,
-      offHand,
-      armor,
-      feat,
-      spell,
-    );
-  }
+  bool operator ==(Object other) => hashCode == other.hashCode;
 
   @override
-  String toString() {
-    if (attributes) {
-      return 'Attributes';
-    }
-    if (baseAttribute != null) {
-      return 'Base ${baseAttribute!.text}';
-    }
-    if (bonusAttribute != null) {
-      return '${bonusAttribute!.text} Bonus';
-    }
-    if (level > 0 && klass != null) {
-      return '$klass Lv$level';
-    }
-    if (level > 0) {
-      return 'Level $level';
-    }
-    if (offHand != null) {
-      return '$offHand (off-hand)';
-    }
-    return race?.text ??
-        klass?.text ??
-        criticalHit?.toString() ??
-        weapon?.text ??
-        armor?.text ??
-        feat?.toString() ??
-        spell?.text ??
-        '';
-  }
+  String toString() => text;
 }
 
 typedef BonusMap<T extends Object> = Map<Bonus, T>;
+
+class AttributeBonus extends Bonus {
+  final EntityAttributeId? attribute;
+  final bool base;
+
+  const AttributeBonus(this.attribute, {required this.base});
+
+  static const baseAttributes = AttributeBonus(null, base: true);
+  static const baseStrength =
+      AttributeBonus(EntityAttributeId.strength, base: true);
+  static const bonusStrength =
+      AttributeBonus(EntityAttributeId.strength, base: false);
+  static const baseAgility =
+      AttributeBonus(EntityAttributeId.agility, base: true);
+  static const bonusAgility =
+      AttributeBonus(EntityAttributeId.agility, base: false);
+  static const baseIntellect =
+      AttributeBonus(EntityAttributeId.intellect, base: true);
+  static const bonusIntellect =
+      AttributeBonus(EntityAttributeId.intellect, base: false);
+
+  @override
+  int get hash => Object.hash(attribute, base);
+
+  @override
+  String get text {
+    if (attribute == null) {
+      return 'Attributes';
+    }
+    return base ? 'Base $attribute' : '$attribute Bonus';
+  }
+}
+
+class ClassBonus extends Bonus {
+  final EntityClass? klass;
+  final int level;
+
+  const ClassBonus(this.klass, this.level);
+  const ClassBonus.level(int level) : this(null, level);
+
+  @override
+  int get hash => Object.hash(klass, level);
+
+  @override
+  String get text {
+    if (klass == null) {
+      return 'Level $level';
+    }
+    return '$klass Lv$level';
+  }
+}
+
+class RaceBonus extends Bonus {
+  final EntityRace race;
+
+  const RaceBonus(this.race);
+
+  @override
+  int get hash => race.hashCode;
+
+  @override
+  String get text => race.toString();
+}
+
+class CriticalHitBonus extends Bonus {
+  final CriticalHit hit;
+
+  const CriticalHitBonus(this.hit);
+
+  @override
+  int get hash => hit.hashCode;
+
+  @override
+  String get text => hit.toString();
+}
+
+class GearBonus extends Bonus {
+  final Gear gear;
+
+  const GearBonus(this.gear);
+  GearBonus.mainHand(Weapon weapon) : this(Gear(mainHand: weapon));
+  GearBonus.offHand(Weapon weapon) : this(Gear(offHand: weapon));
+  GearBonus.armor(Armor armor) : this(Gear(body: armor));
+
+  @override
+  int get hash => gear.hashCode;
+
+  @override
+  String get text {
+    if (gear.offHand != null) {
+      return '${gear.offHand} (off-hand)';
+    }
+    return (gear.mainHand ?? gear.body ?? '').toString();
+  }
+}
+
+class FeatBonus extends Bonus {
+  final FeatSlot feat;
+
+  const FeatBonus(this.feat);
+
+  @override
+  int get hash => feat.hashCode;
+
+  @override
+  String get text => feat.toString();
+}
+
+class SpellBonus extends Bonus {
+  final Spell spell;
+
+  const SpellBonus(this.spell);
+
+  @override
+  bool get stacks => spell.stacks;
+
+  @override
+  int get hash => spell.hashCode;
+
+  @override
+  String get text => spell.toString();
+}
