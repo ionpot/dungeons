@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dungeons/widget/colors.dart';
 import 'package:dungeons/widget/empty.dart';
 import 'package:flutter/widgets.dart';
@@ -49,7 +51,7 @@ class _TooltipWidgetState extends State<TooltipWidget> {
   }
 
   @override
-  void didUpdateWidget(covariant TooltipWidget oldWidget) {
+  void didUpdateWidget(TooltipWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     oldWidget.tooltip.contentNotifier.removeListener(onContentChange);
     contentNotifier.addListener(onContentChange);
@@ -66,15 +68,8 @@ class _TooltipWidgetState extends State<TooltipWidget> {
     if (content == null) {
       return const Empty();
     }
-    return ValueListenableBuilder<Offset>(
-      valueListenable: widget.tooltip.offsetNotifier,
-      builder: (BuildContext context, Offset offset, Widget? child) {
-        return Positioned(
-          left: offset.dx - 40,
-          top: offset.dy + 20,
-          child: child!,
-        );
-      },
+    return CustomSingleChildLayout(
+      delegate: TooltipOffsetDelegate(widget.tooltip.offsetNotifier),
       child: _wrapper(content!),
     );
   }
@@ -89,5 +84,31 @@ class _TooltipWidgetState extends State<TooltipWidget> {
       ),
       child: child,
     );
+  }
+}
+
+class TooltipOffsetDelegate extends SingleChildLayoutDelegate {
+  final ValueNotifier<Offset> offset;
+
+  const TooltipOffsetDelegate(this.offset) : super(relayout: offset);
+
+  @override
+  Offset getPositionForChild(Size size, Size childSize) {
+    const base = Offset(20, 0);
+    final content = Size(
+      base.dx + childSize.width,
+      base.dy + childSize.height,
+    );
+    final o = offset.value;
+    final w = o.dx + content.width;
+    final dw = (w - size.width > 0) ? content.width : -base.dx;
+    final h = o.dy + content.height;
+    final dh = max(0, h - size.height);
+    return Offset(o.dx - dw, o.dy - dh);
+  }
+
+  @override
+  bool shouldRelayout(TooltipOffsetDelegate oldDelegate) {
+    return offset.value != oldDelegate.offset.value;
   }
 }
