@@ -198,11 +198,10 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
   }
 
   IntValue get initiative {
-    final bonus = (agility.bonus + intellect.bonus) ~/ 2;
     return IntValue(
       base: (agility.base + intellect.base) ~/ 2,
       bonuses: IntBonuses({
-        if (bonus != 0) AttributeBonus.baseAttributes: bonus,
+        AttributeBonus.baseAttributes: (agility.bonus + intellect.bonus) ~/ 2,
         ..._allBonuses.toMap((e) => e.initiative),
       }),
     );
@@ -212,8 +211,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
     return PercentValue(
       base: Percent(agility.base),
       bonuses: PercentBonuses({
-        if (agility.bonus != 0)
-          AttributeBonus.bonusAgility: Percent(agility.bonus),
+        AttributeBonus.bonusAgility: Percent(agility.bonus),
       }),
       multipliers: MultiplierBonuses(
         _allBonuses.toMap((e) => e.dodgeMultiplier),
@@ -225,8 +223,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
     return PercentValue(
       base: Percent(intellect.base),
       bonuses: PercentBonuses({
-        if (intellect.bonus != 0)
-          AttributeBonus.bonusIntellect: Percent(intellect.bonus),
+        AttributeBonus.bonusIntellect: Percent(intellect.bonus),
         ..._allBonuses.toMap((e) => e.resistChance),
       }),
     );
@@ -235,12 +232,11 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
   DiceValue? get weaponDamage {
     final weapon = gear.weaponValue;
     if (weapon == null) return null;
-    final bonus = strength.bonus ~/ 2;
     return DiceValue(
       base: weapon.dice,
       intBonuses: IntBonuses({
         AttributeBonus.baseStrength: strength.base ~/ 2,
-        if (bonus != 0) AttributeBonus.bonusStrength: bonus,
+        AttributeBonus.bonusStrength: strength.bonus ~/ 2,
         ..._allBonuses.toMap((e) => e.damage),
       }),
       max: _allBonuses.findBonus((e) => e.maxWeaponDamage),
@@ -254,12 +250,11 @@ mixin _Health on _Base, _Attributes, _Levels {
   int _damageTaken = 0;
 
   IntValue get totalHp {
-    final classBonus = level * (klass?.hpBonus ?? 0);
     return IntValue(
       base: strength.base,
       bonuses: IntBonuses({
-        if (classBonus != 0) ClassBonus(klass, level): classBonus,
-        if (strength.bonus != 0) AttributeBonus.bonusStrength: strength.bonus,
+        ClassBonus(klass, level): level * (klass?.hpBonus ?? 0),
+        AttributeBonus.bonusStrength: strength.bonus,
       }),
     );
   }
@@ -297,7 +292,7 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
       base: intellect.base + level,
       bonuses: IntBonuses({
         ClassBonus.level(level): level,
-        if (intellect.bonus != 0) AttributeBonus.bonusIntellect: intellect.bonus,
+        AttributeBonus.bonusIntellect: intellect.bonus,
         ..._allBonuses.toMap((e) => e.stressCap),
       }),
     );

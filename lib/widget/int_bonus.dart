@@ -36,12 +36,13 @@ class IntBonusTable extends StatelessWidget {
     final ls = bonuses.toList()..sort((a, b) => compareBonus(a.bonus, b.bonus));
     return [
       for (final entry in ls)
-        ValueRow(
-          Text('${entry.bonus}'),
-          ignoreBonusColor(entry.bonus)
-              ? IntBonusPlainText(entry.value)
-              : IntBonusText(entry.value),
-        ),
+        if (entry.value != 0)
+          ValueRow(
+            Text('${entry.bonus}'),
+            ignoreBonusColor(entry.bonus)
+                ? IntBonusPlainText(entry.value)
+                : IntBonusText(entry.value),
+          ),
     ];
   }
 }

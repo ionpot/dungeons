@@ -1,8 +1,11 @@
+import 'package:dungeons/game/bonuses.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/utility/bonus_text.dart';
 import 'package:dungeons/utility/fixed_string.dart';
+import 'package:dungeons/utility/multiplier.dart';
 import 'package:dungeons/utility/percent.dart';
 import 'package:dungeons/widget/colors.dart';
+import 'package:dungeons/widget/compare_bonus.dart';
 import 'package:dungeons/widget/tooltip_region.dart';
 import 'package:dungeons/widget/value_table.dart';
 import 'package:flutter/widgets.dart';
@@ -32,15 +35,16 @@ class PercentValueTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueTable([
       ValueRow(const Text('Base'), Text('${value.base}')),
-      for (final entry in value.bonuses)
-        ValueRow(
-          Text('${entry.bonus}'),
-          PercentBonusText(
-            entry.value,
-            noColor: ignoreBonusColor(entry.bonus),
+      for (final entry in _bonuses)
+        if (!entry.value.zero)
+          ValueRow(
+            Text('${entry.bonus}'),
+            PercentBonusText(
+              entry.value,
+              noColor: ignoreBonusColor(entry.bonus),
+            ),
           ),
-        ),
-      for (final entry in value.multipliers)
+      for (final entry in _multipliers)
         ValueRow(
           Text('${entry.bonus} (${entry.value})'),
           _DoubleBonusText(
@@ -49,6 +53,20 @@ class PercentValueTable extends StatelessWidget {
           ),
         ),
     ]);
+  }
+
+  Iterable<BonusEntry<Percent>> get _bonuses {
+    return [
+      for (final entry in value.bonuses)
+        if (!entry.value.zero) entry
+    ]..sort((a, b) => compareBonus(a.bonus, b.bonus));
+  }
+
+  Iterable<BonusEntry<Multiplier>> get _multipliers {
+    return [
+      for (final entry in value.multipliers)
+        if (!entry.value.zero) entry
+    ]..sort((a, b) => compareBonus(a.bonus, b.bonus));
   }
 }
 
