@@ -58,14 +58,14 @@ class PercentValueTable extends StatelessWidget {
   Iterable<BonusEntry<Percent>> get _bonuses {
     return [
       for (final entry in value.bonuses)
-        if (!entry.value.zero) entry
+        if (!entry.value.zero) entry,
     ]..sort((a, b) => compareBonus(a.bonus, b.bonus));
   }
 
   Iterable<BonusEntry<Multiplier>> get _multipliers {
     return [
       for (final entry in value.multipliers)
-        if (!entry.value.zero) entry
+        if (!entry.value.zero) entry,
     ]..sort((a, b) => compareBonus(a.bonus, b.bonus));
   }
 }
