@@ -49,27 +49,6 @@ class StartingPhase extends CombatPhase {
   Widget get display => Text('$first goes first.');
 }
 
-class NewTurnPhase extends CombatPhase {
-  final Combat combat;
-  final VoidCallback onNext;
-
-  const NewTurnPhase(
-    this.combat, {
-    required this.onNext,
-  });
-
-  @override
-  Widget get buttons => Button(text: 'Next', onClick: onNext);
-
-  @override
-  Widget get display {
-    return TitledTextLines.plain(
-      title: combatTurnTitle(combat),
-      lines: ['${combat.current} goes next.'],
-    );
-  }
-}
-
 class ActionSelectPhase extends CombatPhase {
   final GridMember actor;
   final ValueCallback<CombatAction> onChosen;

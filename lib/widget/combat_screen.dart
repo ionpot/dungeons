@@ -91,19 +91,6 @@ class _CombatScreenState extends State<CombatScreen> {
     );
   }
 
-  CombatPhase _newTurnPhase() {
-    if (_combat.newRound) {
-      _log
-        ..ln()
-        ..newRound(_combat.round);
-    }
-    _setCurrentStats();
-    return NewTurnPhase(
-      _combat,
-      onNext: _doAction,
-    );
-  }
-
   CombatPhase _actionPhase() {
     return ActionSelectPhase(
       actor: _current,
@@ -141,7 +128,13 @@ class _CombatScreenState extends State<CombatScreen> {
     setState(() {
       _combat.nextTurn();
     });
-    _setPhase(_newTurnPhase());
+    if (_combat.newRound) {
+      _log
+        ..ln()
+        ..newRound(_combat.round);
+    }
+    _setCurrentStats();
+    _doAction();
   }
 
   CombatPhase _noActionPhase() {
