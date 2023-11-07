@@ -51,6 +51,9 @@ class EntityPortrait extends StatelessWidget {
   }
 
   ClickableState get _clickableState {
+    if (entity.dead) {
+      return ClickableState.disabled;
+    }
     if (targeting == null || onMouseClick == null) {
       return ClickableState.active;
     }
