@@ -149,19 +149,14 @@ mixin _Bonuses on _Base, _Gear, _Feats {
     return _raceBonuses + gear.bonuses + feats.bonuses + _extraBonuses;
   }
 
-  void clearSpellBonuses() {
+  bool hasBonus(Bonus bonus) => _allBonuses.has(bonus);
+
+  void addEffects(Bonuses effects) {
+    _extraBonuses.addAll(effects);
+  }
+
+  void clearEffects() {
     _extraBonuses.clear();
-  }
-
-  void addSpellBonus(Spell spell) {
-    _extraBonuses.add(SpellBonus(spell), spell.effect);
-  }
-
-  bool hasSpellBonus(Spell spell) => _allBonuses.has(SpellBonus(spell));
-  bool canSpellEffect(Spell spell) {
-    if (spell.effect == null) return false;
-    if (spell.stacks) return true;
-    return !hasSpellBonus(spell);
   }
 }
 

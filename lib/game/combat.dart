@@ -17,7 +17,7 @@ class Combat {
     player
       ..resetHp()
       ..clearStress()
-      ..clearSpellBonuses();
+      ..clearEffects();
     return Combat(
       CombatGrid(
         player: Party.single(player),

@@ -46,7 +46,6 @@ enum Spell {
     range: GridRange.any,
     damage: Dice(2, 8),
     effect: Effect(initiative: -2),
-    slows: true,
     stacks: true,
   );
 
@@ -60,7 +59,6 @@ enum Spell {
   final Dice? damage;
   final Dice? heals;
   final Effect? effect;
-  final bool slows;
   final GridRange? range;
 
   const Spell({
@@ -70,7 +68,6 @@ enum Spell {
     this.reserveStress = false,
     this.requiresLevel = 1,
     this.autoHit = false,
-    this.slows = false,
     this.stacks = false,
     this.damage,
     this.heals,

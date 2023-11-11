@@ -1,9 +1,10 @@
 import 'dart:io';
 
+import 'package:dungeons/game/bonus.dart';
 import 'package:dungeons/game/combat_action.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/party.dart';
-import 'package:dungeons/game/source.dart';
+import 'package:dungeons/game/spell.dart';
 import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/text.dart';
 import 'package:dungeons/game/value.dart';
@@ -92,8 +93,7 @@ class Log {
       return;
     }
     _writeDiceRolls(weapon, result.damageRoll);
-    _writeDamage(target, result.damageRoll, attack.source);
-    _writeStatus(target, result);
+    _writeResult(result, attack);
   }
 
   void spellCast(SpellCast cast, SpellCastResult result) {
@@ -112,13 +112,11 @@ class Log {
     }
     ifdef(result.healRoll, (healRoll) {
       _writeDiceRolls(spell.text, healRoll);
-      file.writeln('$target is healed by $healRoll.');
     });
     ifdef(result.damageRoll, (damageRoll) {
       _writeDiceRolls(spell.text, damageRoll);
-      _writeDamage(target, damageRoll, spell.source);
-      _writeStatus(target, result);
     });
+    _writeResult(result, cast);
   }
 
   void newRound(int round) {
@@ -132,12 +130,32 @@ class Log {
     }
   }
 
-  String _percentRoll(PercentValueRoll roll, {bool critical = false}) {
-    return '(${roll.input}) ${roll.result.text(critical)}';
+  void _writeResult(ActionResult result, ActionParameters params) {
+    final target = params.target;
+    if (result.healingDone != 0) {
+      file.writeln('$target is healed by ${result.healingDone}.');
+      return;
+    }
+    if (result.damageDone != 0) {
+      file.write('$target takes ${result.damageDone}'
+          ' ${params.source.name} damage');
+      if (target.dead) {
+        file.write(', and dies');
+      }
+      file.writeln('.');
+    }
+    if (target.alive) {
+      for (final entry in params.effects) {
+        final text = effectText(entry.bonus);
+        if (text.isNotEmpty) {
+          file.writeln('$target $text.');
+        }
+      }
+    }
   }
 
-  void _writeDamage(Entity target, DiceRollValue damage, Source source) {
-    file.write('$target takes $damage ${source.name} damage');
+  String _percentRoll(PercentValueRoll roll, {bool critical = false}) {
+    return '(${roll.input}) ${roll.result.text(critical)}';
   }
 
   void _writeDiceRoll(String name, DiceRoll value) {
@@ -151,11 +169,12 @@ class Log {
     }
   }
 
-  void _writeStatus(Entity target, ActionResult result) {
-    if (target.dead) {
-      file.writeln(', and dies.');
-    } else if (result.isSlowed) {
-      file.writeln(', and is slowed.');
+  static String effectText(Bonus bonus) {
+    switch (bonus) {
+      case SpellBonus(spell: Spell.rayOfFrost):
+        return 'is slowed';
+      default:
+        return '';
     }
   }
 }

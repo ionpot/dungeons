@@ -1,4 +1,5 @@
 import 'package:dungeons/game/combat_action.dart';
+import 'package:dungeons/game/log.dart';
 import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
 import 'package:dungeons/game/weapon_attack.dart';
@@ -39,9 +40,10 @@ class ActionText {
       if (result.rolledDodge) _percentRoll('Dodge', result.dodgeRoll),
       if (!result.canDodge) Text('$target cannot dodge.'),
       if (result.dodged) Text('$target dodges the attack.'),
-      if (result.didDamage) ...[
+      if (result.didHit) ...[
         ..._diceRolls('${attacker.weapon}', result.damageRoll),
         _damageAndStatus(result.damageRoll),
+        if (target.alive) ..._effects,
       ],
     ];
   }
@@ -73,10 +75,12 @@ class ActionText {
       ),
       if (result.canResist) _percentRoll('Resist', result.resistRoll),
       if (result.resisted) Text('$target resists the spell.'),
-      if (result.didHit && result.damageRoll != null)
-        ..._spellDamage(result.damageRoll!, cast),
-      if (result.didHit && result.healRoll != null)
-        ..._spellHeal(result.healRoll!, cast),
+      if (result.didHit) ...[
+        if (result.damageRoll != null)
+          ..._spellDamage(result.damageRoll!, cast),
+        if (result.healRoll != null) ..._spellHeal(result.healRoll!, cast),
+        if (target.alive) ..._effects,
+      ],
     ];
   }
 
@@ -102,18 +106,18 @@ class ActionText {
     return _richText(
       '${_parameters.target} takes ',
       DamageSpan(damage, _action.source),
-      ' damage$_status.',
+      ' damage${_parameters.target.dead ? ', and dies' : ''}.',
     );
   }
 
-  String get _status {
-    if (_parameters.target.dead) {
-      return ', and dies';
-    }
-    if (_result.isSlowed) {
-      return ', and is slowed';
-    }
-    return '';
+  List<Widget> get _effects {
+    final effects = [
+      for (final entry in _parameters.effects) Log.effectText(entry.bonus),
+    ];
+    return [
+      for (final text in effects)
+        if (text.isNotEmpty) Text('${_parameters.target} $text.'),
+    ];
   }
 }
 
@@ -146,9 +150,8 @@ Widget _richText(String prefix, InlineSpan span, [String suffix = '']) {
       children: [
         TextSpan(text: prefix),
         span,
-        if (suffix != '') TextSpan(text: suffix),
+        if (suffix.isNotEmpty) TextSpan(text: suffix),
       ],
     ),
   );
 }
-

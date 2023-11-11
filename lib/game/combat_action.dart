@@ -1,3 +1,5 @@
+import 'package:dungeons/game/bonus.dart';
+import 'package:dungeons/game/bonuses.dart';
 import 'package:dungeons/game/combat_grid.dart';
 import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/entity_class.dart';
@@ -22,17 +24,41 @@ abstract class CombatAction {
 }
 
 abstract class ActionParameters {
+  const ActionParameters();
+
   Entity get actor;
   Entity get target;
+
+  int get stressCost => 0;
+  Bonus? get reserveStress => null;
+
+  Bonuses get effects => Bonuses();
+
+  Source get source => Source.physical;
 
   ActionResult toResult();
   ActionResult downcast(ActionResult result);
 
-  void apply(covariant ActionResult result);
+  void apply(covariant ActionResult result) {
+    if (result.didHit) {
+      target.takeDamage(result.damageDone);
+      target.heal(result.healingDone);
+      target.addEffects(effects);
+    }
+    if (reserveStress != null) {
+      actor.reserveStressFor(reserveStress!, stressCost);
+    } else {
+      actor.addStress(stressCost);
+    }
+  }
 }
 
 abstract class ActionResult {
-  bool get isSlowed => false; // <-- will be a StatusEffect enum
+  const ActionResult();
+
+  bool get didHit => false;
+  int get damageDone => 0;
+  int get healingDone => 0;
 }
 
 class ChosenAction {

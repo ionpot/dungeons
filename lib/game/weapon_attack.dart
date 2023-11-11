@@ -11,7 +11,7 @@ import 'package:dungeons/game/weapon.dart';
 import 'package:dungeons/utility/dice.dart';
 import 'package:dungeons/utility/percent.dart';
 
-class WeaponAttack implements ActionParameters {
+class WeaponAttack extends ActionParameters {
   final Entity attacker;
   @override
   final Entity target;
@@ -28,6 +28,17 @@ class WeaponAttack implements ActionParameters {
   @override
   Entity get actor => attacker;
 
+  @override
+  int get stressCost {
+    if (useOffHand) {
+      return TwoWeaponAttack.stressCost;
+    }
+    if (smite) {
+      return Smite.stressCost;
+    }
+    return 0;
+  }
+
   TwoWeaponAttack? get twoWeaponAttack =>
       useOffHand ? TwoWeaponAttack(attacker, target) : null;
 
@@ -38,6 +49,8 @@ class WeaponAttack implements ActionParameters {
 
   PercentValue get dodgeChance => target.dodge;
   DiceValue get weaponDamage => attacker.weaponDamage!;
+
+  @override
   Source get source => smite ? Smite.source : Source.physical;
 
   @override
@@ -54,19 +67,6 @@ class WeaponAttack implements ActionParameters {
   }
 
   @override
-  void apply(WeaponAttackResult result) {
-    if (smite) {
-      attacker.addStress(Smite.stressCost);
-    }
-    if (result.twoWeaponAttack != null) {
-      result.twoWeaponAttack!.apply();
-    }
-    if (result.didDamage) {
-      target.takeDamage(result.damageDone);
-    }
-  }
-
-  @override
   WeaponAttackResult downcast(ActionResult result) {
     if (result is WeaponAttackResult) {
       return result;
@@ -75,7 +75,7 @@ class WeaponAttack implements ActionParameters {
   }
 }
 
-class WeaponAttackResult implements ActionResult {
+class WeaponAttackResult extends ActionResult {
   final PercentValueRoll attackRoll;
   final PercentValueRoll dodgeRoll;
   final DiceRollValue damageRoll;
@@ -119,11 +119,12 @@ class WeaponAttackResult implements ActionResult {
   bool get deflected => !autoHit && attackRoll.fail;
   bool get rolledDodge => !deflected && canDodge;
   bool get dodged => rolledDodge && dodgeRoll.success;
-  bool get didDamage => !deflected && !dodged;
-  int get damageDone => damageRoll.total;
 
   @override
-  bool get isSlowed => false;
+  bool get didHit => !deflected && !dodged;
+
+  @override
+  int get damageDone => damageRoll.total;
 }
 
 class TwoWeaponAttack {
@@ -148,8 +149,4 @@ class TwoWeaponAttack {
   }
 
   PercentValueRoll rollHitChance() => hitChance.roll(hitRolls);
-
-  void apply() {
-    attacker.addStress(stressCost);
-  }
 }
