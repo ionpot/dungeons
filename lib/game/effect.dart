@@ -1,5 +1,5 @@
-import 'package:dungeons/utility/multiplier.dart';
-import 'package:dungeons/utility/percent.dart';
+import "package:dungeons/utility/multiplier.dart";
+import "package:dungeons/utility/percent.dart";
 
 class Effect {
   final int? strength;

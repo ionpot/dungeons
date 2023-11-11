@@ -1,5 +1,5 @@
-import 'package:dungeons/game/party.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/party.dart";
+import "package:flutter/widgets.dart";
 
 const double topY = 30;
 const double bottomY = 516;

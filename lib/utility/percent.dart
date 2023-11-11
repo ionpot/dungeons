@@ -1,5 +1,5 @@
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/multiplier.dart';
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/multiplier.dart";
 
 class Percent implements Comparable<Percent> {
   final int value;
@@ -30,7 +30,7 @@ class Percent implements Comparable<Percent> {
   int compareTo(Percent other) => value - other.value;
 
   @override
-  String toString() => '$value%';
+  String toString() => "$value%";
 }
 
 class PercentRoll {
@@ -54,8 +54,8 @@ class PercentRoll {
   bool get fail => chance.never || rollFail;
 
   String text(bool critical) {
-    if (chance.always) return 'Auto-success';
-    if (chance.never) return 'Auto-fail';
+    if (chance.always) return "Auto-success";
+    if (chance.never) return "Auto-fail";
     return '$roll -> ${success ? critical ? 'Critical!' : 'Success' : 'Fail'}';
   }
 

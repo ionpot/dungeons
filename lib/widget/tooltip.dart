@@ -1,8 +1,8 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:dungeons/widget/colors.dart';
-import 'package:dungeons/widget/empty.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/empty.dart";
+import "package:flutter/widgets.dart";
 
 class Tooltip {
   final contentNotifier = ValueNotifier<Widget?>(null);

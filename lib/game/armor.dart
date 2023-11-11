@@ -1,10 +1,10 @@
-import 'package:dungeons/game/effect.dart';
-import 'package:dungeons/utility/multiplier.dart';
-import 'package:dungeons/utility/random.dart';
+import "package:dungeons/game/effect.dart";
+import "package:dungeons/utility/multiplier.dart";
+import "package:dungeons/utility/random.dart";
 
 enum Armor {
-  leather(text: 'Leather', value: 10, dodge: Multiplier(0.5)),
-  scalemail(text: 'Scale Mail', value: 20, initiative: -5);
+  leather(text: "Leather", value: 10, dodge: Multiplier(0.5)),
+  scalemail(text: "Scale Mail", value: 20, initiative: -5);
 
   final int value;
   final int? initiative;

@@ -1,5 +1,5 @@
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/utility/dice.dart';
+import "package:dungeons/game/value.dart";
+import "package:dungeons/utility/dice.dart";
 
 class CriticalHit {
   final PercentValue chance;
@@ -14,5 +14,5 @@ class CriticalHit {
   bool operator ==(Object other) => hashCode == other.hashCode;
 
   @override
-  String toString() => 'Critical hit';
+  String toString() => "Critical hit";
 }

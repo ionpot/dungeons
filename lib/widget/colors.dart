@@ -1,9 +1,9 @@
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/source.dart';
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/utility/percent.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/source.dart";
+import "package:dungeons/game/value.dart";
+import "package:dungeons/utility/percent.dart";
+import "package:flutter/widgets.dart";
 
 const black = Color(0xFF000000);
 const white = Color(0xFFFFFFFF);

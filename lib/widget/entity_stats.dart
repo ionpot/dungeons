@@ -1,12 +1,12 @@
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/utility/if.dart';
-import 'package:dungeons/widget/dice_span.dart';
-import 'package:dungeons/widget/int_value.dart';
-import 'package:dungeons/widget/percent_value.dart';
-import 'package:dungeons/widget/stress.dart';
-import 'package:dungeons/widget/text_lines.dart';
-import 'package:dungeons/widget/value_span.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/utility/if.dart";
+import "package:dungeons/widget/dice_span.dart";
+import "package:dungeons/widget/int_value.dart";
+import "package:dungeons/widget/percent_value.dart";
+import "package:dungeons/widget/stress.dart";
+import "package:dungeons/widget/text_lines.dart";
+import "package:dungeons/widget/value_span.dart";
+import "package:flutter/widgets.dart";
 
 class EntityStats extends StatelessWidget {
   final Entity entity;
@@ -17,7 +17,7 @@ class EntityStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextLines([
-      Text('${entity.name}, ${entity.race} ${entity.klass} Lv${entity.level}'),
+      Text("${entity.name}, ${entity.race} ${entity.klass} Lv${entity.level}"),
       _attributes,
       _hpStressXp,
       _initiative,
@@ -32,11 +32,11 @@ class EntityStats extends StatelessWidget {
   Widget get _attributes {
     return Text.rich(
       TextSpan(children: [
-        const TextSpan(text: 'Str '),
+        const TextSpan(text: "Str "),
         IntValueSpan(entity.strength),
-        const TextSpan(text: ', Agi '),
+        const TextSpan(text: ", Agi "),
         IntValueSpan(entity.agility),
-        const TextSpan(text: ', Int '),
+        const TextSpan(text: ", Int "),
         IntValueSpan(entity.intellect),
       ]),
     );
@@ -44,22 +44,22 @@ class EntityStats extends StatelessWidget {
 
   Widget get _armor {
     return Text.rich(TextSpan(children: [
-      const TextSpan(text: 'Armor: '),
+      const TextSpan(text: "Armor: "),
       TotalArmorSpan(entity),
-      TextSpan(text: ' (${entity.armor})'),
+      TextSpan(text: " (${entity.armor})"),
     ]));
   }
 
   Widget get _hpStressXp {
     return Text.rich(
       TextSpan(children: [
-        const TextSpan(text: 'Hp '),
+        const TextSpan(text: "Hp "),
         HpSpan(entity),
         if (isPlayer)
           TextSpan(children: [
-            const TextSpan(text: ', Stress '),
+            const TextSpan(text: ", Stress "),
             StressSpan(entity),
-            TextSpan(text: ', XP ${entity.toXpString()}'),
+            TextSpan(text: ", XP ${entity.toXpString()}"),
           ]),
       ]),
     );
@@ -69,7 +69,7 @@ class EntityStats extends StatelessWidget {
     return Text.rich(
       TextSpan(
         children: [
-          const TextSpan(text: 'Initiative '),
+          const TextSpan(text: "Initiative "),
           IntValueSpan(entity.initiative),
         ],
       ),
@@ -79,22 +79,22 @@ class EntityStats extends StatelessWidget {
   Widget get _dodgeResist {
     return Text.rich(
       TextSpan(children: [
-        const TextSpan(text: 'Dodge '),
+        const TextSpan(text: "Dodge "),
         PercentValueSpan(entity.dodge),
-        const TextSpan(text: ', Resist '),
+        const TextSpan(text: ", Resist "),
         PercentValueSpan(entity.resist),
       ]),
     );
   }
 
-  Widget get _weapon => Text('Weapon: ${entity.weapon}');
+  Widget get _weapon => Text("Weapon: ${entity.weapon}");
 
   Widget get _damage {
     final damage = entity.weaponDamage;
     return Text.rich(
       TextSpan(
         children: [
-          const TextSpan(text: 'Damage: '),
+          const TextSpan(text: "Damage: "),
           if (damage != null) DiceValueWithRangeSpan(damage),
         ],
       ),
@@ -105,7 +105,7 @@ class EntityStats extends StatelessWidget {
     final weapon = ifdef(entity.gear.offHand, (offHand) {
       final armor = entity.gear.shield?.armor;
       final dice = entity.gear.offHandValue?.dice;
-      return '$offHand (${armor ?? dice})';
+      return "$offHand (${armor ?? dice})";
     });
     return Text('Off-hand: ${weapon ?? 'None'}');
   }

@@ -1,17 +1,17 @@
-import 'package:dungeons/game/armor.dart';
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/entity_class.dart';
-import 'package:dungeons/game/entity_race.dart';
-import 'package:dungeons/game/gear.dart';
-import 'package:dungeons/game/party.dart';
-import 'package:dungeons/game/weapon.dart';
-import 'package:dungeons/utility/deviate.dart';
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/percent.dart';
+import "package:dungeons/game/armor.dart";
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/entity_class.dart";
+import "package:dungeons/game/entity_race.dart";
+import "package:dungeons/game/gear.dart";
+import "package:dungeons/game/party.dart";
+import "package:dungeons/game/weapon.dart";
+import "package:dungeons/utility/deviate.dart";
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/percent.dart";
 
 Entity enemyOrc(String name, int level) {
   if (level < 1) {
-    throw ArgumentError.value(level, 'level', 'Orc level must be 1 or higher.');
+    throw ArgumentError.value(level, "level", "Orc level must be 1 or higher.");
   }
   final entity = Entity(
     name: name,
@@ -42,8 +42,8 @@ Party enemyOrcParty(int playerLevel) {
   if (playerLevel < 1) {
     throw ArgumentError.value(
       playerLevel,
-      'playerLevel',
-      'Player level must be 1 or higher.',
+      "playerLevel",
+      "Player level must be 1 or higher.",
     );
   }
   final sameLevel = playerLevel == 1 ? true : _chance(const Percent(34));
@@ -52,11 +52,11 @@ Party enemyOrcParty(int playerLevel) {
       ? playerLevel
       : const Deviate(1, 0).from(playerLevel - 1).withMin(1).roll();
   if (single) {
-    return Party.single(enemyOrc('Enemy', level()));
+    return Party.single(enemyOrc("Enemy", level()));
   }
   return Party({
-    const PartyPosition(PartyLine.front, PartySlot.left): enemyOrc('Enemy 1', level()),
-    const PartyPosition(PartyLine.front, PartySlot.right): enemyOrc('Enemy 2', level()),
+    const PartyPosition(PartyLine.front, PartySlot.left): enemyOrc("Enemy 1", level()),
+    const PartyPosition(PartyLine.front, PartySlot.right): enemyOrc("Enemy 2", level()),
   });
 }
 

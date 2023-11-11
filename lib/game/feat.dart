@@ -1,10 +1,10 @@
-import 'package:dungeons/game/effect.dart';
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/percent.dart';
+import "package:dungeons/game/effect.dart";
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/percent.dart";
 
 enum Feat {
   weaponFocus(
-    text: 'Weapon Focus',
+    text: "Weapon Focus",
     trained: FeatValue(
       effect: Effect(hitChance: Percent(2), damage: 1),
       reserveStress: 1,
@@ -19,7 +19,7 @@ enum Feat {
     ),
   ),
   sneakAttack(
-    text: 'Sneak Attack',
+    text: "Sneak Attack",
     trained: FeatValue(dice: Dice(1, 6)),
     expert: FeatValue(dice: Dice(2, 6)),
   );
@@ -48,8 +48,8 @@ enum Feat {
 }
 
 enum FeatTier {
-  trained('Trained'),
-  expert('Expert');
+  trained("Trained"),
+  expert("Expert");
 
   final String text;
 
@@ -84,5 +84,5 @@ class FeatSlot {
   int get hashCode => Object.hash(feat, tier);
 
   @override
-  String toString() => tier == FeatTier.trained ? '$feat' : '$tier $feat';
+  String toString() => tier == FeatTier.trained ? "$feat" : "$tier $feat";
 }

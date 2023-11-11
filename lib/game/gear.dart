@@ -1,8 +1,8 @@
-import 'package:dungeons/game/armor.dart';
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/game/bonuses.dart';
-import 'package:dungeons/game/effect.dart';
-import 'package:dungeons/game/weapon.dart';
+import "package:dungeons/game/armor.dart";
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/effect.dart";
+import "package:dungeons/game/weapon.dart";
 
 class Gear {
   Armor? body;

@@ -1,4 +1,4 @@
-import 'package:dungeons/utility/fixed_string.dart';
+import "package:dungeons/utility/fixed_string.dart";
 
 class Multiplier {
   final double value;
@@ -13,7 +13,7 @@ class Multiplier {
 
   @override
   String toString() {
-    final sign = value < 0 ? '- ' : '';
-    return '${sign}x${toFixedString(value.abs())}';
+    final sign = value < 0 ? "- " : "";
+    return "${sign}x${toFixedString(value.abs())}";
   }
 }

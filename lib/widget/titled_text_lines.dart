@@ -1,6 +1,6 @@
-import 'package:dungeons/widget/bold_text.dart';
-import 'package:dungeons/widget/text_lines.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/widget/bold_text.dart";
+import "package:dungeons/widget/text_lines.dart";
+import "package:flutter/widgets.dart";
 
 class TitledTextLines extends StatelessWidget {
   final String title;

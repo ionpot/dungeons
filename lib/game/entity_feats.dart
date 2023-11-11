@@ -1,7 +1,7 @@
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/game/bonuses.dart';
-import 'package:dungeons/game/feat.dart';
-import 'package:dungeons/utility/if.dart';
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/feat.dart";
+import "package:dungeons/utility/if.dart";
 
 typedef FeatMap = Map<Feat, FeatTier>;
 

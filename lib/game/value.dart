@@ -1,9 +1,9 @@
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/game/bonuses.dart';
-import 'package:dungeons/utility/bonus_text.dart';
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/percent.dart';
-import 'package:dungeons/utility/range.dart';
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/utility/bonus_text.dart";
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/percent.dart";
+import "package:dungeons/utility/range.dart";
 
 class IntValue implements Comparable<IntValue> {
   final int base;
@@ -20,7 +20,7 @@ class IntValue implements Comparable<IntValue> {
   bool operator >(IntValue other) => total > other.total;
 
   @override
-  String toString() => '$total';
+  String toString() => "$total";
 
   @override
   int compareTo(IntValue other) => total - other.total;
@@ -49,7 +49,7 @@ class PercentValue {
   }
 
   @override
-  String toString() => '$total';
+  String toString() => "$total";
 }
 
 class PercentValueRoll {
@@ -108,7 +108,7 @@ class DiceValue {
   }
 
   @override
-  String toString() => '${base.base}$intBonusString$diceBonuses';
+  String toString() => "${base.base}$intBonusString$diceBonuses";
 }
 
 class DiceRollValue {
@@ -140,5 +140,5 @@ class DiceRollValue {
   }
 
   @override
-  String toString() => '$total';
+  String toString() => "$total";
 }

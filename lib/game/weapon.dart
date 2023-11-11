@@ -1,13 +1,13 @@
-import 'package:dungeons/game/effect.dart';
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/random.dart';
+import "package:dungeons/game/effect.dart";
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/random.dart";
 
 enum Weapon {
-  dagger(text: 'Dagger', group: WeaponGroup.small),
-  mace(text: 'Mace', group: WeaponGroup.medium),
-  longsword(text: 'Longsword', group: WeaponGroup.hybrid),
-  halberd(text: 'Halberd', group: WeaponGroup.large),
-  shield(text: 'Shield', group: WeaponGroup.shield);
+  dagger(text: "Dagger", group: WeaponGroup.small),
+  mace(text: "Mace", group: WeaponGroup.medium),
+  longsword(text: "Longsword", group: WeaponGroup.hybrid),
+  halberd(text: "Halberd", group: WeaponGroup.large),
+  shield(text: "Shield", group: WeaponGroup.shield);
 
   final WeaponGroup group;
   final String text;

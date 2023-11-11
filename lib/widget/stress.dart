@@ -1,16 +1,16 @@
-import 'package:dungeons/game/bonuses.dart';
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/widget/colors.dart';
-import 'package:dungeons/widget/int_value.dart';
-import 'package:dungeons/widget/tooltip_region.dart';
-import 'package:dungeons/widget/value_table.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/int_value.dart";
+import "package:dungeons/widget/tooltip_region.dart";
+import "package:dungeons/widget/value_table.dart";
+import "package:flutter/widgets.dart";
 
 class StressSpan extends TextSpan {
   StressSpan(Entity entity)
       : super(
           children: [
-            TextSpan(text: '${entity.stress}/'),
+            TextSpan(text: "${entity.stress}/"),
             StressCapSpan(entity),
           ],
         );
@@ -45,7 +45,7 @@ class StressCapWidget extends StatelessWidget {
     return [
       for (final entry in bonuses)
         ValueRow(
-          Text('${entry.bonus}'),
+          Text("${entry.bonus}"),
           reservedText(-entry.value),
         ),
     ];
@@ -53,7 +53,7 @@ class StressCapWidget extends StatelessWidget {
 
   static Widget reservedText(int value, {TextStyle? style}) {
     return Text(
-      '$value',
+      "$value",
       style: const TextStyle(color: yellow).merge(style),
     );
   }

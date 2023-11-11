@@ -1,16 +1,16 @@
-import 'dart:io';
+import "dart:io";
 
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/game/combat_action.dart';
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/party.dart';
-import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/spell_cast.dart';
-import 'package:dungeons/game/text.dart';
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/game/weapon_attack.dart';
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/if.dart';
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/combat_action.dart";
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/party.dart";
+import "package:dungeons/game/spell.dart";
+import "package:dungeons/game/spell_cast.dart";
+import "package:dungeons/game/text.dart";
+import "package:dungeons/game/value.dart";
+import "package:dungeons/game/weapon_attack.dart";
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/if.dart";
 
 class Log {
   final IOSink file;
@@ -32,18 +32,18 @@ class Log {
     final offHand = ifdef(e.gear.offHand, (offHand) {
       final armor = e.gear.shield?.armor;
       final dice = e.gear.offHandValue?.dice;
-      return '$offHand (${armor ?? dice})';
+      return "$offHand (${armor ?? dice})";
     });
     file
-      ..writeln('${e.name}, ${e.race} ${e.klass} Lv${e.level}')
-      ..writeln('${e.attributes}')
-      ..writeln('Hp ${e.totalHp}'
+      ..writeln("${e.name}, ${e.race} ${e.klass} Lv${e.level}")
+      ..writeln("${e.attributes}")
+      ..writeln("Hp ${e.totalHp}"
           '${player ? ', Stress Cap ${e.stressCap}' : ''}'
           '${player ? ', XP ${e.toXpString()}' : ''}')
-      ..writeln('Initiative ${e.initiative}')
-      ..writeln('Dodge ${e.dodge}, Resist ${e.resist}')
-      ..writeln('Armor: ${e.totalArmor} (${e.armor})')
-      ..writeln('Weapon: ${e.weapon} ($damage) ${damage?.range}')
+      ..writeln("Initiative ${e.initiative}")
+      ..writeln("Dodge ${e.dodge}, Resist ${e.resist}")
+      ..writeln("Armor: ${e.totalArmor} (${e.armor})")
+      ..writeln("Weapon: ${e.weapon} ($damage) ${damage?.range}")
       ..writeln('Off-hand: ${offHand ?? 'None'}');
   }
 
@@ -71,25 +71,25 @@ class Log {
       result.attackRoll,
       critical: result.isCriticalHit,
     );
-    final attacks = attack.smite ? 'smites' : 'attacks';
+    final attacks = attack.smite ? "smites" : "attacks";
     final offHand = ifdef(attack.twoWeaponAttack?.offHand, (offHand) {
-      return ' and $offHand';
+      return " and $offHand";
     });
     file
       ..writeln('$attacker $attacks $target with $weapon${offHand ?? ''}.')
-      ..writeln('Attack roll $attackRoll');
+      ..writeln("Attack roll $attackRoll");
     if (result.deflected) {
-      file.writeln('$target deflects the attack.');
+      file.writeln("$target deflects the attack.");
       return;
     }
     if (result.rolledDodge) {
-      file.writeln('Dodge roll ${_percentRoll(result.dodgeRoll)}');
+      file.writeln("Dodge roll ${_percentRoll(result.dodgeRoll)}");
     }
     if (!result.canDodge) {
-      file.writeln('$target cannot dodge.');
+      file.writeln("$target cannot dodge.");
     }
     if (result.dodged) {
-      file.writeln('$target dodges the attack.');
+      file.writeln("$target dodges the attack.");
       return;
     }
     _writeDiceRolls(weapon, result.damageRoll);
@@ -101,13 +101,13 @@ class Log {
     final target = cast.target;
     final spell = cast.spell;
     file
-      ..write('$caster casts $spell ')
-      ..writeln(cast.self ? 'to self.' : 'at $target.');
+      ..write("$caster casts $spell ")
+      ..writeln(cast.self ? "to self." : "at $target.");
     if (result.canResist) {
-      file.writeln('Resist ${_percentRoll(result.resistRoll)}');
+      file.writeln("Resist ${_percentRoll(result.resistRoll)}");
     }
     if (result.resisted) {
-      file.writeln('$target resists the spell.');
+      file.writeln("$target resists the spell.");
       return;
     }
     ifdef(result.healRoll, (healRoll) {
@@ -120,7 +120,7 @@ class Log {
   }
 
   void newRound(int round) {
-    file.writeln('Round $round');
+    file.writeln("Round $round");
   }
 
   void xpGain(PartyXpGain xpGain) {
@@ -133,48 +133,48 @@ class Log {
   void _writeResult(ActionResult result, ActionParameters params) {
     final target = params.target;
     if (result.healingDone != 0) {
-      file.writeln('$target is healed by ${result.healingDone}.');
+      file.writeln("$target is healed by ${result.healingDone}.");
       return;
     }
     if (result.damageDone != 0) {
-      file.write('$target takes ${result.damageDone}'
-          ' ${params.source.name} damage');
+      file.write("$target takes ${result.damageDone}"
+          " ${params.source.name} damage");
       if (target.dead) {
-        file.write(', and dies');
+        file.write(", and dies");
       }
-      file.writeln('.');
+      file.writeln(".");
     }
     if (target.alive) {
       for (final entry in params.effects) {
         final text = effectText(entry.bonus);
         if (text.isNotEmpty) {
-          file.writeln('$target $text.');
+          file.writeln("$target $text.");
         }
       }
     }
   }
 
   String _percentRoll(PercentValueRoll roll, {bool critical = false}) {
-    return '(${roll.input}) ${roll.result.text(critical)}';
+    return "(${roll.input}) ${roll.result.text(critical)}";
   }
 
   void _writeDiceRoll(String name, DiceRoll value) {
-    file.writeln('$name roll (${value.dice.base}) $value');
+    file.writeln("$name roll (${value.dice.base}) $value");
   }
 
   void _writeDiceRolls(String rollName, DiceRollValue value) {
     _writeDiceRoll(rollName, value.base);
     for (final entry in value.diceBonuses) {
-      _writeDiceRoll('${entry.bonus}', entry.value);
+      _writeDiceRoll("${entry.bonus}", entry.value);
     }
   }
 
   static String effectText(Bonus bonus) {
     switch (bonus) {
       case SpellBonus(spell: Spell.rayOfFrost):
-        return 'is slowed';
+        return "is slowed";
       default:
-        return '';
+        return "";
     }
   }
 }

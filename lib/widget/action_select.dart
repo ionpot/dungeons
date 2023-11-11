@@ -1,10 +1,10 @@
-import 'package:dungeons/game/combat_action.dart';
-import 'package:dungeons/game/combat_grid.dart';
-import 'package:dungeons/utility/value_callback.dart';
-import 'package:dungeons/widget/button.dart';
-import 'package:dungeons/widget/colors.dart';
-import 'package:dungeons/widget/spaced.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/combat_action.dart";
+import "package:dungeons/game/combat_grid.dart";
+import "package:dungeons/utility/value_callback.dart";
+import "package:dungeons/widget/button.dart";
+import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/spaced.dart";
+import "package:flutter/widgets.dart";
 
 typedef OnChosen = ValueCallback<CombatAction>;
 
@@ -33,9 +33,9 @@ class ActionSelect extends StatelessWidget {
 
   List<_Action> get _actions {
     return [
-      _Action('Attack', UseWeapon(actor)),
-      _Action('Two-Weapon Attack', UseTwoWeapons(actor)),
-      _Action('Smite Attack', UseSmite(actor)),
+      _Action("Attack", UseWeapon(actor)),
+      _Action("Two-Weapon Attack", UseTwoWeapons(actor)),
+      _Action("Smite Attack", UseSmite(actor)),
     ];
   }
 }

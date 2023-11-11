@@ -1,9 +1,9 @@
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/utility/range.dart';
-import 'package:dungeons/widget/colors.dart';
-import 'package:dungeons/widget/tooltip_region.dart';
-import 'package:dungeons/widget/value_table.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/utility/range.dart";
+import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/tooltip_region.dart";
+import "package:dungeons/widget/value_table.dart";
+import "package:flutter/widgets.dart";
 
 class RangeSpan extends WidgetSpan {
   RangeSpan(Range range, {Bonus? max, TextStyle? style})
@@ -19,7 +19,7 @@ class RangeWidget extends StatelessWidget {
 
   Text get text {
     return Text(
-      '${max != null ? range.max : range}',
+      "${max != null ? range.max : range}",
       style: baseStyle.merge(style),
     );
   }
@@ -33,8 +33,8 @@ class RangeWidget extends StatelessWidget {
     }
     return TooltipRegion(
       tooltip: ValueTable([
-        ValueRow(const Text('Range'), Text('$range')),
-        ValueRow(Text('$max'), Text('${range.max}', style: baseStyle)),
+        ValueRow(const Text("Range"), Text("$range")),
+        ValueRow(Text("$max"), Text("${range.max}", style: baseStyle)),
       ]),
       child: text,
     );

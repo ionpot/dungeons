@@ -1,7 +1,7 @@
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/entity_race.dart';
-import 'package:dungeons/widget/clickable.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/entity_race.dart";
+import "package:dungeons/widget/clickable.dart";
+import "package:flutter/widgets.dart";
 
 enum PortraitTargeting {
   friendly,
@@ -38,12 +38,12 @@ class EntityPortrait extends StatelessWidget {
         },
         child: Stack(
           children: [
-            Image.asset('image/portrait_$_name.png'),
-            if (current) Image.asset('image/portrait_current.png'),
+            Image.asset("image/portrait_$_name.png"),
+            if (current) Image.asset("image/portrait_current.png"),
             if (targeting == PortraitTargeting.friendly)
-              Image.asset('image/portrait_target_friendly.png'),
+              Image.asset("image/portrait_target_friendly.png"),
             if (targeting == PortraitTargeting.enemy)
-              Image.asset('image/portrait_target_enemy.png'),
+              Image.asset("image/portrait_target_enemy.png"),
           ],
         ),
       ),
@@ -65,7 +65,7 @@ class EntityPortrait extends StatelessWidget {
 
   String get _name {
     if (entity.race == EntityRace.orc) {
-      return 'orc';
+      return "orc";
     }
     return entity.klass.toString().toLowerCase();
   }

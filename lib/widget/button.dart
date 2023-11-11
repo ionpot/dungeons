@@ -1,7 +1,7 @@
-import 'package:dungeons/widget/clickable.dart';
-import 'package:dungeons/widget/text_box.dart';
-import 'package:dungeons/widget/colors.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/widget/clickable.dart";
+import "package:dungeons/widget/text_box.dart";
+import "package:dungeons/widget/colors.dart";
+import "package:flutter/widgets.dart";
 
 class Button extends StatelessWidget {
   final String text;

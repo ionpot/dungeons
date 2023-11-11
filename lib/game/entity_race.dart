@@ -1,8 +1,8 @@
-import 'package:dungeons/game/effect.dart';
+import "package:dungeons/game/effect.dart";
 
 enum EntityRace {
-  human('Human'),
-  orc('Orc', Effect(strength: 2, intellect: -2));
+  human("Human"),
+  orc("Orc", Effect(strength: 2, intellect: -2));
 
   final String text;
   final Effect? effect;

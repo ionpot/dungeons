@@ -1,12 +1,12 @@
-import 'package:dungeons/game/armor.dart';
-import 'package:dungeons/game/critical_hit.dart';
-import 'package:dungeons/game/entity_attr.dart';
-import 'package:dungeons/game/entity_class.dart';
-import 'package:dungeons/game/entity_race.dart';
-import 'package:dungeons/game/feat.dart';
-import 'package:dungeons/game/gear.dart';
-import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/weapon.dart';
+import "package:dungeons/game/armor.dart";
+import "package:dungeons/game/critical_hit.dart";
+import "package:dungeons/game/entity_attr.dart";
+import "package:dungeons/game/entity_class.dart";
+import "package:dungeons/game/entity_race.dart";
+import "package:dungeons/game/feat.dart";
+import "package:dungeons/game/gear.dart";
+import "package:dungeons/game/spell.dart";
+import "package:dungeons/game/weapon.dart";
 
 abstract class Bonus {
   const Bonus();
@@ -54,9 +54,9 @@ class AttributeBonus extends Bonus {
   @override
   String get text {
     if (attribute == null) {
-      return 'Attributes';
+      return "Attributes";
     }
-    return base ? 'Base $attribute' : '$attribute Bonus';
+    return base ? "Base $attribute" : "$attribute Bonus";
   }
 }
 
@@ -73,9 +73,9 @@ class ClassBonus extends Bonus {
   @override
   String get text {
     if (klass == null) {
-      return 'Level $level';
+      return "Level $level";
     }
-    return '$klass Lv$level';
+    return "$klass Lv$level";
   }
 }
 
@@ -117,9 +117,9 @@ class GearBonus extends Bonus {
   @override
   String get text {
     if (gear.offHand != null) {
-      return '${gear.offHand} (off-hand)';
+      return "${gear.offHand} (off-hand)";
     }
-    return (gear.mainHand ?? gear.body ?? '').toString();
+    return (gear.mainHand ?? gear.body ?? "").toString();
   }
 }
 

@@ -1,19 +1,19 @@
-import 'package:dungeons/game/armor.dart';
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/game/bonuses.dart';
-import 'package:dungeons/game/critical_hit.dart';
-import 'package:dungeons/game/entity_attr.dart';
-import 'package:dungeons/game/entity_class.dart';
-import 'package:dungeons/game/entity_feats.dart';
-import 'package:dungeons/game/entity_race.dart';
-import 'package:dungeons/game/feat.dart';
-import 'package:dungeons/game/gear.dart';
-import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/spellbook.dart';
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/game/weapon.dart';
-import 'package:dungeons/utility/percent.dart';
-import 'package:dungeons/utility/random.dart';
+import "package:dungeons/game/armor.dart";
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/critical_hit.dart";
+import "package:dungeons/game/entity_attr.dart";
+import "package:dungeons/game/entity_class.dart";
+import "package:dungeons/game/entity_feats.dart";
+import "package:dungeons/game/entity_race.dart";
+import "package:dungeons/game/feat.dart";
+import "package:dungeons/game/gear.dart";
+import "package:dungeons/game/spell.dart";
+import "package:dungeons/game/spellbook.dart";
+import "package:dungeons/game/value.dart";
+import "package:dungeons/game/weapon.dart";
+import "package:dungeons/utility/percent.dart";
+import "package:dungeons/utility/random.dart";
 
 class Entity extends _Base
     with
@@ -355,7 +355,7 @@ mixin _Levels on _Base, _Attributes {
     }
   }
 
-  String toXpString() => '$xp/$_xpForLevelUp';
+  String toXpString() => "$xp/$_xpForLevelUp";
 }
 
 mixin _Spells on _Base, _Stress {

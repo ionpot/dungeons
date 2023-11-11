@@ -1,6 +1,6 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:dungeons/game/entity.dart';
+import "package:dungeons/game/entity.dart";
 
 enum PartyLine { front, back }
 

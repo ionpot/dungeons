@@ -1,4 +1,4 @@
-import 'dart:math';
+import "dart:math";
 
 class Range {
   final int min;
@@ -23,5 +23,5 @@ class Range {
   }
 
   @override
-  String toString() => (min == max) ? '$min' : '$min - $max';
+  String toString() => (min == max) ? "$min" : "$min - $max";
 }

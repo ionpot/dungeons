@@ -1,12 +1,12 @@
-import 'package:dungeons/game/effect.dart';
-import 'package:dungeons/game/grid_range.dart';
-import 'package:dungeons/game/source.dart';
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/percent.dart';
+import "package:dungeons/game/effect.dart";
+import "package:dungeons/game/grid_range.dart";
+import "package:dungeons/game/source.dart";
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/percent.dart";
 
 enum Spell {
   bless(
-    text: 'Bless',
+    text: "Bless",
     source: Source.radiant,
     stress: 2,
     reserveStress: true,
@@ -17,14 +17,14 @@ enum Spell {
     ),
   ),
   heal(
-    text: 'Heal',
+    text: "Heal",
     source: Source.radiant,
     stress: 2,
     range: GridRange.ally,
     heals: Dice(1, 6, bonus: 4),
   ),
   lightningBolt(
-    text: 'Lightning Bolt',
+    text: "Lightning Bolt",
     source: Source.lightning,
     stress: 3,
     range: GridRange.any,
@@ -32,7 +32,7 @@ enum Spell {
     requiresLevel: 5,
   ),
   magicMissile(
-    text: 'Magic Missile',
+    text: "Magic Missile",
     source: Source.astral,
     stress: 2,
     range: GridRange.any,
@@ -40,7 +40,7 @@ enum Spell {
     damage: Dice(3, 4),
   ),
   rayOfFrost(
-    text: 'Ray of Frost',
+    text: "Ray of Frost",
     source: Source.cold,
     stress: 2,
     range: GridRange.any,

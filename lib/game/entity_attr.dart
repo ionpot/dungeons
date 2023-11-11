@@ -1,10 +1,10 @@
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/random.dart';
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/random.dart";
 
 enum EntityAttributeId {
-  strength(text: 'Strength'),
-  agility(text: 'Agility'),
-  intellect(text: 'Intellect');
+  strength(text: "Strength"),
+  agility(text: "Agility"),
+  intellect(text: "Intellect");
 
   static EntityAttributeId random() => pickRandom(EntityAttributeId.values);
 
@@ -76,5 +76,5 @@ class EntityAttributes {
 
   @override
   String toString() =>
-      EntityAttributeId.values.map((e) => '${e.short} ${ofId(e)}').join(', ');
+      EntityAttributeId.values.map((e) => "${e.short} ${ofId(e)}").join(", ");
 }

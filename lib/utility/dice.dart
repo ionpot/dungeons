@@ -1,7 +1,7 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:dungeons/utility/bonus_text.dart';
-import 'package:dungeons/utility/range.dart';
+import "package:dungeons/utility/bonus_text.dart";
+import "package:dungeons/utility/range.dart";
 
 class Dice implements Comparable<Dice> {
   final int count;
@@ -34,13 +34,13 @@ class Dice implements Comparable<Dice> {
     return DiceRoll(this, rolls);
   }
 
-  String get sideText => 'd$sides';
+  String get sideText => "d$sides";
 
   @override
   int compareTo(Dice other) => max - other.max;
 
   @override
-  String toString() => '$count$sideText${bonusText(bonus)}';
+  String toString() => "$count$sideText${bonusText(bonus)}";
 
   static int maxTotal(Iterable<Dice> list) {
     return list.fold(0, (sum, dice) => sum + dice.max);

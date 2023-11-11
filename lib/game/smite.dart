@@ -1,4 +1,4 @@
-import 'package:dungeons/game/source.dart';
+import "package:dungeons/game/source.dart";
 
 class Smite {
   static const int rolls = 2;

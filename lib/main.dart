@@ -1,8 +1,8 @@
-import 'package:dungeons/game/log.dart';
-import 'package:dungeons/widget/colors.dart';
-import 'package:dungeons/widget/screen_overlay.dart';
-import 'package:dungeons/widget/screens.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/log.dart";
+import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/screen_overlay.dart";
+import "package:dungeons/widget/screens.dart";
+import "package:flutter/widgets.dart";
 
 void main() {
   runApp(const TheApp());
@@ -22,7 +22,7 @@ class TheAppState extends State<TheApp> {
   void initState() {
     super.initState();
     _screen = Screens(
-      log: Log.toFile('dungeons.log', title: 'Dungeons'),
+      log: Log.toFile("dungeons.log", title: "Dungeons"),
       onNext: (Widget screen) {
         setState(() => _screen = screen);
       },

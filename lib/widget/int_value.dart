@@ -1,14 +1,14 @@
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/widget/colors.dart';
-import 'package:dungeons/widget/int_bonus.dart';
-import 'package:dungeons/widget/tooltip_region.dart';
-import 'package:dungeons/widget/value_table.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/value.dart";
+import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/int_bonus.dart";
+import "package:dungeons/widget/tooltip_region.dart";
+import "package:dungeons/widget/value_table.dart";
+import "package:flutter/widgets.dart";
 
 class IntValueText extends Text {
   IntValueText(IntValue value, {super.key, TextStyle? style})
       : super(
-          '$value',
+          "$value",
           style: TextStyle(color: intValueColor(value)).merge(style),
         );
 }
@@ -26,7 +26,7 @@ class IntValueTable extends StatelessWidget {
 
   static List<ValueRow> rows(IntValue value, {String? base}) {
     return [
-      ValueRow(Text(base ?? 'Base'), Text('${value.base}')),
+      ValueRow(Text(base ?? "Base"), Text("${value.base}")),
       ...IntBonusTable.bonusRows(value.bonuses),
     ];
   }

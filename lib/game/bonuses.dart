@@ -1,12 +1,12 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/game/effect.dart';
-import 'package:dungeons/utility/bonus_text.dart';
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/multiplier.dart';
-import 'package:dungeons/utility/percent.dart';
-import 'package:dungeons/utility/range.dart';
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/effect.dart";
+import "package:dungeons/utility/bonus_text.dart";
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/multiplier.dart";
+import "package:dungeons/utility/percent.dart";
+import "package:dungeons/utility/range.dart";
 
 typedef EffectMap = BonusMap<Effect>;
 

@@ -1,13 +1,13 @@
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/source.dart';
-import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/widget/colors.dart';
-import 'package:dungeons/widget/dice_span.dart';
-import 'package:dungeons/widget/int_value.dart';
-import 'package:dungeons/widget/tooltip_region.dart';
-import 'package:dungeons/widget/value_table.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/source.dart";
+import "package:dungeons/game/spell.dart";
+import "package:dungeons/game/value.dart";
+import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/dice_span.dart";
+import "package:dungeons/widget/int_value.dart";
+import "package:dungeons/widget/tooltip_region.dart";
+import "package:dungeons/widget/value_table.dart";
+import "package:flutter/widgets.dart";
 
 class DamageSpan extends TextSpan {
   DamageSpan(DiceRollValue damage, Source source)
@@ -15,7 +15,7 @@ class DamageSpan extends TextSpan {
           children: [
             DiceRollValueSpan(damage),
             TextSpan(
-              text: ' ${source.name}',
+              text: " ${source.name}",
               style: TextStyle(color: sourceColor(source)),
             ),
           ],
@@ -27,10 +27,10 @@ class HpSpan extends TextSpan {
       : super(
           children: [
             TextSpan(
-              text: '${entity.hp}',
+              text: "${entity.hp}",
               style: TextStyle(color: hpColor(entity)),
             ),
-            const TextSpan(text: '/'),
+            const TextSpan(text: "/"),
             IntValueSpan(entity.totalHp),
           ],
         );
@@ -55,7 +55,7 @@ class TotalArmorWidget extends StatelessWidget {
 
   const TotalArmorWidget(this.entity, {super.key, this.style});
 
-  Text get text => Text('${entity.totalArmor}', style: style);
+  Text get text => Text("${entity.totalArmor}", style: style);
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +66,9 @@ class TotalArmorWidget extends StatelessWidget {
     }
     return TooltipRegion(
       tooltip: ValueTable([
-        ValueRow(const Text('Base'), Text('${entity.baseArmor}')),
-        if (armor != null) ValueRow(Text('$armor'), Text('+${armor.value}')),
-        if (shield != null) ValueRow(Text('$shield'), Text('+${shield.armor}')),
+        ValueRow(const Text("Base"), Text("${entity.baseArmor}")),
+        if (armor != null) ValueRow(Text("$armor"), Text("+${armor.value}")),
+        if (shield != null) ValueRow(Text("$shield"), Text("+${shield.armor}")),
       ]),
       child: text,
     );

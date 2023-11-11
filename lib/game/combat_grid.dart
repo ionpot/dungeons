@@ -1,5 +1,5 @@
-import 'package:dungeons/game/grid_range.dart';
-import 'package:dungeons/game/party.dart';
+import "package:dungeons/game/grid_range.dart";
+import "package:dungeons/game/party.dart";
 
 class GridMember extends PartyMember {
   final Party party;

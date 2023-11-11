@@ -1,19 +1,19 @@
-import 'package:dungeons/game/bonuses.dart';
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/utility/bonus_text.dart';
-import 'package:dungeons/utility/fixed_string.dart';
-import 'package:dungeons/utility/multiplier.dart';
-import 'package:dungeons/utility/percent.dart';
-import 'package:dungeons/widget/colors.dart';
-import 'package:dungeons/widget/compare_bonus.dart';
-import 'package:dungeons/widget/tooltip_region.dart';
-import 'package:dungeons/widget/value_table.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/value.dart";
+import "package:dungeons/utility/bonus_text.dart";
+import "package:dungeons/utility/fixed_string.dart";
+import "package:dungeons/utility/multiplier.dart";
+import "package:dungeons/utility/percent.dart";
+import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/compare_bonus.dart";
+import "package:dungeons/widget/tooltip_region.dart";
+import "package:dungeons/widget/value_table.dart";
+import "package:flutter/widgets.dart";
 
 class PercentBonusText extends Text {
   PercentBonusText(Percent percent, {super.key, bool noColor = false})
       : super(
-          '${bonusText(percent.value)}%',
+          "${bonusText(percent.value)}%",
           style: noColor ? null : TextStyle(color: percentColor(percent)),
         );
 }
@@ -21,7 +21,7 @@ class PercentBonusText extends Text {
 class PercentValueText extends Text {
   PercentValueText(PercentValue value, {super.key, TextStyle? style})
       : super(
-          '$value',
+          "$value",
           style: TextStyle(color: percentValueColor(value)).merge(style),
         );
 }
@@ -34,11 +34,11 @@ class PercentValueTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueTable([
-      ValueRow(const Text('Base'), Text('${value.base}')),
+      ValueRow(const Text("Base"), Text("${value.base}")),
       for (final entry in _bonuses)
         if (!entry.value.zero)
           ValueRow(
-            Text('${entry.bonus}'),
+            Text("${entry.bonus}"),
             PercentBonusText(
               entry.value,
               noColor: ignoreBonusColor(entry.bonus),
@@ -46,7 +46,7 @@ class PercentValueTable extends StatelessWidget {
           ),
       for (final entry in _multipliers)
         ValueRow(
-          Text('${entry.bonus} (${entry.value})'),
+          Text("${entry.bonus} (${entry.value})"),
           _DoubleBonusText(
             value.unscaled.value * entry.value.value,
             noColor: ignoreBonusColor(entry.bonus),
@@ -99,9 +99,9 @@ class PercentValueRollSpan extends TextSpan {
   PercentValueRollSpan(PercentValueRoll value, {bool critical = false})
       : super(
           children: [
-            const TextSpan(text: '('),
+            const TextSpan(text: "("),
             PercentValueSpan(value.input),
-            TextSpan(text: ') ${value.result.text(critical)}'),
+            TextSpan(text: ") ${value.result.text(critical)}"),
           ],
         );
 }
@@ -109,7 +109,7 @@ class PercentValueRollSpan extends TextSpan {
 class _DoubleBonusText extends Text {
   _DoubleBonusText(double value, {bool noColor = false})
       : super(
-          '${toFixedBonusString(value)}%',
+          "${toFixedBonusString(value)}%",
           style: noColor ? null : TextStyle(color: doubleColor(value)),
         );
 }

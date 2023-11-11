@@ -1,15 +1,15 @@
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/game/bonuses.dart';
-import 'package:dungeons/game/combat_action.dart';
-import 'package:dungeons/game/critical_hit.dart';
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/feat.dart';
-import 'package:dungeons/game/smite.dart';
-import 'package:dungeons/game/source.dart';
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/game/weapon.dart';
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/percent.dart';
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/combat_action.dart";
+import "package:dungeons/game/critical_hit.dart";
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/feat.dart";
+import "package:dungeons/game/smite.dart";
+import "package:dungeons/game/source.dart";
+import "package:dungeons/game/value.dart";
+import "package:dungeons/game/weapon.dart";
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/percent.dart";
 
 class WeaponAttack extends ActionParameters {
   final Entity attacker;

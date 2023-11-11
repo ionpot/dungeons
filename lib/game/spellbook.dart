@@ -1,4 +1,4 @@
-import 'package:dungeons/game/spell.dart';
+import "package:dungeons/game/spell.dart";
 
 class SpellBook {
   final Set<Spell> spells;

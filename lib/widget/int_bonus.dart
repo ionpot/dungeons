@@ -1,12 +1,12 @@
-import 'package:dungeons/game/bonuses.dart';
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/utility/bonus_text.dart';
-import 'package:dungeons/widget/colors.dart';
-import 'package:dungeons/widget/compare_bonus.dart';
-import 'package:dungeons/widget/empty.dart';
-import 'package:dungeons/widget/tooltip_region.dart';
-import 'package:dungeons/widget/value_table.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/value.dart";
+import "package:dungeons/utility/bonus_text.dart";
+import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/compare_bonus.dart";
+import "package:dungeons/widget/empty.dart";
+import "package:dungeons/widget/tooltip_region.dart";
+import "package:dungeons/widget/value_table.dart";
+import "package:flutter/widgets.dart";
 
 class IntBonusPlainText extends Text {
   IntBonusPlainText(int value, {super.key, TextStyle? style})
@@ -27,7 +27,7 @@ class IntBonusTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueTable([
       if (value.base != 0)
-        ValueRow(const Text('Base'), IntBonusPlainText(value.base)),
+        ValueRow(const Text("Base"), IntBonusPlainText(value.base)),
       ...bonusRows(value.bonuses),
     ]);
   }
@@ -38,7 +38,7 @@ class IntBonusTable extends StatelessWidget {
       for (final entry in ls)
         if (entry.value != 0)
           ValueRow(
-            Text('${entry.bonus}'),
+            Text("${entry.bonus}"),
             ignoreBonusColor(entry.bonus)
                 ? IntBonusPlainText(entry.value)
                 : IntBonusText(entry.value),

@@ -1,12 +1,12 @@
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/game/bonuses.dart';
-import 'package:dungeons/game/combat_action.dart';
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/source.dart';
-import 'package:dungeons/game/spell.dart';
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/utility/if.dart';
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/combat_action.dart";
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/source.dart";
+import "package:dungeons/game/spell.dart";
+import "package:dungeons/game/value.dart";
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/if.dart";
 
 class SpellCast extends ActionParameters {
   final Spell spell;

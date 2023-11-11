@@ -1,17 +1,17 @@
-import 'package:dungeons/game/bonus.dart';
-import 'package:dungeons/game/bonuses.dart';
-import 'package:dungeons/game/value.dart';
-import 'package:dungeons/utility/dice.dart';
-import 'package:dungeons/widget/colors.dart';
-import 'package:dungeons/widget/compare_bonus.dart';
-import 'package:dungeons/widget/int_bonus.dart';
-import 'package:dungeons/widget/int_value.dart';
-import 'package:dungeons/widget/range_span.dart';
-import 'package:dungeons/widget/tooltip_region.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/value.dart";
+import "package:dungeons/utility/dice.dart";
+import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/compare_bonus.dart";
+import "package:dungeons/widget/int_bonus.dart";
+import "package:dungeons/widget/int_value.dart";
+import "package:dungeons/widget/range_span.dart";
+import "package:dungeons/widget/tooltip_region.dart";
+import "package:flutter/widgets.dart";
 
 class DiceRollSpan extends TextSpan {
-  DiceRollSpan(DiceRoll value) : super(text: '(${value.dice.base}) $value');
+  DiceRollSpan(DiceRoll value) : super(text: "(${value.dice.base}) $value");
 }
 
 class DiceBonusSpan extends WidgetSpan {
@@ -22,9 +22,9 @@ class DiceBonusSpan extends WidgetSpan {
     TextStyle? style,
   }) : super(
           child: TooltipRegion(
-            tooltip: Text('$bonus'),
+            tooltip: Text("$bonus"),
             child: Text(
-              '+$dice',
+              "+$dice",
               style: TextStyle(color: noColor ? null : green).merge(style),
             ),
           ),
@@ -57,9 +57,9 @@ class DiceValueWithRangeSpan extends TextSpan {
   DiceValueWithRangeSpan(DiceValue value, {TextStyle? style})
       : super(
           children: [
-            TextSpan(text: '(', style: style),
+            TextSpan(text: "(", style: style),
             DiceValueSpan(value, style: style),
-            TextSpan(text: ') ', style: style),
+            TextSpan(text: ") ", style: style),
             RangeSpan(value.range, max: value.max, style: style),
           ],
         );
@@ -71,7 +71,7 @@ class DiceRollValueSpan extends WidgetSpan {
           child: IntValueWidget(
             value.intValue,
             style: style,
-            baseText: 'Rolled (${value.base.dice})',
+            baseText: "Rolled (${value.base.dice})",
           ),
         );
 }

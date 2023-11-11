@@ -1,20 +1,20 @@
-import 'package:dungeons/game/combat.dart';
-import 'package:dungeons/game/combat_action.dart';
-import 'package:dungeons/game/combat_grid.dart';
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/entity_attr.dart';
-import 'package:dungeons/game/party.dart';
-import 'package:dungeons/game/text.dart';
-import 'package:dungeons/utility/value_callback.dart';
-import 'package:dungeons/widget/action_select.dart';
-import 'package:dungeons/widget/action_text.dart';
-import 'package:dungeons/widget/attribute_select.dart';
-import 'package:dungeons/widget/button.dart';
-import 'package:dungeons/widget/combat_display.dart';
-import 'package:dungeons/widget/entity_portrait.dart';
-import 'package:dungeons/widget/text_lines.dart';
-import 'package:dungeons/widget/titled_text_lines.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/combat.dart";
+import "package:dungeons/game/combat_action.dart";
+import "package:dungeons/game/combat_grid.dart";
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/entity_attr.dart";
+import "package:dungeons/game/party.dart";
+import "package:dungeons/game/text.dart";
+import "package:dungeons/utility/value_callback.dart";
+import "package:dungeons/widget/action_select.dart";
+import "package:dungeons/widget/action_text.dart";
+import "package:dungeons/widget/attribute_select.dart";
+import "package:dungeons/widget/button.dart";
+import "package:dungeons/widget/combat_display.dart";
+import "package:dungeons/widget/entity_portrait.dart";
+import "package:dungeons/widget/text_lines.dart";
+import "package:dungeons/widget/titled_text_lines.dart";
+import "package:flutter/widgets.dart";
 
 class PortraitArgs {
   final bool? current;
@@ -43,10 +43,10 @@ class StartingPhase extends CombatPhase {
   });
 
   @override
-  Widget get buttons => Button(text: 'Begin', onClick: onNext);
+  Widget get buttons => Button(text: "Begin", onClick: onNext);
 
   @override
-  Widget get display => Text('$first goes first.');
+  Widget get display => Text("$first goes first.");
 }
 
 class ActionSelectPhase extends CombatPhase {
@@ -62,7 +62,7 @@ class ActionSelectPhase extends CombatPhase {
   Widget get buttons => ActionSelect(actor: actor, onChosen: onChosen);
 
   @override
-  Widget get display => Text('What does $actor do?');
+  Widget get display => Text("What does $actor do?");
 }
 
 class TargetingPhase extends CombatPhase {
@@ -79,10 +79,10 @@ class TargetingPhase extends CombatPhase {
   });
 
   @override
-  Widget get buttons => Button(text: 'Cancel', onClick: onCancel);
+  Widget get buttons => Button(text: "Cancel", onClick: onCancel);
 
   @override
-  Widget get display => const Text('Click on the target.');
+  Widget get display => const Text("Click on the target.");
 
   @override
   PortraitArgs portraitArgs(GridMember member) {
@@ -118,7 +118,7 @@ class ActionResultPhase extends CombatPhase {
   });
 
   @override
-  Widget get buttons => Button(text: 'Next', onClick: onDone);
+  Widget get buttons => Button(text: "Next", onClick: onDone);
 
   @override
   Widget get display {
@@ -155,7 +155,7 @@ class XpGainPhase extends CombatPhase {
   @override
   Widget get buttons {
     return Button(
-      text: xpGain.canLevelUp ? 'Level Up' : 'Next',
+      text: xpGain.canLevelUp ? "Level Up" : "Next",
       onClick: onDone,
     );
   }
@@ -189,8 +189,8 @@ class LevelUpPhase extends CombatPhase {
   @override
   Widget get display {
     return TitledTextLines.plain(
-      title: '$entity leveled up',
-      lines: ['Points remaining: ${entity.extraPoints}'],
+      title: "$entity leveled up",
+      lines: ["Points remaining: ${entity.extraPoints}"],
     );
   }
 
@@ -207,13 +207,13 @@ class NoActionPhase extends CombatPhase {
   const NoActionPhase(this.combat, {required this.onNext});
 
   @override
-  Widget get buttons => Button(text: 'Next', onClick: onNext);
+  Widget get buttons => Button(text: "Next", onClick: onNext);
 
   @override
   Widget get display {
     return TitledTextLines.plain(
       title: combatTurnTitle(combat),
-      lines: ['${combat.current} does nothing.'],
+      lines: ["${combat.current} does nothing."],
     );
   }
 }

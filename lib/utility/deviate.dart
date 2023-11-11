@@ -1,4 +1,4 @@
-import 'package:dungeons/utility/range.dart';
+import "package:dungeons/utility/range.dart";
 
 class Deviate {
   final int min;

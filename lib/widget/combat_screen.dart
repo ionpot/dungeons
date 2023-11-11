@@ -1,14 +1,14 @@
-import 'package:dungeons/game/combat.dart';
-import 'package:dungeons/game/combat_action.dart';
-import 'package:dungeons/game/combat_grid.dart';
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/log.dart';
-import 'package:dungeons/widget/combat_layout.dart';
-import 'package:dungeons/widget/combat_phase.dart';
-import 'package:dungeons/widget/entity_portrait.dart';
-import 'package:dungeons/widget/entity_stats.dart';
-import 'package:dungeons/widget/top_left.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/combat.dart";
+import "package:dungeons/game/combat_action.dart";
+import "package:dungeons/game/combat_grid.dart";
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/log.dart";
+import "package:dungeons/widget/combat_layout.dart";
+import "package:dungeons/widget/combat_phase.dart";
+import "package:dungeons/widget/entity_portrait.dart";
+import "package:dungeons/widget/entity_stats.dart";
+import "package:dungeons/widget/top_left.dart";
+import "package:flutter/widgets.dart";
 
 class CombatScreen extends StatefulWidget {
   final Combat combat;
@@ -45,7 +45,7 @@ class _CombatScreenState extends State<CombatScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset('image/combat_bg.png'),
+        Image.asset("image/combat_bg.png"),
         for (final member in _grid)
           TopLeft(
             _grid.isPlayer(member)
@@ -77,10 +77,10 @@ class _CombatScreenState extends State<CombatScreen> {
   CombatPhase _startingPhase() {
     _log
       ..ln()
-      ..file.writeln('New Combat')
+      ..file.writeln("New Combat")
       ..ln()
       ..party(_grid.player, player: true)
-      ..file.writeln('Enemy')
+      ..file.writeln("Enemy")
       ..ln()
       ..party(_grid.enemy)
       ..newRound(_combat.round);
@@ -141,7 +141,7 @@ class _CombatScreenState extends State<CombatScreen> {
     return NoActionPhase(_combat, onNext: () {
       _log
         ..ln()
-        ..file.writeln('${_combat.current} does nothing.');
+        ..file.writeln("${_combat.current} does nothing.");
       _newTurn();
     });
   }

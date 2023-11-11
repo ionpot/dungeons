@@ -1,22 +1,22 @@
-import 'package:dungeons/game/armor.dart';
-import 'package:dungeons/game/entity.dart';
-import 'package:dungeons/game/entity_class.dart';
-import 'package:dungeons/game/entity_race.dart';
-import 'package:dungeons/game/gear.dart';
-import 'package:dungeons/game/weapon.dart';
-import 'package:dungeons/widget/bold_text.dart';
-import 'package:dungeons/widget/button.dart';
-import 'package:dungeons/widget/dice_span.dart';
-import 'package:dungeons/widget/empty.dart';
-import 'package:dungeons/widget/int_value.dart';
-import 'package:dungeons/widget/label_value.dart';
-import 'package:dungeons/widget/percent_value.dart';
-import 'package:dungeons/widget/radio_button.dart';
-import 'package:dungeons/widget/radio_group.dart';
-import 'package:dungeons/widget/spaced.dart';
-import 'package:dungeons/widget/stress.dart';
-import 'package:dungeons/widget/value_span.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/armor.dart";
+import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/entity_class.dart";
+import "package:dungeons/game/entity_race.dart";
+import "package:dungeons/game/gear.dart";
+import "package:dungeons/game/weapon.dart";
+import "package:dungeons/widget/bold_text.dart";
+import "package:dungeons/widget/button.dart";
+import "package:dungeons/widget/dice_span.dart";
+import "package:dungeons/widget/empty.dart";
+import "package:dungeons/widget/int_value.dart";
+import "package:dungeons/widget/label_value.dart";
+import "package:dungeons/widget/percent_value.dart";
+import "package:dungeons/widget/radio_button.dart";
+import "package:dungeons/widget/radio_group.dart";
+import "package:dungeons/widget/spaced.dart";
+import "package:dungeons/widget/stress.dart";
+import "package:dungeons/widget/value_span.dart";
+import "package:flutter/widgets.dart";
 
 class CharacterScreen extends StatefulWidget {
   final ValueChanged<Entity> onDone;
@@ -34,7 +34,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
   void initState() {
     super.initState();
     _entity = Entity(
-      name: 'Player',
+      name: "Player",
       race: EntityRace.human,
     )..base.roll();
   }
@@ -45,7 +45,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
       padding: const EdgeInsets.all(30),
       child: buildSpacedColumn(
         children: [
-          const Text('New character'),
+          const Text("New character"),
           _classSelect,
           if (_entity.klass != null) _attrAndStats,
           if (_entity.klass != null) _armorSelect,
@@ -54,7 +54,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
           if (_entity.klass != null &&
               _entity.weapon != null &&
               _entity.armor != null)
-            Button(text: 'Done', onClick: () => widget.onDone(_entity)),
+            Button(text: "Done", onClick: () => widget.onDone(_entity)),
         ],
       ),
     );
@@ -64,7 +64,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
     return RadioGroup([
       for (final klass in EntityClass.values)
         RadioButton(
-          text: '$klass',
+          text: "$klass",
           chosen: klass == _entity.klass,
           onChosen: () {
             setState(() {
@@ -90,13 +90,13 @@ class _CharacterScreenState extends State<CharacterScreen> {
           labelWidth: 72,
           valueWidth: 48,
           content: {
-            'Strength': BoldText('${_entity.strength}'),
-            'Agility': BoldText('${_entity.agility}'),
-            'Intellect': BoldText('${_entity.intellect}'),
+            "Strength": BoldText("${_entity.strength}"),
+            "Agility": BoldText("${_entity.agility}"),
+            "Intellect": BoldText("${_entity.intellect}"),
           },
         ),
         Button(
-          text: 'Reroll',
+          text: "Reroll",
           onClick: () {
             setState(_entity.base.roll);
           },
@@ -112,13 +112,13 @@ class _CharacterScreenState extends State<CharacterScreen> {
       labelWidth: 86,
       valueWidth: 128,
       content: {
-        'Total Hp': BoldText('${_entity.totalHp}'),
-        'Stress Cap': Text.rich(StressCapSpan(_entity, style: bold)),
-        'Armor': Text.rich(TotalArmorSpan(_entity, style: bold)),
-        'Initiative': Text.rich(IntValueSpan(_entity.initiative, style: bold)),
-        'Dodge': Text.rich(PercentValueSpan(_entity.dodge, style: bold)),
-        'Resist': BoldText('${_entity.resist}'),
-        'Damage': damage != null
+        "Total Hp": BoldText("${_entity.totalHp}"),
+        "Stress Cap": Text.rich(StressCapSpan(_entity, style: bold)),
+        "Armor": Text.rich(TotalArmorSpan(_entity, style: bold)),
+        "Initiative": Text.rich(IntValueSpan(_entity.initiative, style: bold)),
+        "Dodge": Text.rich(PercentValueSpan(_entity.dodge, style: bold)),
+        "Resist": BoldText("${_entity.resist}"),
+        "Damage": damage != null
             ? Text.rich(DiceValueWithRangeSpan(damage, style: bold))
             : const Empty(),
       },
@@ -129,7 +129,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
     return RadioGroup([
       for (final armor in Armor.values)
         RadioButton(
-          text: '$armor',
+          text: "$armor",
           chosen: armor == _entity.gear.body,
           onChosen: () {
             setState(() {
@@ -144,7 +144,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
     return RadioGroup([
       for (final weapon in Weapon.forMainHand)
         RadioButton(
-          text: '$weapon',
+          text: "$weapon",
           chosen: weapon == _entity.gear.mainHand,
           enabled: _entity.canEquip(Gear(mainHand: weapon)),
           onChosen: () {
@@ -160,7 +160,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
     return RadioGroup([
       for (final weapon in Weapon.forOffHand)
         RadioButton(
-          text: '$weapon',
+          text: "$weapon",
           chosen: weapon == _entity.gear.offHand,
           enabled: _entity.canEquip(Gear(offHand: weapon)),
           onChosen: () {
@@ -170,7 +170,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
           },
         ),
       RadioButton(
-        text: 'None',
+        text: "None",
         chosen: _entity.gear.offHand == null,
         onChosen: () {
           setState(() {

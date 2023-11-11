@@ -1,7 +1,7 @@
-import 'package:dungeons/game/entity_attr.dart';
-import 'package:dungeons/utility/value_callback.dart';
-import 'package:dungeons/widget/button.dart';
-import 'package:flutter/widgets.dart';
+import "package:dungeons/game/entity_attr.dart";
+import "package:dungeons/utility/value_callback.dart";
+import "package:dungeons/widget/button.dart";
+import "package:flutter/widgets.dart";
 
 class AttributeSelect extends StatelessWidget {
   final ValueCallback<EntityAttributeId> onChosen;
