@@ -4,7 +4,6 @@ import "package:dungeons/game/combat_grid.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity_class.dart";
 import "package:dungeons/game/grid_range.dart";
-import "package:dungeons/game/smite.dart";
 import "package:dungeons/game/source.dart";
 import "package:dungeons/game/spell.dart";
 import "package:dungeons/game/spell_cast.dart";

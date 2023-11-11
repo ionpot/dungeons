@@ -4,7 +4,6 @@ import "package:dungeons/game/combat_action.dart";
 import "package:dungeons/game/critical_hit.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/feat.dart";
-import "package:dungeons/game/smite.dart";
 import "package:dungeons/game/source.dart";
 import "package:dungeons/game/value.dart";
 import "package:dungeons/game/weapon.dart";
@@ -149,4 +148,10 @@ class TwoWeaponAttack {
   }
 
   PercentValueRoll rollHitChance() => hitChance.roll(hitRolls);
+}
+
+class Smite {
+  static const int rolls = 2;
+  static const int stressCost = 4;
+  static const Source source = Source.radiant;
 }
