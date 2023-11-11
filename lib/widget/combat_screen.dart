@@ -77,10 +77,10 @@ class _CombatScreenState extends State<CombatScreen> {
   CombatPhase _startingPhase() {
     _log
       ..ln()
-      ..file.writeln("New Combat")
+      ..ln("New Combat")
       ..ln()
       ..party(_grid.player, player: true)
-      ..file.writeln("Enemy")
+      ..ln("Enemy")
       ..ln()
       ..party(_grid.enemy)
       ..newRound(_combat.round);
@@ -141,7 +141,7 @@ class _CombatScreenState extends State<CombatScreen> {
     return NoActionPhase(_combat, onNext: () {
       _log
         ..ln()
-        ..file.writeln("${_combat.current} does nothing.");
+        ..ln("${_combat.current} does nothing.");
       _newTurn();
     });
   }

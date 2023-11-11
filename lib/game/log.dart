@@ -20,7 +20,7 @@ class Log {
   Log.toFile(String name, {required String title})
       : this(File(name).openWrite()..writeln(title));
 
-  void ln() => file.writeln();
+  void ln([Object? o = ""]) => file.writeln(o);
 
   Future<void> end() async {
     await file.flush();
@@ -34,17 +34,15 @@ class Log {
       final dice = e.gear.offHandValue?.dice;
       return "$offHand (${armor ?? dice})";
     });
-    file
-      ..writeln("${e.name}, ${e.race} ${e.klass} Lv${e.level}")
-      ..writeln("${e.attributes}")
-      ..writeln("Hp ${e.totalHp}"
-          '${player ? ', Stress Cap ${e.stressCap}' : ''}'
-          '${player ? ', XP ${e.toXpString()}' : ''}')
-      ..writeln("Initiative ${e.initiative}")
-      ..writeln("Dodge ${e.dodge}, Resist ${e.resist}")
-      ..writeln("Armor: ${e.totalArmor} (${e.armor})")
-      ..writeln("Weapon: ${e.weapon} ($damage) ${damage?.range}")
-      ..writeln('Off-hand: ${offHand ?? 'None'}');
+    ln("${e.attributes}");
+    ln("Hp ${e.totalHp}"
+        '${player ? ', Stress Cap ${e.stressCap}' : ''}'
+        '${player ? ', XP ${e.toXpString()}' : ''}');
+    ln("Initiative ${e.initiative}");
+    ln("Dodge ${e.dodge}, Resist ${e.resist}");
+    ln("Armor: ${e.totalArmor} (${e.armor})");
+    ln("Weapon: ${e.weapon} ($damage) ${damage?.range}");
+    ln('Off-hand: ${offHand ?? 'None'}');
   }
 
   void party(Party party, {bool player = false}) {
@@ -75,21 +73,20 @@ class Log {
     final offHand = ifdef(attack.twoWeaponAttack?.offHand, (offHand) {
       return " and $offHand";
     });
-    file
-      ..writeln('$attacker $attacks $target with $weapon${offHand ?? ''}.')
-      ..writeln("Attack roll $attackRoll");
+    ln('$attacker $attacks $target with $weapon${offHand ?? ''}.');
+    ln("Attack roll $attackRoll");
     if (result.deflected) {
-      file.writeln("$target deflects the attack.");
+      ln("$target deflects the attack.");
       return;
     }
     if (result.rolledDodge) {
-      file.writeln("Dodge roll ${_percentRoll(result.dodgeRoll)}");
+      ln("Dodge roll ${_percentRoll(result.dodgeRoll)}");
     }
     if (!result.canDodge) {
-      file.writeln("$target cannot dodge.");
+      ln("$target cannot dodge.");
     }
     if (result.dodged) {
-      file.writeln("$target dodges the attack.");
+      ln("$target dodges the attack.");
       return;
     }
     _writeDiceRolls(weapon, result.damageRoll);
@@ -100,14 +97,13 @@ class Log {
     final caster = cast.caster;
     final target = cast.target;
     final spell = cast.spell;
-    file
-      ..write("$caster casts $spell ")
-      ..writeln(cast.self ? "to self." : "at $target.");
+    file.write("$caster casts $spell ");
+    ln(cast.self ? "to self." : "at $target.");
     if (result.canResist) {
-      file.writeln("Resist ${_percentRoll(result.resistRoll)}");
+      ln("Resist ${_percentRoll(result.resistRoll)}");
     }
     if (result.resisted) {
-      file.writeln("$target resists the spell.");
+      ln("$target resists the spell.");
       return;
     }
     ifdef(result.healRoll, (healRoll) {
@@ -120,20 +116,20 @@ class Log {
   }
 
   void newRound(int round) {
-    file.writeln("Round $round");
+    ln("Round $round");
   }
 
   void xpGain(PartyXpGain xpGain) {
     for (final member in xpGain) {
       final xp = xpGain.amount(member);
-      file.writeln(xpGainText(member.entity, xp));
+      ln(xpGainText(member.entity, xp));
     }
   }
 
   void _writeResult(ActionResult result, ActionParameters params) {
     final target = params.target;
     if (result.healingDone != 0) {
-      file.writeln("$target is healed by ${result.healingDone}.");
+      ln("$target is healed by ${result.healingDone}.");
       return;
     }
     if (result.damageDone != 0) {
@@ -142,13 +138,13 @@ class Log {
       if (target.dead) {
         file.write(", and dies");
       }
-      file.writeln(".");
+      ln(".");
     }
     if (target.alive) {
       for (final entry in params.effects) {
         final text = effectText(entry.bonus);
         if (text.isNotEmpty) {
-          file.writeln("$target $text.");
+          ln("$target $text.");
         }
       }
     }
@@ -159,7 +155,7 @@ class Log {
   }
 
   void _writeDiceRoll(String name, DiceRoll value) {
-    file.writeln("$name roll (${value.dice.base}) $value");
+    ln("$name roll (${value.dice.base}) $value");
   }
 
   void _writeDiceRolls(String rollName, DiceRollValue value) {
