@@ -1,4 +1,5 @@
 import 'package:dungeons/game/combat_action.dart';
+import 'package:dungeons/game/entity.dart';
 import 'package:dungeons/game/log.dart';
 import 'package:dungeons/game/spell_cast.dart';
 import 'package:dungeons/game/value.dart';
@@ -18,6 +19,9 @@ class ActionText {
 
   const ActionText(this._action, this._parameters, this._result);
 
+  Entity get _actor => _parameters.actor;
+  Entity get _target => _parameters.target;
+
   List<Widget> get lines {
     if (_parameters is WeaponAttack) {
       final p = _parameters as WeaponAttack;
@@ -31,55 +35,49 @@ class ActionText {
   }
 
   List<Widget> _weaponTurn(WeaponAttack attack, WeaponAttackResult result) {
-    final attacker = attack.attacker;
-    final target = attack.target;
     return [
       _attacks(attack),
       _percentRoll('Attack', result.attackRoll, critical: result.isCriticalHit),
-      if (result.deflected) Text('$target deflects the attack.'),
+      if (result.deflected) Text('$_target deflects the attack.'),
       if (result.rolledDodge) _percentRoll('Dodge', result.dodgeRoll),
-      if (!result.canDodge) Text('$target cannot dodge.'),
-      if (result.dodged) Text('$target dodges the attack.'),
+      if (!result.canDodge) Text('$_target cannot dodge.'),
+      if (result.dodged) Text('$_target dodges the attack.'),
       if (result.didHit) ...[
-        ..._diceRolls('${attacker.weapon}', result.damageRoll),
+        ..._diceRolls('${_actor.weapon}', result.damageRoll),
         _damageAndStatus(result.damageRoll),
-        if (target.alive) ..._effects,
+        if (_target.alive) ..._effects,
       ],
     ];
   }
 
   Widget _attacks(WeaponAttack attack) {
-    final attacker = attack.attacker;
-    final target = attack.target;
     final offHand = ifdef(attack.twoWeaponAttack?.offHand, (offHand) {
       return ' and $offHand';
     });
     return _richText(
-      '$attacker ',
+      '$_actor ',
       TextSpan(
         text: attack.smite ? 'smites' : 'attacks',
         style: TextStyle(color: sourceColor(attack.source)),
       ),
-      ' $target with ${attacker.weapon}${offHand ?? ''}.',
+      ' $_target with ${_actor.weapon}${offHand ?? ''}.',
     );
   }
 
   List<Widget> _spellCast(SpellCast cast, SpellCastResult result) {
-    final caster = cast.caster;
-    final target = cast.target;
     return [
       _richText(
-        '$caster casts ',
+        '$_actor casts ',
         SpellNameSpan(cast.spell),
-        cast.self ? ' to self.' : ' at $target.',
+        cast.self ? ' to self.' : ' at $_target.',
       ),
       if (result.canResist) _percentRoll('Resist', result.resistRoll),
-      if (result.resisted) Text('$target resists the spell.'),
+      if (result.resisted) Text('$_target resists the spell.'),
       if (result.didHit) ...[
         if (result.damageRoll != null)
           ..._spellDamage(result.damageRoll!, cast),
         if (result.healRoll != null) ..._spellHeal(result.healRoll!, cast),
-        if (target.alive) ..._effects,
+        if (_target.alive) ..._effects,
       ],
     ];
   }
@@ -95,7 +93,7 @@ class ActionText {
     return [
       ..._diceRolls(cast.spell.text, roll),
       _richText(
-        '${cast.target} is healed by ',
+        '$_target is healed by ',
         DiceRollValueSpan(roll),
         '.',
       ),
@@ -104,9 +102,9 @@ class ActionText {
 
   Widget _damageAndStatus(DiceRollValue damage) {
     return _richText(
-      '${_parameters.target} takes ',
+      '$_target takes ',
       DamageSpan(damage, _action.source),
-      ' damage${_parameters.target.dead ? ', and dies' : ''}.',
+      ' damage${_target.dead ? ', and dies' : ''}.',
     );
   }
 
@@ -116,7 +114,7 @@ class ActionText {
     ];
     return [
       for (final text in effects)
-        if (text.isNotEmpty) Text('${_parameters.target} $text.'),
+        if (text.isNotEmpty) Text('$_target $text.'),
     ];
   }
 }
