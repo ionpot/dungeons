@@ -18,7 +18,8 @@ class Gear {
   Bonuses get bonuses {
     return Bonuses({
       if (body != null) GearBonus.armor(body!): body!.effect,
-      if (shield != null) GearBonus.offHand(shield!): Effect(armor: shield!.armor),
+      if (shield != null)
+        GearBonus.offHand(shield!): Effect(armor: shield!.armor),
       if (mainHand != null && weaponValue!.effect != null)
         GearBonus.mainHand(mainHand!): weaponValue!.effect!,
       if (offHand != null) GearBonus.offHand(offHand!): Weapon.offHandPenalty,

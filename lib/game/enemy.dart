@@ -55,8 +55,10 @@ Party enemyOrcParty(int playerLevel) {
     return Party.single(enemyOrc("Enemy", level()));
   }
   return Party({
-    const PartyPosition(PartyLine.front, PartySlot.left): enemyOrc("Enemy 1", level()),
-    const PartyPosition(PartyLine.front, PartySlot.right): enemyOrc("Enemy 2", level()),
+    const PartyPosition(PartyLine.front, PartySlot.left):
+        enemyOrc("Enemy 1", level()),
+    const PartyPosition(PartyLine.front, PartySlot.right):
+        enemyOrc("Enemy 2", level()),
   });
 }
 
