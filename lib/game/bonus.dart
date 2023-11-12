@@ -8,7 +8,7 @@ import "package:dungeons/game/gear.dart";
 import "package:dungeons/game/spell.dart";
 import "package:dungeons/game/weapon.dart";
 
-abstract class Bonus {
+sealed class Bonus {
   const Bonus();
 
   bool get stacks => false;
