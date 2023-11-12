@@ -9,7 +9,7 @@ import "package:dungeons/game/spell.dart";
 import "package:dungeons/game/spell_cast.dart";
 import "package:dungeons/game/weapon_attack.dart";
 
-abstract class CombatAction {
+sealed class CombatAction {
   final GridMember actor;
 
   const CombatAction(this.actor);
@@ -60,7 +60,7 @@ abstract class ActionResult {
   int get healingDone => 0;
 }
 
-class UseWeapon extends CombatAction {
+final class UseWeapon extends CombatAction {
   const UseWeapon(super.actor);
 
   @override
@@ -78,7 +78,7 @@ class UseWeapon extends CombatAction {
   }
 }
 
-class UseTwoWeapons extends CombatAction {
+final class UseTwoWeapons extends CombatAction {
   const UseTwoWeapons(super.actor);
 
   @override
@@ -99,7 +99,7 @@ class UseTwoWeapons extends CombatAction {
   }
 }
 
-class UseSmite extends CombatAction {
+final class UseSmite extends CombatAction {
   const UseSmite(super.actor);
 
   @override
@@ -125,7 +125,7 @@ class UseSmite extends CombatAction {
   Source get source => Smite.source;
 }
 
-class CastSpell extends CombatAction {
+final class CastSpell extends CombatAction {
   final Spell spell;
 
   const CastSpell(super.actor, this.spell);
