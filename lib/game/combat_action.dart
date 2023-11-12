@@ -60,21 +60,6 @@ abstract class ActionResult {
   int get healingDone => 0;
 }
 
-class ChosenAction {
-  final CombatAction action;
-  final GridMember target;
-
-  const ChosenAction(this.action, this.target);
-
-  ActionParameters get parameters => action.parameters(target);
-
-  ActionResult toResult() => parameters.toResult();
-
-  void apply(ActionResult result) {
-    parameters.apply(result);
-  }
-}
-
 class UseWeapon extends CombatAction {
   const UseWeapon(super.actor);
 
