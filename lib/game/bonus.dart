@@ -28,7 +28,7 @@ sealed class Bonus {
 
 typedef BonusMap<T extends Object> = Map<Bonus, T>;
 
-class AttributeBonus extends Bonus {
+final class AttributeBonus extends Bonus {
   final EntityAttributeId? attribute;
   final bool base;
 
@@ -60,7 +60,7 @@ class AttributeBonus extends Bonus {
   }
 }
 
-class ClassBonus extends Bonus {
+final class ClassBonus extends Bonus {
   final EntityClass? klass;
   final int level;
 
@@ -79,7 +79,7 @@ class ClassBonus extends Bonus {
   }
 }
 
-class RaceBonus extends Bonus {
+final class RaceBonus extends Bonus {
   final EntityRace race;
 
   const RaceBonus(this.race);
@@ -91,7 +91,7 @@ class RaceBonus extends Bonus {
   String get text => race.toString();
 }
 
-class CriticalHitBonus extends Bonus {
+final class CriticalHitBonus extends Bonus {
   final CriticalHit hit;
 
   const CriticalHitBonus(this.hit);
@@ -103,7 +103,7 @@ class CriticalHitBonus extends Bonus {
   String get text => hit.toString();
 }
 
-class GearBonus extends Bonus {
+final class GearBonus extends Bonus {
   final Gear gear;
 
   const GearBonus(this.gear);
@@ -123,7 +123,7 @@ class GearBonus extends Bonus {
   }
 }
 
-class FeatBonus extends Bonus {
+final class FeatBonus extends Bonus {
   final FeatSlot feat;
 
   const FeatBonus(this.feat);
@@ -135,7 +135,7 @@ class FeatBonus extends Bonus {
   String get text => feat.toString();
 }
 
-class SpellBonus extends Bonus {
+final class SpellBonus extends Bonus {
   final Spell spell;
 
   const SpellBonus(this.spell);
