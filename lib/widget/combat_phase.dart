@@ -25,7 +25,7 @@ class PortraitArgs {
   const PortraitArgs({this.current, this.targeting, this.onClick});
 }
 
-abstract class CombatPhase {
+sealed class CombatPhase {
   const CombatPhase();
 
   Widget get buttons;
@@ -34,7 +34,7 @@ abstract class CombatPhase {
   PortraitArgs portraitArgs(GridMember member) => const PortraitArgs();
 }
 
-class StartingPhase extends CombatPhase {
+final class StartingPhase extends CombatPhase {
   final Entity first;
   final VoidCallback onNext;
 
@@ -50,7 +50,7 @@ class StartingPhase extends CombatPhase {
   Widget get display => Text("$first goes first.");
 }
 
-class ActionSelectPhase extends CombatPhase {
+final class ActionSelectPhase extends CombatPhase {
   final GridMember actor;
   final ValueCallback<CombatAction> onChosen;
 
@@ -66,7 +66,7 @@ class ActionSelectPhase extends CombatPhase {
   Widget get display => Text("What does $actor do?");
 }
 
-class TargetingPhase extends CombatPhase {
+final class TargetingPhase extends CombatPhase {
   final Combat combat;
   final CombatAction action;
   final ValueCallback<GridMember> onChosen;
@@ -103,7 +103,7 @@ class TargetingPhase extends CombatPhase {
   }
 }
 
-class ActionResultPhase extends CombatPhase {
+final class ActionResultPhase extends CombatPhase {
   final Combat combat;
   final CombatAction action;
   final ActionParameters parameters;
@@ -145,7 +145,7 @@ class ActionResultPhase extends CombatPhase {
   }
 }
 
-class XpGainPhase extends CombatPhase {
+final class XpGainPhase extends CombatPhase {
   final Combat combat;
   final VoidCallback onDone;
 
@@ -175,7 +175,7 @@ class XpGainPhase extends CombatPhase {
   }
 }
 
-class LevelUpPhase extends CombatPhase {
+final class LevelUpPhase extends CombatPhase {
   final Entity entity;
   final ValueCallback<EntityAttributeId> onAttribute;
 
@@ -201,7 +201,7 @@ class LevelUpPhase extends CombatPhase {
   }
 }
 
-class NoActionPhase extends CombatPhase {
+final class NoActionPhase extends CombatPhase {
   final Combat combat;
   final VoidCallback onNext;
 
