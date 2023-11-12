@@ -1,7 +1,7 @@
 import "dart:io";
 
+import "package:dungeons/game/action_parameters.dart";
 import "package:dungeons/game/bonus.dart";
-import "package:dungeons/game/combat_action.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/party.dart";
 import "package:dungeons/game/spell.dart";
