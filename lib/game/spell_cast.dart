@@ -8,7 +8,7 @@ import "package:dungeons/game/value.dart";
 import "package:dungeons/utility/dice.dart";
 import "package:dungeons/utility/if.dart";
 
-class SpellCast extends ActionParameters {
+final class SpellCast extends ActionParameters {
   final Spell spell;
   final Entity caster;
   @override
@@ -74,7 +74,7 @@ class SpellCast extends ActionParameters {
   }
 }
 
-class SpellCastResult extends ActionResult {
+final class SpellCastResult extends ActionResult {
   final bool autoHit;
   final PercentValueRoll resistRoll;
   final bool targetSelf;

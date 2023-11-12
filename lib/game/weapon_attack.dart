@@ -10,7 +10,7 @@ import "package:dungeons/game/weapon.dart";
 import "package:dungeons/utility/dice.dart";
 import "package:dungeons/utility/percent.dart";
 
-class WeaponAttack extends ActionParameters {
+final class WeaponAttack extends ActionParameters {
   final Entity attacker;
   @override
   final Entity target;
@@ -74,7 +74,7 @@ class WeaponAttack extends ActionParameters {
   }
 }
 
-class WeaponAttackResult extends ActionResult {
+final class WeaponAttackResult extends ActionResult {
   final PercentValueRoll attackRoll;
   final PercentValueRoll dodgeRoll;
   final DiceRollValue damageRoll;
