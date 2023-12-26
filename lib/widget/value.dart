@@ -15,7 +15,7 @@ class ValueSpan<T extends Monoid> extends WidgetSpan {
               value,
               baseLabel: tooltipBaseText ?? "Base",
             ),
-            disabled: value.hasNoBonuses,
+            disabled: ValueTooltip.isEmpty(value),
             child: ColoredText(value, valueColor(value), style: style),
           ),
         );
@@ -24,7 +24,7 @@ class ValueSpan<T extends Monoid> extends WidgetSpan {
 class BonusValueSpan<T extends Monoid> extends WidgetSpan {
   BonusValueSpan(Value<T> value, {String? tooltipBaseText, TextStyle? style})
       : super(
-          child: value.hasNoBonuses
+          child: ValueTooltip.isEmpty(value)
               ? const Empty()
               : TooltipRegion(
                   tooltip: ValueTooltip(value),

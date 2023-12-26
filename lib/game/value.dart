@@ -37,8 +37,6 @@ class Value<T extends Monoid> implements Comparable<Value<T>> {
     return (base + bonuses.total).multiply(m) as T;
   }
 
-  bool get hasNoBonuses => bonuses.isEmpty && multipliers.isEmpty;
-
   bool operator >(Value<T> other) {
     return compareTo(other) == 1;
   }

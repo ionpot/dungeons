@@ -18,6 +18,10 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
     this.baseLabel,
   });
 
+  static bool isEmpty<T extends Monoid>(Value<T> value) {
+    return value.bonusList.clean.isEmpty && value.reserved.isEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     final base = value.base;
