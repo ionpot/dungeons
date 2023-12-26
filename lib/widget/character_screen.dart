@@ -110,12 +110,12 @@ class _CharacterScreenState extends State<CharacterScreen> {
       labelWidth: 86,
       valueWidth: 128,
       content: {
-        "Total Hp": BoldText("${_entity.totalHp}"),
-        "Stress Cap": ValueText(_entity.stressCap, style: bold),
+        "Total Hp": Text.rich(ValueSpan(_entity.totalHp, style: bold)),
+        "Stress Cap": Text.rich(ValueSpan(_entity.stressCap, style: bold)),
         "Armor": Text.rich(TotalArmorSpan(_entity, style: bold)),
-        "Initiative": ValueText(_entity.initiative, style: bold),
-        "Dodge": ValueText(_entity.dodge, style: bold),
-        "Resist": BoldText("${_entity.resist}"),
+        "Initiative": Text.rich(ValueSpan(_entity.initiative, style: bold)),
+        "Dodge": Text.rich(ValueSpan(_entity.dodge, style: bold)),
+        "Resist": Text.rich(ValueSpan(_entity.resist, style: bold)),
         "Damage": damage != null
             ? Text.rich(DiceValueWithRangeSpan(damage, style: bold))
             : const Empty(),
