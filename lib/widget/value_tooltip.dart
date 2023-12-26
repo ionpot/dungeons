@@ -26,7 +26,7 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
   Widget build(BuildContext context) {
     final base = value.base;
     return ValueTable([
-      if (base.hasValue) ValueRow(Text(baseLabel ?? "Base"), BoldText("$base")),
+      if (base.hasValue) ValueRow(Text(baseLabel ?? "Base"), BoldText(base)),
       ..._bonusRows,
       ..._reservedRows,
     ]);

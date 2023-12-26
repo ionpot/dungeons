@@ -88,9 +88,9 @@ class _CharacterScreenState extends State<CharacterScreen> {
           labelWidth: 72,
           valueWidth: 48,
           content: {
-            "Strength": BoldText("${_entity.strength}"),
-            "Agility": BoldText("${_entity.agility}"),
-            "Intellect": BoldText("${_entity.intellect}"),
+            "Strength": BoldText(_entity.strength),
+            "Agility": BoldText(_entity.agility),
+            "Intellect": BoldText(_entity.intellect),
           },
         ),
         Button(
