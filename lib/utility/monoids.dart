@@ -152,7 +152,7 @@ final class Multiplier extends Monoid {
 
   const Multiplier(this.value);
 
-  static const empty = Multiplier(1);
+  static const empty = Multiplier(0);
 
   int applyTo(int input) {
     return (input * value).floor();
