@@ -34,9 +34,9 @@ sealed class Monoid implements Comparable<Monoid> {
   }
 
   static T empty<T extends Monoid>() {
-    if (T is Int) return Int.zero as T;
-    if (T is Percent) return Percent.zero as T;
-    if (T is Multiplier) return Multiplier.empty as T;
+    if (T == Int) return Int.zero as T;
+    if (T == Percent) return Percent.zero as T;
+    if (T == Multiplier) return Multiplier.empty as T;
     throw ArgumentError("Unknown monoid.");
   }
 }
