@@ -5,7 +5,7 @@ import "package:dungeons/game/spell.dart";
 import "package:dungeons/widget/colors.dart";
 import "package:dungeons/widget/dice_span.dart";
 import "package:dungeons/widget/tooltip_region.dart";
-import "package:dungeons/widget/value.dart";
+import "package:dungeons/widget/value_span.dart";
 import "package:dungeons/widget/value_table.dart";
 import "package:flutter/widgets.dart";
 

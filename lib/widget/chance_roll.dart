@@ -2,7 +2,7 @@ import "package:dungeons/game/chance_roll.dart";
 import "package:dungeons/game/log.dart";
 import "package:dungeons/game/value.dart";
 import "package:dungeons/utility/monoids.dart";
-import "package:dungeons/widget/value.dart";
+import "package:dungeons/widget/value_span.dart";
 import "package:flutter/widgets.dart";
 
 class ChanceRollText extends StatelessWidget {

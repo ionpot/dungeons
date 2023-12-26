@@ -3,7 +3,7 @@ import "package:dungeons/utility/if.dart";
 import "package:dungeons/widget/dice_span.dart";
 import "package:dungeons/widget/entity_span.dart";
 import "package:dungeons/widget/text_lines.dart";
-import "package:dungeons/widget/value.dart";
+import "package:dungeons/widget/value_span.dart";
 import "package:flutter/widgets.dart";
 
 class EntityStats extends StatelessWidget {

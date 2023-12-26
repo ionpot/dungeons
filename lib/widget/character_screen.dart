@@ -13,7 +13,7 @@ import "package:dungeons/widget/radio_button.dart";
 import "package:dungeons/widget/radio_group.dart";
 import "package:dungeons/widget/spaced.dart";
 import "package:dungeons/widget/text.dart";
-import "package:dungeons/widget/value.dart";
+import "package:dungeons/widget/value_span.dart";
 import "package:flutter/widgets.dart";
 
 class CharacterScreen extends StatefulWidget {
