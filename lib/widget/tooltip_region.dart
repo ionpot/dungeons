@@ -4,11 +4,20 @@ import "package:flutter/widgets.dart";
 class TooltipRegion extends StatelessWidget {
   final Widget child;
   final Widget tooltip;
+  final bool disabled;
 
-  const TooltipRegion({super.key, required this.tooltip, required this.child});
+  const TooltipRegion({
+    super.key,
+    required this.child,
+    required this.tooltip,
+    this.disabled = false,
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (disabled) {
+      return child;
+    }
     final overlay = ScreenOverlay.of(context)?.tooltip;
     return MouseRegion(
       onEnter: (event) => overlay?.show(tooltip, event.position),

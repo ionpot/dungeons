@@ -4,7 +4,6 @@ import "package:dungeons/game/entity_class.dart";
 import "package:dungeons/game/entity_race.dart";
 import "package:dungeons/game/gear.dart";
 import "package:dungeons/game/weapon.dart";
-import "package:dungeons/widget/bold_text.dart";
 import "package:dungeons/widget/button.dart";
 import "package:dungeons/widget/dice_span.dart";
 import "package:dungeons/widget/empty.dart";
@@ -13,6 +12,7 @@ import "package:dungeons/widget/label_value.dart";
 import "package:dungeons/widget/radio_button.dart";
 import "package:dungeons/widget/radio_group.dart";
 import "package:dungeons/widget/spaced.dart";
+import "package:dungeons/widget/text.dart";
 import "package:dungeons/widget/value.dart";
 import "package:flutter/widgets.dart";
 
@@ -105,7 +105,6 @@ class _CharacterScreenState extends State<CharacterScreen> {
 
   Widget get _stats {
     final damage = _entity.weaponDamage;
-    const bold = BoldText.style;
     return LabelValueTable(
       labelWidth: 86,
       valueWidth: 128,

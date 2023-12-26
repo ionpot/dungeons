@@ -4,30 +4,25 @@ import "package:dungeons/game/value.dart";
 import "package:dungeons/utility/monoids.dart";
 import "package:dungeons/widget/colors.dart";
 import "package:dungeons/widget/compare_bonus.dart";
+import "package:dungeons/widget/text.dart";
 import "package:dungeons/widget/value_table.dart";
 import "package:flutter/widgets.dart";
 
-class ColoredText extends Text {
-  ColoredText(Object value, Color? color, {super.key})
-      : super("$value", style: TextStyle(color: color));
-}
-
 class ValueTooltip<T extends Monoid> extends StatelessWidget {
   final Value<T> value;
-  final String baseLabel;
-  final Widget baseText;
+  final String? baseLabel;
 
   const ValueTooltip(
     this.value, {
     super.key,
-    required this.baseLabel,
-    required this.baseText,
+    this.baseLabel,
   });
 
   @override
   Widget build(BuildContext context) {
+    final base = value.base;
     return ValueTable([
-      if (value.base.hasValue) ValueRow(Text(baseLabel), baseText),
+      if (base.hasValue) ValueRow(Text(baseLabel ?? "Base"), BoldText("$base")),
       ..._bonusRows,
       ..._reservedRows,
     ]);
@@ -44,7 +39,7 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
       for (final BonusEntry(:bonus, :value) in bonuses)
         ValueRow(
           Text("$bonus"),
-          ColoredText(value.signed, color(bonus, value)),
+          BoldText(value.signed, color: color(bonus, value)),
         ),
     ];
   }
@@ -62,7 +57,7 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
       for (final BonusEntry(:bonus, :value) in bonuses)
         ValueRow(
           Text(label(bonus, value)),
-          ColoredText(value.total.negate, reservedColor),
+          BoldText(value.total.negate, color: reservedColor),
         ),
     ];
   }
