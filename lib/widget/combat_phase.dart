@@ -1,4 +1,4 @@
-import "package:dungeons/game/action_parameters.dart";
+import "package:dungeons/game/action_input.dart";
 import "package:dungeons/game/combat.dart";
 import "package:dungeons/game/combat_action.dart";
 import "package:dungeons/game/combat_grid.dart";
@@ -105,16 +105,12 @@ final class TargetingPhase extends CombatPhase {
 
 final class ActionResultPhase extends CombatPhase {
   final Combat combat;
-  final CombatAction action;
-  final ActionParameters parameters;
   final ActionResult result;
   final VoidCallback onDone;
 
   const ActionResultPhase(
-    this.combat, {
-    required this.action,
-    required this.parameters,
-    required this.result,
+    this.combat,
+    this.result, {
     required this.onDone,
   });
 
@@ -123,7 +119,7 @@ final class ActionResultPhase extends CombatPhase {
 
   @override
   Widget get display {
-    final text = ActionText(action, parameters, result);
+    final text = ActionText(result);
     return TitledTextLines(
       title: combatTurnTitle(combat),
       lines: TextLines(text.lines),
@@ -136,7 +132,7 @@ final class ActionResultPhase extends CombatPhase {
   }
 
   PortraitTargeting? _targeting(GridMember member) {
-    if (parameters.target == member.entity) {
+    if (result.input.target == member.entity) {
       return combat.isAlly(member)
           ? PortraitTargeting.friendly
           : PortraitTargeting.enemy;

@@ -8,14 +8,12 @@ import "package:dungeons/widget/bold_text.dart";
 import "package:dungeons/widget/button.dart";
 import "package:dungeons/widget/dice_span.dart";
 import "package:dungeons/widget/empty.dart";
-import "package:dungeons/widget/int_value.dart";
+import "package:dungeons/widget/entity_span.dart";
 import "package:dungeons/widget/label_value.dart";
-import "package:dungeons/widget/percent_value.dart";
 import "package:dungeons/widget/radio_button.dart";
 import "package:dungeons/widget/radio_group.dart";
 import "package:dungeons/widget/spaced.dart";
-import "package:dungeons/widget/stress.dart";
-import "package:dungeons/widget/value_span.dart";
+import "package:dungeons/widget/value.dart";
 import "package:flutter/widgets.dart";
 
 class CharacterScreen extends StatefulWidget {
@@ -113,10 +111,10 @@ class _CharacterScreenState extends State<CharacterScreen> {
       valueWidth: 128,
       content: {
         "Total Hp": BoldText("${_entity.totalHp}"),
-        "Stress Cap": Text.rich(StressCapSpan(_entity, style: bold)),
+        "Stress Cap": ValueText(_entity.stressCap, style: bold),
         "Armor": Text.rich(TotalArmorSpan(_entity, style: bold)),
-        "Initiative": Text.rich(IntValueSpan(_entity.initiative, style: bold)),
-        "Dodge": Text.rich(PercentValueSpan(_entity.dodge, style: bold)),
+        "Initiative": ValueText(_entity.initiative, style: bold),
+        "Dodge": ValueText(_entity.dodge, style: bold),
         "Resist": BoldText("${_entity.resist}"),
         "Damage": damage != null
             ? Text.rich(DiceValueWithRangeSpan(damage, style: bold))

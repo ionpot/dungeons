@@ -1,11 +1,9 @@
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/utility/if.dart";
 import "package:dungeons/widget/dice_span.dart";
-import "package:dungeons/widget/int_value.dart";
-import "package:dungeons/widget/percent_value.dart";
-import "package:dungeons/widget/stress.dart";
+import "package:dungeons/widget/entity_span.dart";
 import "package:dungeons/widget/text_lines.dart";
-import "package:dungeons/widget/value_span.dart";
+import "package:dungeons/widget/value.dart";
 import "package:flutter/widgets.dart";
 
 class EntityStats extends StatelessWidget {
@@ -33,11 +31,11 @@ class EntityStats extends StatelessWidget {
     return Text.rich(
       TextSpan(children: [
         const TextSpan(text: "Str "),
-        IntValueSpan(entity.strength),
+        ValueSpan(entity.strength),
         const TextSpan(text: ", Agi "),
-        IntValueSpan(entity.agility),
+        ValueSpan(entity.agility),
         const TextSpan(text: ", Int "),
-        IntValueSpan(entity.intellect),
+        ValueSpan(entity.intellect),
       ]),
     );
   }
@@ -70,7 +68,7 @@ class EntityStats extends StatelessWidget {
       TextSpan(
         children: [
           const TextSpan(text: "Initiative "),
-          IntValueSpan(entity.initiative),
+          ValueSpan(entity.initiative),
         ],
       ),
     );
@@ -80,9 +78,9 @@ class EntityStats extends StatelessWidget {
     return Text.rich(
       TextSpan(children: [
         const TextSpan(text: "Dodge "),
-        PercentValueSpan(entity.dodge),
+        ValueSpan(entity.dodge),
         const TextSpan(text: ", Resist "),
-        PercentValueSpan(entity.resist),
+        ValueSpan(entity.resist),
       ]),
     );
   }

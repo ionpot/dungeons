@@ -1,11 +1,11 @@
+import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/source.dart";
 import "package:dungeons/game/spell.dart";
-import "package:dungeons/game/value.dart";
 import "package:dungeons/widget/colors.dart";
 import "package:dungeons/widget/dice_span.dart";
-import "package:dungeons/widget/int_value.dart";
 import "package:dungeons/widget/tooltip_region.dart";
+import "package:dungeons/widget/value.dart";
 import "package:dungeons/widget/value_table.dart";
 import "package:flutter/widgets.dart";
 
@@ -31,7 +31,17 @@ class HpSpan extends TextSpan {
               style: TextStyle(color: hpColor(entity)),
             ),
             const TextSpan(text: "/"),
-            IntValueSpan(entity.totalHp),
+            ValueSpan(entity.totalHp),
+          ],
+        );
+}
+
+class StressSpan extends TextSpan {
+  StressSpan(Entity entity)
+      : super(
+          children: [
+            TextSpan(text: "${entity.stress}/"),
+            ValueSpan(entity.stressCap),
           ],
         );
 }

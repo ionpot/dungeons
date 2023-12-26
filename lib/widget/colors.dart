@@ -1,8 +1,9 @@
 import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/bonus_entry.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/source.dart";
 import "package:dungeons/game/value.dart";
-import "package:dungeons/utility/percent.dart";
+import "package:dungeons/utility/monoids.dart";
 import "package:flutter/widgets.dart";
 
 const black = Color(0xFF000000);
@@ -11,6 +12,8 @@ const yellow = Color(0xFFFFFF00);
 const gold = Color(0xFFFFC000);
 const green = Color(0xFF00FF00);
 const red = Color(0xFFFF0000);
+
+const reservedColor = yellow;
 
 Color? intColor(int i) {
   switch (i.sign) {
@@ -21,22 +24,6 @@ Color? intColor(int i) {
     default:
       return null;
   }
-}
-
-Color? doubleColor(double x) => intColor(x.sign.round());
-
-Color? percentColor(Percent percent) => intColor(percent.value);
-Color? intValueColor(IntValue value) {
-  return intColor(value.bonuses.filter(bonusHasColor).total);
-}
-
-Color? percentValueColor(PercentValue value) {
-  value = PercentValue(
-    base: value.base,
-    bonuses: value.bonuses.filter(bonusHasColor),
-    multipliers: value.multipliers.filter(bonusHasColor),
-  );
-  return percentColor(value.multiplierBonus) ?? percentColor(value.bonus);
 }
 
 Color? hpColor(Entity e) => e.alive ? null : red;
@@ -56,7 +43,15 @@ Color? sourceColor(Source source) {
   }
 }
 
-bool bonusHasColor(Bonus bonus) => !ignoreBonusColor(bonus);
+Color? monoidColor(Monoid m) => intColor(m.sign);
+
+Color? valueColor<T extends Monoid>(Value<T> value) {
+  if (value.reserved.total.hasValue) {
+    return reservedColor;
+  }
+  final list = value.bonusList..removeWhereBonus(ignoreBonusColor);
+  return monoidColor(list.total);
+}
 
 bool ignoreBonusColor(Bonus bonus) {
   if (bonus is AttributeBonus) {

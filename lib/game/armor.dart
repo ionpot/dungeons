@@ -1,5 +1,5 @@
-import "package:dungeons/game/effect.dart";
-import "package:dungeons/utility/multiplier.dart";
+import "package:dungeons/game/bonus_value.dart";
+import "package:dungeons/utility/monoids.dart";
 import "package:dungeons/utility/random.dart";
 
 enum Armor {
@@ -20,11 +20,14 @@ enum Armor {
 
   factory Armor.random() => pickRandom(Armor.values);
 
-  Effect get effect {
-    return Effect(
-      dodgeMultiplier: dodge,
-      initiative: initiative,
-    );
+  BonusValue? get bonus {
+    if (dodge != null) {
+      return MultiplierBonus.dodge(dodge!);
+    }
+    if (initiative != null) {
+      return IntBonus.initiative(initiative!);
+    }
+    return null;
   }
 
   @override

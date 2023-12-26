@@ -1,20 +1,23 @@
-import "package:dungeons/game/effect.dart";
+import "package:dungeons/game/bonus_value.dart";
 import "package:dungeons/utility/dice.dart";
-import "package:dungeons/utility/percent.dart";
+import "package:dungeons/utility/monoids.dart";
 
 enum Feat {
   weaponFocus(
     text: "Weapon Focus",
     trained: FeatValue(
-      effect: Effect(hitChance: Percent(2), damage: 1),
+      bonuses: [
+        PercentBonus.toHit(Percent(2)),
+        IntBonus.damage(1),
+      ],
       reserveStress: 1,
     ),
     expert: FeatValue(
-      effect: Effect(
-        hitChance: Percent(4),
-        criticalHitChance: Percent(5),
-        damage: 2,
-      ),
+      bonuses: [
+        PercentBonus.toHit(Percent(4)),
+        PercentBonus.criticalHit(Percent(5)),
+        IntBonus.damage(2),
+      ],
       reserveStress: 2,
     ),
   ),
@@ -62,11 +65,15 @@ enum FeatTier {
 }
 
 class FeatValue {
-  final Effect? effect;
+  final List<BonusValue> bonuses;
   final int? reserveStress;
   final Dice? dice;
 
-  const FeatValue({this.effect, this.reserveStress, this.dice});
+  const FeatValue({
+    this.bonuses = const [],
+    this.reserveStress,
+    this.dice,
+  });
 }
 
 class FeatSlot {

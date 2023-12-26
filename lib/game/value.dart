@@ -1,142 +1,59 @@
-import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/bonus_entry.dart";
 import "package:dungeons/game/bonuses.dart";
-import "package:dungeons/utility/bonus_text.dart";
-import "package:dungeons/utility/dice.dart";
-import "package:dungeons/utility/percent.dart";
-import "package:dungeons/utility/range.dart";
+import "package:dungeons/utility/monoids.dart";
 
-class IntValue implements Comparable<IntValue> {
-  final int base;
-  final IntBonuses bonuses;
+class Value<T extends Monoid> implements Comparable<Value<T>> {
+  final T base;
+  final Bonuses<T> bonuses;
+  final Bonuses<Multiplier> multipliers;
+  final List<BonusEntry<T>> reserved;
 
-  const IntValue({
-    this.base = 0,
-    this.bonuses = const IntBonuses(),
+  const Value(
+    this.base,
+    this.bonuses, {
+    required this.multipliers,
+    required this.reserved,
   });
 
-  int get bonus => bonuses.total;
-  int get total => base + bonus;
+  Value.from(this.base, [Bonuses<T>? map])
+      : bonuses = map ?? Bonuses.empty(),
+        multipliers = Bonuses.empty(),
+        reserved = [];
 
-  bool operator >(IntValue other) => total > other.total;
+  Value.copy(Value<T> value)
+      : this(
+          value.base,
+          Bonuses.copy(value.bonuses),
+          multipliers: Bonuses.copy(value.multipliers),
+          reserved: List.of(value.reserved),
+        );
 
-  @override
-  String toString() => "$total";
+  T get multiplierBonus => multiply(multipliers.total);
+  T get bonus => bonuses.total + multiplierBonus as T;
+  T get cap => base + bonus as T;
+  T get total => cap - reserved.total as T;
 
-  @override
-  int compareTo(IntValue other) => total - other.total;
-}
-
-class PercentValue {
-  final Percent base;
-  final PercentBonuses bonuses;
-  final MultiplierBonuses multipliers;
-
-  const PercentValue({
-    this.base = const Percent(),
-    this.bonuses = const PercentBonuses(),
-    this.multipliers = const MultiplierBonuses(),
-  });
-
-  Percent get bonus => bonuses.total;
-  Percent get unscaled => base + bonus;
-  Percent get multiplierBonus => unscaled.multiply(multipliers.total);
-  Percent get total => unscaled + multiplierBonus;
+  T multiply(Multiplier m) {
+    return (base + bonuses.total).multiply(m) as T;
+  }
 
   bool get hasNoBonuses => bonuses.isEmpty && multipliers.isEmpty;
 
-  PercentValueRoll roll([int count = 1]) {
-    return PercentValueRoll(input: this, result: total.roll(count));
+  bool operator >(Value<T> other) {
+    return compareTo(other) == 1;
+  }
+
+  List<BonusEntry<T>> get bonusList {
+    return [
+      for (final entry in bonuses) entry,
+      for (final entry in multipliers)
+        BonusEntry(entry.bonus, multiply(entry.value)),
+    ];
   }
 
   @override
-  String toString() => "$total";
-}
-
-class PercentValueRoll {
-  final PercentValue input;
-  final PercentRoll result;
-
-  const PercentValueRoll({required this.input, required this.result});
-
-  bool get allSuccess => result.allSuccess;
-  bool get success => result.success;
-  bool get fail => result.fail;
-
-  bool meets(Percent chance) => result.forChance(chance).success;
-}
-
-class DiceValue {
-  final Dice base;
-  final DiceBonuses diceBonuses;
-  final IntBonuses intBonuses;
-  final Bonus? max;
-
-  DiceValue({
-    required this.base,
-    DiceBonuses? diceBonuses,
-    this.intBonuses = const IntBonuses(),
-    this.max,
-  }) : diceBonuses = diceBonuses ?? DiceBonuses();
-
-  void addDice(Bonus bonus, Dice dice) {
-    diceBonuses.add(bonus, dice);
-  }
-
-  Range get range => base.range + diceBonuses.range + intBonuses.total;
-
-  IntValue get diceCountValue {
-    return IntValue(
-      base: base.count,
-      bonuses: IntBonuses(
-        diceBonuses
-            .findWithSides(base.sides)
-            .map((key, value) => MapEntry(key, value.count)),
-      ),
-    );
-  }
-
-  IntValue get intBonusValue => IntValue(base: base.bonus, bonuses: intBonuses);
-  String get intBonusString => bonusText(intBonusValue.total);
-  int get maxTotal => base.max + diceBonuses.maxTotal + intBonuses.total;
-
-  DiceRollValue roll() {
-    return DiceRollValue(
-      input: this,
-      base: max != null ? base.rollMax() : base.roll(),
-      diceBonuses: max != null ? diceBonuses.rollMax() : diceBonuses.roll(),
-    );
-  }
-
-  @override
-  String toString() => "${base.base}$intBonusString$diceBonuses";
-}
-
-class DiceRollValue {
-  final DiceValue input;
-  final DiceRoll base;
-  final DiceRollBonuses diceBonuses;
-
-  const DiceRollValue({
-    required this.input,
-    required this.base,
-    this.diceBonuses = const DiceRollBonuses(),
-  });
-
-  factory DiceRollValue.roll(Dice dice) {
-    return DiceValue(base: dice).roll();
-  }
-
-  IntBonuses get intBonuses => input.intBonuses;
-  Bonus? get max => input.max;
-
-  int get bonusTotal => intBonuses.total + diceBonuses.totals.total;
-  int get total => base.total + bonusTotal;
-
-  IntValue get intValue {
-    return IntValue(
-      base: base.total,
-      bonuses: diceBonuses.totals + intBonuses,
-    );
+  compareTo(Value<T> other) {
+    return compareTo(other);
   }
 
   @override

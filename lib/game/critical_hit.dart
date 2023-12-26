@@ -1,8 +1,9 @@
 import "package:dungeons/game/value.dart";
 import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/monoids.dart";
 
 class CriticalHit {
-  final PercentValue chance;
+  final Value<Percent> chance;
   final Dice dice;
 
   const CriticalHit({required this.chance, required this.dice});

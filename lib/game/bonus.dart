@@ -6,6 +6,7 @@ import "package:dungeons/game/entity_race.dart";
 import "package:dungeons/game/feat.dart";
 import "package:dungeons/game/gear.dart";
 import "package:dungeons/game/spell.dart";
+import "package:dungeons/game/status_effect.dart";
 import "package:dungeons/game/weapon.dart";
 
 sealed class Bonus {
@@ -25,8 +26,6 @@ sealed class Bonus {
   @override
   String toString() => text;
 }
-
-typedef BonusMap<T extends Object> = Map<Bonus, T>;
 
 final class AttributeBonus extends Bonus {
   final EntityAttributeId? attribute;

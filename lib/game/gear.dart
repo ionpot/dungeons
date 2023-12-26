@@ -1,7 +1,7 @@
 import "package:dungeons/game/armor.dart";
 import "package:dungeons/game/bonus.dart";
-import "package:dungeons/game/bonuses.dart";
-import "package:dungeons/game/effect.dart";
+import "package:dungeons/game/bonus_pool.dart";
+import "package:dungeons/game/bonus_value.dart";
 import "package:dungeons/game/weapon.dart";
 
 class Gear {
@@ -15,15 +15,21 @@ class Gear {
 
   Weapon? get shield => offHand == Weapon.shield ? offHand : null;
 
-  Bonuses get bonuses {
-    return Bonuses({
-      if (body != null) GearBonus.armor(body!): body!.effect,
-      if (shield != null)
-        GearBonus.offHand(shield!): Effect(armor: shield!.armor),
-      if (mainHand != null && weaponValue!.effect != null)
-        GearBonus.mainHand(mainHand!): weaponValue!.effect!,
-      if (offHand != null) GearBonus.offHand(offHand!): Weapon.offHandPenalty,
-    });
+  BonusPool get bonuses {
+    final pool = BonusPool.empty();
+    if (body?.bonus != null) {
+      pool.add(GearBonus.armor(body!), body!.bonus!);
+    }
+    if (shield?.armor != null) {
+      pool.add(GearBonus.offHand(shield!), IntBonus.armor(shield!.armor!));
+    }
+    if (mainHand != null) {
+      pool.add(GearBonus.mainHand(mainHand!), weaponValue!.bonus);
+    }
+    if (offHand != null) {
+      pool.add(GearBonus.offHand(offHand!), Weapon.offHandPenalty);
+    }
+    return pool;
   }
 
   bool canEquip(Gear gear) {

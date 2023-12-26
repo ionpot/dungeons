@@ -1,4 +1,4 @@
-import "package:dungeons/game/effect.dart";
+import "package:dungeons/game/bonus_value.dart";
 import "package:dungeons/utility/dice.dart";
 import "package:dungeons/utility/random.dart";
 
@@ -32,7 +32,7 @@ enum Weapon {
       values.where((weapon) => weapon.canMainHand);
   static Iterable<Weapon> forOffHand =
       values.where((weapon) => weapon.canOffHand);
-  static Effect offHandPenalty = const Effect(initiative: -2);
+  static BonusValue offHandPenalty = const IntBonus.initiative(-2);
 
   static Weapon randomMainHand() => pickRandom(forMainHand);
 }
@@ -70,5 +70,5 @@ class WeaponValue {
 
   const WeaponValue({required this.dice, this.initiative = 0});
 
-  Effect? get effect => initiative != 0 ? Effect(initiative: initiative) : null;
+  BonusValue get bonus => IntBonus.initiative(initiative);
 }

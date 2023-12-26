@@ -1,4 +1,5 @@
 import "package:dungeons/game/armor.dart";
+import "package:dungeons/game/chance_roll.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity_class.dart";
 import "package:dungeons/game/entity_race.dart";
@@ -7,7 +8,7 @@ import "package:dungeons/game/party.dart";
 import "package:dungeons/game/weapon.dart";
 import "package:dungeons/utility/deviate.dart";
 import "package:dungeons/utility/dice.dart";
-import "package:dungeons/utility/percent.dart";
+import "package:dungeons/utility/monoids.dart";
 
 Entity enemyOrc(String name, int level) {
   if (level < 1) {
@@ -62,4 +63,4 @@ Party enemyOrcParty(int playerLevel) {
   });
 }
 
-bool _chance(Percent percent) => percent.roll().success;
+bool _chance(Percent percent) => ChanceRoll().meets(percent);

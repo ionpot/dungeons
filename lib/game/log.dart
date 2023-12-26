@@ -1,16 +1,21 @@
 import "dart:io";
 
-import "package:dungeons/game/action_parameters.dart";
+import "package:dungeons/game/action_input.dart";
 import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/chance_roll.dart";
+import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/party.dart";
+import "package:dungeons/game/smite.dart";
 import "package:dungeons/game/spell.dart";
 import "package:dungeons/game/spell_cast.dart";
 import "package:dungeons/game/text.dart";
+import "package:dungeons/game/two_weapon_attack.dart";
 import "package:dungeons/game/value.dart";
 import "package:dungeons/game/weapon_attack.dart";
 import "package:dungeons/utility/dice.dart";
 import "package:dungeons/utility/if.dart";
+import "package:dungeons/utility/monoids.dart";
 
 class Log {
   final IOSink file;
@@ -52,35 +57,36 @@ class Log {
     }
   }
 
-  void actionResult(ActionParameters parameters, ActionResult result) {
-    if (parameters is WeaponAttack) {
-      return weaponAttack(parameters, parameters.downcast(result));
+  void actionResult(ActionResult result) {
+    if (result is WeaponAttackResult) {
+      return weaponAttack(result.input, result);
     }
-    if (parameters is SpellCast) {
-      return spellCast(parameters, parameters.downcast(result));
+    if (result is SpellCastResult) {
+      return spellCast(result.input, result);
     }
   }
 
-  void weaponAttack(WeaponAttack attack, WeaponAttackResult result) {
-    final attacker = attack.attacker;
-    final target = attack.target;
+  void weaponAttack(WeaponAttackInput input, WeaponAttackResult result) {
+    final attacker = input.actor;
+    final target = input.target;
     final weapon = attacker.weapon!.text;
-    final attackRoll = _percentRoll(
-      result.attackRoll,
+    final attackRoll = _chanceRoll(
+      result.rolls.attack,
+      input.hitChance,
       critical: result.isCriticalHit,
     );
-    final attacks = attack.smite ? "smites" : "attacks";
-    final offHand = ifdef(attack.twoWeaponAttack?.offHand, (offHand) {
-      return " and $offHand";
-    });
-    ln('$attacker $attacks $target with $weapon${offHand ?? ''}.');
+    final attacks = input is SmiteInput ? "smites" : "attacks";
+    final offHand =
+        input is TwoWeaponAttackInput ? " and ${input.offHand}" : "";
+    ln("$attacker $attacks $target with $weapon$offHand.");
     ln("Attack roll $attackRoll");
     if (result.deflected) {
       ln("$target deflects the attack.");
       return;
     }
     if (result.rolledDodge) {
-      ln("Dodge roll ${_percentRoll(result.dodgeRoll)}");
+      final str = _chanceRoll(result.rolls.dodge, input.dodgeChance);
+      ln("Dodge roll $str");
     }
     if (!result.canDodge) {
       ln("$target cannot dodge.");
@@ -89,30 +95,30 @@ class Log {
       ln("$target dodges the attack.");
       return;
     }
-    _writeDiceRolls(weapon, result.damageRoll);
-    _writeResult(result, attack);
+    _writeDiceRolls(weapon, result.rolls.damage);
+    _writeResult(result, input);
   }
 
-  void spellCast(SpellCast cast, SpellCastResult result) {
-    final caster = cast.caster;
-    final target = cast.target;
-    final spell = cast.spell;
+  void spellCast(SpellCastInput input, SpellCastResult result) {
+    final caster = input.caster;
+    final target = input.target;
+    final spell = input.spell;
     file.write("$caster casts $spell ");
-    ln(cast.self ? "to self." : "at $target.");
+    ln(input.targetSelf ? "to self." : "at $target.");
     if (result.canResist) {
-      ln("Resist ${_percentRoll(result.resistRoll)}");
+      ln("Resist ${_chanceRoll(result.rolls.resist, input.resistChance)}");
     }
     if (result.resisted) {
       ln("$target resists the spell.");
       return;
     }
-    ifdef(result.healRoll, (healRoll) {
-      _writeDiceRolls(spell.text, healRoll);
+    ifdef(result.rolls.heal, (healRoll) {
+      _writeDiceRoll(spell.text, healRoll);
     });
-    ifdef(result.damageRoll, (damageRoll) {
-      _writeDiceRolls(spell.text, damageRoll);
+    ifdef(result.rolls.damage, (damageRoll) {
+      _writeDiceRoll(spell.text, damageRoll);
     });
-    _writeResult(result, cast);
+    _writeResult(result, input);
   }
 
   void newRound(int round) {
@@ -126,7 +132,7 @@ class Log {
     }
   }
 
-  void _writeResult(ActionResult result, ActionParameters params) {
+  void _writeResult(ActionResult result, ActionInput params) {
     final target = params.target;
     if (result.healingDone != 0) {
       ln("$target is healed by ${result.healingDone}.");
@@ -150,8 +156,12 @@ class Log {
     }
   }
 
-  String _percentRoll(PercentValueRoll roll, {bool critical = false}) {
-    return "(${roll.input}) ${roll.result.text(critical)}";
+  String _chanceRoll(
+    ChanceRoll roll,
+    Value<Percent> value, {
+    bool critical = false,
+  }) {
+    return "(${roll.rolls}) ${chanceRollText(roll, value.total, critical)}";
   }
 
   void _writeDiceRoll(String name, DiceRoll value) {
@@ -160,9 +170,20 @@ class Log {
 
   void _writeDiceRolls(String rollName, DiceRollValue value) {
     _writeDiceRoll(rollName, value.base);
-    for (final entry in value.diceBonuses) {
-      _writeDiceRoll("${entry.bonus}", entry.value);
+    for (final entry in value.diceBonuses.entries) {
+      _writeDiceRoll("${entry.key}", entry.value);
     }
+  }
+
+  static String chanceRollText(
+    ChanceRoll roll,
+    Percent percent,
+    bool critical,
+  ) {
+    if (percent.always) return "Auto-success";
+    if (percent.never) return "Auto-fail";
+    final success = roll.meets(percent);
+    return '$roll -> ${success ? critical ? 'Critical!' : 'Success' : 'Fail'}';
   }
 
   static String effectText(Bonus bonus) {

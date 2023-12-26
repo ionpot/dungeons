@@ -18,7 +18,7 @@ class Combat {
     player
       ..resetHp()
       ..clearStress()
-      ..clearEffects();
+      ..effects.clear();
     return Combat(
       CombatGrid(
         player: Party.single(player),
@@ -61,11 +61,12 @@ class Combat {
   PartyXpGain get xpGain => grid.xpGain;
 
   bool canTarget(GridMember target, CombatAction action) {
-    return grid.canTarget(
+    final inRange = grid.canTarget(
       actor: action.actor,
       target: target,
       range: action.range,
     );
+    return inRange && action.canTarget(target);
   }
 
   bool isAlly(GridMember member) => current.party == member.party;

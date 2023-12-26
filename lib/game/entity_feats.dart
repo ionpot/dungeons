@@ -1,7 +1,9 @@
 import "package:dungeons/game/bonus.dart";
-import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/bonus_entry.dart";
+import "package:dungeons/game/bonus_pool.dart";
 import "package:dungeons/game/feat.dart";
 import "package:dungeons/utility/if.dart";
+import "package:dungeons/utility/monoids.dart";
 
 typedef FeatMap = Map<Feat, FeatTier>;
 
@@ -10,19 +12,20 @@ class EntityFeats extends Iterable<FeatSlot> {
 
   const EntityFeats(this.contents);
 
-  Bonuses get bonuses {
-    return Bonuses({
-      for (final slot in this)
-        if (slot.value.effect != null) FeatBonus(slot): slot.value.effect!,
-    });
+  BonusPool get bonuses {
+    final pool = BonusPool.empty();
+    for (final slot in this) {
+      pool.addValues(FeatBonus(slot), slot.value.bonuses);
+    }
+    return pool;
   }
 
-  IntBonuses get reserveStress {
-    return IntBonuses({
+  List<BonusEntry<Int>> get reserveStress {
+    return [
       for (final slot in this)
         if (slot.value.reserveStress != null)
-          FeatBonus(slot): slot.value.reserveStress!,
-    });
+          BonusEntry(FeatBonus(slot), Int(slot.value.reserveStress!)),
+    ];
   }
 
   bool has(Feat feat) => contents.containsKey(feat);

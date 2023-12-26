@@ -1,101 +1,107 @@
-import "package:dungeons/game/action_parameters.dart";
-import "package:dungeons/game/combat_action.dart";
+import "package:dungeons/game/action_input.dart";
+import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/log.dart";
+import "package:dungeons/game/smite.dart";
 import "package:dungeons/game/spell_cast.dart";
-import "package:dungeons/game/value.dart";
+import "package:dungeons/game/two_weapon_attack.dart";
 import "package:dungeons/game/weapon_attack.dart";
 import "package:dungeons/utility/dice.dart";
-import "package:dungeons/utility/if.dart";
+import "package:dungeons/widget/chance_roll.dart";
 import "package:dungeons/widget/colors.dart";
 import "package:dungeons/widget/dice_span.dart";
-import "package:dungeons/widget/percent_value.dart";
-import "package:dungeons/widget/value_span.dart";
+import "package:dungeons/widget/entity_span.dart";
 import "package:flutter/widgets.dart";
 
 class ActionText {
-  final CombatAction _action;
-  final ActionParameters _parameters;
   final ActionResult _result;
 
-  const ActionText(this._action, this._parameters, this._result);
+  const ActionText(this._result);
 
-  Entity get _actor => _parameters.actor;
-  Entity get _target => _parameters.target;
+  ActionInput get _input => _result.input;
+
+  Entity get _actor => _input.actor;
+  Entity get _target => _input.target;
 
   List<Widget> get lines {
-    if (_parameters is WeaponAttack) {
-      final p = _parameters as WeaponAttack;
-      return _weaponTurn(p, p.downcast(_result));
+    if (_result is WeaponAttackResult) {
+      return _weaponTurn(_result as WeaponAttackResult);
     }
-    if (_parameters is SpellCast) {
-      final p = _parameters as SpellCast;
-      return _spellCast(p, p.downcast(_result));
+    if (_result is SpellCastResult) {
+      return _spellCast(_result as SpellCastResult);
     }
-    throw ArgumentError.value(_parameters, "parameters");
+    throw ArgumentError.value(_result, "result");
   }
 
-  List<Widget> _weaponTurn(WeaponAttack attack, WeaponAttackResult result) {
+  List<Widget> _weaponTurn(WeaponAttackResult result) {
+    final input = result.input;
     return [
-      _attacks(attack),
-      _percentRoll("Attack", result.attackRoll, critical: result.isCriticalHit),
+      _attacks(input),
+      ChanceRollText(
+        "Attack roll",
+        input.hitChance,
+        result.rolls.attack,
+        critical: result.isCriticalHit,
+      ),
       if (result.deflected) Text("$_target deflects the attack."),
-      if (result.rolledDodge) _percentRoll("Dodge", result.dodgeRoll),
+      if (result.rolledDodge)
+        ChanceRollText("Dodge roll", input.dodgeChance, result.rolls.dodge),
       if (!result.canDodge) Text("$_target cannot dodge."),
       if (result.dodged) Text("$_target dodges the attack."),
       if (result.didHit) ...[
-        ..._diceRolls("${_actor.weapon}", result.damageRoll),
-        _damageAndStatus(result.damageRoll),
+        ..._diceRolls("${_actor.weapon}", result.rolls.damage),
+        _damageAndStatus(result.rolls.damage),
         if (_target.alive) ..._effects,
       ],
     ];
   }
 
-  Widget _attacks(WeaponAttack attack) {
-    final offHand = ifdef(attack.twoWeaponAttack?.offHand, (offHand) {
-      return " and $offHand";
-    });
+  Widget _attacks(WeaponAttackInput attack) {
+    final offHand =
+        attack is TwoWeaponAttackInput ? " and ${attack.offHand}" : "";
     return _richText(
       "$_actor ",
       TextSpan(
-        text: attack.smite ? "smites" : "attacks",
+        text: attack is SmiteInput ? "smites" : "attacks",
         style: TextStyle(color: sourceColor(attack.source)),
       ),
-      ' $_target with ${_actor.weapon}${offHand ?? ''}.',
+      " $_target with ${_actor.weapon}$offHand.",
     );
   }
 
-  List<Widget> _spellCast(SpellCast cast, SpellCastResult result) {
+  List<Widget> _spellCast(SpellCastResult result) {
+    final input = result.input;
     return [
       _richText(
         "$_actor casts ",
-        SpellNameSpan(cast.spell),
-        cast.self ? " to self." : " at $_target.",
+        SpellNameSpan(input.spell),
+        input.targetSelf ? " to self." : " at $_target.",
       ),
-      if (result.canResist) _percentRoll("Resist", result.resistRoll),
+      if (result.canResist)
+        ChanceRollText("Resist roll", input.resistChance, result.rolls.resist),
       if (result.resisted) Text("$_target resists the spell."),
       if (result.didHit) ...[
-        if (result.damageRoll != null)
-          ..._spellDamage(result.damageRoll!, cast),
-        if (result.healRoll != null) ..._spellHeal(result.healRoll!, cast),
+        if (result.rolls.damage != null)
+          ..._spellDamage(input, result.rolls.damage!),
+        if (result.rolls.heal != null) ..._spellHeal(input, result.rolls.heal!),
         if (_target.alive) ..._effects,
       ],
     ];
   }
 
-  List<Widget> _spellDamage(DiceRollValue roll, SpellCast cast) {
+  List<Widget> _spellDamage(SpellCastInput input, DiceRoll roll) {
     return [
-      ..._diceRolls(cast.spell.text, roll),
-      _damageAndStatus(roll),
+      _diceRoll(input.spell.text, roll),
+      _damageAndStatus(DiceRollValue.from(roll)),
     ];
   }
 
-  List<Widget> _spellHeal(DiceRollValue roll, SpellCast cast) {
+  List<Widget> _spellHeal(SpellCastInput input, DiceRoll roll) {
     return [
-      ..._diceRolls(cast.spell.text, roll),
+      _diceRoll(input.spell.text, roll),
       _richText(
         "$_target is healed by ",
-        DiceRollValueSpan(roll),
+        DiceRollSpan(roll),
         ".",
       ),
     ];
@@ -104,14 +110,14 @@ class ActionText {
   Widget _damageAndStatus(DiceRollValue damage) {
     return _richText(
       "$_target takes ",
-      DamageSpan(damage, _action.source),
+      DamageSpan(damage, _input.source),
       ' damage${_target.dead ? ', and dies' : ''}.',
     );
   }
 
   List<Widget> get _effects {
     final effects = [
-      for (final entry in _parameters.effects) Log.effectText(entry.bonus),
+      for (final entry in _input.effects) Log.effectText(entry.bonus),
     ];
     return [
       for (final text in effects)
@@ -127,20 +133,9 @@ Widget _diceRoll(String name, DiceRoll roll) {
 List<Widget> _diceRolls(String name, DiceRollValue value) {
   return [
     _diceRoll(name, value.base),
-    for (final entry in value.diceBonuses)
-      _diceRoll("${entry.bonus}", entry.value),
+    for (final entry in value.diceBonuses.entries)
+      _diceRoll("${entry.key}", entry.value),
   ];
-}
-
-Widget _percentRoll(
-  String name,
-  PercentValueRoll roll, {
-  bool critical = false,
-}) {
-  return _richText(
-    "$name roll ",
-    PercentValueRollSpan(roll, critical: critical),
-  );
 }
 
 Widget _richText(String prefix, InlineSpan span, [String suffix = ""]) {

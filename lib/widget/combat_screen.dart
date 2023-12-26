@@ -148,23 +148,16 @@ class _CombatScreenState extends State<CombatScreen> {
   }
 
   CombatPhase _actionResultPhase(ChosenAction chosen) {
-    final result = chosen.toResult();
-    chosen.apply(result);
+    final result = chosen.toResult()..apply();
     _log
       ..ln()
-      ..actionResult(chosen.parameters, result);
+      ..actionResult(result);
     return ActionResultPhase(
       _combat,
-      action: chosen.action,
-      parameters: chosen.parameters,
-      result: result,
+      result,
       onDone: () {
-        if (_combat.won) {
-          return _setPhase(_xpPhase());
-        }
-        if (_combat.lost) {
-          return widget.onLose();
-        }
+        if (_combat.won) return _setPhase(_xpPhase());
+        if (_combat.lost) return widget.onLose();
         _newTurn();
       },
     );

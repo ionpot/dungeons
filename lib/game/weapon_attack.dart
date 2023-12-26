@@ -1,157 +1,107 @@
-import "package:dungeons/game/action_parameters.dart";
+import "package:dungeons/game/action_input.dart";
 import "package:dungeons/game/bonus.dart";
-import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/chance_roll.dart";
 import "package:dungeons/game/critical_hit.dart";
+import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/feat.dart";
-import "package:dungeons/game/source.dart";
 import "package:dungeons/game/value.dart";
-import "package:dungeons/game/weapon.dart";
 import "package:dungeons/utility/dice.dart";
-import "package:dungeons/utility/percent.dart";
+import "package:dungeons/utility/monoids.dart";
 
-final class WeaponAttack extends ActionParameters {
-  final Entity attacker;
+class WeaponAttackInput extends ActionInput {
+  @override
+  final Entity actor;
   @override
   final Entity target;
-  final bool smite;
-  final bool useOffHand;
 
-  const WeaponAttack({
-    required this.attacker,
+  const WeaponAttackInput({
+    required this.actor,
     required this.target,
-    this.smite = false,
-    this.useOffHand = false,
   });
 
-  @override
-  Entity get actor => attacker;
+  Value<Percent> get hitChance => actor.hitChance(target);
+  Value<Percent> get dodgeChance => target.dodge;
+  DiceValue get weaponDamage => actor.weaponDamage!;
 
-  @override
-  int get stressCost {
-    if (useOffHand) {
-      return TwoWeaponAttack.stressCost;
-    }
-    if (smite) {
-      return Smite.stressCost;
-    }
-    return 0;
-  }
-
-  TwoWeaponAttack? get twoWeaponAttack =>
-      useOffHand ? TwoWeaponAttack(attacker, target) : null;
-
-  PercentValueRoll rollHitChance() {
-    return twoWeaponAttack?.rollHitChance() ??
-        attacker.hitChance(target).roll(smite ? Smite.rolls : 1);
-  }
-
-  PercentValue get dodgeChance => target.dodge;
-  DiceValue get weaponDamage => attacker.weaponDamage!;
-
-  @override
-  Source get source => smite ? Smite.source : Source.physical;
-
-  @override
-  WeaponAttackResult toResult() {
-    return WeaponAttackResult(
-      attackRoll: rollHitChance(),
-      dodgeRoll: dodgeChance.roll(),
-      damageRoll: weaponDamage.roll(),
-      targetCanDodge: target.canDodge,
-      criticalHit: attacker.criticalHit,
-      sneakAttack: attacker.sneakAttack(target),
-      twoWeaponAttack: twoWeaponAttack,
+  CriticalHit get criticalHit {
+    return CriticalHit(
+      chance: actor.criticalHitChance,
+      dice: actor.gear.weaponValue!.dice,
     );
   }
 
-  @override
-  WeaponAttackResult downcast(ActionResult result) {
-    if (result is WeaponAttackResult) {
-      return result;
+  FeatSlot? get sneakAttack {
+    if (actor.fasterThan(target)) {
+      return actor.feats.find(Feat.sneakAttack);
     }
-    throw ArgumentError.value(result, "result");
+    return null;
+  }
+
+  DiceRollValue rollDamage() => weaponDamage.roll();
+  DiceRoll rollCriticalHit() => criticalHit.dice.roll();
+  DiceRoll? rollSneakAttack() => sneakAttack?.value.dice!.roll();
+
+  WeaponAttackRolls roll() {
+    return WeaponAttackRolls(
+      attack: ChanceRoll(),
+      dodge: ChanceRoll(),
+      damage: rollDamage(),
+      critical: rollCriticalHit(),
+      sneakAttack: rollSneakAttack(),
+    );
   }
 }
 
-final class WeaponAttackResult extends ActionResult {
-  final PercentValueRoll attackRoll;
-  final PercentValueRoll dodgeRoll;
-  final DiceRollValue damageRoll;
-  final CriticalHit criticalHit;
-  final bool targetCanDodge;
-  final TwoWeaponAttack? twoWeaponAttack;
+class WeaponAttackRolls {
+  final ChanceRoll attack;
+  final ChanceRoll dodge;
+  final DiceRollValue damage;
+  final DiceRoll critical;
+  final DiceRoll? sneakAttack;
 
-  WeaponAttackResult({
-    required this.attackRoll,
-    required this.dodgeRoll,
-    required this.damageRoll,
-    required this.targetCanDodge,
-    required this.criticalHit,
-    this.twoWeaponAttack,
-    FeatSlot? sneakAttack,
-  }) {
-    if (twoWeaponAttack != null && attackRoll.allSuccess) {
-      damageRoll.diceBonuses.add(
-        GearBonus.offHand(twoWeaponAttack!.offHand),
-        twoWeaponAttack!.damageDice.roll(),
-      );
-    }
+  const WeaponAttackRolls({
+    required this.attack,
+    required this.dodge,
+    required this.damage,
+    required this.critical,
+    this.sneakAttack,
+  });
+}
+
+class WeaponAttackResult extends ActionResult {
+  @override
+  final WeaponAttackInput input;
+  final WeaponAttackRolls rolls;
+
+  WeaponAttackResult(this.input, this.rolls) {
     if (isCriticalHit) {
-      damageRoll.diceBonuses.add(
-        CriticalHitBonus(criticalHit),
-        criticalHit.dice.roll(),
+      rolls.damage.addBonusRoll(
+        CriticalHitBonus(input.criticalHit),
+        rolls.critical,
       );
     }
-    if (sneakAttack != null) {
-      damageRoll.diceBonuses.add(
-        FeatBonus(sneakAttack),
-        sneakAttack.value.dice!.roll(),
+    if (rolls.sneakAttack != null) {
+      rolls.damage.addBonusRoll(
+        FeatBonus(input.sneakAttack!),
+        rolls.sneakAttack!,
       );
     }
   }
 
-  bool get isCriticalHit => attackRoll.meets(criticalHit.chance.total);
+  bool get isCriticalHit {
+    return rolls.attack.meetsV(input.criticalHit.chance);
+  }
 
   bool get autoHit => isCriticalHit;
-  bool get canDodge => !autoHit && targetCanDodge;
-  bool get deflected => !autoHit && attackRoll.fail;
+  bool get canDodge => !autoHit && input.target.canDodge;
+  bool get deflected => !autoHit && rolls.attack.failsV(input.hitChance);
   bool get rolledDodge => !deflected && canDodge;
-  bool get dodged => rolledDodge && dodgeRoll.success;
+  bool get dodged => rolledDodge && rolls.dodge.meetsV(input.dodgeChance);
 
   @override
   bool get didHit => !deflected && !dodged;
 
   @override
-  int get damageDone => damageRoll.total;
-}
-
-class TwoWeaponAttack {
-  final Entity attacker;
-  final Entity target;
-
-  static const int stressCost = 1;
-  static const int hitRolls = 2;
-  static const Percent hitBonus = Percent(-15);
-
-  const TwoWeaponAttack(this.attacker, this.target);
-
-  Dice get damageDice => attacker.gear.offHandValue!.dice;
-
-  Weapon get offHand => attacker.offHandWeapon!;
-
-  PercentValue get hitChance {
-    final base = attacker.hitChanceBase(target);
-    final map = attacker.hitChanceBonusMap;
-    map[GearBonus.offHand(offHand)] = hitBonus;
-    return PercentValue(base: base, bonuses: PercentBonuses(map));
-  }
-
-  PercentValueRoll rollHitChance() => hitChance.roll(hitRolls);
-}
-
-class Smite {
-  static const int rolls = 2;
-  static const int stressCost = 4;
-  static const Source source = Source.radiant;
+  int get damageDone => rolls.damage.total;
 }

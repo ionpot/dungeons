@@ -1,28 +1,34 @@
-import "package:dungeons/game/action_parameters.dart";
+import "package:dungeons/game/action_input.dart";
 import "package:dungeons/game/bonus.dart";
-import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/chance_roll.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/source.dart";
 import "package:dungeons/game/spell.dart";
+import "package:dungeons/game/status_effects.dart";
 import "package:dungeons/game/value.dart";
 import "package:dungeons/utility/dice.dart";
-import "package:dungeons/utility/if.dart";
+import "package:dungeons/utility/monoids.dart";
 
-final class SpellCast extends ActionParameters {
+final class SpellCastInput extends ActionInput {
   final Spell spell;
   final Entity caster;
   @override
   final Entity target;
 
-  const SpellCast(this.spell, {required this.caster, required this.target});
+  const SpellCastInput(
+    this.spell, {
+    required this.caster,
+    required this.target,
+  });
 
   @override
   Entity get actor => caster;
 
-  bool get self => caster == target;
+  bool get autoHit => spell.autoHit;
+  bool get targetSelf => caster == target;
 
-  PercentValue get resistChance =>
-      spell.autoHit ? const PercentValue() : target.resist;
+  Value<Percent> get resistChance =>
+      autoHit ? Value.from(Percent.zero) : target.resist;
 
   @override
   Source get source => spell.source;
@@ -38,63 +44,57 @@ final class SpellCast extends ActionParameters {
     return null;
   }
 
-  @override
-  Bonuses get effects {
-    final effects = Bonuses();
+  bool get canEffect {
     if (spell.effect != null) {
       final bonus = SpellBonus(spell);
-      if (spell.stacks || !target.hasBonus(bonus)) {
-        effects.add(bonus, spell.effect);
-      }
+      return spell.stacks || !target.hasBonus(bonus);
+    }
+    return true;
+  }
+
+  @override
+  StatusEffects get effects {
+    final effects = StatusEffects.empty();
+    if (canEffect && spell.effect != null) {
+      effects.add(SpellBonus(spell), spell.effect!);
     }
     return effects;
   }
 
-  @override
-  SpellCastResult toResult() {
-    return SpellCastResult(
-      autoHit: spell.autoHit,
-      resistRoll: resistChance.roll(),
-      targetSelf: self,
-      damageRoll: _roll(spell.damage),
-      healRoll: _roll(spell.heals),
+  SpellCastRolls roll() {
+    return SpellCastRolls(
+      resist: ChanceRoll(),
+      damage: spell.damage?.roll(),
+      heal: spell.heals?.roll(),
     );
-  }
-
-  @override
-  SpellCastResult downcast(ActionResult result) {
-    if (result is SpellCastResult) {
-      return result;
-    }
-    throw ArgumentError.value(result, "result");
-  }
-
-  DiceRollValue? _roll(Dice? dice) {
-    return ifdef(dice, DiceRollValue.roll);
   }
 }
 
-final class SpellCastResult extends ActionResult {
-  final bool autoHit;
-  final PercentValueRoll resistRoll;
-  final bool targetSelf;
-  final DiceRollValue? damageRoll;
-  final DiceRollValue? healRoll;
+class SpellCastRolls {
+  final ChanceRoll resist;
+  final DiceRoll? damage;
+  final DiceRoll? heal;
 
-  const SpellCastResult({
-    required this.autoHit,
-    required this.resistRoll,
-    required this.targetSelf,
-    this.damageRoll,
-    this.healRoll,
+  const SpellCastRolls({
+    required this.resist,
+    this.damage,
+    this.heal,
   });
+}
 
-  bool get canResist => !targetSelf && !autoHit;
+final class SpellCastResult extends ActionResult {
   @override
-  bool get didHit => !canResist || resistRoll.fail;
+  final SpellCastInput input;
+  final SpellCastRolls rolls;
+
+  const SpellCastResult(this.input, this.rolls);
+
+  bool get canResist => !input.targetSelf && !input.autoHit;
+  @override
+  bool get didHit => !canResist || rolls.resist.failsV(input.resistChance);
   bool get resisted => !didHit;
   @override
-  int get damageDone => damageRoll?.total ?? 0;
+  int get damageDone => rolls.damage?.total ?? 0;
   @override
-  int get healingDone => healRoll?.total ?? 0;
+  int get healingDone => rolls.heal?.total ?? 0;
 }

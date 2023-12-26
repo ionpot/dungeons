@@ -1,8 +1,7 @@
-import "package:dungeons/game/effect.dart";
 import "package:dungeons/game/grid_range.dart";
 import "package:dungeons/game/source.dart";
+import "package:dungeons/game/status_effect.dart";
 import "package:dungeons/utility/dice.dart";
-import "package:dungeons/utility/percent.dart";
 
 enum Spell {
   bless(
@@ -11,10 +10,7 @@ enum Spell {
     stress: 2,
     reserveStress: true,
     range: GridRange.ally,
-    effect: Effect(
-      maxWeaponDamage: true,
-      resistChance: Percent(4),
-    ),
+    effect: StatusEffect.bless,
   ),
   heal(
     text: "Heal",
@@ -45,7 +41,7 @@ enum Spell {
     stress: 2,
     range: GridRange.any,
     damage: Dice(2, 8),
-    effect: Effect(initiative: -2),
+    effect: StatusEffect.slow,
     stacks: true,
   );
 
@@ -58,7 +54,7 @@ enum Spell {
   final bool stacks;
   final Dice? damage;
   final Dice? heals;
-  final Effect? effect;
+  final StatusEffect? effect;
   final GridRange? range;
 
   const Spell({
