@@ -14,7 +14,7 @@ class BonusPool {
   BonusPool.empty() : this([]);
 
   BonusPool operator +(BonusPool other) {
-    return BonusPool(List.of(_contents)..addAll(other._contents));
+    return BonusPool(_contents + other._contents);
   }
 
   bool has(Bonus bonus) {
@@ -49,9 +49,9 @@ class BonusPool {
 
   Map<Bonus, V> _find<T extends Object, V extends Monoid>(T target) {
     return {
-      for (final entry in _contents)
-        if (entry.value is V && entry.value.target == target)
-          entry.bonus: entry.value.value as V,
+      for (final BonusEntry(:bonus, :value) in _contents)
+        if (value.target == target)
+          if (value.value is V) bonus: value.value as V,
     };
   }
 }
