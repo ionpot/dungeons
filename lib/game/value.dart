@@ -48,7 +48,7 @@ class Value<T extends Monoid> implements Comparable<Value<T>> {
 
   @override
   compareTo(Value<T> other) {
-    return compareTo(other);
+    return total.compareTo(other.total);
   }
 
   @override

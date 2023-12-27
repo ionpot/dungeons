@@ -45,7 +45,7 @@ class Log {
         '${player ? ', XP ${e.toXpString()}' : ''}');
     ln("Initiative ${e.initiative}");
     ln("Dodge ${e.dodge}, Resist ${e.resist}");
-    ln("Armor: ${e.totalArmor} (${e.armor})");
+    ln("Armor: ${e.armorValue} (${e.armor})");
     ln("Weapon: ${e.weapon} ($damage) ${damage?.range}");
     ln('Off-hand: ${offHand ?? 'None'}');
   }

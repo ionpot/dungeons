@@ -2,7 +2,9 @@ import "package:dungeons/game/armor.dart";
 import "package:dungeons/game/bonus.dart";
 import "package:dungeons/game/bonus_pool.dart";
 import "package:dungeons/game/bonus_value.dart";
+import "package:dungeons/game/bonuses.dart";
 import "package:dungeons/game/weapon.dart";
+import "package:dungeons/utility/monoids.dart";
 
 class Gear {
   Armor? body;
@@ -11,7 +13,12 @@ class Gear {
 
   Gear({this.body, this.mainHand, this.offHand});
 
-  int get armor => (body?.value ?? 0) + (shield?.armor ?? 0);
+  Bonuses<Int> get armor {
+    return Bonuses({
+      if (body != null) GearBonus.armor(body!): Int(body!.value),
+      if (shield != null) GearBonus.offHand(shield!): Int(shield!.armor!),
+    });
+  }
 
   Weapon? get shield => offHand == Weapon.shield ? offHand : null;
 

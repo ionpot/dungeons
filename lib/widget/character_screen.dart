@@ -7,7 +7,6 @@ import "package:dungeons/game/weapon.dart";
 import "package:dungeons/widget/button.dart";
 import "package:dungeons/widget/dice_span.dart";
 import "package:dungeons/widget/empty.dart";
-import "package:dungeons/widget/entity_span.dart";
 import "package:dungeons/widget/label_value.dart";
 import "package:dungeons/widget/radio_button.dart";
 import "package:dungeons/widget/radio_group.dart";
@@ -111,7 +110,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
       content: {
         "Total Hp": Text.rich(ValueSpan(_entity.totalHp, style: bold)),
         "Stress Cap": Text.rich(ValueSpan(_entity.stressCap, style: bold)),
-        "Armor": Text.rich(TotalArmorSpan(_entity, style: bold)),
+        "Armor": Text.rich(ValueSpan(_entity.armorValue, style: bold)),
         "Initiative": Text.rich(ValueSpan(_entity.initiative, style: bold)),
         "Dodge": Text.rich(ValueSpan(_entity.dodge, style: bold)),
         "Resist": Text.rich(ValueSpan(_entity.resist, style: bold)),

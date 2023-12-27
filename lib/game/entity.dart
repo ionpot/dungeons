@@ -44,7 +44,7 @@ class Entity extends _Base
   }
 
   Percent hitChanceBase(Entity target) {
-    return Percent(target.totalArmor).invert();
+    return Percent(target.armorValue.total.value).invert();
   }
 
   Value<Percent> get criticalHitChance {
@@ -69,7 +69,7 @@ class Entity extends _Base
   int compareSpeed(Entity other) {
     final i = initiative.compareTo(other.initiative);
     if (i != 0) return i * -1;
-    return totalArmor.compareTo(other.totalArmor);
+    return armorValue.compareTo(other.armorValue);
   }
 
   bool fasterThan(Entity other) {
@@ -107,8 +107,10 @@ mixin _Gear on _Base {
   Weapon? get offHandWeapon => gear.offHand;
   Weapon? get shield => gear.shield;
   Armor? get armor => gear.body;
-  int get baseArmor => 5;
-  int get totalArmor => baseArmor + gear.armor;
+
+  Value<Int> get armorValue {
+    return Value.from(const Int(5), gear.armor);
+  }
 
   bool canEquip(Gear gear) {
     if (klass == null) {
