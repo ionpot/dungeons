@@ -43,7 +43,7 @@ class EntityStats extends StatelessWidget {
   Widget get _armor {
     return Text.rich(TextSpan(children: [
       const TextSpan(text: "Armor: "),
-      ValueSpan(entity.armorValue),
+      ArmorValueSpan(entity.armorValue),
       TextSpan(text: " (${entity.armor})"),
     ]));
   }

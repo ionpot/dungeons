@@ -8,14 +8,18 @@ import "package:dungeons/widget/text.dart";
 import "package:dungeons/widget/value_table.dart";
 import "package:flutter/widgets.dart";
 
+typedef IgnoreBonusColor = bool Function(Bonus);
+
 class ValueTooltip<T extends Monoid> extends StatelessWidget {
   final Value<T> input;
   final String? baseLabel;
+  final IgnoreBonusColor? ignoreColor;
 
   const ValueTooltip(
     this.input, {
     super.key,
     this.baseLabel,
+    this.ignoreColor,
   });
 
   static bool isEmpty<T extends Monoid>(Value<T> value) {
@@ -32,16 +36,20 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
     ]);
   }
 
+  _Row _row(String label, Bonus bonus, T value) {
+    return _Row(label, bonus, value, ignoreColor ?? ignoreBonusColor);
+  }
+
   Iterable<ValueRow> get _bonusRows {
     final rows = <_Row>[];
     for (final BonusEntry(:bonus, :value) in input.bonuses) {
       if (value.hasValue) {
-        rows.add(_Row("$bonus", bonus, value));
+        rows.add(_row("$bonus", bonus, value));
       }
     }
     for (final BonusEntry(:bonus, :value) in input.multipliers) {
       if (value.hasValue) {
-        rows.add(_Row("$bonus ($value)", bonus, input.multiply(value)));
+        rows.add(_row("$bonus ($value)", bonus, input.multiply(value)));
       }
     }
     rows.sort();
@@ -54,7 +62,7 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
     for (final BonusEntry(:bonus, :value) in list) {
       final count = value.length;
       final label = count > 1 ? "$bonus (x$count)" : "$bonus";
-      rows.add(_Row(label, bonus, value.total));
+      rows.add(_row(label, bonus, value.total));
     }
     return rows.map((row) => row.reservedRow);
   }
@@ -64,10 +72,11 @@ class _Row<T extends Monoid> implements Comparable<_Row<T>> {
   final String label;
   final Bonus bonus;
   final T value;
+  final IgnoreBonusColor ignoreColor;
 
-  const _Row(this.label, this.bonus, this.value);
+  const _Row(this.label, this.bonus, this.value, this.ignoreColor);
 
-  Color? get color => ignoreBonusColor(bonus) ? null : monoidColor(value);
+  Color? get color => ignoreColor(bonus) ? null : monoidColor(value);
 
   ValueRow get bonusRow {
     return ValueRow(

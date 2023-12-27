@@ -1,8 +1,6 @@
 import "package:dungeons/game/bonus.dart";
-import "package:dungeons/game/bonus_entry.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/source.dart";
-import "package:dungeons/game/value.dart";
 import "package:dungeons/utility/monoids.dart";
 import "package:flutter/widgets.dart";
 
@@ -44,14 +42,6 @@ Color? sourceColor(Source source) {
 }
 
 Color? monoidColor(Monoid m) => intColor(m.sign);
-
-Color? valueColor<T extends Monoid>(Value<T> value) {
-  if (value.reserved.total.hasValue) {
-    return reservedColor;
-  }
-  final list = value.bonusList..removeWhereBonus(ignoreBonusColor);
-  return monoidColor(list.total);
-}
 
 bool ignoreBonusColor(Bonus bonus) {
   if (bonus is AttributeBonus) {

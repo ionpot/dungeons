@@ -110,7 +110,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
       content: {
         "Total Hp": Text.rich(ValueSpan(_entity.totalHp, style: bold)),
         "Stress Cap": Text.rich(ValueSpan(_entity.stressCap, style: bold)),
-        "Armor": Text.rich(ValueSpan(_entity.armorValue, style: bold)),
+        "Armor": Text.rich(ArmorValueSpan(_entity.armorValue, style: bold)),
         "Initiative": Text.rich(ValueSpan(_entity.initiative, style: bold)),
         "Dodge": Text.rich(ValueSpan(_entity.dodge, style: bold)),
         "Resist": Text.rich(ValueSpan(_entity.resist, style: bold)),
