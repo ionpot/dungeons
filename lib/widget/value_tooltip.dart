@@ -9,11 +9,11 @@ import "package:dungeons/widget/value_table.dart";
 import "package:flutter/widgets.dart";
 
 class ValueTooltip<T extends Monoid> extends StatelessWidget {
-  final Value<T> value;
+  final Value<T> input;
   final String? baseLabel;
 
   const ValueTooltip(
-    this.value, {
+    this.input, {
     super.key,
     this.baseLabel,
   });
@@ -24,7 +24,7 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final base = value.base;
+    final base = input.base;
     return ValueTable([
       if (base.hasValue) ValueRow(Text(baseLabel ?? "Base"), BoldText(base)),
       ..._bonusRows,
@@ -32,37 +32,57 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
     ]);
   }
 
-  List<ValueRow> get _bonusRows {
-    final bonuses = value.bonusList.clean
-      ..sort((a, b) => compareBonus(a.bonus, b.bonus));
-
-    Color? color(Bonus bonus, T value) =>
-        ignoreBonusColor(bonus) ? null : monoidColor(value);
-
-    return [
-      for (final BonusEntry(:bonus, :value) in bonuses)
-        ValueRow(
-          Text("$bonus"),
-          BoldText(value.signed, color: color(bonus, value)),
-        ),
-    ];
-  }
-
-  List<ValueRow> get _reservedRows {
-    final bonuses = value.reserved.clean.group.toList()
-      ..sort((a, b) => compareBonus(a.bonus, b.bonus));
-
-    String label(Bonus bonus, List<T> value) {
-      final count = value.length;
-      return count > 1 ? "$bonus (x$count)" : "$bonus";
+  Iterable<ValueRow> get _bonusRows {
+    final rows = <_Row>[];
+    for (final BonusEntry(:bonus, :value) in input.bonuses) {
+      if (value.hasValue) {
+        rows.add(_Row("$bonus", bonus, value));
+      }
     }
-
-    return [
-      for (final BonusEntry(:bonus, :value) in bonuses)
-        ValueRow(
-          Text(label(bonus, value)),
-          BoldText(value.total.negate, color: reservedColor),
-        ),
-    ];
+    for (final BonusEntry(:bonus, :value) in input.multipliers) {
+      if (value.hasValue) {
+        rows.add(_Row("$bonus ($value)", bonus, input.multiply(value)));
+      }
+    }
+    rows.sort();
+    return rows.map((row) => row.bonusRow);
   }
+
+  Iterable<ValueRow> get _reservedRows {
+    final list = input.reserved.clean.group.toList();
+    final rows = <_Row>[];
+    for (final BonusEntry(:bonus, :value) in list) {
+      final count = value.length;
+      final label = count > 1 ? "$bonus (x$count)" : "$bonus";
+      rows.add(_Row(label, bonus, value.total));
+    }
+    return rows.map((row) => row.reservedRow);
+  }
+}
+
+class _Row<T extends Monoid> implements Comparable<_Row<T>> {
+  final String label;
+  final Bonus bonus;
+  final T value;
+
+  const _Row(this.label, this.bonus, this.value);
+
+  Color? get color => ignoreBonusColor(bonus) ? null : monoidColor(value);
+
+  ValueRow get bonusRow {
+    return ValueRow(
+      Text(label),
+      BoldText(value.signed, color: color),
+    );
+  }
+
+  ValueRow get reservedRow {
+    return ValueRow(
+      Text(label),
+      BoldText(value.negate, color: reservedColor),
+    );
+  }
+
+  @override
+  int compareTo(_Row<T> other) => compareBonus(bonus, other.bonus);
 }
