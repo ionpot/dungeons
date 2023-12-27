@@ -28,7 +28,7 @@ final class SpellCastInput extends ActionInput {
   bool get targetSelf => caster == target;
 
   Value<Percent> get resistChance =>
-      autoHit ? Value.from(Percent.zero) : target.resist;
+      autoHit ? Value.fromBase(Percent.zero) : target.resist;
 
   @override
   Source get source => spell.source;

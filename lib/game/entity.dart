@@ -196,13 +196,12 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
   }
 
   Value<Percent> get dodge {
-    return Value(
+    return Value.from(
       Percent(agility.base.value),
       Bonuses({
         AttributeBonus.bonusAgility: Percent(agility.bonus.value),
       }),
       multipliers: _allBonuses.multipliers(MultiplierBonusTo.dodge),
-      reserved: [],
     );
   }
 

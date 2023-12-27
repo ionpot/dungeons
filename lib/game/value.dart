@@ -15,18 +15,15 @@ class Value<T extends Monoid> implements Comparable<Value<T>> {
     required this.reserved,
   });
 
-  Value.from(this.base, [Bonuses<T>? map])
-      : bonuses = map ?? Bonuses.empty(),
-        multipliers = Bonuses.empty(),
-        reserved = [];
+  Value.from(
+    this.base,
+    this.bonuses, {
+    Bonuses<Multiplier>? multipliers,
+    List<BonusEntry<T>>? reserved,
+  })  : multipliers = multipliers ?? Bonuses.empty(),
+        reserved = reserved ?? [];
 
-  Value.copy(Value<T> value)
-      : this(
-          value.base,
-          Bonuses.copy(value.bonuses),
-          multipliers: Bonuses.copy(value.multipliers),
-          reserved: List.of(value.reserved),
-        );
+  Value.fromBase(T base) : this.from(base, Bonuses.empty());
 
   T get multiplierBonus => multiply(multipliers.total);
   T get bonus => bonuses.total + multiplierBonus as T;
