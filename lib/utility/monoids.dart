@@ -37,7 +37,7 @@ sealed class Monoid implements Comparable<Monoid> {
     if (T == Int) return Int.zero as T;
     if (T == Percent) return Percent.zero as T;
     if (T == Multiplier) return Multiplier.empty as T;
-    throw ArgumentError("Unknown monoid.");
+    throw ArgumentError("Unknown monoid -> $T");
   }
 }
 
