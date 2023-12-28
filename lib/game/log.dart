@@ -161,7 +161,7 @@ class Log {
     Value<Percent> value, {
     bool critical = false,
   }) {
-    return "(${roll.rolls}) ${chanceRollText(roll, value.total, critical)}";
+    return "($value) ${chanceRollText(roll, value.total, critical)}";
   }
 
   void _writeDiceRoll(String name, DiceRoll value) {
