@@ -8,6 +8,7 @@ import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/game/entity_attr.dart";
 import "package:dungeons/game/entity_class.dart";
 import "package:dungeons/game/entity_feats.dart";
+import "package:dungeons/game/entity_flags.dart";
 import "package:dungeons/game/entity_race.dart";
 import "package:dungeons/game/feat.dart";
 import "package:dungeons/game/gear.dart";
@@ -33,8 +34,8 @@ class Entity extends _Base
   Entity({
     required super.name,
     required super.race,
-    super.infiniteStress = false,
-  });
+    EntityFlags? flags,
+  }) : super(flags: flags ?? const EntityFlags());
 
   Value<Percent> hitChance(Entity target) {
     return Value.from(
@@ -89,14 +90,14 @@ class Entity extends _Base
 class _Base {
   final String name;
   final EntityRace race;
-  final bool infiniteStress;
+  final EntityFlags flags;
   EntityClass? klass;
   int level = 1;
 
   _Base({
     required this.name,
     required this.race,
-    required this.infiniteStress,
+    required this.flags,
   });
 }
 
@@ -287,7 +288,7 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
   }
 
   bool hasStress(int x) =>
-      infiniteStress || stressCap.total.contains(_stress + x);
+      flags.ignoreStress || stressCap.total.contains(_stress + x);
 
   void addStress(int x) {
     _stress += x;

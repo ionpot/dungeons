@@ -2,6 +2,7 @@ import "package:dungeons/game/armor.dart";
 import "package:dungeons/game/chance_roll.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity_class.dart";
+import "package:dungeons/game/entity_flags.dart";
 import "package:dungeons/game/entity_race.dart";
 import "package:dungeons/game/gear.dart";
 import "package:dungeons/game/party.dart";
@@ -17,7 +18,7 @@ Entity enemyOrc(String name, int level) {
   final entity = Entity(
     name: name,
     race: EntityRace.orc,
-    infiniteStress: true,
+    flags: const EntityFlags(ignoreStress: true),
   )..klass = EntityClass.warrior;
 
   int d6() => const Dice(1, 6).roll().total;

@@ -34,7 +34,7 @@ abstract class ActionResult {
         ..effects.addAll(input.effects);
     }
     final ActionInput(:actor, :reserveStress, :stressCost) = input;
-    if (!actor.infiniteStress) {
+    if (!actor.flags.ignoreStress) {
       if (reserveStress != null) {
         actor.reserveStressFor(reserveStress, stressCost);
       } else {
