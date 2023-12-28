@@ -3,6 +3,7 @@ import "package:dungeons/game/bonus_entry.dart";
 import "package:dungeons/game/dice_bonuses.dart";
 import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/utility/dice.dart";
+import "package:dungeons/utility/monoids.dart";
 import "package:dungeons/widget/colors.dart";
 import "package:dungeons/widget/compare_bonus.dart";
 import "package:dungeons/widget/range_span.dart";
@@ -65,7 +66,7 @@ class DiceValueWithRangeSpan extends TextSpan {
         );
 }
 
-class DiceRollValueSpan extends ValueSpan {
+class DiceRollValueSpan extends ValueSpan<Int> {
   DiceRollValueSpan(DiceRollValue value, {TextStyle? style})
       : super(
           value.intValue,
