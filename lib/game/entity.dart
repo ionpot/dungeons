@@ -134,8 +134,7 @@ mixin _Feats on _Base {
   EntityFeats get feats {
     final tier = FeatTier.forLevel(level);
     return EntityFeats({
-      if (klass == EntityClass.warrior) Feat.weaponFocus: tier,
-      if (klass == EntityClass.trickster) Feat.sneakAttack: tier,
+      if (klass?.feat != null) klass!.feat!: tier,
     });
   }
 }

@@ -1,3 +1,4 @@
+import "package:dungeons/game/feat.dart";
 import "package:dungeons/game/spell.dart";
 import "package:dungeons/game/weapon.dart";
 import "package:dungeons/utility/random.dart";
@@ -6,10 +7,12 @@ enum EntityClass {
   warrior(
     text: "Warrior",
     hpBonus: 4,
+    feat: Feat.weaponFocus,
   ),
   trickster(
     text: "Trickster",
     hpBonus: 3,
+    feat: Feat.sneakAttack,
     offHand: {WeaponGroup.small},
   ),
   cleric(
@@ -28,12 +31,14 @@ enum EntityClass {
   final int hpBonus;
   final String text;
   final Set<WeaponGroup>? offHand;
+  final Feat? feat;
   final Set<Spell>? spells;
 
   const EntityClass({
     required this.text,
     required this.hpBonus,
     this.offHand,
+    this.feat,
     this.spells,
   });
 
