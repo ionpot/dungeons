@@ -99,11 +99,7 @@ class ActionText {
   List<Widget> _spellHeal(SpellCastInput input, DiceRoll roll) {
     return [
       _diceRoll(input.spell.text, roll),
-      _richText(
-        "$_target is healed by ",
-        DiceRollSpan(roll),
-        ".",
-      ),
+      Text("$_target is healed by ${roll.total}."),
     ];
   }
 
