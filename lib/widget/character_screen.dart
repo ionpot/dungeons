@@ -59,7 +59,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
 
   Widget get _classSelect {
     return RadioGroup([
-      for (final klass in EntityClass.values)
+      for (final klass in EntityClass.playable)
         RadioButton(
           text: "$klass",
           chosen: klass == _entity.klass,

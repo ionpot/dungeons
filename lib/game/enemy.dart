@@ -19,7 +19,7 @@ Entity enemyOrc(String name, int level) {
     name: name,
     race: EntityRace.orc,
     flags: const EntityFlags(ignoreStress: true),
-  )..klass = EntityClass.warrior;
+  )..klass = EntityClass.monster;
 
   int d6() => const Dice(1, 6).roll().total;
   entity.base

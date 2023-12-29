@@ -26,7 +26,19 @@ enum EntityClass {
     hpBonus: 2,
     offHand: {},
     spells: {Spell.magicMissile, Spell.rayOfFrost, Spell.lightningBolt},
+  ),
+  monster(
+    text: "Monster",
+    hpBonus: 4,
+    offHand: {WeaponGroup.small},
   );
+
+  static const Set<EntityClass> playable = {
+    EntityClass.warrior,
+    EntityClass.trickster,
+    EntityClass.cleric,
+    EntityClass.mage,
+  };
 
   final int hpBonus;
   final String text;
