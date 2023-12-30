@@ -1,5 +1,6 @@
 import "package:dungeons/game/action_input.dart";
 import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/bonus_entry.dart";
 import "package:dungeons/game/chance_roll.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/source.dart";
@@ -54,11 +55,10 @@ final class SpellCastInput extends ActionInput {
 
   @override
   StatusEffects get effects {
-    final effects = StatusEffects.empty();
-    if (canEffect && spell.effect != null) {
-      effects.add(SpellBonus(spell), spell.effect!);
-    }
-    return effects;
+    return StatusEffects([
+    if (canEffect && spell.effect != null)
+      BonusEntry(SpellBonus(spell), spell.effect!),
+    ]);
   }
 
   SpellCastRolls roll() {

@@ -6,8 +6,6 @@ class BonusMap<T extends Object> extends Iterable<BonusEntry<T>> {
 
   const BonusMap(this.contents);
 
-  bool has(Bonus bonus) => contents.containsKey(bonus);
-
   void add(Bonus bonus, T value) {
     contents[bonus] = value;
   }

@@ -8,6 +8,7 @@ enum StatusEffect {
     effects: [StatusEffect.maxDamage],
   ),
   maxDamage(text: "Max damage"),
+  noStress(text: "No stress"),
   slow(text: "Slow", bonuses: [IntBonus.initiative(-2)]);
 
   final String text;

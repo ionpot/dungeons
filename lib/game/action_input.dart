@@ -12,7 +12,7 @@ abstract class ActionInput {
   int get stressCost => 0;
   Bonus? get reserveStress => null;
 
-  StatusEffects get effects => const StatusEffects({});
+  StatusEffects get effects => StatusEffects.empty();
 
   Source get source => Source.physical;
 }
@@ -31,10 +31,10 @@ abstract class ActionResult {
       input.target
         ..takeDamage(damageDone)
         ..heal(healingDone)
-        ..effects.addAll(input.effects);
+        ..temporary.addAll(input.effects);
     }
     final ActionInput(:actor, :reserveStress, :stressCost) = input;
-    if (!actor.flags.ignoreStress) {
+    if (!actor.ignoreStress) {
       if (reserveStress != null) {
         actor.reserveStressFor(reserveStress, stressCost);
       } else {

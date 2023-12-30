@@ -8,7 +8,6 @@ import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/game/entity_attr.dart";
 import "package:dungeons/game/entity_class.dart";
 import "package:dungeons/game/entity_feats.dart";
-import "package:dungeons/game/entity_flags.dart";
 import "package:dungeons/game/entity_race.dart";
 import "package:dungeons/game/feat.dart";
 import "package:dungeons/game/gear.dart";
@@ -34,8 +33,7 @@ class Entity extends _Base
   Entity({
     required super.name,
     required super.race,
-    EntityFlags? flags,
-  }) : super(flags: flags ?? const EntityFlags());
+  });
 
   Value<Percent> hitChance(Entity target) {
     return Value.from(
@@ -90,14 +88,12 @@ class Entity extends _Base
 class _Base {
   final String name;
   final EntityRace race;
-  final EntityFlags flags;
   EntityClass? klass;
   int level = 1;
 
   _Base({
     required this.name,
     required this.race,
-    required this.flags,
   });
 }
 
@@ -140,7 +136,15 @@ mixin _Feats on _Base {
 }
 
 mixin _Bonuses on _Base, _Gear, _Feats {
-  final effects = StatusEffects.empty();
+  final temporary = StatusEffects.empty();
+
+  StatusEffects get passives {
+    return StatusEffects([
+      for (final effect in race.effects) BonusEntry(RaceBonus(race), effect),
+    ]);
+  }
+
+  StatusEffects get effects => passives + temporary;
 
   BonusPool get _raceBonuses {
     return BonusPool.empty()..addValues(RaceBonus(race), race.bonuses);
@@ -286,8 +290,10 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
     );
   }
 
+  bool get ignoreStress => effects.has(StatusEffect.noStress);
+
   bool hasStress(int x) =>
-      flags.ignoreStress || stressCap.total.contains(_stress + x);
+      ignoreStress || stressCap.total.contains(_stress + x);
 
   void addStress(int x) {
     _stress += x;

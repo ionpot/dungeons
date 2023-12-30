@@ -18,7 +18,7 @@ class Combat {
     player
       ..resetHp()
       ..clearStress()
-      ..effects.clear();
+      ..temporary.clear();
     return Combat(
       CombatGrid(
         player: Party.single(player),
