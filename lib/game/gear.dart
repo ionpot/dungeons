@@ -14,7 +14,7 @@ class Gear {
   Gear({this.body, this.mainHand, this.offHand});
 
   Bonuses<Int> get armor {
-    return Bonuses({
+    return Bonuses.fromMap({
       if (body != null) GearBonus.armor(body!): Int(body!.value),
       if (shield != null) GearBonus.offHand(shield!): Int(shield!.armor!),
     });

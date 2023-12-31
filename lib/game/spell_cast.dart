@@ -53,14 +53,6 @@ final class SpellCastInput extends ActionInput {
     return true;
   }
 
-  @override
-  StatusEffects get effects {
-    return StatusEffects([
-    if (canEffect && spell.effect != null)
-      BonusEntry(SpellBonus(spell), spell.effect!),
-    ]);
-  }
-
   SpellCastRolls roll() {
     return SpellCastRolls(
       resist: ChanceRoll(),
@@ -97,4 +89,14 @@ final class SpellCastResult extends ActionResult {
   int get damageDone => rolls.damage?.total ?? 0;
   @override
   int get healingDone => rolls.heal?.total ?? 0;
+
+  @override
+  StatusEffects get inflicted {
+    return StatusEffects([
+    if (input.canEffect && _spell.effect != null)
+      BonusEntry(SpellBonus(_spell), _spell.effect!),
+    ]);
+  }
+
+  Spell get _spell => input.spell;
 }

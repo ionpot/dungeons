@@ -1,14 +1,13 @@
 import "dart:io";
 
 import "package:dungeons/game/action_input.dart";
-import "package:dungeons/game/bonus.dart";
 import "package:dungeons/game/chance_roll.dart";
 import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/party.dart";
 import "package:dungeons/game/smite.dart";
-import "package:dungeons/game/spell.dart";
 import "package:dungeons/game/spell_cast.dart";
+import "package:dungeons/game/status_effect.dart";
 import "package:dungeons/game/text.dart";
 import "package:dungeons/game/two_weapon_attack.dart";
 import "package:dungeons/game/value.dart";
@@ -147,8 +146,8 @@ class Log {
       ln(".");
     }
     if (target.alive) {
-      for (final entry in params.effects) {
-        final text = effectText(entry.bonus);
+      for (final entry in result.effects) {
+        final text = effectText(entry.value);
         if (text.isNotEmpty) {
           ln("$target $text.");
         }
@@ -186,11 +185,16 @@ class Log {
     return '$roll -> ${success ? critical ? 'Critical!' : 'Success' : 'Fail'}';
   }
 
-  static String effectText(Bonus bonus) {
-    switch (bonus) {
-      case SpellBonus(spell: Spell.rayOfFrost):
+  static String effectText(StatusEffect effect) {
+    switch (effect) {
+      case StatusEffect.slow:
         return "is slowed";
-      default:
+      case StatusEffect.frenzy:
+        return "is frenzied";
+      case StatusEffect.bless:
+      case StatusEffect.canFrenzy:
+      case StatusEffect.maxDamage:
+      case StatusEffect.noStress:
         return "";
     }
   }

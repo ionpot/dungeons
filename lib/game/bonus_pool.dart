@@ -36,22 +36,21 @@ class BonusPool {
   }
 
   Bonuses<Int> ints(IntBonusTo type) {
-    return Bonuses(_find<IntBonusTo, Int>(type));
+    return _find<IntBonusTo, Int>(type);
   }
 
   Bonuses<Percent> percents(PercentBonusTo type) {
-    return Bonuses(_find<PercentBonusTo, Percent>(type));
+    return _find<PercentBonusTo, Percent>(type);
   }
 
   Bonuses<Multiplier> multipliers(MultiplierBonusTo type) {
-    return Bonuses(_find<MultiplierBonusTo, Multiplier>(type));
+    return _find<MultiplierBonusTo, Multiplier>(type);
   }
 
-  Map<Bonus, V> _find<T extends Object, V extends Monoid>(T target) {
-    return {
+  Bonuses<V> _find<T extends Object, V extends Monoid>(T target) {
+    return Bonuses<V>([
       for (final BonusEntry(:bonus, :value) in _contents)
-        if (value.target == target)
-          if (value.value is V) bonus: value.value as V,
-    };
+        if (value.target == target) BonusEntry(bonus, value.value as V),
+    ]);
   }
 }

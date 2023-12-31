@@ -25,13 +25,18 @@ class StatusEffects extends Iterable<BonusEntry<StatusEffect>> {
 
   BonusPool get bonuses {
     return BonusPool([
-      for (final entry in this)
-        for (final value in entry.value.bonuses) BonusEntry(entry.bonus, value),
+      for (final BonusEntry(:value) in this)
+        for (final bonusValue in value.bonuses)
+          BonusEntry(EffectBonus(value), bonusValue),
     ]);
   }
 
   StatusEffects operator +(StatusEffects other) {
     return StatusEffects(contents + other.contents);
+  }
+
+  void add(Bonus bonus, StatusEffect effect) {
+    contents.add(BonusEntry(bonus, effect));
   }
 
   void addAll(StatusEffects other) {

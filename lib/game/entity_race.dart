@@ -9,7 +9,7 @@ enum EntityRace {
       IntBonus.strength(2),
       IntBonus.intellect(-2),
     ],
-    effects: [StatusEffect.noStress],
+    effects: [StatusEffect.canFrenzy, StatusEffect.noStress],
   );
 
   final String text;

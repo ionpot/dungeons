@@ -6,6 +6,7 @@ import "package:dungeons/game/entity_race.dart";
 import "package:dungeons/game/feat.dart";
 import "package:dungeons/game/gear.dart";
 import "package:dungeons/game/spell.dart";
+import "package:dungeons/game/status_effect.dart";
 import "package:dungeons/game/weapon.dart";
 
 sealed class Bonus {
@@ -146,4 +147,16 @@ final class SpellBonus extends Bonus {
 
   @override
   String get text => spell.toString();
+}
+
+final class EffectBonus extends Bonus {
+  final StatusEffect effect;
+
+  const EffectBonus(this.effect);
+
+  @override
+  int get hash => effect.hashCode;
+
+  @override
+  String get text => effect.text;
 }

@@ -42,15 +42,12 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
 
   Iterable<ValueRow> get _bonusRows {
     final rows = <_Row>[];
-    for (final BonusEntry(:bonus, :value) in input.bonuses) {
-      if (value.hasValue) {
-        rows.add(_row("$bonus", bonus, value));
-      }
+    for (final BonusEntry(:bonus, :value) in input.bonuses.grouped) {
+      rows.add(_row(_label(bonus, value), bonus, value.total));
     }
-    for (final BonusEntry(:bonus, :value) in input.multipliers) {
-      if (value.hasValue) {
-        rows.add(_row("$bonus ($value)", bonus, input.multiply(value)));
-      }
+    for (final BonusEntry(:bonus, :value) in input.multipliers.grouped) {
+      final total = value.total;
+      rows.add(_row("$bonus ($total)", bonus, input.multiply(total)));
     }
     rows.sort();
     return rows.map((row) => row.bonusRow);
@@ -60,11 +57,14 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
     final list = input.reserved.clean.group.toList();
     final rows = <_Row>[];
     for (final BonusEntry(:bonus, :value) in list) {
-      final count = value.length;
-      final label = count > 1 ? "$bonus (x$count)" : "$bonus";
-      rows.add(_row(label, bonus, value.total));
+      rows.add(_row(_label(bonus, value), bonus, value.total));
     }
     return rows.map((row) => row.reservedRow);
+  }
+
+  static String _label<T extends Monoid>(Bonus bonus, List<T> values) {
+    final count = values.length;
+    return count > 1 ? "$bonus ($count)" : "$bonus";
   }
 }
 

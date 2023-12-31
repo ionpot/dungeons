@@ -113,7 +113,7 @@ class ActionText {
 
   List<Widget> get _effects {
     final effects = [
-      for (final entry in _input.effects) Log.effectText(entry.bonus),
+      for (final entry in _result.effects) Log.effectText(entry.value),
     ];
     return [
       for (final text in effects)

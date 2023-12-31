@@ -32,7 +32,7 @@ class DiceValue {
   Value<Int> get diceCountValue {
     return Value.from(
       Int(base.count),
-      Bonuses(
+      Bonuses.fromMap(
         diceBonuses
             .findWithSides(base.sides)
             .mapValues((value) => Int(value.count)),

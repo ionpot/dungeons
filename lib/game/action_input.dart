@@ -1,6 +1,7 @@
 import "package:dungeons/game/bonus.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/source.dart";
+import "package:dungeons/game/status_effect.dart";
 import "package:dungeons/game/status_effects.dart";
 
 abstract class ActionInput {
@@ -12,8 +13,6 @@ abstract class ActionInput {
   int get stressCost => 0;
   Bonus? get reserveStress => null;
 
-  StatusEffects get effects => StatusEffects.empty();
-
   Source get source => Source.physical;
 }
 
@@ -21,19 +20,34 @@ abstract class ActionResult {
   const ActionResult();
 
   ActionInput get input;
+  Entity get actor => input.actor;
+  Entity get target => input.target;
 
   bool get didHit => false;
   int get damageDone => 0;
   int get healingDone => 0;
 
+  StatusEffects get inflicted => StatusEffects.empty();
+
+  StatusEffects get effects {
+    final extra = StatusEffects.empty();
+    if (damageDone > 0) {
+      final bonus = target.effects.findBonusOf(StatusEffect.canFrenzy);
+      if (bonus != null) {
+        extra.add(bonus, StatusEffect.frenzy);
+      }
+    }
+    return inflicted + extra;
+  }
+
   void apply() {
     if (didHit) {
-      input.target
+      target
         ..takeDamage(damageDone)
         ..heal(healingDone)
-        ..temporary.addAll(input.effects);
+        ..temporary.addAll(effects);
     }
-    final ActionInput(:actor, :reserveStress, :stressCost) = input;
+    final ActionInput(:reserveStress, :stressCost) = input;
     if (!actor.ignoreStress) {
       if (reserveStress != null) {
         actor.reserveStressFor(reserveStress, stressCost);

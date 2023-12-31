@@ -56,7 +56,7 @@ class Entity extends _Base
   Bonuses<Percent> get hitChanceBonuses {
     final base = agility.base.half;
     final bonus = agility.bonus.quarter as Int;
-    final bonuses = Bonuses({
+    final bonuses = Bonuses.fromMap({
       AttributeBonus.baseAgility: Percent(base.value),
       AttributeBonus.bonusAgility: Percent(bonus.value),
     });
@@ -192,7 +192,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
   Value<Int> get initiative {
     final base = agility.base + intellect.base;
     final bonus = agility.bonus + intellect.bonus;
-    final bonuses = Bonuses({
+    final bonuses = Bonuses.fromMap({
       AttributeBonus.baseAttributes: Int(bonus.value ~/ 2),
     });
     return Value.from(
@@ -204,7 +204,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
   Value<Percent> get dodge {
     return Value.from(
       Percent(agility.base.value),
-      Bonuses({
+      Bonuses.fromMap({
         AttributeBonus.bonusAgility: Percent(agility.bonus.value),
       }),
       multipliers: _allBonuses.multipliers(MultiplierBonusTo.dodge),
@@ -212,7 +212,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
   }
 
   Value<Percent> get resist {
-    final bonuses = Bonuses({
+    final bonuses = Bonuses.fromMap({
       AttributeBonus.bonusIntellect: Percent(intellect.bonus.value),
     });
     return Value.from(
@@ -224,7 +224,7 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
   DiceValue? get weaponDamage {
     final weapon = gear.weaponValue;
     if (weapon == null) return null;
-    final bonuses = Bonuses({
+    final bonuses = Bonuses.fromMap({
       AttributeBonus.baseStrength: strength.base.half,
       AttributeBonus.bonusStrength: strength.bonus.half,
     });
@@ -244,7 +244,7 @@ mixin _Health on _Base, _Attributes, _Levels {
   Value<Int> get totalHp {
     return Value.from(
       strength.base,
-      Bonuses({
+      Bonuses.fromMap({
         ClassBonus(klass, level): Int(level * (klass?.hpBonus ?? 0)),
         AttributeBonus.bonusStrength: strength.bonus,
       }),
@@ -278,7 +278,7 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
   List<BonusEntry<Int>> get reservedStress => feats.reserveStress + _reserved;
 
   Value<Int> get stressCap {
-    final bonuses = Bonuses({
+    final bonuses = Bonuses.fromMap({
       ClassBonus.level(level): Int(level),
       AttributeBonus.bonusIntellect: intellect.bonus,
     });
