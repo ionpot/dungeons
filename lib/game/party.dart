@@ -6,7 +6,22 @@ import "package:dungeons/game/entity_class.dart";
 
 enum PartyLine { front, back }
 
-enum PartySlot { left, center, right }
+enum PartySlot {
+  left,
+  center,
+  right;
+
+  PartySlot get opposite {
+    switch (this) {
+      case left:
+        return right;
+      case center:
+        return center;
+      case right:
+        return left;
+    }
+  }
+}
 
 class PartyPosition {
   final PartyLine line;
@@ -143,7 +158,8 @@ class Party extends Iterable<PartyMember> {
   List<PartyMember> membersInLine(PartyLine line) {
     return [
       for (final member in this)
-        if (member.position.line == line) member,
+        if (member.entity.alive)
+          if (member.position.line == line) member,
     ];
   }
 
@@ -162,7 +178,7 @@ class Party extends Iterable<PartyMember> {
     }
     if (members.length > 1) {
       members.removeWhere(
-        (member) => member.position.slot == position.slot,
+        (member) => member.position.slot == position.slot.opposite,
       );
     }
     return members;
