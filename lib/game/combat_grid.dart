@@ -1,3 +1,4 @@
+import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/grid_range.dart";
 import "package:dungeons/game/party.dart";
 
@@ -44,8 +45,14 @@ class CombatGrid extends Iterable<GridMember> {
 
   bool isPlayer(GridMember member) => member.party == player;
 
-  GridMember get firstPlayer => GridMember(player, player.first);
-  GridMember get firstEnemy => GridMember(enemy, enemy.first);
+  GridMember? find(Entity entity) {
+    for (final member in this) {
+      if (member.entity == entity) {
+        return member;
+      }
+    }
+    return null;
+  }
 
   bool canTarget({
     required GridMember actor,

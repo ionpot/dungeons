@@ -1,3 +1,4 @@
+import "package:dungeons/game/action_input.dart";
 import "package:dungeons/game/chosen_action.dart";
 import "package:dungeons/game/combat.dart";
 import "package:dungeons/game/combat_action.dart";
@@ -38,8 +39,6 @@ class _CombatScreenState extends State<CombatScreen> {
   void initState() {
     super.initState();
     _phase = _startingPhase();
-    _leftMember = _grid.firstPlayer;
-    _rightMember = _grid.firstEnemy;
   }
 
   @override
@@ -152,6 +151,7 @@ class _CombatScreenState extends State<CombatScreen> {
     _log
       ..ln()
       ..actionResult(result);
+    _setResultStats(result);
     return ActionResultPhase(
       _combat,
       result,
@@ -179,6 +179,9 @@ class _CombatScreenState extends State<CombatScreen> {
   }
 
   CombatPhase _levelUpPhase(Entity entity) {
+    setState(() {
+      _leftMember = _grid.find(entity);
+    });
     return LevelUpPhase(
       entity,
       onAttribute: (id) {
@@ -213,6 +216,18 @@ class _CombatScreenState extends State<CombatScreen> {
         _leftMember = _current;
       } else {
         _rightMember = _current;
+      }
+    });
+  }
+
+  void _setResultStats(ActionResult result) {
+    setState(() {
+      if (_combat.isPlayerTurn) {
+        _leftMember = _grid.find(result.actor);
+        _rightMember = _grid.find(result.target);
+      } else {
+        _rightMember = _grid.find(result.actor);
+        _leftMember = _grid.find(result.target);
       }
     });
   }
