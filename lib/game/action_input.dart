@@ -50,7 +50,7 @@ abstract class ActionResult {
     final ActionInput(:reserveStress, :stressCost) = input;
     if (!actor.ignoreStress) {
       if (reserveStress != null) {
-        actor.reserveStressFor(reserveStress, stressCost);
+        actor.reserveStressFor(reserveStress, stressCost, target);
       } else {
         actor.addStress(stressCost);
       }

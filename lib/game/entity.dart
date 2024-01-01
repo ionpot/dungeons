@@ -11,6 +11,7 @@ import "package:dungeons/game/entity_feats.dart";
 import "package:dungeons/game/entity_race.dart";
 import "package:dungeons/game/feat.dart";
 import "package:dungeons/game/gear.dart";
+import "package:dungeons/game/reserved_stress.dart";
 import "package:dungeons/game/spell.dart";
 import "package:dungeons/game/spellbook.dart";
 import "package:dungeons/game/status_effect.dart";
@@ -270,24 +271,28 @@ mixin _Health on _Base, _Attributes, _Levels {
 }
 
 mixin _Stress on _Bonuses, _Attributes, _Levels {
-  final List<BonusEntry<Int>> _reserved = [];
+  final ReservedStress _reserved = ReservedStress.empty();
   int _stress = 0;
 
   int get stress => _stress;
 
-  List<BonusEntry<Int>> get reservedStress => feats.reserveStress + _reserved;
+  List<BonusEntry<Int>> get reservedStress =>
+      feats.reserveStress + _reserved.list;
 
   Value<Int> get stressCap {
+    return Value.from(
+      intellect.base + Int(level),
+      stressCapBonuses,
+      reserved: reservedStress,
+    );
+  }
+
+  Bonuses<Int> get stressCapBonuses {
     final bonuses = Bonuses.fromMap({
       ClassBonus.level(level): Int(level),
       AttributeBonus.bonusIntellect: intellect.bonus,
     });
-    return Value(
-      intellect.base + Int(level),
-      bonuses + _allBonuses.ints(IntBonusTo.stressCap),
-      multipliers: Bonuses.empty(),
-      reserved: reservedStress,
-    );
+    return bonuses + _allBonuses.ints(IntBonusTo.stressCap);
   }
 
   bool get ignoreStress => effects.has(StatusEffect.noStress);
@@ -304,8 +309,8 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
     _reserved.clear();
   }
 
-  void reserveStressFor(Bonus bonus, int amount) {
-    _reserved.add(BonusEntry(bonus, Int(amount)));
+  void reserveStressFor(Bonus bonus, int amount, Entity target) {
+    _reserved.add(BonusEntry(bonus, Int(amount)), target);
   }
 }
 
