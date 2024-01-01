@@ -1,8 +1,7 @@
 import "package:dungeons/game/chosen_action.dart";
 import "package:dungeons/game/combat_action.dart";
 import "package:dungeons/game/combat_grid.dart";
-import "package:dungeons/game/enemy.dart";
-import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/entity/orc.dart";
 import "package:dungeons/game/grid_range.dart";
 import "package:dungeons/game/party.dart";
 
@@ -14,15 +13,11 @@ class Combat {
 
   Combat(this.grid);
 
-  factory Combat.withPlayer(Entity player) {
-    player
-      ..resetHp()
-      ..clearStress()
-      ..temporary.clear();
+  factory Combat.withPlayer(Party player) {
     return Combat(
       CombatGrid(
-        player: Party.single(player),
-        enemy: enemyOrcParty(player.level),
+        player: player..reset(),
+        enemy: rollOrcParty(player.highestLevel),
       ),
     );
   }

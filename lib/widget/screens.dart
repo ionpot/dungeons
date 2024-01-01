@@ -1,6 +1,6 @@
 import "package:dungeons/game/combat.dart";
-import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/log.dart";
+import "package:dungeons/game/party.dart";
 import "package:dungeons/utility/value_callback.dart";
 import "package:dungeons/widget/character_screen.dart";
 import "package:dungeons/widget/combat_screen.dart";
@@ -16,11 +16,11 @@ class Screens {
 
   Widget _characterScreen() {
     return CharacterScreen(
-      onDone: (player) => onNext(_combatScreen(player)),
+      onDone: (player) => onNext(_combatScreen(Party.forPlayer(player))),
     );
   }
 
-  Widget _combatScreen(Entity player) {
+  Widget _combatScreen(Party player) {
     return CombatScreen(
       Combat.withPlayer(player),
       key: UniqueKey(),

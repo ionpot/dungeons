@@ -67,6 +67,9 @@ class EntityPortrait extends StatelessWidget {
     if (entity.race == EntityRace.orc) {
       return "orc";
     }
+    if (entity.name == "Torchbearer") {
+      return entity.name.toLowerCase();
+    }
     return entity.klass.toString().toLowerCase();
   }
 }

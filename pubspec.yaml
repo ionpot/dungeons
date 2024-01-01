@@ -58,6 +58,7 @@ flutter:
     - image/portrait_orc.png
     - image/portrait_target_enemy.png
     - image/portrait_target_friendly.png
+    - image/portrait_torchbearer.png
     - image/portrait_trickster.png
     - image/portrait_warrior.png
 

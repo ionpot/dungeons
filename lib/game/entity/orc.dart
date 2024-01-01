@@ -10,7 +10,7 @@ import "package:dungeons/utility/deviate.dart";
 import "package:dungeons/utility/dice.dart";
 import "package:dungeons/utility/monoids.dart";
 
-Entity enemyOrc(String name, int level) {
+Entity rollOrc(String name, int level) {
   if (level < 1) {
     throw ArgumentError.value(level, "level", "Orc level must be 1 or higher.");
   }
@@ -38,7 +38,7 @@ Entity enemyOrc(String name, int level) {
     ..spendAllPoints();
 }
 
-Party enemyOrcParty(int playerLevel) {
+Party rollOrcParty(int playerLevel) {
   if (playerLevel < 1) {
     throw ArgumentError.value(
       playerLevel,
@@ -53,13 +53,13 @@ Party enemyOrcParty(int playerLevel) {
       ? playerLevel
       : const Deviate(1, 0).from(playerLevel - 1).withMin(1).roll();
   if (single) {
-    return Party.single(enemyOrc(names.first, level()));
+    return Party.single(rollOrc(names.first, level()));
   }
   return Party({
     const PartyPosition(PartyLine.front, PartySlot.left):
-        enemyOrc(names.first, level()),
+        rollOrc(names.first, level()),
     const PartyPosition(PartyLine.front, PartySlot.right):
-        enemyOrc(names.last, level()),
+        rollOrc(names.last, level()),
   });
 }
 

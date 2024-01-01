@@ -1,6 +1,8 @@
 import "dart:math";
 
 import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/entity/torchbearer.dart";
+import "package:dungeons/game/entity_class.dart";
 
 enum PartyLine { front, back }
 
@@ -62,6 +64,28 @@ class Party extends Iterable<PartyMember> {
   factory Party.single(Entity entity) {
     return Party({
       const PartyPosition(PartyLine.front, PartySlot.center): entity,
+    });
+  }
+
+  factory Party.forPlayer(Entity player) {
+    var playerLine = PartyLine.front;
+    if (player.klass == EntityClass.cleric) {
+      if (Random().nextBool()) {
+        playerLine = PartyLine.back;
+      }
+    } else if (player.klass == EntityClass.mage) {
+      playerLine = PartyLine.back;
+    }
+    var playerSlot = PartySlot.center;
+    var followerSlot = PartySlot.center;
+    if (playerLine == PartyLine.front) {
+      final slots = List.of(PartySlot.values)..shuffle();
+      playerSlot = slots.first;
+      followerSlot = slots.last;
+    }
+    return Party({
+      PartyPosition(playerLine, playerSlot): player,
+      PartyPosition(PartyLine.front, followerSlot): rollTorchbearer(),
     });
   }
 
@@ -142,6 +166,15 @@ class Party extends Iterable<PartyMember> {
       );
     }
     return members;
+  }
+
+  void reset() {
+    for (final PartyMember(:entity) in this) {
+      entity
+        ..resetHp()
+        ..clearStress()
+        ..temporary.clear();
+    }
   }
 
   @override
