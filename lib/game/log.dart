@@ -186,11 +186,12 @@ class Log {
 
   static String effectText(StatusEffect effect) {
     switch (effect) {
-      case StatusEffect.slow:
-        return "is slowed";
+      case StatusEffect.bless:
+        return "is blessed";
       case StatusEffect.frenzy:
         return "is frenzied";
-      case StatusEffect.bless:
+      case StatusEffect.slow:
+        return "is slowed";
       case StatusEffect.canFrenzy:
       case StatusEffect.maxDamage:
       case StatusEffect.noStress:
