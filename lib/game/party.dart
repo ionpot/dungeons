@@ -75,6 +75,7 @@ class Party extends Iterable<PartyMember> {
   final Map<PartyPosition, Entity> members;
 
   const Party(this.members);
+  Party.copy(Party party) : this(Map.of(party.members));
 
   factory Party.single(Entity entity) {
     return Party({
@@ -103,6 +104,9 @@ class Party extends Iterable<PartyMember> {
       PartyPosition(PartyLine.front, followerSlot): rollTorchbearer(),
     });
   }
+
+  Party get alive =>
+      Party.copy(this)..members.removeWhere((_, member) => member.dead);
 
   Iterable<PartyMember> get aliveMembers {
     return where((member) => member.entity.alive);
@@ -206,20 +210,22 @@ class PartyXpGain extends Iterable<PartyMember> {
 
   bool get canLevelUp {
     return any((member) {
-      return member.entity.canLevelUpWith(amount(member));
+      return member.entity.canLevelUpWith(amount);
     });
   }
 
-  int amount(PartyMember member) {
+  int get amount {
+    final highest = won.alive.highestLevelMember.entity;
     return lost.fold(
       0,
-      (total, other) => total + member.entity.xpGain(other.entity),
+      (total, other) => total + highest.xpGain(other.entity),
     );
   }
 
   void apply() {
+    final xp = amount;
     for (final member in this) {
-      member.entity.addXp(amount(member));
+      member.entity.addXp(xp);
     }
   }
 

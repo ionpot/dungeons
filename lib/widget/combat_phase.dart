@@ -11,7 +11,6 @@ import "package:dungeons/widget/action_select.dart";
 import "package:dungeons/widget/action_text.dart";
 import "package:dungeons/widget/attribute_select.dart";
 import "package:dungeons/widget/button.dart";
-import "package:dungeons/widget/combat_display.dart";
 import "package:dungeons/widget/entity_portrait.dart";
 import "package:dungeons/widget/text_lines.dart";
 import "package:dungeons/widget/titled_text_lines.dart";
@@ -161,7 +160,10 @@ final class XpGainPhase extends CombatPhase {
   Widget get display {
     return TitledTextLines(
       title: combatTurnTitle(combat),
-      lines: TextLines(getXpGainLines(xpGain)),
+      lines: TextLines([
+        for (final member in xpGain)
+          Text(xpGainText(member.entity, xpGain.amount)),
+      ]),
     );
   }
 

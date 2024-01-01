@@ -126,8 +126,7 @@ class Log {
 
   void xpGain(PartyXpGain xpGain) {
     for (final member in xpGain) {
-      final xp = xpGain.amount(member);
-      ln(xpGainText(member.entity, xp));
+      ln(xpGainText(member.entity, xpGain.amount));
     }
   }
 
