@@ -50,7 +50,7 @@ class ActionText {
       if (result.dodged) Text("$_target dodges the attack."),
       if (result.didHit) ...[
         ..._diceRolls("${_actor.weapon}", result.rolls.damage),
-        _damageAndStatus(result.rolls.damage),
+        ..._damageAndStatus(result.rolls.damage),
         if (_target.alive) ..._effects,
       ],
     ];
@@ -92,7 +92,7 @@ class ActionText {
   List<Widget> _spellDamage(SpellCastInput input, DiceRoll roll) {
     return [
       _diceRoll(input.spell.text, roll),
-      _damageAndStatus(DiceRollValue.from(roll)),
+      ..._damageAndStatus(DiceRollValue.from(roll)),
     ];
   }
 
@@ -103,12 +103,15 @@ class ActionText {
     ];
   }
 
-  Widget _damageAndStatus(DiceRollValue damage) {
-    return _richText(
-      "$_target takes ",
-      DamageSpan(damage, _input.source),
-      ' damage${_target.dead ? ', and dies' : ''}.',
-    );
+  List<Widget> _damageAndStatus(DiceRollValue damage) {
+    return [
+      _richText(
+        "$_target takes ",
+        DamageSpan(damage, _input.source),
+        " damage.",
+      ),
+      if (_target.dead) Text("$_target dies."),
+    ];
   }
 
   List<Widget> get _effects {

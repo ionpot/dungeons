@@ -138,12 +138,11 @@ class Log {
       return;
     }
     if (result.damageDone != 0) {
-      file.write("$target takes ${result.damageDone}"
-          " ${params.source.name} damage");
+      ln("$target takes ${result.damageDone}"
+          " ${params.source.name} damage.");
       if (target.dead) {
-        file.write(", and dies");
+        ln("$target dies.");
       }
-      ln(".");
     }
     if (target.alive) {
       for (final entry in result.effects) {
