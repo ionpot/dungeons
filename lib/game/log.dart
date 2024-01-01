@@ -38,6 +38,7 @@ class Log {
       final dice = e.gear.offHandValue?.dice;
       return "$offHand (${armor ?? dice})";
     });
+    ln("${e.name}, ${e.race} ${e.klass} Lv${e.level}");
     ln("${e.attributes}");
     ln("Hp ${e.totalHp}"
         '${player ? ', Stress Cap ${e.stressCap}' : ''}'
