@@ -155,7 +155,7 @@ mixin _Bonuses on _Base, _Gear, _Feats {
     return _raceBonuses + gear.bonuses + feats.bonuses + effects.bonuses;
   }
 
-  bool hasBonus(Bonus bonus) => _allBonuses.has(bonus);
+  bool hasBonus(Bonus bonus) => _allBonuses.has(bonus) || effects.hasBonus(bonus);
 }
 
 mixin _Attributes on _Base, _Gear, _Bonuses {

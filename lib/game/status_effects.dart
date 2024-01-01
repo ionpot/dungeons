@@ -14,6 +14,10 @@ class StatusEffects extends Iterable<BonusEntry<StatusEffect>> {
     return findBonusOf(effect) != null;
   }
 
+  bool hasBonus(Bonus bonus) {
+    return any((entry) => entry.bonus == bonus);
+  }
+
   Bonus? findBonusOf(StatusEffect effect) {
     for (final entry in this) {
       if (entry.value == effect || entry.value.effects.contains(effect)) {
