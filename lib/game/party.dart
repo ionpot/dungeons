@@ -84,14 +84,8 @@ class Party extends Iterable<PartyMember> {
   }
 
   factory Party.forPlayer(Entity player) {
-    var playerLine = PartyLine.front;
-    if (player.klass == EntityClass.cleric) {
-      if (Random().nextBool()) {
-        playerLine = PartyLine.back;
-      }
-    } else if (player.klass == EntityClass.mage) {
-      playerLine = PartyLine.back;
-    }
+    final playerLine =
+        player.klass == EntityClass.mage ? PartyLine.back : PartyLine.front;
     var playerSlot = PartySlot.center;
     var followerSlot = PartySlot.center;
     if (playerLine == PartyLine.front) {
