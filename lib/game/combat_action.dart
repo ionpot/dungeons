@@ -131,7 +131,7 @@ final class CastSpell extends CombatAction {
 
   @override
   SpellCastResult result(SpellCastInput input) {
-    return SpellCastResult(input, input.roll());
+    return SpellCastResult.from(input, input.roll());
   }
 
   @override

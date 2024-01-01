@@ -78,8 +78,19 @@ final class SpellCastResult extends ActionResult {
   @override
   final SpellCastInput input;
   final SpellCastRolls rolls;
+  @override
+  final StatusEffects inflicted;
 
-  const SpellCastResult(this.input, this.rolls);
+  const SpellCastResult(this.input, this.rolls, this.inflicted);
+
+  factory SpellCastResult.from(SpellCastInput input, SpellCastRolls rolls) {
+    final spell = input.spell;
+    final inflicted = StatusEffects([
+      if (input.canEffect && spell.effect != null)
+        BonusEntry(SpellBonus(spell), spell.effect!),
+    ]);
+    return SpellCastResult(input, rolls, inflicted);
+  }
 
   bool get canResist => !input.autoHit;
   @override
@@ -89,14 +100,4 @@ final class SpellCastResult extends ActionResult {
   int get damageDone => rolls.damage?.total ?? 0;
   @override
   int get healingDone => rolls.heal?.total ?? 0;
-
-  @override
-  StatusEffects get inflicted {
-    return StatusEffects([
-    if (input.canEffect && _spell.effect != null)
-      BonusEntry(SpellBonus(_spell), _spell.effect!),
-    ]);
-  }
-
-  Spell get _spell => input.spell;
 }
