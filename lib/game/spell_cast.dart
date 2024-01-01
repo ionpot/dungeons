@@ -25,7 +25,7 @@ final class SpellCastInput extends ActionInput {
   @override
   Entity get actor => caster;
 
-  bool get autoHit => spell.autoHit;
+  bool get autoHit => spell.autoHit || spell.friendly;
   bool get targetSelf => caster == target;
 
   Value<Percent> get resistChance =>
@@ -81,7 +81,7 @@ final class SpellCastResult extends ActionResult {
 
   const SpellCastResult(this.input, this.rolls);
 
-  bool get canResist => !input.targetSelf && !input.autoHit;
+  bool get canResist => !input.autoHit;
   @override
   bool get didHit => !canResist || rolls.resist.failsV(input.resistChance);
   bool get resisted => !didHit;

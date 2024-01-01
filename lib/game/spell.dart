@@ -71,6 +71,10 @@ enum Spell {
     this.range,
   });
 
+  bool get friendly {
+    return range == null ||  range?.party == PartyRange.ally;
+  }
+
   @override
   String toString() => text;
 }
