@@ -46,19 +46,20 @@ Party enemyOrcParty(int playerLevel) {
       "Player level must be 1 or higher.",
     );
   }
+  final names = ["Cork", "Dork", "Fork"]..shuffle();
   final sameLevel = playerLevel == 1 ? true : _chance(const Percent(34));
   final single = sameLevel ? true : _chance(const Percent(50));
   int level() => sameLevel
       ? playerLevel
       : const Deviate(1, 0).from(playerLevel - 1).withMin(1).roll();
   if (single) {
-    return Party.single(enemyOrc("Enemy", level()));
+    return Party.single(enemyOrc(names.first, level()));
   }
   return Party({
     const PartyPosition(PartyLine.front, PartySlot.left):
-        enemyOrc("Enemy 1", level()),
+        enemyOrc(names.first, level()),
     const PartyPosition(PartyLine.front, PartySlot.right):
-        enemyOrc("Enemy 2", level()),
+        enemyOrc(names.last, level()),
   });
 }
 
