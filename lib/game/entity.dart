@@ -281,7 +281,7 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
 
   Value<Int> get stressCap {
     return Value.from(
-      intellect.base + Int(level),
+      intellect.base,
       stressCapBonuses,
       reserved: reservedStress,
     );
