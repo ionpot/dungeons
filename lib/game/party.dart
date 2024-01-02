@@ -84,18 +84,13 @@ class Party extends Iterable<PartyMember> {
   }
 
   factory Party.forPlayer(Entity player) {
-    final playerLine =
-        player.klass == EntityClass.mage ? PartyLine.back : PartyLine.front;
-    var playerSlot = PartySlot.center;
-    var followerSlot = PartySlot.center;
-    if (playerLine == PartyLine.front) {
-      final slots = List.of(PartySlot.values)..shuffle();
-      playerSlot = slots.first;
-      followerSlot = slots.last;
-    }
+    final playerPosition = player.klass == EntityClass.mage
+        ? const PartyPosition(PartyLine.back, PartySlot.center)
+        : const PartyPosition(PartyLine.front, PartySlot.top);
+    const followerPosition = PartyPosition(PartyLine.front, PartySlot.center);
     return Party({
-      PartyPosition(playerLine, playerSlot): player,
-      PartyPosition(PartyLine.front, followerSlot): rollTorchbearer(),
+      playerPosition: player,
+      followerPosition: rollTorchbearer(),
     });
   }
 
