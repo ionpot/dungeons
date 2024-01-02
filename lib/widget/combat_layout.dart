@@ -28,11 +28,11 @@ double enemyPartySlotX(PartyLine line) {
 
 double partySlotY(PartySlot slot) {
   switch (slot) {
-    case PartySlot.left:
+    case PartySlot.top:
       return 34;
     case PartySlot.center:
       return 180;
-    case PartySlot.right:
+    case PartySlot.bottom:
       return 326;
   }
 }

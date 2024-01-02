@@ -7,18 +7,18 @@ import "package:dungeons/game/entity_class.dart";
 enum PartyLine { front, back }
 
 enum PartySlot {
-  left,
+  top,
   center,
-  right;
+  bottom;
 
   PartySlot get opposite {
     switch (this) {
-      case left:
-        return right;
+      case top:
+        return bottom;
       case center:
         return center;
-      case right:
-        return left;
+      case bottom:
+        return top;
     }
   }
 }

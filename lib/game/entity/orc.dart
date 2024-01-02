@@ -56,9 +56,9 @@ Party rollOrcParty(int playerLevel) {
     return Party.single(rollOrc(names.first, level()));
   }
   return Party({
-    const PartyPosition(PartyLine.front, PartySlot.left):
+    const PartyPosition(PartyLine.front, PartySlot.top):
         rollOrc(names.first, level()),
-    const PartyPosition(PartyLine.front, PartySlot.right):
+    const PartyPosition(PartyLine.front, PartySlot.bottom):
         rollOrc(names.last, level()),
   });
 }
