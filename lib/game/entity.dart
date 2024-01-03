@@ -143,12 +143,8 @@ mixin _Bonuses on _Base, _Gear, _Feats {
 
   StatusEffects get effects => passives + temporary;
 
-  BonusPool get _raceBonuses {
-    return BonusPool.empty()..addValues(RaceBonus(race), race.bonuses);
-  }
-
   BonusPool get _allBonuses {
-    return _raceBonuses + gear.bonuses + feats.bonuses + effects.bonuses;
+    return gear.bonuses + feats.bonuses + effects.bonuses;
   }
 
   bool hasBonus(Bonus bonus) => _allBonuses.has(bonus) || effects.hasBonus(bonus);
