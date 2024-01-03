@@ -178,10 +178,19 @@ class Log {
     Percent percent,
     bool critical,
   ) {
-    if (percent.always) return "Auto-success";
-    if (percent.never) return "Auto-fail";
-    final success = roll.meets(percent);
-    return '$roll -> ${success ? critical ? 'Critical!' : 'Success' : 'Fail'}';
+    var text = "";
+    if (critical) {
+      text = "Critical success!";
+    } else if (percent.always) {
+      text = "Auto-success";
+    } else if (percent.never) {
+      text = "Auto-fail";
+    } else if (roll.meets(percent)) {
+      text = "Success";
+    } else {
+      text = "Fail";
+    }
+    return "$roll -> $text";
   }
 
   static String effectText(StatusEffect effect) {
