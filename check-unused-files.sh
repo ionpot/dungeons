@@ -1,2 +1,2 @@
 #!/bin/sh
-flutter pub run dart_code_metrics:metrics check-unused-files lib
+flutter pub run dart_code_metrics:metrics check-unused-files lib --disable-sunset-warning
