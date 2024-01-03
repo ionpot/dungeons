@@ -55,11 +55,10 @@ Party rollOrcParty(int playerLevel) {
   if (single) {
     return Party.single(rollOrc(names.first, level()));
   }
+  final slots = List.of(PartySlot.values)..shuffle();
   return Party({
-    const PartyPosition(PartyLine.front, PartySlot.top):
-        rollOrc(names.first, level()),
-    const PartyPosition(PartyLine.front, PartySlot.bottom):
-        rollOrc(names.last, level()),
+    PartyPosition(PartyLine.front, slots.first): rollOrc(names.first, level()),
+    PartyPosition(PartyLine.front, slots.last): rollOrc(names.last, level()),
   });
 }
 
