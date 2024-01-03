@@ -13,10 +13,18 @@ class ChanceRoll {
     return rolls.any(percent.success);
   }
 
+  bool allMeet(Percent percent) {
+    if (percent.always) return true;
+    if (percent.never) return false;
+    return rolls.every(percent.success);
+  }
+
   bool fails(Percent percent) => !meets(percent);
 
   bool meetsV(Value<Percent> percent) => meets(percent.total);
   bool failsV(Value<Percent> percent) => fails(percent.total);
+
+  bool allMeetV(Value<Percent> percent) => allMeet(percent.total);
 
   @override
   String toString() => rolls.toString();

@@ -62,12 +62,16 @@ final class TwoWeaponAttackResult extends WeaponAttackResult {
   final TwoWeaponAttackRolls _rolls;
 
   TwoWeaponAttackResult(this._input, this._rolls) : super(_input, _rolls) {
-    if (didHit) {
+    if (_didHitWithOffhand) {
       _rolls.damage.addBonusRoll(
         GearBonus.offHand(_input.offHand),
         _rolls.offHand,
       );
     }
+  }
+
+  bool get _didHitWithOffhand {
+    return didHit && _rolls.attack.allMeetV(_input.hitChance);
   }
 
   @override
