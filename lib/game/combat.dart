@@ -87,10 +87,11 @@ class Combat {
 }
 
 GridMember _pickMeleeTarget(Iterable<GridMember> targets) {
+  var lowestHp = targets.first;
   for (final target in targets) {
-    if (target.position.isCenter) {
-      return target;
+    if (target.entity.hp < lowestHp.entity.hp) {
+      lowestHp = target;
     }
   }
-  return targets.first;
+  return lowestHp;
 }
