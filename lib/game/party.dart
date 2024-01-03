@@ -199,27 +199,27 @@ class PartyXpGain extends Iterable<PartyMember> {
 
   bool get canLevelUp {
     return any((member) {
-      return member.entity.canLevelUpWith(amount);
+      return member.entity.canLevelUpWith(amount(member.entity));
     });
   }
 
-  int get amount {
-    final highest = won.alive.highestLevelMember.entity;
-    return lost.fold(
+  int amount(Entity entity) {
+    final int extra = 2 * max(0, lost.length - 1);
+    final total = lost.fold(
       0,
-      (total, other) => total + highest.xpGain(other.entity),
+      (total, other) => total + entity.xpGain(other.entity) + extra,
     );
+    return total ~/ max(won.alive.length, 1);
   }
 
   void apply() {
-    final xp = amount;
-    for (final member in this) {
-      member.entity.addXp(xp);
+    for (final PartyMember(:entity) in this) {
+      entity.addXp(amount(entity));
     }
   }
 
   @override
   Iterator<PartyMember> get iterator {
-    return won.aliveMembers.iterator;
+    return won.alive.iterator;
   }
 }

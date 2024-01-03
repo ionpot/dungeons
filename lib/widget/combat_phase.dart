@@ -161,8 +161,8 @@ final class XpGainPhase extends CombatPhase {
     return TitledTextLines(
       title: combatTurnTitle(combat),
       lines: TextLines([
-        for (final member in xpGain)
-          Text(xpGainText(member.entity, xpGain.amount)),
+        for (final PartyMember(:entity) in xpGain)
+          Text(xpGainText(entity, xpGain.amount(entity))),
       ]),
     );
   }

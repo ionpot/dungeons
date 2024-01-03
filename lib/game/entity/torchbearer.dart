@@ -23,5 +23,5 @@ Entity rollTorchbearer() {
     mainHand: Weapon.dagger,
   );
 
-  return entity..addXp(-3);
+  return entity..addXp(-6);
 }

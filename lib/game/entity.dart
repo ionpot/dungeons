@@ -1,3 +1,5 @@
+import "dart:math";
+
 import "package:dungeons/game/armor.dart";
 import "package:dungeons/game/bonus.dart";
 import "package:dungeons/game/bonus_entry.dart";
@@ -74,12 +76,6 @@ class Entity extends _Base
 
   bool fasterThan(Entity other) {
     return compareSpeed(other) == -1;
-  }
-
-  int xpGain(Entity e) {
-    if (level <= e.level) return 3;
-    if (level - 1 == e.level) return 2;
-    return 1;
   }
 
   @override
@@ -315,7 +311,7 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
 }
 
 mixin _Levels on _Base, _Attributes {
-  static const _xpForLevelUp = 3;
+  static const _xpForLevelUp = 6;
 
   int xp = 0;
 
@@ -326,6 +322,12 @@ mixin _Levels on _Base, _Attributes {
   bool canLevelUp() => canLevelUpWith(0);
   bool canLevelUpWith(int x) => (xp + x) >= _xpForLevelUp;
   bool get hasPointsToSpend => _extraPoints > 0;
+
+  int xpGain(Entity e) {
+    final diff = level - e.level;
+    final xp = _xpForLevelUp - 2 * diff;
+    return max(xp, 0);
+  }
 
   void addXp(int amount) {
     xp += amount;
