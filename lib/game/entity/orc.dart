@@ -1,3 +1,5 @@
+import "dart:math";
+
 import "package:dungeons/game/armor.dart";
 import "package:dungeons/game/chance_roll.dart";
 import "package:dungeons/game/entity.dart";
@@ -6,7 +8,6 @@ import "package:dungeons/game/entity_race.dart";
 import "package:dungeons/game/gear.dart";
 import "package:dungeons/game/party.dart";
 import "package:dungeons/game/weapon.dart";
-import "package:dungeons/utility/deviate.dart";
 import "package:dungeons/utility/dice.dart";
 import "package:dungeons/utility/monoids.dart";
 
@@ -49,9 +50,13 @@ Party rollOrcParty(int playerLevel) {
   final names = ["Cork", "Dork", "Fork"]..shuffle();
   final sameLevel = playerLevel == 1 ? true : _chance(const Percent(34));
   final single = sameLevel ? true : _chance(const Percent(50));
-  int level() => sameLevel
-      ? playerLevel
-      : const Deviate(1, 0).from(playerLevel - 1).withMin(1).roll();
+
+  int level() {
+    final i = Random().nextInt(2);
+    final lv = sameLevel ? playerLevel + i : playerLevel - 1 - i;
+    return max(1, lv);
+  }
+
   if (single) {
     return Party.single(rollOrc(names.first, level()));
   }
