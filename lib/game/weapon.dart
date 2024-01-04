@@ -3,72 +3,72 @@ import "package:dungeons/utility/dice.dart";
 import "package:dungeons/utility/random.dart";
 
 enum Weapon {
-  dagger(text: "Dagger", group: WeaponGroup.small),
-  mace(text: "Mace", group: WeaponGroup.medium),
-  longsword(text: "Longsword", group: WeaponGroup.hybrid),
-  halberd(text: "Halberd", group: WeaponGroup.large),
-  shield(text: "Shield", group: WeaponGroup.shield);
+  dagger(
+    text: "Dagger",
+    group: WeaponGroup.small,
+    mainHand: WeaponValue(dice: Dice(1, 4), initiative: 2),
+    offHand: WeaponValue(dice: Dice(1, 4)),
+  ),
+  mace(
+    text: "Mace",
+    group: WeaponGroup.medium,
+    mainHand: WeaponValue(dice: Dice(1, 6)),
+  ),
+  longsword(
+    text: "Longsword",
+    group: WeaponGroup.hybrid,
+    mainHand: WeaponValue(dice: Dice(1, 6)),
+    twoHanded: WeaponValue(dice: Dice(1, 8)),
+  ),
+  halberd(
+    text: "Halberd",
+    group: WeaponGroup.large,
+    twoHanded: WeaponValue(dice: Dice(1, 10), initiative: -2),
+  ),
+  shield(
+    text: "Shield",
+    group: WeaponGroup.shield,
+    offHand: WeaponValue(armor: 5),
+  );
 
-  final WeaponGroup group;
   final String text;
+  final WeaponGroup group;
+  final WeaponValue? mainHand;
+  final WeaponValue? offHand;
+  final WeaponValue? twoHanded;
 
   const Weapon({
     required this.text,
     required this.group,
+    this.mainHand,
+    this.offHand,
+    this.twoHanded,
   });
 
-  int? get armor => group.armor;
-
-  bool get canAttack => group.canAttack;
-  bool get canOneHand => group.canOneHand;
-  bool get canMainHand => group.canMainHand;
-  bool get canOffHand => group.canOffHand;
-  bool get twoHandOnly => group.twoHandOnly;
+  bool get oneHanded => mainHand != null;
+  bool get twoHandOnly => twoHanded != null && (mainHand ?? offHand) == null;
+  bool get offHandOnly => offHand != null && (mainHand ?? twoHanded) == null;
 
   @override
   String toString() => text;
 
   static Iterable<Weapon> forMainHand =
-      values.where((weapon) => weapon.canMainHand);
+      values.where((weapon) => !weapon.offHandOnly);
   static Iterable<Weapon> forOffHand =
-      values.where((weapon) => weapon.canOffHand);
+      values.where((weapon) => weapon.offHand != null);
   static BonusValue offHandPenalty = const IntBonus.initiative(-2);
 
   static Weapon randomMainHand() => pickRandom(forMainHand);
 }
 
-enum WeaponGroup {
-  small(oneHanded: WeaponValue(dice: Dice(1, 4), initiative: 2)),
-  medium(oneHanded: WeaponValue(dice: Dice(1, 6))),
-  hybrid(
-    oneHanded: WeaponValue(dice: Dice(1, 6)),
-    twoHanded: WeaponValue(dice: Dice(1, 8)),
-  ),
-  large(twoHanded: WeaponValue(dice: Dice(1, 10), initiative: -2)),
-  shield(armor: 5);
-
-  final WeaponValue? oneHanded;
-  final WeaponValue? twoHanded;
-  final int? armor;
-
-  const WeaponGroup({this.oneHanded, this.twoHanded, this.armor});
-
-  bool get canAttack => oneHanded != null || twoHanded != null;
-  bool get canOneHand => oneHanded != null;
-  bool get canMainHand => mainHand.contains(this);
-  bool get canOffHand => offHand.contains(this);
-  bool get twoHandOnly => oneHanded == null && twoHanded != null;
-  bool get offHandOnly => oneHanded == null && twoHanded == null;
-
-  static const Set<WeaponGroup> mainHand = {small, medium, hybrid, large};
-  static const Set<WeaponGroup> offHand = {small, shield};
-}
+enum WeaponGroup { small, medium, hybrid, large, shield }
 
 class WeaponValue {
-  final Dice dice;
+  final int armor;
   final int initiative;
+  final Dice? dice;
 
-  const WeaponValue({required this.dice, this.initiative = 0});
+  const WeaponValue({this.armor = 0, this.initiative = 0, this.dice});
 
   BonusValue get bonus => IntBonus.initiative(initiative);
 }

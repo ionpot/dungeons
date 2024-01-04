@@ -16,19 +16,20 @@ class Gear {
   Bonuses<Int> get armor {
     return Bonuses.fromMap({
       if (body != null) GearBonus.armor(body!): Int(body!.value),
-      if (shield != null) GearBonus.offHand(shield!): Int(shield!.armor!),
+      if (shieldArmor != null) GearBonus.offHand(shield!): Int(shieldArmor!),
     });
   }
 
-  Weapon? get shield => offHand == Weapon.shield ? offHand : null;
+  Weapon? get shield => offHand?.group == WeaponGroup.shield ? offHand : null;
+  int? get shieldArmor => shield?.offHand?.armor;
 
   BonusPool get bonuses {
     final pool = BonusPool.empty();
     if (body?.bonus != null) {
       pool.add(GearBonus.armor(body!), body!.bonus!);
     }
-    if (shield?.armor != null) {
-      pool.add(GearBonus.offHand(shield!), IntBonus.armor(shield!.armor!));
+    if (shieldArmor != null) {
+      pool.add(GearBonus.offHand(shield!), IntBonus.armor(shieldArmor!));
     }
     if (mainHand != null) {
       pool.add(GearBonus.mainHand(mainHand!), weaponValue!.bonus);
@@ -47,26 +48,22 @@ class Gear {
     }
     if (gear.offHand != null) {
       if (mainHand != null) {
-        return mainHand!.canOneHand;
+        return mainHand!.oneHanded;
       }
     }
     return true;
   }
 
-  bool get hasTwoWeapons => mainHand != null && offHand?.canAttack == true;
+  bool get hasTwoWeapons => mainHand != null && offHandValue?.dice != null;
 
   WeaponValue? get weaponValue {
-    final group = mainHand?.group;
-    if (group == null) {
-      return null;
+    if (offHand != null) {
+      return mainHand?.mainHand;
     }
-    if (offHand == null) {
-      return group.twoHanded ?? group.oneHanded;
-    }
-    return group.oneHanded;
+    return mainHand?.twoHanded ?? mainHand?.mainHand;
   }
 
-  WeaponValue? get offHandValue => offHand?.group.oneHanded;
+  WeaponValue? get offHandValue => offHand?.offHand;
 
   Gear operator +(Gear other) {
     return Gear(

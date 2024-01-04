@@ -101,7 +101,7 @@ class EntityStats extends StatelessWidget {
 
   Widget get _offHand {
     final weapon = ifdef(entity.gear.offHand, (offHand) {
-      final armor = entity.gear.shield?.armor;
+      final armor = entity.gear.shieldArmor;
       final dice = entity.gear.offHandValue?.dice;
       return "$offHand (${armor ?? dice})";
     });

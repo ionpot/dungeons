@@ -27,7 +27,7 @@ class WeaponAttackInput extends ActionInput {
   CriticalHit get criticalHit {
     return CriticalHit(
       chance: actor.criticalHitChance,
-      dice: actor.gear.weaponValue!.dice,
+      dice: actor.gear.weaponValue!.dice!,
     );
   }
 

@@ -34,7 +34,7 @@ class Log {
   void entity(Entity e, {required bool player}) {
     final damage = e.weaponDamage;
     final offHand = ifdef(e.gear.offHand, (offHand) {
-      final armor = e.gear.shield?.armor;
+      final armor = e.gear.shieldArmor;
       final dice = e.gear.offHandValue?.dice;
       return "$offHand (${armor ?? dice})";
     });

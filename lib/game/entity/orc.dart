@@ -27,7 +27,7 @@ Entity rollOrc(String name, int level) {
     ..intellect = 5 + d6();
 
   final mainHand = _chance(const Percent(50)) ? Weapon.mace : Weapon.longsword;
-  final shield = mainHand.canOneHand && _chance(const Percent(33));
+  final shield = _chance(const Percent(33));
   entity.gear = Gear(
     body: Armor.leather,
     mainHand: mainHand,

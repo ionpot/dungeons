@@ -215,17 +215,21 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
   }
 
   DiceValue? get weaponDamage {
-    final weapon = gear.weaponValue;
-    if (weapon == null) return null;
+    final dice = gear.weaponValue?.dice;
+    if (dice == null) return null;
+    return DiceValue(
+      base: dice,
+      intBonuses: damageBonuses,
+      max: effects.findBonusOf(StatusEffect.maxDamage),
+    );
+  }
+
+  Bonuses<Int> get damageBonuses {
     final bonuses = Bonuses.fromMap({
       AttributeBonus.baseStrength: strength.base.half,
       AttributeBonus.bonusStrength: strength.bonus.half,
     });
-    return DiceValue(
-      base: weapon.dice,
-      intBonuses: bonuses + _allBonuses.ints(IntBonusTo.damage),
-      max: effects.findBonusOf(StatusEffect.maxDamage),
-    );
+      return bonuses + _allBonuses.ints(IntBonusTo.damage);
   }
 
   bool get canDodge => initiative.total.value > 0;

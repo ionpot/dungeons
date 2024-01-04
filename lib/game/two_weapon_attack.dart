@@ -21,7 +21,7 @@ final class TwoWeaponAttackInput extends WeaponAttackInput {
   @override
   int get stressCost => TwoWeaponAttack.stressCost;
 
-  Dice get offHandDice => actor.gear.offHandValue!.dice;
+  Dice get offHandDice => actor.gear.offHandValue!.dice!;
 
   Weapon get offHand => actor.offHandWeapon!;
 
