@@ -110,12 +110,7 @@ mixin _Gear on _Base {
     if (klass == null) {
       return false;
     }
-    if (gear.offHand != null) {
-      if (!klass!.canOffHand(gear.offHand!)) {
-        return false;
-      }
-    }
-    return this.gear.canEquip(gear);
+    return this.gear.canEquip(gear, klass!);
   }
 
   void equip(Gear gear) {
@@ -147,7 +142,8 @@ mixin _Bonuses on _Base, _Gear, _Feats {
     return gear.bonuses + feats.bonuses + effects.bonuses;
   }
 
-  bool hasBonus(Bonus bonus) => _allBonuses.has(bonus) || effects.hasBonus(bonus);
+  bool hasBonus(Bonus bonus) =>
+      _allBonuses.has(bonus) || effects.hasBonus(bonus);
 }
 
 mixin _Attributes on _Base, _Gear, _Bonuses {
@@ -225,11 +221,16 @@ mixin _Attributes on _Base, _Gear, _Bonuses {
   }
 
   Bonuses<Int> get damageBonuses {
+    Int convert(Int value) {
+      return gear.usingBow ? value.quarter as Int : value.half;
+    }
+
     final bonuses = Bonuses.fromMap({
-      AttributeBonus.baseStrength: strength.base.half,
-      AttributeBonus.bonusStrength: strength.bonus.half,
+      AttributeBonus.baseStrength: convert(strength.base),
+      AttributeBonus.bonusStrength: convert(strength.bonus),
     });
-      return bonuses + _allBonuses.ints(IntBonusTo.damage);
+
+    return bonuses + _allBonuses.ints(IntBonusTo.damage);
   }
 
   bool get canDodge => initiative.total.value > 0;

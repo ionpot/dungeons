@@ -47,6 +47,11 @@ final class UseWeapon extends CombatAction {
   WeaponAttackResult result(WeaponAttackInput input) {
     return WeaponAttackResult(input, input.roll());
   }
+
+  @override
+  GridRange? get range {
+    return actor.entity.gear.usingBow ? GridRange.any : GridRange.melee;
+  }
 }
 
 final class UseTwoWeapons extends CombatAction {

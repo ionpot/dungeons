@@ -3,7 +3,9 @@ import "package:dungeons/game/bonus.dart";
 import "package:dungeons/game/bonus_pool.dart";
 import "package:dungeons/game/bonus_value.dart";
 import "package:dungeons/game/bonuses.dart";
+import "package:dungeons/game/entity_class.dart";
 import "package:dungeons/game/weapon.dart";
+import "package:dungeons/utility/if.dart";
 import "package:dungeons/utility/monoids.dart";
 
 class Gear {
@@ -23,6 +25,8 @@ class Gear {
   Weapon? get shield => offHand?.group == WeaponGroup.shield ? offHand : null;
   int? get shieldArmor => shield?.offHand?.armor;
 
+  bool get usingBow => mainHand?.group == WeaponGroup.bow;
+
   BonusPool get bonuses {
     final pool = BonusPool.empty();
     if (body?.bonus != null) {
@@ -40,18 +44,26 @@ class Gear {
     return pool;
   }
 
-  bool canEquip(Gear gear) {
-    if (gear.mainHand != null) {
-      if (gear.mainHand!.twoHandOnly) {
-        return offHand == null;
+  bool canEquip(Gear gear, EntityClass klass) {
+    final mh = ifdef(gear.mainHand, (weapon) {
+      if (klass.canMainHand(weapon)) {
+        if (weapon.twoHandOnly) {
+          return offHand == null;
+        }
+        return true;
       }
-    }
-    if (gear.offHand != null) {
-      if (mainHand != null) {
-        return mainHand!.oneHanded;
+      return false;
+    });
+    final oh = ifdef(gear.offHand, (weapon) {
+      if (klass.canOffHand(weapon)) {
+        if (mainHand != null) {
+          return !mainHand!.twoHandOnly;
+        }
+        return true;
       }
-    }
-    return true;
+      return false;
+    });
+    return mh ?? oh ?? true;
   }
 
   bool get hasTwoWeapons => mainHand != null && offHandValue?.dice != null;

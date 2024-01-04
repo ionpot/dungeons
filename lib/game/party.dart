@@ -84,7 +84,8 @@ class Party extends Iterable<PartyMember> {
   }
 
   factory Party.forPlayer(Entity player) {
-    final playerPosition = player.klass == EntityClass.mage
+    final ranged = player.klass == EntityClass.mage || player.gear.usingBow;
+    final playerPosition = ranged
         ? const PartyPosition(PartyLine.back, PartySlot.center)
         : const PartyPosition(PartyLine.front, PartySlot.top);
     const followerPosition = PartyPosition(PartyLine.front, PartySlot.center);

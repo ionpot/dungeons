@@ -29,6 +29,11 @@ enum Weapon {
     text: "Shield",
     group: WeaponGroup.shield,
     offHand: WeaponValue(armor: 5),
+  ),
+  shortbow(
+    text: "Shortbow",
+    group: WeaponGroup.bow,
+    twoHanded: WeaponValue(dice: Dice(1, 6), initiative: 4),
   );
 
   final String text;
@@ -61,7 +66,18 @@ enum Weapon {
   static Weapon randomMainHand() => pickRandom(forMainHand);
 }
 
-enum WeaponGroup { small, medium, hybrid, large, shield }
+enum WeaponGroup {
+  small,
+  medium,
+  hybrid,
+  large,
+  shield,
+  bow;
+
+  static const melee = {small, medium, hybrid, large};
+  static const forMainHand = {small, medium, hybrid, large, bow};
+  static const forOffHand = {small, shield};
+}
 
 class WeaponValue {
   final int armor;
