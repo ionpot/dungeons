@@ -1,2 +1,10 @@
 #!/bin/sh
-flutter pub run dart_code_metrics:metrics analyze lib --disable-sunset-warning
+dcm run\
+	--analyze\
+	--metrics\
+	--analyze-widgets\
+	--unused-code\
+	--unused-files\
+	--unnecessary-nullable\
+	--exports-completeness\
+	lib
