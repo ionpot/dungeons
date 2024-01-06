@@ -1,9 +1,11 @@
 import "package:dungeons/game/chosen_action.dart";
 import "package:dungeons/game/combat_action.dart";
 import "package:dungeons/game/combat_grid.dart";
+import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity/orc.dart";
 import "package:dungeons/game/grid_range.dart";
 import "package:dungeons/game/party.dart";
+import "package:dungeons/utility/monoids.dart";
 
 class Combat {
   final CombatGrid grid;
@@ -69,11 +71,8 @@ class Combat {
 
   ChosenAction? randomAction() {
     final targets = grid.listMembersInRange(current, GridRange.melee);
-    if (targets.isEmpty) {
-      return null;
-    }
-    final target = _pickMeleeTarget(targets);
-    return ChosenAction(UseWeapon(current), target);
+    final target = _pickMeleeTarget(current, targets);
+    return target != null ? ChosenAction(UseWeapon(current), target) : null;
   }
 
   void nextTurn() {
@@ -86,12 +85,36 @@ class Combat {
   }
 }
 
-GridMember _pickMeleeTarget(Iterable<GridMember> targets) {
-  var lowestHp = targets.first;
-  for (final target in targets) {
-    if (target.entity.hp < lowestHp.entity.hp) {
-      lowestHp = target;
+GridMember? _pickMeleeTarget(GridMember current, Iterable<GridMember> targets) {
+  final lowest = targets
+      .lowestOf((entity) => Int(entity.hp))
+      .lowestOf((entity) => entity.armorValue.total)
+      .lowestOf((entity) => entity.dodge.total);
+  if (lowest.isEmpty) return null;
+  if (lowest.length == 1) return lowest.first;
+  return lowest.firstWhere(
+    (member) => member.position.isCenter,
+    orElse: () {
+      return lowest.firstWhere(
+        (member) => current.party.isOccupied(member.position),
+        orElse: () => lowest.first,
+      );
+    },
+  );
+}
+
+extension _GridMembers on Iterable<GridMember> {
+  Iterable<GridMember> lowestOf(Monoid Function(Entity) fn) {
+    if (length <= 1) return this;
+    var found = <GridMember>[first];
+    for (final member in skip(1)) {
+      final i = fn(member.entity).compareTo(fn(found.first.entity));
+      if (i == -1) {
+        found = [member];
+      } else if (i == 0) {
+        found.add(member);
+      }
     }
+    return found;
   }
-  return lowestHp;
 }

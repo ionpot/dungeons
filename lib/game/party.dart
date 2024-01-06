@@ -120,6 +120,10 @@ class Party extends Iterable<PartyMember> {
   PartyMember get highestLevelMember =>
       firstWhere((member) => member.entity.level == highestLevel);
 
+  bool isOccupied(PartyPosition position) {
+    return members.containsKey(position);
+  }
+
   bool lineOccupied(PartyLine line) {
     for (final member in this) {
       if (member.position.line == line) {
