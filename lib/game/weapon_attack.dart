@@ -23,11 +23,12 @@ class WeaponAttackInput extends ActionInput {
   Value<Percent> get hitChance => actor.hitChance(target);
   Value<Percent> get dodgeChance => target.dodge;
   DiceValue get weaponDamage => actor.weaponDamage!;
+  Dice get weaponDice => actor.gear.weaponValue!.dice!;
 
   CriticalHit get criticalHit {
     return CriticalHit(
       chance: actor.criticalHitChance,
-      dice: actor.gear.weaponValue!.dice!,
+      dice: weaponDice,
     );
   }
 
@@ -57,14 +58,14 @@ class WeaponAttackRolls {
   final ChanceRoll attack;
   final ChanceRoll dodge;
   final DiceRollValue damage;
-  final DiceRoll critical;
+  final DiceRoll? critical;
   final DiceRoll? sneakAttack;
 
   const WeaponAttackRolls({
     required this.attack,
     required this.dodge,
     required this.damage,
-    required this.critical,
+    this.critical,
     this.sneakAttack,
   });
 }
@@ -75,10 +76,10 @@ class WeaponAttackResult extends ActionResult {
   final WeaponAttackRolls rolls;
 
   WeaponAttackResult(this.input, this.rolls) {
-    if (isCriticalHit) {
+    if (isCriticalHit && rolls.critical != null) {
       rolls.damage.addBonusRoll(
         CriticalHitBonus(input.criticalHit),
-        rolls.critical,
+        rolls.critical!,
       );
     }
     if (rolls.sneakAttack != null) {

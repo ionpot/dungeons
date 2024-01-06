@@ -160,3 +160,13 @@ final class EffectBonus extends Bonus {
   @override
   String get text => effect.text;
 }
+
+final class OtherBonus extends Bonus {
+  @override
+  final String text;
+
+  const OtherBonus(this.text);
+
+  @override
+  int get hash => text.hashCode;
+}

@@ -2,6 +2,7 @@ import "package:dungeons/game/action_input.dart";
 import "package:dungeons/game/combat_grid.dart";
 import "package:dungeons/game/entity_class.dart";
 import "package:dungeons/game/grid_range.dart";
+import "package:dungeons/game/rapid_shot.dart";
 import "package:dungeons/game/smite.dart";
 import "package:dungeons/game/source.dart";
 import "package:dungeons/game/spell.dart";
@@ -144,4 +145,32 @@ final class CastSpell extends CombatAction {
 
   @override
   Source get source => spell.source;
+}
+
+final class UseRapidShot extends CombatAction {
+  const UseRapidShot(super.actor);
+
+  @override
+  bool get hasResources {
+    return actor.entity.hasStress(RapidShot.stressCost);
+  }
+
+  @override
+  bool get canUse => actor.entity.gear.usingBow;
+
+  @override
+  GridRange? get range => GridRange.any;
+
+  @override
+  RapidShotInput input(GridMember target) {
+    return RapidShotInput(
+      actor: actor.entity,
+      target: target.entity,
+    );
+  }
+
+  @override
+  RapidShotResult result(RapidShotInput input) {
+    return RapidShotResult(input, input.roll());
+  }
 }

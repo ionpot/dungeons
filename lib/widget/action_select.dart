@@ -36,6 +36,7 @@ class ActionSelect extends StatelessWidget {
       _Action("Attack", UseWeapon(actor)),
       _Action("Two-Weapon Attack", UseTwoWeapons(actor)),
       _Action("Smite Attack", UseSmite(actor)),
+      _Action("Rapid Shot", UseRapidShot(actor)),
     ];
   }
 }
