@@ -9,7 +9,7 @@ import "package:dungeons/utility/monoids.dart";
 class TwoWeaponAttack {
   static const int hitRolls = 2;
   static const Percent hitBonus = Percent(-15);
-  static const int stressCost = 1;
+  static const int stressCost = 2;
 }
 
 final class TwoWeaponAttackInput extends WeaponAttackInput {
