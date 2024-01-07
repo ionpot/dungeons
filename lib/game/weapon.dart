@@ -75,7 +75,7 @@ enum WeaponGroup {
   bow;
 
   static const melee = {small, medium, hybrid, large};
-  static const forMainHand = {small, medium, hybrid, large, bow};
+  static const forMainHand = {...melee, bow};
   static const forOffHand = {small, shield};
 }
 
