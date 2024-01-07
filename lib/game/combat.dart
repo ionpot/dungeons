@@ -13,7 +13,9 @@ class Combat {
   int _round = 1;
   int _turn = 1;
 
-  Combat(this.grid);
+  Combat(this.grid) {
+    grid.refreshAuras();
+  }
 
   factory Combat.withPlayer(Party player) {
     return Combat(
@@ -83,6 +85,7 @@ class Combat {
       ++_round;
     }
     current.entity.stopDefending();
+    grid.refreshAuras();
   }
 }
 

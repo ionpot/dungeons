@@ -1,3 +1,4 @@
+import "package:dungeons/game/aura.dart";
 import "package:dungeons/game/bonus_value.dart";
 import "package:dungeons/utility/dice.dart";
 import "package:dungeons/utility/random.dart";
@@ -34,6 +35,11 @@ enum Weapon {
     text: "Shortbow",
     group: WeaponGroup.bow,
     twoHanded: WeaponValue(dice: Dice(1, 6), initiative: 4),
+  ),
+  torch(
+    text: "Torch",
+    group: WeaponGroup.item,
+    offHand: WeaponValue(aura: Aura.torch),
   );
 
   final String text;
@@ -72,19 +78,26 @@ enum WeaponGroup {
   hybrid,
   large,
   shield,
-  bow;
+  bow,
+  item;
 
   static const melee = {small, medium, hybrid, large};
   static const forMainHand = {...melee, bow};
-  static const forOffHand = {small, shield};
+  static const forOffHand = {small, shield, item};
 }
 
 class WeaponValue {
   final int armor;
   final int initiative;
   final Dice? dice;
+  final Aura? aura;
 
-  const WeaponValue({this.armor = 0, this.initiative = 0, this.dice});
+  const WeaponValue({
+    this.armor = 0,
+    this.initiative = 0,
+    this.dice,
+    this.aura,
+  });
 
   BonusValue get bonus => IntBonus.initiative(initiative);
 }

@@ -1,4 +1,5 @@
 import "package:dungeons/game/armor.dart";
+import "package:dungeons/game/aura.dart";
 import "package:dungeons/game/bonus.dart";
 import "package:dungeons/game/bonus_pool.dart";
 import "package:dungeons/game/bonus_value.dart";
@@ -76,6 +77,8 @@ class Gear {
   }
 
   WeaponValue? get offHandValue => offHand?.offHand;
+
+  Aura? get aura => offHandValue?.aura;
 
   Gear operator +(Gear other) {
     return Gear(

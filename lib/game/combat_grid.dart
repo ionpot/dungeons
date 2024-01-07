@@ -107,6 +107,29 @@ class CombatGrid extends Iterable<GridMember> {
     }
   }
 
+  void refreshAuras() {
+    player.clearAuraEffects();
+    enemy.clearAuraEffects();
+    _addAurasFrom(player);
+    _addAurasFrom(enemy);
+  }
+
+  void _addAurasFrom(Party party) {
+    for (final PartyMember(:entity) in party.alive) {
+      final Entity(:aura) = entity;
+      if (aura != null) {
+        switch (aura.range) {
+          case PartyRange.ally:
+            party.addAuraEffect(aura);
+            break;
+          case PartyRange.enemy:
+            otherParty(party).addAuraEffect(aura);
+            break;
+        }
+      }
+    }
+  }
+
   @override
   Iterator<GridMember> get iterator {
     return membersOf(player).followedBy(membersOf(enemy)).iterator;

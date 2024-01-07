@@ -16,19 +16,20 @@ enum EntityClass {
     hpBonus: 3,
     feat: Feat.sneakAttack,
     mainHand: WeaponGroup.forMainHand,
-    offHand: {WeaponGroup.small},
+    offHand: {WeaponGroup.small, WeaponGroup.item},
   ),
   cleric(
     text: "Cleric",
     hpBonus: 3,
     mainHand: WeaponGroup.melee,
-    offHand: {WeaponGroup.shield},
+    offHand: {WeaponGroup.shield, WeaponGroup.item},
     spells: {Spell.bless, Spell.heal},
   ),
   mage(
     text: "Mage",
     hpBonus: 2,
     mainHand: WeaponGroup.melee,
+    offHand: {WeaponGroup.item},
     spells: {Spell.magicMissile, Spell.rayOfFrost, Spell.lightningBolt},
   ),
   monster(

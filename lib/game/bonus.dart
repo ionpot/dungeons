@@ -1,4 +1,5 @@
 import "package:dungeons/game/armor.dart";
+import "package:dungeons/game/aura.dart";
 import "package:dungeons/game/critical_hit.dart";
 import "package:dungeons/game/entity_attr.dart";
 import "package:dungeons/game/entity_class.dart";
@@ -159,6 +160,18 @@ final class EffectBonus extends Bonus {
 
   @override
   String get text => effect.text;
+}
+
+final class AuraBonus extends Bonus {
+  final Aura aura;
+
+  const AuraBonus(this.aura);
+
+  @override
+  int get hash => aura.hashCode;
+
+  @override
+  String get text => aura.text;
 }
 
 final class OtherBonus extends Bonus {

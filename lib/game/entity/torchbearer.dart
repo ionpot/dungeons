@@ -21,6 +21,7 @@ Entity rollTorchbearer() {
   entity.gear = Gear(
     body: Armor.leather,
     mainHand: Weapon.dagger,
+    offHand: Weapon.torch,
   );
 
   return entity..addXp(-6);

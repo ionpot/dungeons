@@ -1,6 +1,7 @@
 import "dart:math";
 
 import "package:dungeons/game/armor.dart";
+import "package:dungeons/game/aura.dart";
 import "package:dungeons/game/bonus.dart";
 import "package:dungeons/game/bonus_entry.dart";
 import "package:dungeons/game/bonus_pool.dart";
@@ -116,6 +117,8 @@ mixin _Gear on _Base {
   void equip(Gear gear) {
     this.gear += gear;
   }
+
+  Aura? get aura => gear.aura;
 }
 
 mixin _Feats on _Base {
@@ -129,6 +132,7 @@ mixin _Feats on _Base {
 
 mixin _Bonuses on _Base, _Gear, _Feats {
   final temporary = StatusEffects.empty();
+  final auraEffects = StatusEffects.empty();
 
   StatusEffects get passives {
     return StatusEffects([
@@ -136,7 +140,7 @@ mixin _Bonuses on _Base, _Gear, _Feats {
     ]);
   }
 
-  StatusEffects get effects => passives + temporary;
+  StatusEffects get effects => passives + temporary + auraEffects;
 
   BonusPool get _allBonuses {
     return gear.bonuses + feats.bonuses + effects.bonuses;

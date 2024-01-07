@@ -1,5 +1,7 @@
 import "dart:math";
 
+import "package:dungeons/game/aura.dart";
+import "package:dungeons/game/bonus.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity/torchbearer.dart";
 import "package:dungeons/game/entity_class.dart";
@@ -180,6 +182,18 @@ class Party extends Iterable<PartyMember> {
       );
     }
     return members;
+  }
+
+  void addAuraEffect(Aura aura) {
+    for (final PartyMember(:entity) in this) {
+      entity.auraEffects.add(AuraBonus(aura), aura.effect);
+    }
+  }
+
+  void clearAuraEffects() {
+    for (final PartyMember(:entity) in this) {
+      entity.auraEffects.clear();
+    }
   }
 
   void reset() {
