@@ -64,7 +64,7 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
 
   static String _label<T extends Monoid>(Bonus bonus, List<T> values) {
     final count = values.length;
-    return count > 1 ? "$bonus ($count)" : "$bonus";
+    return count > 1 ? "$bonus x$count" : "$bonus";
   }
 }
 
