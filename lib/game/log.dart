@@ -33,11 +33,6 @@ class Log {
 
   void entity(Entity e, {required bool player}) {
     final damage = e.weaponDamage;
-    final offHand = ifdef(e.gear.offHand, (offHand) {
-      final armor = e.gear.shieldArmor;
-      final dice = e.gear.offHandValue?.dice;
-      return "$offHand (${armor ?? dice})";
-    });
     ln("${e.name}, ${e.race} ${e.klass} Lv${e.level}");
     ln("${e.attributes}");
     ln("Hp ${e.totalHp}"
@@ -47,7 +42,7 @@ class Log {
     ln("Dodge ${e.dodge}, Resist ${e.resist}");
     ln("Armor: ${e.armorValue} (${e.armor})");
     ln("Weapon: ${e.weapon} ($damage) ${damage?.range}");
-    ln('Off-hand: ${offHand ?? 'None'}');
+    ln("Off-hand: ${offHandText(e)}");
   }
 
   void party(Party party, {bool player = false}) {
@@ -208,5 +203,19 @@ class Log {
       case StatusEffect.noStress:
         return "";
     }
+  }
+
+  static String offHandText(Entity e) {
+    final offHand = e.gear.offHand;
+    if (offHand == null) return "None";
+    var str = "$offHand";
+    final armor = e.gear.shieldArmor;
+    final dice = e.gear.offHandValue?.dice;
+    if (armor != null) {
+      str += " ($armor)";
+    } else if (dice != null) {
+      str += " ($dice)";
+    }
+    return str;
   }
 }

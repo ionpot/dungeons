@@ -1,5 +1,5 @@
 import "package:dungeons/game/entity.dart";
-import "package:dungeons/utility/if.dart";
+import "package:dungeons/game/log.dart";
 import "package:dungeons/widget/dice_span.dart";
 import "package:dungeons/widget/entity_span.dart";
 import "package:dungeons/widget/text_lines.dart";
@@ -100,11 +100,6 @@ class EntityStats extends StatelessWidget {
   }
 
   Widget get _offHand {
-    final weapon = ifdef(entity.gear.offHand, (offHand) {
-      final armor = entity.gear.shieldArmor;
-      final dice = entity.gear.offHandValue?.dice;
-      return "$offHand (${armor ?? dice})";
-    });
-    return Text('Off-hand: ${weapon ?? 'None'}');
+    return Text("Off-hand: ${Log.offHandText(entity)}");
   }
 }
