@@ -31,9 +31,9 @@ class StatusEffects extends Iterable<BonusEntry<StatusEffect>> {
 
   BonusPool get bonuses {
     return BonusPool([
-      for (final BonusEntry(:value) in this)
+      for (final BonusEntry(:bonus, :value) in this)
         for (final bonusValue in value.bonuses)
-          BonusEntry(EffectBonus(value), bonusValue),
+          BonusEntry(EffectBonus(bonus, value), bonusValue),
     ]);
   }
 

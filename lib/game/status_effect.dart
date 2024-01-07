@@ -23,4 +23,7 @@ enum StatusEffect {
     this.bonuses = const [],
     this.effects = const [],
   });
+
+  @override
+  String toString() => text;
 }

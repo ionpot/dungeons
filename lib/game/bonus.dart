@@ -151,15 +151,16 @@ final class SpellBonus extends Bonus {
 }
 
 final class EffectBonus extends Bonus {
+  final Bonus bonus;
   final StatusEffect effect;
 
-  const EffectBonus(this.effect);
+  const EffectBonus(this.bonus, this.effect);
 
   @override
-  int get hash => effect.hashCode;
+  int get hash => Object.hash(bonus, effect);
 
   @override
-  String get text => effect.text;
+  String get text => "$effect ($bonus)";
 }
 
 final class AuraBonus extends Bonus {
