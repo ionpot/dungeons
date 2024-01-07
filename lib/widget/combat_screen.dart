@@ -95,7 +95,11 @@ class _CombatScreenState extends State<CombatScreen> {
     return ActionSelectPhase(
       actor: _current,
       onChosen: (action) {
-        _setPhase(_targetingPhase(action));
+        if (action.range == null) {
+          _setPhase(_actionResultPhase(ChosenAction(action, action.actor)));
+        } else {
+          _setPhase(_targetingPhase(action));
+        }
       },
     );
   }

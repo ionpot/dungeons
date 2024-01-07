@@ -88,6 +88,12 @@ class WeaponAttackResult extends ActionResult {
         rolls.sneakAttack!,
       );
     }
+    if (target.isDefending) {
+      rolls.damage.intBonuses.add(
+        OtherBonus.defending,
+        Int(damageDone).half.negate,
+      );
+    }
   }
 
   bool get isCriticalHit {

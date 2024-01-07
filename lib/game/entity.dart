@@ -144,6 +144,12 @@ mixin _Bonuses on _Base, _Gear, _Feats {
 
   bool hasBonus(Bonus bonus) =>
       _allBonuses.has(bonus) || effects.hasBonus(bonus);
+
+  bool get isDefending => temporary.has(StatusEffect.defending);
+
+  void stopDefending() {
+    temporary.removeBonus(OtherBonus.defending);
+  }
 }
 
 mixin _Attributes on _Base, _Gear, _Bonuses {

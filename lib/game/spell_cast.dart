@@ -2,6 +2,7 @@ import "package:dungeons/game/action_input.dart";
 import "package:dungeons/game/bonus.dart";
 import "package:dungeons/game/bonus_entry.dart";
 import "package:dungeons/game/chance_roll.dart";
+import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/source.dart";
 import "package:dungeons/game/spell.dart";
@@ -56,15 +57,21 @@ final class SpellCastInput extends ActionInput {
   SpellCastRolls roll() {
     return SpellCastRolls(
       resist: ChanceRoll(),
-      damage: spell.damage?.roll(),
+      damage: rollDamage(),
       heal: spell.heals?.roll(),
     );
+  }
+
+  DiceRollValue? rollDamage() {
+    return spell.damage != null
+        ? DiceRollValue.from(spell.damage!.roll())
+        : null;
   }
 }
 
 class SpellCastRolls {
   final ChanceRoll resist;
-  final DiceRoll? damage;
+  final DiceRollValue? damage;
   final DiceRoll? heal;
 
   const SpellCastRolls({
@@ -81,7 +88,14 @@ final class SpellCastResult extends ActionResult {
   @override
   final StatusEffects inflicted;
 
-  const SpellCastResult(this.input, this.rolls, this.inflicted);
+  SpellCastResult(this.input, this.rolls, this.inflicted) {
+    if (target.isDefending && rolls.damage != null) {
+      rolls.damage!.intBonuses.add(
+        OtherBonus.defending,
+        Int(damageDone).half.negate,
+      );
+    }
+  }
 
   factory SpellCastResult.from(SpellCastInput input, SpellCastRolls rolls) {
     final spell = input.spell;

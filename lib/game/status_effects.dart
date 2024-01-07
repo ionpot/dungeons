@@ -9,6 +9,8 @@ class StatusEffects extends Iterable<BonusEntry<StatusEffect>> {
   const StatusEffects(this.contents);
 
   StatusEffects.empty() : this([]);
+  StatusEffects.single(Bonus bonus, StatusEffect effect)
+      : this([BonusEntry(bonus, effect)]);
 
   bool has(StatusEffect effect) {
     return findBonusOf(effect) != null;
@@ -48,6 +50,10 @@ class StatusEffects extends Iterable<BonusEntry<StatusEffect>> {
   }
 
   void clear() => contents.clear();
+
+  void removeBonus(Bonus bonus) {
+    contents.removeWhere((entry) => entry.bonus == bonus);
+  }
 
   @override
   Iterator<BonusEntry<StatusEffect>> get iterator => contents.iterator;

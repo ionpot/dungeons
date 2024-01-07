@@ -8,6 +8,7 @@ enum StatusEffect {
     effects: [StatusEffect.maxDamage],
   ),
   canFrenzy(text: "Can frenzy"),
+  defending(text: "Defending"),
   frenzy(text: "Frenzy", bonuses: [IntBonus.strength(2)]),
   maxDamage(text: "Max damage"),
   noStress(text: "No stress"),

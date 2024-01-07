@@ -169,4 +169,6 @@ final class OtherBonus extends Bonus {
 
   @override
   int get hash => text.hashCode;
+
+  static const defending = OtherBonus("Defending");
 }

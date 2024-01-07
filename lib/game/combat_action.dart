@@ -1,5 +1,6 @@
 import "package:dungeons/game/action_input.dart";
 import "package:dungeons/game/combat_grid.dart";
+import "package:dungeons/game/defend.dart";
 import "package:dungeons/game/entity_class.dart";
 import "package:dungeons/game/grid_range.dart";
 import "package:dungeons/game/rapid_shot.dart";
@@ -172,5 +173,28 @@ final class UseRapidShot extends CombatAction {
   @override
   RapidShotResult result(RapidShotInput input) {
     return RapidShotResult(input, input.roll());
+  }
+}
+
+final class Defend extends CombatAction {
+  const Defend(super.actor);
+
+  @override
+  bool get canUse => true;
+
+  @override
+  bool get hasResources => true;
+
+  @override
+  GridRange? get range => null;
+
+  @override
+  ActionInput input(GridMember target) {
+    return DefendInput(target.entity);
+  }
+
+  @override
+  ActionResult result(DefendInput input) {
+    return DefendResult(input);
   }
 }

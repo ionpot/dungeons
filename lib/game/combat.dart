@@ -82,6 +82,7 @@ class Combat {
       _played.clear();
       ++_round;
     }
+    current.entity.stopDefending();
   }
 }
 

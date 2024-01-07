@@ -1,4 +1,5 @@
 import "package:dungeons/game/action_input.dart";
+import "package:dungeons/game/defend.dart";
 import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/log.dart";
@@ -29,6 +30,9 @@ class ActionText {
     }
     if (_result is SpellCastResult) {
       return _spellCast(_result as SpellCastResult);
+    }
+    if (_result is DefendResult) {
+      return _effects;
     }
     throw ArgumentError.value(_result, "result");
   }
@@ -89,10 +93,10 @@ class ActionText {
     ];
   }
 
-  List<Widget> _spellDamage(SpellCastInput input, DiceRoll roll) {
+  List<Widget> _spellDamage(SpellCastInput input, DiceRollValue roll) {
     return [
-      _diceRoll(input.spell.text, roll),
-      ..._damageAndStatus(DiceRollValue.from(roll)),
+      _diceRoll(input.spell.text, roll.base),
+      ..._damageAndStatus(roll),
     ];
   }
 

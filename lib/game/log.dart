@@ -116,7 +116,7 @@ class Log {
       _writeDiceRoll(spell.text, healRoll);
     });
     ifdef(result.rolls.damage, (damageRoll) {
-      _writeDiceRoll(spell.text, damageRoll);
+      _writeDiceRolls(spell.text, damageRoll);
     });
     _writeResult(result, input);
   }
@@ -197,6 +197,8 @@ class Log {
     switch (effect) {
       case StatusEffect.bless:
         return "is blessed";
+      case StatusEffect.defending:
+        return "is defending";
       case StatusEffect.frenzy:
         return "is frenzied";
       case StatusEffect.slow:
