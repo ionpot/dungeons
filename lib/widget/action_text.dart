@@ -2,9 +2,9 @@ import "package:dungeons/game/action_input.dart";
 import "package:dungeons/game/defend.dart";
 import "package:dungeons/game/dice_value.dart";
 import "package:dungeons/game/entity.dart";
-import "package:dungeons/game/log.dart";
 import "package:dungeons/game/smite.dart";
 import "package:dungeons/game/spell_cast.dart";
+import "package:dungeons/game/text.dart";
 import "package:dungeons/game/two_weapon_attack.dart";
 import "package:dungeons/game/weapon_attack.dart";
 import "package:dungeons/utility/dice.dart";
@@ -120,7 +120,7 @@ class ActionText {
 
   List<Widget> get _effects {
     final effects = [
-      for (final entry in _result.effects) Log.effectText(entry.value),
+      for (final entry in _result.effects) effectText(entry.value),
     ];
     return [
       for (final text in effects)

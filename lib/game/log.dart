@@ -7,7 +7,6 @@ import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/party.dart";
 import "package:dungeons/game/smite.dart";
 import "package:dungeons/game/spell_cast.dart";
-import "package:dungeons/game/status_effect.dart";
 import "package:dungeons/game/text.dart";
 import "package:dungeons/game/two_weapon_attack.dart";
 import "package:dungeons/game/value.dart";
@@ -149,14 +148,6 @@ class Log {
     }
   }
 
-  String _chanceRoll(
-    ChanceRoll roll,
-    Value<Percent> value, {
-    bool critical = false,
-  }) {
-    return "($value) ${chanceRollText(roll, value.total, critical)}";
-  }
-
   void _writeDiceRoll(String name, DiceRoll value) {
     ln("$name roll (${value.dice.base}) $value");
   }
@@ -168,54 +159,11 @@ class Log {
     }
   }
 
-  static String chanceRollText(
+  static String _chanceRoll(
     ChanceRoll roll,
-    Percent percent,
-    bool critical,
-  ) {
-    var text = "";
-    if (critical) {
-      text = "Critical success!";
-    } else if (percent.always) {
-      text = "Auto-success";
-    } else if (percent.never) {
-      text = "Auto-fail";
-    } else if (roll.meets(percent)) {
-      text = "Success";
-    } else {
-      text = "Fail";
-    }
-    return "$roll -> $text";
-  }
-
-  static String effectText(StatusEffect effect) {
-    switch (effect) {
-      case StatusEffect.bless:
-        return "is blessed";
-      case StatusEffect.defending:
-        return "is defending";
-      case StatusEffect.frenzy:
-        return "is frenzied";
-      case StatusEffect.slow:
-        return "is slowed";
-      case StatusEffect.canFrenzy:
-      case StatusEffect.maxDamage:
-      case StatusEffect.noStress:
-        return "";
-    }
-  }
-
-  static String offHandText(Entity e) {
-    final offHand = e.gear.offHand;
-    if (offHand == null) return "None";
-    var str = "$offHand";
-    final armor = e.gear.shieldArmor;
-    final dice = e.gear.offHandValue?.dice;
-    if (armor != null) {
-      str += " ($armor)";
-    } else if (dice != null) {
-      str += " ($dice)";
-    }
-    return str;
+    Value<Percent> value, {
+    bool critical = false,
+  }) {
+    return "($value) ${chanceRollText(roll, value.total, critical)}";
   }
 }
