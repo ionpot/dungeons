@@ -1,6 +1,6 @@
-import "package:dungeons/game/bonus.dart";
-import "package:dungeons/game/bonus_entry.dart";
-import "package:dungeons/game/value.dart";
+import "package:dungeons/game/entity/bonus.dart";
+import "package:dungeons/game/entity/bonus_entry.dart";
+import "package:dungeons/game/entity/value.dart";
 import "package:dungeons/utility/monoids.dart";
 import "package:dungeons/widget/colors.dart";
 import "package:dungeons/widget/empty.dart";

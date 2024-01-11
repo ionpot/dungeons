@@ -1,7 +1,7 @@
 import "package:dungeons/game/log.dart";
+import "package:dungeons/screens.dart";
 import "package:dungeons/widget/colors.dart";
 import "package:dungeons/widget/screen_overlay.dart";
-import "package:dungeons/widget/screens.dart";
 import "package:flutter/widgets.dart";
 
 void main() {

@@ -1,4 +1,4 @@
-import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/entity/bonus.dart";
 import "package:dungeons/utility/range.dart";
 import "package:dungeons/widget/colors.dart";
 import "package:dungeons/widget/tooltip_region.dart";

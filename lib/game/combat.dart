@@ -1,10 +1,10 @@
-import "package:dungeons/game/chosen_action.dart";
-import "package:dungeons/game/combat_action.dart";
-import "package:dungeons/game/combat_grid.dart";
+import "package:dungeons/game/combat/action.dart";
+import "package:dungeons/game/combat/chosen_action.dart";
+import "package:dungeons/game/combat/grid.dart";
+import "package:dungeons/game/entities/orc.dart";
 import "package:dungeons/game/entity.dart";
-import "package:dungeons/game/entity/orc.dart";
-import "package:dungeons/game/grid_range.dart";
-import "package:dungeons/game/party.dart";
+import "package:dungeons/game/entity/grid_range.dart";
+import "package:dungeons/game/entity/party.dart";
 import "package:dungeons/utility/monoids.dart";
 
 class Combat {

@@ -1,7 +1,7 @@
-import "package:dungeons/game/chance_roll.dart";
 import "package:dungeons/game/combat.dart";
+import "package:dungeons/game/combat/chance_roll.dart";
 import "package:dungeons/game/entity.dart";
-import "package:dungeons/game/status_effect.dart";
+import "package:dungeons/game/entity/status_effect.dart";
 import "package:dungeons/utility/monoids.dart";
 
 String combatTurnTitle(Combat combat) {

@@ -1,6 +1,6 @@
-import "package:dungeons/game/chance_roll.dart";
+import "package:dungeons/game/combat/chance_roll.dart";
+import "package:dungeons/game/entity/value.dart";
 import "package:dungeons/game/text.dart";
-import "package:dungeons/game/value.dart";
 import "package:dungeons/utility/monoids.dart";
 import "package:dungeons/widget/value_span.dart";
 import "package:flutter/widgets.dart";

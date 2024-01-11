@@ -1,5 +1,5 @@
-import "package:dungeons/game/bonus.dart";
 import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/entity/bonus.dart";
 import "package:dungeons/game/source.dart";
 import "package:dungeons/utility/monoids.dart";
 import "package:flutter/widgets.dart";

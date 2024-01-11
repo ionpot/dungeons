@@ -1,4 +1,4 @@
-import "package:dungeons/game/bonus.dart";
+import "package:dungeons/game/entity/bonus.dart";
 import "package:dungeons/widget/colors.dart";
 
 int compareBonus(Bonus a, Bonus b) {

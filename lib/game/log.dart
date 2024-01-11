@@ -1,16 +1,16 @@
 import "dart:io";
 
-import "package:dungeons/game/action_input.dart";
-import "package:dungeons/game/chance_roll.dart";
-import "package:dungeons/game/dice_value.dart";
+import "package:dungeons/game/combat/action_input.dart";
+import "package:dungeons/game/combat/chance_roll.dart";
+import "package:dungeons/game/combat/smite.dart";
+import "package:dungeons/game/combat/spell_cast.dart";
+import "package:dungeons/game/combat/two_weapon_attack.dart";
+import "package:dungeons/game/combat/weapon_attack.dart";
 import "package:dungeons/game/entity.dart";
-import "package:dungeons/game/party.dart";
-import "package:dungeons/game/smite.dart";
-import "package:dungeons/game/spell_cast.dart";
+import "package:dungeons/game/entity/dice_value.dart";
+import "package:dungeons/game/entity/party.dart";
+import "package:dungeons/game/entity/value.dart";
 import "package:dungeons/game/text.dart";
-import "package:dungeons/game/two_weapon_attack.dart";
-import "package:dungeons/game/value.dart";
-import "package:dungeons/game/weapon_attack.dart";
 import "package:dungeons/utility/dice.dart";
 import "package:dungeons/utility/if.dart";
 import "package:dungeons/utility/monoids.dart";
