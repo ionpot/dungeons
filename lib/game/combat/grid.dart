@@ -1,6 +1,6 @@
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity/grid_range.dart";
-import "package:dungeons/game/entity/party.dart";
+import "package:dungeons/game/combat/party.dart";
 
 class GridMember extends PartyMember {
   final Party party;

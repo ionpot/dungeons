@@ -1,11 +1,11 @@
 import "dart:math";
 
 import "package:dungeons/game/combat/chance_roll.dart";
+import "package:dungeons/game/combat/party.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity/armor.dart";
 import "package:dungeons/game/entity/class.dart";
 import "package:dungeons/game/entity/gear.dart";
-import "package:dungeons/game/entity/party.dart";
 import "package:dungeons/game/entity/race.dart";
 import "package:dungeons/game/entity/weapon.dart";
 import "package:dungeons/utility/dice.dart";

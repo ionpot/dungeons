@@ -1,4 +1,4 @@
-import "package:dungeons/game/entity/party.dart";
+import "package:dungeons/game/combat/party.dart";
 import "package:flutter/widgets.dart";
 
 const double topY = 30;

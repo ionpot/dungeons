@@ -1,7 +1,7 @@
 import "package:dungeons/character_screen.dart";
 import "package:dungeons/combat_screen.dart";
 import "package:dungeons/game/combat.dart";
-import "package:dungeons/game/entity/party.dart";
+import "package:dungeons/game/combat/party.dart";
 import "package:dungeons/game/log.dart";
 import "package:dungeons/utility/value_callback.dart";
 import "package:flutter/widgets.dart";
