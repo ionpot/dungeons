@@ -90,9 +90,9 @@ class CombatGrid extends Iterable<GridMember> {
       case SlotRange.any:
         switch (range.party) {
           case PartyRange.ally:
-            return party.aliveMembers;
+            return party.alive;
           case PartyRange.enemy:
-            return otherParty(party).aliveMembers;
+            return otherParty(party).alive;
         }
     }
   }

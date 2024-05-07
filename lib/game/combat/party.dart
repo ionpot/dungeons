@@ -77,7 +77,6 @@ class Party extends Iterable<PartyMember> {
   final Map<PartyPosition, Entity> members;
 
   const Party(this.members);
-  Party.copy(Party party) : this(Map.of(party.members));
 
   factory Party.single(Entity entity) {
     return Party({
@@ -97,15 +96,12 @@ class Party extends Iterable<PartyMember> {
     });
   }
 
-  Party get alive =>
-      Party.copy(this)..members.removeWhere((_, member) => member.dead);
-
-  Iterable<PartyMember> get aliveMembers {
+  Iterable<PartyMember> get alive {
     return where((member) => member.entity.alive);
   }
 
-  bool get isAlive => aliveMembers.isNotEmpty;
-  bool get isDead => aliveMembers.isEmpty;
+  bool get isAlive => alive.isNotEmpty;
+  bool get isDead => alive.isEmpty;
 
   PartyMember? findMember(Entity entity) {
     for (final member in this) {
