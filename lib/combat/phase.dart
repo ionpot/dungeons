@@ -93,7 +93,7 @@ final class TargetingPhase extends CombatPhase {
   }
 
   PortraitTargeting? _targeting(GridMember member) {
-    if (combat.canTarget(member, action)) {
+    if (action.canTarget(member, combat.grid)) {
       return combat.isAlly(member)
           ? PortraitTargeting.friendly
           : PortraitTargeting.enemy;

@@ -19,7 +19,9 @@ sealed class CombatAction {
   bool get canUse;
   bool get hasResources;
 
-  bool canTarget(GridMember target) => true;
+  bool canTarget(GridMember target, CombatGrid grid) {
+    return grid.canTarget(actor: actor, target: target, range: range);
+  }
 
   ActionInput input(GridMember target);
   ActionResult result(covariant ActionInput input);
@@ -123,8 +125,8 @@ final class CastSpell extends CombatAction {
   bool get hasResources => actor.entity.canCast(spell);
 
   @override
-  bool canTarget(GridMember target) {
-    return input(target).canEffect;
+  bool canTarget(GridMember target, CombatGrid grid) {
+    return super.canTarget(target, grid) && input(target).canEffect;
   }
 
   @override

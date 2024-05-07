@@ -132,7 +132,7 @@ class _CombatScreenState extends State<CombatScreen> {
     setState(() {
       _combat.nextTurn();
     });
-    if (_combat.newRound) {
+    if (_combat.isNewRound) {
       _log
         ..ln()
         ..newRound(_combat.round);
