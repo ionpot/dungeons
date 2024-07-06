@@ -72,7 +72,7 @@ enum Spell {
   });
 
   bool get friendly {
-    return range == null ||  range?.party == PartyRange.ally;
+    return range == null || range?.party == PartyRange.ally;
   }
 
   @override

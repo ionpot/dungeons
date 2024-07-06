@@ -47,8 +47,7 @@ final class PercentBonus implements BonusValue<PercentBonusTo, Percent> {
   const PercentBonus.toHit(Percent value) : this(PercentBonusTo.toHit, value);
   const PercentBonus.criticalHit(Percent value)
       : this(PercentBonusTo.criticalHit, value);
-  const PercentBonus.resist(Percent value)
-      : this(PercentBonusTo.resist, value);
+  const PercentBonus.resist(Percent value) : this(PercentBonusTo.resist, value);
 }
 
 enum MultiplierBonusTo { dodge }

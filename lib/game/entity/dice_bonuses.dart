@@ -6,7 +6,7 @@ import "package:dungeons/utility/range.dart";
 class DiceBonuses extends BonusMap<Dice> {
   const DiceBonuses(super.contents);
 
-  DiceBonuses.empty(): super({});
+  DiceBonuses.empty() : super({});
 
   int get maxTotal => Dice.maxTotal(contents.values);
   Range get range => Dice.totalRange(contents.values);
