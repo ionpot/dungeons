@@ -5,6 +5,5 @@ dcm run\
 	--analyze-widgets\
 	--unused-code\
 	--unused-files\
-	--unnecessary-nullable\
 	--exports-completeness\
 	lib
