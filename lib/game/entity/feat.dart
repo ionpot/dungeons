@@ -85,7 +85,7 @@ class FeatSlot {
   FeatValue get value => feat.valueFor(tier);
 
   @override
-  bool operator ==(dynamic other) => hashCode == other.hashCode;
+  bool operator ==(Object other) => hashCode == other.hashCode;
 
   @override
   int get hashCode => Object.hash(feat, tier);
