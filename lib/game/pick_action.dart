@@ -11,7 +11,6 @@ ChosenAction? pickAction(GridMember member, CombatGrid grid) {
   return target != null ? ChosenAction(UseWeapon(member), target) : null;
 }
 
-
 GridMember? _pickMeleeTarget(GridMember current, Iterable<GridMember> targets) {
   final lowest = targets
       .lowestOf((entity) => Int(entity.hp))
