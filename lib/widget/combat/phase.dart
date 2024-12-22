@@ -1,7 +1,3 @@
-import "package:dungeons/combat/action_select.dart";
-import "package:dungeons/combat/action_text.dart";
-import "package:dungeons/combat/attribute_select.dart";
-import "package:dungeons/combat/entity_portrait.dart";
 import "package:dungeons/game/combat.dart";
 import "package:dungeons/game/combat/action.dart";
 import "package:dungeons/game/combat/action_input.dart";
@@ -12,6 +8,10 @@ import "package:dungeons/game/entity/attributes.dart";
 import "package:dungeons/game/text.dart";
 import "package:dungeons/utility/value_callback.dart";
 import "package:dungeons/widget/button.dart";
+import "package:dungeons/widget/combat/action_select.dart";
+import "package:dungeons/widget/combat/action_text.dart";
+import "package:dungeons/widget/combat/attribute_select.dart";
+import "package:dungeons/widget/combat/entity_portrait.dart";
 import "package:dungeons/widget/text_lines.dart";
 import "package:dungeons/widget/titled_text_lines.dart";
 import "package:flutter/widgets.dart";

@@ -1,7 +1,3 @@
-import "package:dungeons/combat/entity_portrait.dart";
-import "package:dungeons/combat/entity_stats.dart";
-import "package:dungeons/combat/layout.dart";
-import "package:dungeons/combat/phase.dart";
 import "package:dungeons/game/combat.dart";
 import "package:dungeons/game/combat/action.dart";
 import "package:dungeons/game/combat/action_input.dart";
@@ -9,6 +5,10 @@ import "package:dungeons/game/combat/chosen_action.dart";
 import "package:dungeons/game/combat/grid.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/log.dart";
+import "package:dungeons/widget/combat/entity_portrait.dart";
+import "package:dungeons/widget/combat/entity_stats.dart";
+import "package:dungeons/widget/combat/layout.dart";
+import "package:dungeons/widget/combat/phase.dart";
 import "package:dungeons/widget/top_left.dart";
 import "package:flutter/widgets.dart";
 

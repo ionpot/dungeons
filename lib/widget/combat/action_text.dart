@@ -1,4 +1,3 @@
-import "package:dungeons/combat/entity_span.dart";
 import "package:dungeons/game/combat/action_input.dart";
 import "package:dungeons/game/combat/defend.dart";
 import "package:dungeons/game/combat/smite.dart";
@@ -11,6 +10,7 @@ import "package:dungeons/game/text.dart";
 import "package:dungeons/utility/dice.dart";
 import "package:dungeons/widget/chance_roll.dart";
 import "package:dungeons/widget/colors.dart";
+import "package:dungeons/widget/combat/entity_span.dart";
 import "package:dungeons/widget/dice_span.dart";
 import "package:flutter/widgets.dart";
 
