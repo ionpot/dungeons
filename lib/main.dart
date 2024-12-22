@@ -21,12 +21,13 @@ class TheAppState extends State<TheApp> {
   @override
   void initState() {
     super.initState();
-    _screen = Screens(
+    final screens = Screens(
       log: Log.toFile("dungeons.log", title: "Dungeons"),
       onNext: (Widget screen) {
         setState(() => _screen = screen);
       },
-    ).first;
+    );
+    _screen = screens.first;
   }
 
   @override
