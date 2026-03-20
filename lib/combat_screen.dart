@@ -151,7 +151,8 @@ class _CombatScreenState extends State<CombatScreen> {
   }
 
   CombatPhase _actionResultPhase(ChosenAction chosen) {
-    final result = chosen.toResult()..apply();
+    final result = chosen.toResult();
+    _combat.apply(result);
     _log
       ..ln()
       ..actionResult(result);

@@ -1,3 +1,4 @@
+import "package:dungeons/game/combat/action_input.dart";
 import "package:dungeons/game/combat/chosen_action.dart";
 import "package:dungeons/game/combat/grid.dart";
 import "package:dungeons/game/combat/party.dart";
@@ -40,6 +41,23 @@ class Combat {
   bool isPlayer(GridMember member) => grid.isPlayer(member);
 
   ChosenAction? randomAction() => pickAction(current, grid);
+
+  void apply(ActionResult result) {
+    if (result.didHit) {
+      result.target
+        ..takeDamage(result.damageDone)
+        ..heal(result.healingDone)
+        ..temporary.addAll(result.effects);
+    }
+    final ActionInput(:reserveStress, :stressCost) = result.input;
+    if (!result.actor.ignoreStress) {
+      if (reserveStress != null) {
+        result.actor.reserveStressFor(reserveStress, stressCost, result.target);
+      } else {
+        result.actor.addStress(stressCost);
+      }
+    }
+  }
 
   void nextTurn() {
     state.nextTurn();

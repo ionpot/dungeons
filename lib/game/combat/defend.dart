@@ -27,7 +27,4 @@ class DefendResult extends ActionResult {
       StatusEffect.defending,
     );
   }
-
-  @override
-  void apply() => actor.temporary.addAll(inflicted);
 }
