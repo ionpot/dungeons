@@ -31,10 +31,6 @@ class BonusPool {
     }
   }
 
-  void clear() {
-    _contents.clear();
-  }
-
   Bonuses<Int> ints(IntBonusTo type) {
     return _find<IntBonusTo, Int>(type);
   }

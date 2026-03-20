@@ -22,7 +22,6 @@ import "package:dungeons/game/entity/status_effects.dart";
 import "package:dungeons/game/entity/value.dart";
 import "package:dungeons/game/entity/weapon.dart";
 import "package:dungeons/utility/monoids.dart";
-import "package:dungeons/utility/random.dart";
 
 class Entity extends _Base
     with
@@ -100,7 +99,6 @@ mixin _Gear on _Base {
 
   Weapon? get weapon => gear.mainHand;
   Weapon? get offHandWeapon => gear.offHand;
-  Weapon? get shield => gear.shield;
   Armor? get armor => gear.body;
 
   Value<Int> get armorValue {
@@ -260,7 +258,6 @@ mixin _Health on _Base, _Attributes, _Levels {
   }
 
   int get hp => totalHp.total.value - _damageTaken;
-  bool get injured => _damageTaken > 0;
   bool get alive => hp > 0;
   bool get dead => !alive;
 
@@ -379,8 +376,4 @@ mixin _Spells on _Base, _Stress {
   SpellBook get spellbook => SpellBook(klass?.spells ?? {});
 
   Set<Spell> get knownSpells => spellbook.spellsForLevel(level);
-
-  Spell? maybeRandomSpell() {
-    return pickRandomMaybe(knownSpells);
-  }
 }

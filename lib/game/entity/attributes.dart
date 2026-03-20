@@ -29,8 +29,6 @@ class EntityAttributes {
     this.intellect = 0,
   });
 
-  factory EntityAttributes.random() => EntityAttributes()..roll();
-
   EntityAttributes operator +(EntityAttributes? a) {
     if (a == null) return this;
     return EntityAttributes(
@@ -39,8 +37,6 @@ class EntityAttributes {
       intellect: intellect + a.intellect,
     );
   }
-
-  bool isEmpty() => (strength == 0) && (agility == 0) && (intellect == 0);
 
   int ofId(EntityAttributeId id) {
     switch (id) {

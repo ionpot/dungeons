@@ -27,8 +27,6 @@ class CombatState {
   List<GridMember> get notPlayed => turnOrder..removeWhere(played.contains);
 
   GridMember get current => notPlayed.first;
-  GridMember get next => notPlayed.length > 1 ? notPlayed[1] : turnOrder.first;
-
   void nextTurn() {
     turn += 1;
     played.add(notPlayed.first);

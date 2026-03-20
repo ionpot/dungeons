@@ -21,10 +21,6 @@ class DiceValue {
   })  : diceBonuses = diceBonuses ?? DiceBonuses.empty(),
         intBonuses = intBonuses ?? Bonuses.empty();
 
-  void addDice(Bonus bonus, Dice dice) {
-    diceBonuses.add(bonus, dice);
-  }
-
   Range get range {
     return base.range + diceBonuses.range + intBonuses.total.value;
   }
@@ -42,7 +38,6 @@ class DiceValue {
 
   Value<Int> get intBonusValue => Value.from(Int(base.bonus), intBonuses);
   String get intBonusString => intBonusValue.total.signed;
-  int get maxTotal => base.max + diceBonuses.maxTotal + intBonuses.total.value;
   String get sideText => base.sideText;
 
   DiceRollValue roll() {

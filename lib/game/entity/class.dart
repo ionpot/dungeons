@@ -1,7 +1,6 @@
 import "package:dungeons/game/entity/feat.dart";
 import "package:dungeons/game/entity/spell.dart";
 import "package:dungeons/game/entity/weapon.dart";
-import "package:dungeons/utility/random.dart";
 
 enum EntityClass {
   warrior(
@@ -61,8 +60,6 @@ enum EntityClass {
     this.feat,
     this.spells,
   });
-
-  factory EntityClass.random() => pickRandom(EntityClass.values);
 
   bool canMainHand(Weapon weapon) {
     return mainHand.contains(weapon.group);

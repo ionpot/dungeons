@@ -20,10 +20,6 @@ sealed class Monoid implements Comparable<Monoid> {
 
   int compare(covariant Monoid other);
 
-  Monoid greaterOf(Monoid other) {
-    return compareTo(other) == 1 ? this : other;
-  }
-
   int get sign;
 
   String get signed;
@@ -103,8 +99,6 @@ final class Percent extends Monoid {
 
   bool get always => value >= 100;
   bool get never => value <= 0;
-  bool get maybe => !always && !never;
-
   bool success(int input) => input <= value;
 
   Percent invert() => Percent(100 - value);

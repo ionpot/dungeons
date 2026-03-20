@@ -11,8 +11,6 @@ class GridMember extends PartyMember {
           member.entity,
         );
 
-  bool isAllyOf(GridMember member) => party == member.party;
-
   @override
   int get hashCode => Object.hash(party, super.hashCode);
 

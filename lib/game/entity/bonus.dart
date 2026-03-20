@@ -43,8 +43,6 @@ final class AttributeBonus extends Bonus {
       AttributeBonus(EntityAttributeId.agility, base: true);
   static const bonusAgility =
       AttributeBonus(EntityAttributeId.agility, base: false);
-  static const baseIntellect =
-      AttributeBonus(EntityAttributeId.intellect, base: true);
   static const bonusIntellect =
       AttributeBonus(EntityAttributeId.intellect, base: false);
 

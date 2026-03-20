@@ -28,8 +28,6 @@ class EntityFeats extends Iterable<FeatSlot> {
     ];
   }
 
-  bool has(Feat feat) => contents.containsKey(feat);
-
   FeatSlot? find(Feat feat) {
     return ifdef(contents[feat], (tier) => FeatSlot(feat, tier));
   }

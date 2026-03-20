@@ -30,7 +30,6 @@ class Combat {
   int get round => state.round;
   int get turn => state.turn;
 
-  bool get isFirstTurn => turn == 1;
   bool get isNewRound => state.played.isEmpty;
   bool get isPlayerTurn => grid.isPlayer(current);
 

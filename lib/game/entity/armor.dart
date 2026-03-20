@@ -1,6 +1,5 @@
 import "package:dungeons/game/entity/bonus_value.dart";
 import "package:dungeons/utility/monoids.dart";
-import "package:dungeons/utility/random.dart";
 
 enum Armor {
   leather(text: "Leather", value: 10, dodge: Multiplier(0.5)),
@@ -17,8 +16,6 @@ enum Armor {
     this.initiative,
     this.dodge,
   });
-
-  factory Armor.random() => pickRandom(Armor.values);
 
   BonusValue? get bonus {
     if (dodge != null) {

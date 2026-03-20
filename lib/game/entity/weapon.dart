@@ -1,7 +1,6 @@
 import "package:dungeons/game/entity/aura.dart";
 import "package:dungeons/game/entity/bonus_value.dart";
 import "package:dungeons/utility/dice.dart";
-import "package:dungeons/utility/random.dart";
 
 enum Weapon {
   dagger(
@@ -56,7 +55,6 @@ enum Weapon {
     this.twoHanded,
   });
 
-  bool get oneHanded => mainHand != null;
   bool get twoHandOnly => twoHanded != null && (mainHand ?? offHand) == null;
   bool get offHandOnly => offHand != null && (mainHand ?? twoHanded) == null;
 
@@ -68,8 +66,6 @@ enum Weapon {
   static Iterable<Weapon> forOffHand =
       values.where((weapon) => weapon.offHand != null);
   static BonusValue offHandPenalty = const IntBonus.initiative(-2);
-
-  static Weapon randomMainHand() => pickRandom(forMainHand);
 }
 
 enum WeaponGroup {
