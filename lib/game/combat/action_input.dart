@@ -39,21 +39,4 @@ abstract class ActionResult {
     }
     return inflicted + extra;
   }
-
-  void apply() {
-    if (didHit) {
-      target
-        ..takeDamage(damageDone)
-        ..heal(healingDone)
-        ..temporary.addAll(effects);
-    }
-    final ActionInput(:reserveStress, :stressCost) = input;
-    if (!actor.ignoreStress) {
-      if (reserveStress != null) {
-        actor.reserveStressFor(reserveStress, stressCost, target);
-      } else {
-        actor.addStress(stressCost);
-      }
-    }
-  }
 }
