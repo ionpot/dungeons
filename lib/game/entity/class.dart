@@ -62,8 +62,6 @@ enum EntityClass {
     this.spells,
   });
 
-  factory EntityClass.random() => pickRandom(EntityClass.values);
-
   bool canMainHand(Weapon weapon) {
     return mainHand.contains(weapon.group);
   }

@@ -6,13 +6,6 @@ class BonusMap<T extends Object> extends Iterable<BonusEntry<T>> {
 
   const BonusMap(this.contents);
 
-  void add(Bonus bonus, T value) {
-    contents[bonus] = value;
-  }
-
-  void addAll(BonusMap<T> map) => contents.addAll(map.contents);
-  void clear() => contents.clear();
-
   @override
   Iterator<BonusEntry<T>> get iterator {
     return BonusEntryIterator<T>(contents.entries.iterator);

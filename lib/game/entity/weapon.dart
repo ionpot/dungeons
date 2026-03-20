@@ -56,7 +56,6 @@ enum Weapon {
     this.twoHanded,
   });
 
-  bool get oneHanded => mainHand != null;
   bool get twoHandOnly => twoHanded != null && (mainHand ?? offHand) == null;
   bool get offHandOnly => offHand != null && (mainHand ?? twoHanded) == null;
 
@@ -68,8 +67,6 @@ enum Weapon {
   static Iterable<Weapon> forOffHand =
       values.where((weapon) => weapon.offHand != null);
   static BonusValue offHandPenalty = const IntBonus.initiative(-2);
-
-  static Weapon randomMainHand() => pickRandom(forMainHand);
 }
 
 enum WeaponGroup {

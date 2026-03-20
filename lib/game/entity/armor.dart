@@ -18,8 +18,6 @@ enum Armor {
     this.dodge,
   });
 
-  factory Armor.random() => pickRandom(Armor.values);
-
   BonusValue? get bonus {
     if (dodge != null) {
       return MultiplierBonus.dodge(dodge!);

@@ -12,13 +12,6 @@ class TitledTextLines extends StatelessWidget {
     required this.lines,
   });
 
-  factory TitledTextLines.oneLine({
-    required String title,
-    required Widget line,
-  }) {
-    return TitledTextLines(title: title, lines: TextLines([line]));
-  }
-
   factory TitledTextLines.plain({
     required String title,
     required List<String> lines,

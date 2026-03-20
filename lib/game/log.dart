@@ -25,11 +25,6 @@ class Log {
 
   void ln([Object? o = ""]) => file.writeln(o);
 
-  Future<void> end() async {
-    await file.flush();
-    await file.close();
-  }
-
   void entity(Entity e, {required bool player}) {
     final damage = e.weaponDamage;
     ln("${e.name}, ${e.race} ${e.klass} Lv${e.level}");
@@ -132,8 +127,7 @@ class Log {
       return;
     }
     if (result.damageDone != 0) {
-      ln("$target takes ${result.damageDone}"
-          " ${params.source.name} damage.");
+      ln("$target takes ${result.damageDone}" " ${params.source.name} damage.");
       if (target.dead) {
         ln("$target dies.");
       }

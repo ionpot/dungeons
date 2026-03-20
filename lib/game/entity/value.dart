@@ -8,13 +8,6 @@ class Value<T extends Monoid> implements Comparable<Value<T>> {
   final Bonuses<Multiplier> multipliers;
   final List<BonusEntry<T>> reserved;
 
-  const Value(
-    this.base,
-    this.bonuses, {
-    required this.multipliers,
-    required this.reserved,
-  });
-
   Value.from(
     this.base,
     this.bonuses, {

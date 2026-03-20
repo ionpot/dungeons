@@ -23,13 +23,9 @@ final class IntBonus implements BonusValue<IntBonusTo, Int> {
   const IntBonus(this.target, this.amount);
 
   const IntBonus.strength(int value) : this(IntBonusTo.strength, value);
-  const IntBonus.agility(int value) : this(IntBonusTo.agility, value);
-  const IntBonus.intellect(int value) : this(IntBonusTo.intellect, value);
   const IntBonus.armor(int value) : this(IntBonusTo.armor, value);
   const IntBonus.damage(int value) : this(IntBonusTo.damage, value);
   const IntBonus.initiative(int value) : this(IntBonusTo.initiative, value);
-  const IntBonus.stressCap(int value) : this(IntBonusTo.stressCap, value);
-
   @override
   Int get value => Int(amount);
 }

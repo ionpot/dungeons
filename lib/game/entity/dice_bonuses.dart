@@ -4,11 +4,8 @@ import "package:dungeons/utility/dice.dart";
 import "package:dungeons/utility/range.dart";
 
 class DiceBonuses extends BonusMap<Dice> {
-  const DiceBonuses(super.contents);
-
   DiceBonuses.empty() : super({});
 
-  int get maxTotal => Dice.maxTotal(contents.values);
   Range get range => Dice.totalRange(contents.values);
 
   Map<Bonus, Dice> findWithSides(int sides) {

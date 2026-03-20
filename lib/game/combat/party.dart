@@ -103,20 +103,8 @@ class Party extends Iterable<PartyMember> {
   bool get isAlive => alive.isNotEmpty;
   bool get isDead => alive.isEmpty;
 
-  PartyMember? findMember(Entity entity) {
-    for (final member in this) {
-      if (member.entity == entity) {
-        return member;
-      }
-    }
-    return null;
-  }
-
   int get highestLevel =>
       fold(0, (highest, member) => max(highest, member.entity.level));
-
-  PartyMember get highestLevelMember =>
-      firstWhere((member) => member.entity.level == highestLevel);
 
   bool isOccupied(PartyPosition position) {
     return members.containsKey(position);

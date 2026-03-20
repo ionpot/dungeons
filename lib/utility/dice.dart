@@ -17,8 +17,6 @@ class Dice implements Comparable<Dice> {
 
   Range get range => Range(min, max);
 
-  Dice addBonus(int value) => Dice(count, sides, bonus: bonus + value);
-
   DiceRoll roll() {
     final random = Random();
     final rolls = List.generate(
@@ -41,10 +39,6 @@ class Dice implements Comparable<Dice> {
 
   @override
   String toString() => "$count$sideText${bonusText(bonus)}";
-
-  static int maxTotal(Iterable<Dice> list) {
-    return list.fold(0, (sum, dice) => sum + dice.max);
-  }
 
   static Range totalRange(Iterable<Dice> list) {
     return list.fold(const Range(0, 0), (range, dice) => range + dice.range);
