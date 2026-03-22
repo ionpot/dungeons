@@ -48,14 +48,23 @@ class Combat {
         ..heal(result.healingDone)
         ..temporary.addAll(result.effects);
     }
-    final ActionInput(:reserveStress, :stressCost) = result.input;
+    final ActionInput(:stressCost) = result.input;
     if (!result.actor.ignoreStress) {
-      if (reserveStress != null) {
-        result.actor.reserveStressFor(reserveStress, stressCost, result.target);
+      final added = result.addedReservations;
+      if (added.isNotEmpty) {
+        for (final r in added) {
+          result.actor.addReservedStress(r.bonus, stressCost);
+        }
+        state.reservations.addAll(added);
       } else {
         result.actor.addStress(stressCost);
       }
     }
+    final removed = result.removedReservations(state.reservations);
+    for (final r in removed) {
+      r.actor.removeReservedStress(r.bonus);
+    }
+    state.reservations.removeWhere(removed.contains);
   }
 
   void nextTurn() {

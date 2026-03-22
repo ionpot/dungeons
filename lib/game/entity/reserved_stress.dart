@@ -1,32 +1,22 @@
-import "package:dungeons/game/entity.dart";
+import "package:dungeons/game/entity/bonus.dart";
 import "package:dungeons/game/entity/bonus_entry.dart";
 import "package:dungeons/utility/monoids.dart";
 
 class ReservedStress {
-  final List<_Entry> _contents;
+  final List<BonusEntry<Int>> _contents;
 
   const ReservedStress(this._contents);
   ReservedStress.empty() : this([]);
 
-  Iterable<BonusEntry<Int>> get list {
-    return [
-      for (final item in _contents)
-        if (item.active) item.entry,
-    ];
+  Iterable<BonusEntry<Int>> get list => _contents;
+
+  void add(BonusEntry<Int> entry) {
+    _contents.add(entry);
   }
 
-  void add(BonusEntry<Int> entry, Entity target) {
-    _contents.add(_Entry(entry, target));
+  void remove(Bonus source) {
+    _contents.removeWhere((entry) => entry.bonus == source);
   }
 
   void clear() => _contents.clear();
-}
-
-class _Entry {
-  final BonusEntry<Int> entry;
-  final Entity target;
-
-  const _Entry(this.entry, this.target);
-
-  bool get active => target.alive;
 }

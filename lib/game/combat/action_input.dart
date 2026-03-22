@@ -1,3 +1,4 @@
+import "package:dungeons/game/combat/reservation.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity/bonus.dart";
 import "package:dungeons/game/entity/status_effect.dart";
@@ -38,5 +39,17 @@ abstract class ActionResult {
       }
     }
     return inflicted + extra;
+  }
+
+  Iterable<Reservation> get addedReservations {
+    final ActionInput(:reserveStress) = input;
+    if (reserveStress != null && !actor.ignoreStress) {
+      return [Reservation(actor, target, reserveStress)];
+    }
+    return const [];
+  }
+
+  Iterable<Reservation> removedReservations(Iterable<Reservation> current) {
+    return current.where((r) => r.target.dead);
   }
 }

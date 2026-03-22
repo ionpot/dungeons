@@ -1,8 +1,10 @@
 import "package:dungeons/game/combat/grid.dart";
+import "package:dungeons/game/combat/reservation.dart";
 
 class CombatState {
   final CombatGrid grid;
   final Set<GridMember> played = {};
+  final List<Reservation> reservations = [];
   int round = 1;
   int turn = 1;
 

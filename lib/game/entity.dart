@@ -313,8 +313,12 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
     _reserved.clear();
   }
 
-  void reserveStressFor(Bonus bonus, int amount, Entity target) {
-    _reserved.add(BonusEntry(bonus, Int(amount)), target);
+  void addReservedStress(Bonus bonus, int amount) {
+    _reserved.add(BonusEntry(bonus, Int(amount)));
+  }
+
+  void removeReservedStress(Bonus bonus) {
+    _reserved.remove(bonus);
   }
 }
 
