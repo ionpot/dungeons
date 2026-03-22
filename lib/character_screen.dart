@@ -13,7 +13,7 @@ import "package:dungeons/widget/radio_group.dart";
 import "package:dungeons/widget/spaced.dart";
 import "package:dungeons/widget/text.dart";
 import "package:dungeons/widget/value_span.dart";
-import "package:flutter/widgets.dart";
+import "package:flutter/widgets.dart" hide RadioGroup;
 
 class CharacterScreen extends StatefulWidget {
   final ValueChanged<Entity> onDone;
