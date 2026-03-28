@@ -25,15 +25,8 @@ class BonusEntryIterator<T extends Object> implements Iterator<BonusEntry<T>> {
 
 extension BonusEntryIterable<T extends Monoid> on Iterable<BonusEntry<T>> {
   T get total => map((e) => e.value).total;
-}
 
-extension BonusEntryList<T extends Monoid> on List<BonusEntry<T>> {
-  List<BonusEntry<T>> get clean {
-    return [
-      for (final entry in this)
-        if (entry.value.hasValue) entry,
-    ];
-  }
+  Iterable<BonusEntry<T>> get clean => where((entry) => entry.value.hasValue);
 
   Map<Bonus, List<T>> get group {
     final map = <Bonus, List<T>>{};
@@ -43,16 +36,9 @@ extension BonusEntryList<T extends Monoid> on List<BonusEntry<T>> {
     }
     return map;
   }
-
-  void removeWhereBonus(bool Function(Bonus) fn) {
-    removeWhere((entry) => fn(entry.bonus));
-  }
 }
 
 extension BonusEntryMap<T extends Object> on Map<Bonus, T> {
-  List<BonusEntry<T>> toList() {
-    return [
-      for (final entry in entries) BonusEntry.fromMapEntry(entry),
-    ];
-  }
+  Iterable<BonusEntry<T>> get bonusEntries =>
+      entries.map(BonusEntry.fromMapEntry);
 }

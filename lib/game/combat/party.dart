@@ -139,33 +139,28 @@ class Party extends Iterable<PartyMember> {
     return true;
   }
 
-  List<PartyMember> membersInLine(PartyLine line) {
-    return [
-      for (final member in this)
-        if (member.entity.alive)
-          if (member.position.line == line) member,
-    ];
+  Iterable<PartyMember> membersInLine(PartyLine line) {
+    return where(
+      (member) => member.entity.alive && member.position.line == line,
+    );
   }
 
-  List<PartyMember> adjacentAllies(PartyPosition position) {
-    return [];
+  Iterable<PartyMember> adjacentAllies(PartyPosition position) {
+    return const [];
   }
 
-  List<PartyMember> adjacentEnemies(PartyPosition position) {
+  Iterable<PartyMember> adjacentEnemies(PartyPosition position) {
     final line = meleeLine;
     if (line == null) {
-      return [];
+      return const [];
     }
     final members = membersInLine(line);
-    if (position.isCenter) {
+    if (position.isCenter || members.length <= 1) {
       return members;
     }
-    if (members.length > 1) {
-      members.removeWhere(
-        (member) => member.position.slot == position.slot.opposite,
-      );
-    }
-    return members;
+    return members.where(
+      (member) => member.position.slot != position.slot.opposite,
+    );
   }
 
   void addAuraEffect(Aura aura) {

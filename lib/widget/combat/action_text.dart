@@ -24,7 +24,7 @@ class ActionText {
   Entity get _actor => _input.actor;
   Entity get _target => _input.target;
 
-  List<Widget> get lines {
+  Iterable<Widget> get lines {
     if (_result is WeaponAttackResult) {
       return _weaponTurn(_result as WeaponAttackResult);
     }
@@ -37,7 +37,7 @@ class ActionText {
     throw ArgumentError.value(_result, "result");
   }
 
-  List<Widget> _weaponTurn(WeaponAttackResult result) {
+  Iterable<Widget> _weaponTurn(WeaponAttackResult result) {
     final input = result.input;
     return [
       _attacks(input),
@@ -73,7 +73,7 @@ class ActionText {
     );
   }
 
-  List<Widget> _spellCast(SpellCastResult result) {
+  Iterable<Widget> _spellCast(SpellCastResult result) {
     final input = result.input;
     return [
       _richText(
@@ -93,21 +93,21 @@ class ActionText {
     ];
   }
 
-  List<Widget> _spellDamage(SpellCastInput input, DiceRollValue roll) {
+  Iterable<Widget> _spellDamage(SpellCastInput input, DiceRollValue roll) {
     return [
       _diceRoll(input.spell.text, roll.base),
       ..._damageAndStatus(roll),
     ];
   }
 
-  List<Widget> _spellHeal(SpellCastInput input, DiceRoll roll) {
+  Iterable<Widget> _spellHeal(SpellCastInput input, DiceRoll roll) {
     return [
       _diceRoll(input.spell.text, roll),
       Text("$_target is healed by ${roll.total}."),
     ];
   }
 
-  List<Widget> _damageAndStatus(DiceRollValue damage) {
+  Iterable<Widget> _damageAndStatus(DiceRollValue damage) {
     return [
       _richText(
         "$_target takes ",
@@ -118,7 +118,7 @@ class ActionText {
     ];
   }
 
-  List<Widget> get _effects {
+  Iterable<Widget> get _effects {
     final effects = [
       for (final entry in _result.effects) effectText(entry.value),
     ];
@@ -133,7 +133,7 @@ Widget _diceRoll(String name, DiceRoll roll) {
   return _richText("$name roll ", DiceRollSpan(roll));
 }
 
-List<Widget> _diceRolls(String name, DiceRollValue value) {
+Iterable<Widget> _diceRolls(String name, DiceRollValue value) {
   return [
     _diceRoll(name, value.base),
     for (final entry in value.diceBonuses.entries)

@@ -6,15 +6,15 @@ class Value<T extends Monoid> implements Comparable<Value<T>> {
   final T base;
   final Bonuses<T> bonuses;
   final Bonuses<Multiplier> multipliers;
-  final List<BonusEntry<T>> reserved;
+  final Iterable<BonusEntry<T>> reserved;
 
   Value.from(
     this.base,
     this.bonuses, {
     Bonuses<Multiplier>? multipliers,
-    List<BonusEntry<T>>? reserved,
+    Iterable<BonusEntry<T>>? reserved,
   })  : multipliers = multipliers ?? Bonuses.empty(),
-        reserved = reserved ?? [];
+        reserved = reserved ?? const [];
 
   Value.fromBase(T base) : this.from(base, Bonuses.empty());
 
@@ -31,7 +31,7 @@ class Value<T extends Monoid> implements Comparable<Value<T>> {
     return compareTo(other) == 1;
   }
 
-  List<BonusEntry<T>> get bonusList {
+  Iterable<BonusEntry<T>> get bonusList {
     return [
       for (final entry in bonuses) entry,
       for (final entry in multipliers)

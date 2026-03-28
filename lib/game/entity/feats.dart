@@ -20,7 +20,7 @@ class EntityFeats extends Iterable<FeatSlot> {
     return pool;
   }
 
-  List<BonusEntry<Int>> get reserveStress {
+  Iterable<BonusEntry<Int>> get reserveStress {
     return [
       for (final slot in this)
         if (slot.value.reserveStress != null)

@@ -14,7 +14,7 @@ class TitledTextLines extends StatelessWidget {
 
   factory TitledTextLines.plain({
     required String title,
-    required List<String> lines,
+    required Iterable<String> lines,
   }) {
     return TitledTextLines(title: title, lines: TextLines.plain(lines));
   }

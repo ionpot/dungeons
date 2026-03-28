@@ -21,9 +21,8 @@ class Bonuses<T extends Monoid> extends Iterable<BonusEntry<T>> {
     return Bonuses.fromMap(map.mapValues((value) => Int(value.total)));
   }
 
-  List<BonusEntry<List<T>>> get grouped {
-    return contents.clean.group.toList();
-  }
+  Iterable<BonusEntry<List<T>>> get grouped =>
+      contents.clean.group.bonusEntries;
 
   T get total => contents.total;
 

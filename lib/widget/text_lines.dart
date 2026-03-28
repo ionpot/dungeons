@@ -4,10 +4,10 @@ import "package:flutter/widgets.dart";
 class TextLines extends StatelessWidget {
   final List<Widget> lines;
 
-  const TextLines(this.lines, {super.key});
+  TextLines(Iterable<Widget> lines, {super.key}) : lines = lines.toList();
 
-  factory TextLines.plain(List<String> lines) =>
-      TextLines([for (final text in lines) Text(text)]);
+  factory TextLines.plain(Iterable<String> lines) =>
+      TextLines(lines.map((text) => Text(text)));
 
   @override
   Widget build(BuildContext context) {

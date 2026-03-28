@@ -280,8 +280,8 @@ mixin _Stress on _Bonuses, _Attributes, _Levels {
 
   int get stress => _stress;
 
-  List<BonusEntry<Int>> get reservedStress =>
-      feats.reserveStress + _reserved.list;
+  Iterable<BonusEntry<Int>> get reservedStress =>
+      feats.reserveStress.followedBy(_reserved.list);
 
   Value<Int> get stressCap {
     return Value.from(

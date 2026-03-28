@@ -67,6 +67,7 @@ Color? _valueColor<T extends Monoid>(
   if (value.reserved.total.hasValue) {
     return reservedColor;
   }
-  final list = value.bonusList..removeWhereBonus(ignore ?? ignoreBonusColor);
+  final fn = ignore ?? ignoreBonusColor;
+  final list = value.bonusList.where((b) => !fn(b.bonus));
   return monoidColor(list.total);
 }

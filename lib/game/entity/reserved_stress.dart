@@ -8,7 +8,7 @@ class ReservedStress {
   const ReservedStress(this._contents);
   ReservedStress.empty() : this([]);
 
-  List<BonusEntry<Int>> get list {
+  Iterable<BonusEntry<Int>> get list {
     return [
       for (final item in _contents)
         if (item.active) item.entry,

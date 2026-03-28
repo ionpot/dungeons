@@ -16,15 +16,11 @@ class CombatState {
     return i;
   }
 
-  List<GridMember> get alive {
-    return <GridMember>[
-      for (final member in grid)
-        if (member.entity.alive) member,
-    ];
-  }
+  Iterable<GridMember> get alive => grid.where((m) => m.entity.alive);
 
-  List<GridMember> get turnOrder => alive..sort(compareSpeed);
-  List<GridMember> get notPlayed => turnOrder..removeWhere(played.contains);
+  List<GridMember> get turnOrder => alive.toList()..sort(compareSpeed);
+  Iterable<GridMember> get notPlayed =>
+      turnOrder.where((m) => !played.contains(m));
 
   GridMember get current => notPlayed.first;
   void nextTurn() {

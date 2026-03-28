@@ -54,7 +54,7 @@ class ValueTooltip<T extends Monoid> extends StatelessWidget {
   }
 
   Iterable<ValueRow> get _reservedRows {
-    final list = input.reserved.clean.group.toList();
+    final list = input.reserved.clean.group.bonusEntries;
     final rows = <_Row>[];
     for (final BonusEntry(:bonus, :value) in list) {
       rows.add(_row(_label(bonus, value), bonus, value.total));
