@@ -1,4 +1,7 @@
 #!/bin/sh
+
+flutter analyze
+
 dcm run\
 	--analyze\
 	--metrics\
