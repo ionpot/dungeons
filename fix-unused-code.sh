@@ -1,0 +1,1 @@
+dcm fix --type=unused-code lib
