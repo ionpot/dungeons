@@ -21,6 +21,9 @@ class DefendResult extends ActionResult {
   const DefendResult(this.input);
 
   @override
+  bool get didHit => true;
+
+  @override
   StatusEffects get inflicted {
     return StatusEffects.single(
       OtherBonus.defending,

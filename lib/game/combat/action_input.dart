@@ -49,7 +49,12 @@ abstract class ActionResult {
     return const [];
   }
 
+  int get stressDone => addedReservations.isEmpty ? input.stressCost : 0;
+  int get reservedStressDone =>
+      addedReservations.isNotEmpty ? input.stressCost : 0;
+
   Iterable<Reservation> removedReservations(Iterable<Reservation> current) {
-    return current.where((r) => r.target.dead);
+    final willDie = didHit && target.hp + healingDone - damageDone <= 0;
+    return current.where((r) => r.target == target && willDie);
   }
 }
