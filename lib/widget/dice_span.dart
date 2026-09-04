@@ -67,10 +67,9 @@ class DiceValueWithRangeSpan extends TextSpan {
 }
 
 class DiceRollValueSpan extends ValueSpan<Int> {
-  DiceRollValueSpan(DiceRollValue value, {TextStyle? style})
+  DiceRollValueSpan(DiceRollValue value, {super.style})
       : super(
           value.intValue,
           tooltipBaseText: "Rolled (${value.base.dice})",
-          style: style,
         );
 }

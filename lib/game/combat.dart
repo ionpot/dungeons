@@ -88,7 +88,7 @@ class Combat {
       );
     }
     if (result.damageDone > 0 &&
-        result.target.hasBonus(StatusEffect.canFrenzy)) {
+        result.target.effects.has(StatusEffect.canFrenzy)) {
       events.add(FrenzyTriggered(result.target));
     }
     return events;

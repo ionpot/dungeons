@@ -45,3 +45,8 @@ dart_code_metrics:
     - prefer-trailing-comma
     - prefer-conditional-expressions
     - no-equal-then-else
+analyzer:
+  exclude:
+    - build/**
+    - windows/**
+    - macos/**

@@ -175,12 +175,6 @@ class Party extends Iterable<PartyMember> {
     }
   }
 
-  void clearAuraEffects() {
-    for (final PartyMember(:entity) in this) {
-      entity.auraEffects.clear();
-    }
-  }
-
   void reset() {
     for (final PartyMember(:entity) in this) {
       entity

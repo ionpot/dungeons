@@ -1,7 +1,6 @@
 import "package:dungeons/game/combat/reservation.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity/bonus.dart";
-import "package:dungeons/game/entity/status_effect.dart";
 import "package:dungeons/game/entity/status_effects.dart";
 import "package:dungeons/game/source.dart";
 
