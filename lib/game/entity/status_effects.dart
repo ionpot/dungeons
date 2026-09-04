@@ -55,6 +55,13 @@ class StatusEffects extends Iterable<BonusEntry<StatusEffect>> {
     contents.removeWhere((entry) => entry.bonus == bonus);
   }
 
+  void removeOneBonus(Bonus bonus) {
+    final index = contents.indexWhere((entry) => entry.bonus == bonus);
+    if (index >= 0) {
+      contents.removeAt(index);
+    }
+  }
+
   @override
   Iterator<BonusEntry<StatusEffect>> get iterator => contents.iterator;
 }
