@@ -2,7 +2,6 @@ import "package:dungeons/game/combat/action_input.dart";
 import "package:dungeons/game/combat/chance_roll.dart";
 import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity/bonus.dart";
-import "package:dungeons/game/entity/critical_hit.dart";
 import "package:dungeons/game/entity/dice_value.dart";
 import "package:dungeons/game/entity/feat.dart";
 import "package:dungeons/game/entity/value.dart";
@@ -25,13 +24,6 @@ class WeaponAttackInput extends ActionInput {
   DiceValue get weaponDamage => actor.weaponDamage!;
   Dice get weaponDice => actor.gear.weaponValue!.dice!;
 
-  CriticalHit get criticalHit {
-    return CriticalHit(
-      chance: actor.criticalHitChance,
-      dice: weaponDice,
-    );
-  }
-
   FeatSlot? get sneakAttack {
     if (actor.fasterThan(target)) {
       return actor.feats.find(Feat.sneakAttack);
@@ -40,7 +32,7 @@ class WeaponAttackInput extends ActionInput {
   }
 
   DiceRollValue rollDamage() => weaponDamage.roll();
-  DiceRoll rollCriticalHit() => criticalHit.dice.roll();
+  DiceRoll rollCriticalHit() => weaponDice.roll();
   DiceRoll? rollSneakAttack() => sneakAttack?.value.dice!.roll();
 
   WeaponAttackRolls roll() {
@@ -78,7 +70,7 @@ class WeaponAttackResult extends ActionResult {
   WeaponAttackResult(this.input, this.rolls) {
     if (isCriticalHit && rolls.critical != null) {
       rolls.damage.addBonusRoll(
-        CriticalHitBonus(input.criticalHit),
+        const CriticalHitBonus(),
         rolls.critical!,
       );
     }
@@ -97,7 +89,7 @@ class WeaponAttackResult extends ActionResult {
   }
 
   bool get isCriticalHit {
-    return rolls.attack.meetsV(input.criticalHit.chance);
+    return rolls.attack.meetsV(input.actor.criticalHitChance);
   }
 
   bool get autoHit => isCriticalHit;

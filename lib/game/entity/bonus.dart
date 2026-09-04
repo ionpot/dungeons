@@ -2,7 +2,6 @@ import "package:dungeons/game/entity/armor.dart";
 import "package:dungeons/game/entity/attributes.dart";
 import "package:dungeons/game/entity/aura.dart";
 import "package:dungeons/game/entity/class.dart";
-import "package:dungeons/game/entity/critical_hit.dart";
 import "package:dungeons/game/entity/feat.dart";
 import "package:dungeons/game/entity/gear.dart";
 import "package:dungeons/game/entity/race.dart";
@@ -90,15 +89,13 @@ final class RaceBonus extends Bonus {
 }
 
 final class CriticalHitBonus extends Bonus {
-  final CriticalHit hit;
-
-  const CriticalHitBonus(this.hit);
+  const CriticalHitBonus();
 
   @override
-  int get hash => hit.hashCode;
+  int get hash => "Critical hit".hashCode;
 
   @override
-  String get text => hit.toString();
+  String get text => "Critical hit";
 }
 
 final class GearBonus extends Bonus {
