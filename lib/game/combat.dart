@@ -79,10 +79,12 @@ class Combat {
 
     final events = <CombatEvent>[];
     if (result.target.dead) {
+      final actorReservations =
+          state.reservations.where((r) => r.actor == result.target).toList();
       events.add(
         EntityDied(
           entity: result.target,
-          removedReservations: removed.toList(),
+          removedReservations: removed.toList()..addAll(actorReservations),
           removedAura: result.target.aura,
         ),
       );
@@ -101,6 +103,9 @@ class Combat {
       case EntityDied e:
         for (final r in e.removedReservations) {
           r.actor.removeReservedStress(r.bonus);
+          if (r.actor == e.entity) {
+            r.target.temporary.removeOneBonus(r.bonus);
+          }
         }
         state.reservations.removeWhere(e.removedReservations.contains);
         if (e.removedAura != null) {
