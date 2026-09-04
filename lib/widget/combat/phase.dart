@@ -198,21 +198,3 @@ final class LevelUpPhase extends CombatPhase {
     return PortraitArgs(current: member.entity == entity);
   }
 }
-
-final class NoActionPhase extends CombatPhase {
-  final Combat combat;
-  final VoidCallback onNext;
-
-  const NoActionPhase(this.combat, {required this.onNext});
-
-  @override
-  Widget get buttons => Button(text: "Next", onClick: onNext);
-
-  @override
-  Widget get display {
-    return TitledTextLines.plain(
-      title: combatTurnTitle(combat),
-      lines: ["${combat.current} does nothing."],
-    );
-  }
-}

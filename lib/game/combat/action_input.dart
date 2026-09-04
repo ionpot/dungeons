@@ -30,16 +30,9 @@ abstract class ActionResult {
 
   StatusEffects get inflicted => StatusEffects.empty();
 
-  StatusEffects get effects {
-    final extra = StatusEffects.empty();
-    if (damageDone > 0) {
-      final bonus = target.effects.findBonusOf(StatusEffect.canFrenzy);
-      if (bonus != null) {
-        extra.add(bonus, StatusEffect.frenzy);
-      }
-    }
-    return inflicted + extra;
-  }
+  StatusEffects get effects => inflicted;
+
+  bool get stopDefending => actor.isDefending;
 
   Iterable<Reservation> get addedReservations {
     final ActionInput(:reserveStress) = input;

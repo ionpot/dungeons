@@ -38,6 +38,9 @@ class _CombatScreenState extends State<CombatScreen> {
   @override
   void initState() {
     super.initState();
+    for (final event in widget.combat.start()) {
+      widget.combat.applyEvent(event);
+    }
     _phase = _startingPhase();
   }
 
@@ -122,9 +125,7 @@ class _CombatScreenState extends State<CombatScreen> {
       _setPhase(_actionPhase());
     } else {
       final action = _combat.randomAction();
-      final phase =
-          action == null ? _noActionPhase() : _actionResultPhase(action);
-      _setPhase(phase);
+      _setPhase(_actionResultPhase(action));
     }
   }
 
@@ -141,18 +142,9 @@ class _CombatScreenState extends State<CombatScreen> {
     _doAction();
   }
 
-  CombatPhase _noActionPhase() {
-    return NoActionPhase(_combat, onNext: () {
-      _log
-        ..ln()
-        ..ln("${_combat.current} does nothing.");
-      _newTurn();
-    });
-  }
-
   CombatPhase _actionResultPhase(ChosenAction chosen) {
     final result = chosen.toResult();
-    _combat.apply(result);
+    final events = _combat.applyAction(result);
     _log
       ..ln()
       ..actionResult(result);
@@ -161,6 +153,9 @@ class _CombatScreenState extends State<CombatScreen> {
       _combat,
       result,
       onDone: () {
+        for (final event in events) {
+          _combat.applyEvent(event);
+        }
         if (_combat.won) return _setPhase(_xpPhase());
         if (_combat.lost) return widget.onLose();
         _newTurn();

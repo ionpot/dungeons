@@ -24,6 +24,9 @@ class DefendResult extends ActionResult {
   bool get didHit => true;
 
   @override
+  bool get stopDefending => false;
+
+  @override
   StatusEffects get inflicted {
     return StatusEffects.single(
       OtherBonus.defending,

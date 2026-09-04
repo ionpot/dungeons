@@ -5,10 +5,12 @@ import "package:dungeons/game/entity.dart";
 import "package:dungeons/game/entity/grid_range.dart";
 import "package:dungeons/utility/monoids.dart";
 
-ChosenAction? pickAction(GridMember member, CombatGrid grid) {
+ChosenAction pickAction(GridMember member, CombatGrid grid) {
   final targets = grid.listMembersInRange(member, GridRange.melee);
   final target = _pickMeleeTarget(member, targets);
-  return target != null ? ChosenAction(UseWeapon(member), target) : null;
+  return target != null
+      ? ChosenAction(UseWeapon(member), target)
+      : ChosenAction(Defend(member), member);
 }
 
 GridMember? _pickMeleeTarget(GridMember current, Iterable<GridMember> targets) {
